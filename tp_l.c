@@ -487,11 +487,12 @@ char *yytext;
 #line 1 "tp.l"
 /** ANALYSE LEXICALE **/
 /** Expressions régulières **/
+/*Commentaire ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")*/  
 /*
  * expr : ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")  
  *
 */
-#line 26 "tp.l"
+#line 27 "tp.l"
 #include "tp.h"
 #include "tp_y.h"
 #include <string.h> /* pour strdup */
@@ -569,7 +570,7 @@ void lexError(char c) {
  * Attention: le contenu de yylval va etre ecrase a chaque appel a l'analyseur
  * lexical et doit donc etre sauvegarde si besoin.
  */
-#line 573 "tp_l.c"
+#line 574 "tp_l.c"
 
 #define INITIAL 0
 
@@ -778,9 +779,9 @@ YY_DECL
 		}
 
 	{
-#line 105 "tp.l"
+#line 106 "tp.l"
 
-#line 784 "tp_l.c"
+#line 785 "tp_l.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -849,86 +850,86 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 106 "tp.l"
+#line 107 "tp.l"
 { yylval.I = strtol(yytext, NULL, 0); return(CST); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 107 "tp.l"
+#line 108 "tp.l"
 { return keywordOrId(); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 108 "tp.l"
+#line 109 "tp.l"
 { return(PLUS); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 109 "tp.l"
+#line 110 "tp.l"
 { return(MINUS); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 110 "tp.l"
+#line 111 "tp.l"
 { return(MUL); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 111 "tp.l"
+#line 112 "tp.l"
 { return(DIV); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 112 "tp.l"
+#line 113 "tp.l"
 { yylval.C = EQ; return(RELOP); } /*ici on stock l'opérateur VU et on le donne à Bison*/
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 113 "tp.l"
+#line 114 "tp.l"
 { yylval.C = NE; return(RELOP); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 114 "tp.l"
+#line 115 "tp.l"
 { yylval.C = LT; return(RELOP); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 115 "tp.l"
+#line 116 "tp.l"
 { yylval.C = LE; return(RELOP); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 116 "tp.l"
+#line 117 "tp.l"
 { yylval.C = GT; return(RELOP); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 117 "tp.l"
+#line 118 "tp.l"
 { yylval.C = GE; return(RELOP); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 118 "tp.l"
+#line 119 "tp.l"
 { return(yytext[0]); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 119 "tp.l"
+#line 120 "tp.l"
 { return AFFECT; }
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 120 "tp.l"
+#line 121 "tp.l"
 { ; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 121 "tp.l"
+#line 122 "tp.l"
 ECHO;
 	YY_BREAK
-#line 932 "tp_l.c"
+#line 933 "tp_l.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1935,7 +1936,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 121 "tp.l"
+#line 122 "tp.l"
 
 
 
