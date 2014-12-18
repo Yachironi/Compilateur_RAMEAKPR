@@ -8,7 +8,7 @@ extern TreeP getChild(TreeP tree, int rank);
 extern bool verbose;
 extern bool noEval;
 
-/* Impression de la partie declarative du programme */
+/* Impression : )  de la partie declarative du programme */
 void pprintVar(VarDeclP decl, TreeP tree) {
   if (! verbose) return;
   printf("%s := ", decl->name);
