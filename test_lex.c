@@ -139,11 +139,22 @@ int main(int argc, char **argv) {
     case CST:
       if (verbose) printf("Constante:\t\t%d\n", yylval.I);
       break;
-    case BEG: 
-    case END:
     case IF:
     case THEN:
     case ELSE:
+    case CLASS :
+    case VAR :
+    case EXTENDS :
+    case IS :
+    case STATIC :
+    case DEF :
+    case OVERRIDE :
+    case RETURNS :
+    case RETURN :
+    case YIELD :
+    case NEW :
+if (verbose) printf("Keyword:\t\t%s\n", yytext);
+      break;
     case '(':
     case ')':
     case ';':
@@ -157,9 +168,9 @@ int main(int argc, char **argv) {
     case MINUS:
       if (verbose) printf("Oper arithmetique:\t%s\n", yytext);
       break;
-    case COMO: printf("Commentaire ouvrant\n"); break;
+  /*  case COMO: printf("Commentaire ouvrant\n"); break;
     case COMC: printf("Commentaire fermant\n"); break;
-
+*/
     case RELOP:
       /* inutilement complique ici, mais sert a illustrer la difference
        * entre le token et l'infirmation supplementaire qu'on peut associer

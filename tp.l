@@ -9,17 +9,17 @@ LD  ({Letter}|{Digit})
 String (\"[^{Guill|Antislash}]|{Antislash}{All}\")
 Star \*
 NotStar [^*]
-NotStarSlash [^*/]minus
-
+NotStarSlash [^*/]
 Delim [ \n\t\r]
 Symbol [;,(){}:.&]
 All [.]
 Guill "\""
 Antislash [\\]
-/*Commentaire ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")*/  
+Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
 
 /*
- * expr : ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")  
+ * ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
+ * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")  
  *
 */
 
@@ -50,10 +50,6 @@ int keywordOrId() {
     return ELSE;
   if(strcmp(yylval.S,"then")==0)
     return THEN;
-  if(strcmp(yylval.S,"begin")==0)
-    return BEG;
-  if(strcmp(yylval.S,"end")==0)
-    return END;
   if(strcmp(yylval.S,"class")==0)
     return CLASS;
   if(strcmp(yylval.S,"var")==0)
@@ -119,4 +115,5 @@ void lexError(char c) {
 {Symbol}        { return(yytext[0]); }
 ":="            { return AFFECT; }
 {Delim}         { ; }
+{Commentaire}	{ ; }
 %%

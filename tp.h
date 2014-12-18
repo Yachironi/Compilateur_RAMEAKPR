@@ -1,6 +1,5 @@
 #include <stdlib.h>
-#include <stdio.h>
-// test julien
+
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
 #define NIL(type) (type *) 0
@@ -42,7 +41,7 @@ typedef struct _Decl
 #define GT 5
 #define GE 6
 
-#define MINUS 7
+
 #define LIST 8
 
 /* Codes d'erreurs */

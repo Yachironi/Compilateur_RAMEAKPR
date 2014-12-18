@@ -68,7 +68,6 @@ decl :
 ID AFFECT expr ';'
 ;
 
-
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
  * des operandes sont deja construits au moment de rajouter le noeud courant.
