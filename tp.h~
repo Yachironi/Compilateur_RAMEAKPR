@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 // test julien
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
