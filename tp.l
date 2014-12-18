@@ -9,13 +9,14 @@ LD  ({Letter}|{Digit})
 String (\"[^{Guill|Antislash}]|{Antislash}{All}\")
 Star \*
 NotStar [^*]
-NotStarSlash [^*/]
+NotStarSlash [^*/]minus
+
 Delim [ \n\t\r]
 Symbol [;,(){}:.&]
 All [.]
 Guill "\""
 Antislash [\\]
-Commentaire ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")  
+/*Commentaire ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")*/  
 
 /*
  * expr : ("/"{Star}{{NotStar}|({Star}+{NoStarSlash})}*{Star}+"/")  
