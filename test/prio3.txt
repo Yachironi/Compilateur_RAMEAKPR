@@ -1,6 +1,0 @@
-
-begin (if 2*3 = 6 then 2 else 3) + 2
-end
-/*
-result: 4
-*/

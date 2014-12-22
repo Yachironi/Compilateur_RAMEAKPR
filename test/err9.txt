@@ -1,5 +1,0 @@
-x := 0;
-y := 0+5;
-z : = x ; /* erreur : espace entre : et = */
-begin z end
-/* erreur lexicale (a cause du ':' isole) ou syntaxique */

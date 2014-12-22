@@ -159,6 +159,11 @@ if (verbose) printf("Keyword:\t\t%s\n", yytext);
     case ')':
     case ';':
     case ',':
+    case ':':
+    case '&':
+    case '.':
+    case '}':
+    case '{':
       if (verbose) printf("Symbole:\t\t%s\n",  yytext);
       break;
     case AFFECT:
