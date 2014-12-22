@@ -2,7 +2,6 @@
 
 /** Expressions régulières **/
 
-
 Digit [0-9]
 Integer {Digit}+
 Letter  [a-zA-Z]
