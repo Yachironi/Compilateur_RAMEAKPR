@@ -151,7 +151,6 @@ expr :
 ;
 
 
-
 /* Expression booleenne */ 
 bexpr : expr REL expr 
     { $$ = makeTree($2, 2, $1, $3); }
