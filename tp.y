@@ -83,10 +83,10 @@ expr : ID
        | instanciation
        | envoiMessage
 
-selection : IdClass.ID
-          | Ident.ID
-          | envoiMessage.ID
-          | selection.ID
+selection : IdClass'.'ID
+          | ID'.'ID
+          | envoiMessage'.'ID
+          | selection'.'ID
 
 constante : CST-S | CST-E
 
@@ -95,10 +95,10 @@ instanciation : ID IdClass'('ListOpt')'
 /**
  * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
  */
-envoiMessage : IdClass.ID'('ListOpt')'
-              | ID.ID'('ListOpt')'
-              | envoiMessage.ID'('ListOpt')'
-              | selection.ID'('ListOpt')'
+envoiMessage : IdClass'.'ID'('ListOpt')'
+              | ID'.'ID'('ListOpt')'
+              | envoiMessage'.'ID'('ListOpt')'
+              | selection'.'ID'('ListOpt')'
  /* "programme" est l'axiome de la grammaire */
 /*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
 ;*/
