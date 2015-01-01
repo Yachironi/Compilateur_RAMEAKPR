@@ -5,9 +5,10 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV
-%token <S> ID	/* voir %type ci-dessous pour le sens de <S> et Cie */
-%token <I> CST
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IdClass ListBloc
+%token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token <I> CSTE
+
 
 /* indications de precedence d'associativite. Les operateurs sur une meme
  * ligne (separes par un espace) ont la meme priorite. Les ligns sont donnees
@@ -26,7 +27,7 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 %type <C> REL
-%type <T> expr bexpr decl declL
+%type <T> expr selection constante envoiMessage instanciation
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
@@ -62,11 +63,11 @@ extern void yyerror();  /* definie dans tp.c */
 declCLASS : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
 
 ListIdentOpt : ID':' IdClass
-              |
+              | /* epsilon */
               |','ListIdentOpt
 
 ListExtendsOpt : EXTENDS IdClass'('ListOpt')'
-              |
+              | /* epsilon */
 
 ListOpt :  | LArg
 LArg : Arg | LArg','Arg
@@ -82,39 +83,43 @@ expr : ID
        | '('expr')'
        | instanciation
        | envoiMessage
+       ;
 
-selection : IdClass.ID
-          | Ident.ID
-          | envoiMessage.ID
-          | selection.ID
+selection : IdClass'.'ID
+          | ID'.'ID
+          | envoiMessage'.'ID
+          | selection'.'ID
+          ;
 
-constante : CST-S | CST-E
+constante : CSTS | CSTE
+          ;
 
 instanciation : ID IdClass'('ListOpt')'
+              ;
 
 /**
  * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
  */
-envoiMessage : IdClass.ID'('ListOpt')'
-              | ID.ID'('ListOpt')'
-              | envoiMessage.ID'('ListOpt')'
-              | selection.ID'('ListOpt')'
+envoiMessage : IdClass'.'ID'('ListOpt')'
+              | ID'.'ID'('ListOpt')'
+              | envoiMessage'.'ID'('ListOpt')'
+              | selection'.'ID'('ListOpt')'
+              ;
  /* "programme" est l'axiome de la grammaire */
 /*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
 ;*/
 
 /* Une liste eventuellement vide de declarations de variables */
-declL : 
-
-| decl declL;
+/*declL : | 
+        | decl declL;*/
 
 
 /* une declaration de variable ou de fonction, terminee par un ';'. 
  * AFFECT = ":="
 */
-decl :
+/*decl :
 ID AFFECT expr ';'
-;
+;$/
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
@@ -131,7 +136,7 @@ ID AFFECT expr ';'
   * /!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
   */
 
-expr :
+/*expr :
   IF bexpr THEN expr ELSE expr
     { $$ = makeTree(IF, 3, $2, $4, $6); }
 | expr PLUS expr
@@ -146,16 +151,15 @@ expr :
     { $$ = makeLeafInt(CST, $1); }
 | ID
     { $$ = makeLeafStr(ID, $1); }
-| '(' expr ')'      /* meme traitement que pour le + unaire. */
+| '(' expr ')'      //meme traitement que pour le + unaire.
     { $$ = $2; }
 ;
 
-/* Expression booleenne */ 
 bexpr : expr REL expr 
     { $$ = makeTree($2, 2, $1, $3); }
 | '(' bexpr ')'
     { $$ = $2; }
-;
+;*/
 
 /*
  * TODO : On n'a pas envie d'écrire au niveau des expression <= > < >= etc ..
