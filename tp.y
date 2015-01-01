@@ -17,8 +17,8 @@
 %left PLUS MINUS
 %left MUL DIV
 
-%empty epsilon
-
+/* %empty epsilon
+*/
 /* voir la definition de YYSTYPE dans main.h 
  * Les indications ci-dessous servent a indiquer a Bison que les "valeurs" $i
  * ou $$ associees a ces non-terminaux doivent utiliser la variante indiquee
@@ -59,27 +59,27 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
-declCLASS : CLASS IdClass(ListIdentOpt) ListExtendsOpt ListBloc IS {ListDecl}
+declCLASS : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
 
 ListIdentOpt : ID':' IdClass
-              | epsilon
+              |
               |','ListIdentOpt
 
-ListExtendsOpt : EXTENDS IdClass(ListOpt)
-              | epsilon
+ListExtendsOpt : EXTENDS IdClass'('ListOpt')'
+              |
 
-ListOpt : epsilon | LArg
-LArg : Arg | LArg,Arg
+ListOpt :  | LArg
+LArg : Arg | LArg','Arg
 Arg : expr
 
 /*
  * RAJOUTER Au meme niveau ADD etc ... tout en haut
  */
 expr : ID
-       | expr ADD expr
+       | expr PLUS expr
        | selection
        | constante
-       | (expr)
+       | '('expr')'
        | instanciation
        | envoiMessage
 
@@ -90,15 +90,15 @@ selection : IdClass.ID
 
 constante : CST-S | CST-E
 
-instanciation : ID IdClass(ListOpt)
+instanciation : ID IdClass'('ListOpt')'
 
 /**
  * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
  */
-envoiMessage : IdClass.ID(ListOpt)
-              | ID.ID(ListOpt)
-              | envoiMessage.ID(ListOpt)
-              | selection.ID(ListOpt)
+envoiMessage : IdClass.ID'('ListOpt')'
+              | ID.ID'('ListOpt')'
+              | envoiMessage.ID'('ListOpt')'
+              | selection.ID'('ListOpt')'
  /* "programme" est l'axiome de la grammaire */
 /*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
 ;*/
