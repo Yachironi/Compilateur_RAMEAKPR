@@ -65,8 +65,12 @@ extern int yydebug;
     AFFECT = 275,
     MUL = 276,
     DIV = 277,
-    ID = 278,
-    CST = 279
+    CST = 278,
+    IdClass = 279,
+    ListBloc = 280,
+    ID = 281,
+    CSTS = 282,
+    CSTE = 283
   };
 #endif
 

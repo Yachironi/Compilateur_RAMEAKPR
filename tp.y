@@ -89,10 +89,7 @@ selection : IdClass'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
-<<<<<<< HEAD
-=======
-          ;
->>>>>>> 17304d4567aa7573be74f380e72ce82e82dee80f
+         ;
 
 constante : CSTS | CSTE
           ;
@@ -107,11 +104,9 @@ envoiMessage : IdClass'.'ID'('ListOpt')'
               | ID'.'ID'('ListOpt')'
               | envoiMessage'.'ID'('ListOpt')'
               | selection'.'ID'('ListOpt')'
-<<<<<<< HEAD
-=======
-              ;
->>>>>>> 17304d4567aa7573be74f380e72ce82e82dee80f
- /* "programme" est l'axiome de la grammaire */
+             ;
+
+/* "programme" est l'axiome de la grammaire */
 /*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
 ;*/
 
