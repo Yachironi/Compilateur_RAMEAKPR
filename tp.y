@@ -16,7 +16,8 @@
  */
 
 %left PLUS MINUS
-%left MUL DIV
+%left MUL DIV 
+%left unaire
 
 /* %empty epsilon
 */
@@ -27,7 +28,7 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 %type <C> REL
-%type <T> expr selection constante envoiMessage instanciation
+//%type <T> 
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
@@ -61,23 +62,34 @@ extern void yyerror();  /* definie dans tp.c */
  */
 
 declCLASS : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
+            ;
 
 ListIdentOpt : ID':' IdClass
               | /* epsilon */
               |','ListIdentOpt
+              ;
 
 ListExtendsOpt : EXTENDS IdClass'('ListOpt')'
               | /* epsilon */
-
-ListOpt :  | LArg
-LArg : Arg | LArg','Arg
-Arg : expr
+              ;
+ListOpt :  | LArg;
+LArg : Arg | LArg','Arg;
+Arg : expr;
 
 /*
  * RAJOUTER Au meme niveau ADD etc ... tout en haut
+ * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5
+
+  E : E+E
+    | Fonc%prec
+ Pareil pour + unaire - unaire
  */
 expr : ID
+       | PLUS expr %prec unaire
        | expr PLUS expr
+       | expr MINUS expr
+       | expr DIV expr
+       | expr MUL expr
        | selection
        | constante
        | '('expr')'
