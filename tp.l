@@ -13,10 +13,10 @@ NotStarSlash [^*/]
 Delim [ \n\t\r]
 Symbol [;,(){}:.&]
 All [.]
-Guill "\""
+Guill "\"";
 Antislash [\\]
 Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
-
+idClass [A-Z]{LD}*
 /*
  * ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
  * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")  
@@ -101,6 +101,7 @@ void lexError(char c) {
 
 %%
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
+{idClass}	{ return IDClASS;}
 {Letter}{LD}*   { return keywordOrId(); }
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
