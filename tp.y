@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS ListBloc 
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS
 %token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -61,19 +61,42 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
-declCLASS : CLASS IDCLASS '('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl};
 
-ListIdentOpt : ID':' IDCLASS
+Programme : LClassOpt Bloc
+
+LClassOpt : DeclClass LClassOpt
+            | /* epsilon */
+
+Bloc : '{' '}'
+;
+/* TODO
+ * 
+ * ListBlock + ListDecl
+ * 
+*/
+
+/*BlocOpt ici est le corps du constructeur*/
+DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ListDecl'}'
+            ;
+
+BlocOpt : ;
+
+ListDecl : ;
+
+ListParamOpt : LI
               | /* epsilon */
-              |','ListIdentOpt
               ;
+
+
+LI : ID':' IDCLASS
+    | ID':' IDCLASS','LI
+;
 
 ListExtendsOpt : EXTENDS IDCLASS'('ListOpt')'
               | /* epsilon */
               ;
 ListOpt :  | LArg;
-LArg : Arg | LArg','Arg;
-Arg : expr;
+LArg : expr | LArg','expr;
 
 /*
  * RAJOUTER Au meme niveau ADD etc ... tout en haut
@@ -89,12 +112,16 @@ expr : ID
        | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
        | expr DIV expr
        | expr MUL expr
+       | expr RELOP expr
        | selection
        | constante /* $$ = make_feuille(...) */
        | '('expr')'
        | instanciation
        | envoiMessage
        ;
+
+
+       /* On peut faire : (new c()).kkchose ou new c().kkchose*/
 
 selection : IDCLASS'.'ID
           | ID'.'ID
@@ -105,7 +132,7 @@ selection : IDCLASS'.'ID
 constante : CSTS | CSTE
           ;
 
-instanciation : ID IDCLASS'('ListOpt')'
+instanciation : NEW IDCLASS'('ListOpt')'
               ;
 
 /**

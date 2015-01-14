@@ -101,7 +101,7 @@ void lexError(char c) {
 
 %%
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
-{idClass}	{ return IDClASS;}
+{idClass}	{ return IDCLASS;}
 {Letter}{LD}*   { return keywordOrId(); }
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
