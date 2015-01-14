@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IdClass ListBloc
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IdClass
 %token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -61,20 +61,32 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
-declCLASS : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
+Programme : LClassOpt Bloc
+
+LClassOpt : DeclClass LClassOpt
+            | /* epsilon */
+
+/* TODO
+ * 
+ * ListBlock + ListDecl
+ * 
+*/
+
+DeclClass : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
             ;
 
-ListIdentOpt : ID':' IdClass
+ListIdentOpt : LI
               | /* epsilon */
-              |','ListIdentOpt
               ;
 
+LI : ID':' IdClass
+    | ID':' IdClass','LI
+;
 ListExtendsOpt : EXTENDS IdClass'('ListOpt')'
               | /* epsilon */
               ;
 ListOpt :  | LArg;
-LArg : Arg | LArg','Arg;
-Arg : expr;
+LArg : expr | LArg','expr;
 
 /*
  * RAJOUTER Au meme niveau ADD etc ... tout en haut
@@ -90,12 +102,15 @@ expr : ID
        | expr MINUS expr
        | expr DIV expr
        | expr MUL expr
+       | expr RELOP expr
        | selection
        | constante
        | '('expr')'
        | instanciation
        | envoiMessage
        ;
+
+       /* On peut faire : (new c()).kkchose ou new c().kkchose*/
 
 selection : IdClass'.'ID
           | ID'.'ID
@@ -106,7 +121,7 @@ selection : IdClass'.'ID
 constante : CSTS | CSTE
           ;
 
-instanciation : ID IdClass'('ListOpt')'
+instanciation : NEW IdClass'('ListOpt')'
               ;
 
 /**
