@@ -62,39 +62,89 @@ extern void yyerror();  /* definie dans tp.c */
  */
 
 Programme : LClassOpt Bloc
+          ;
 
 LClassOpt : DeclClass LClassOpt
             | /* epsilon */
+            ;
+ 
+Bloc : '{' ContenuBloc '}'
+      | 
+      ;
 
-Bloc : '{' '}'
-;
+ContenuBloc : LInstructionOpt YieldOpt
+      | ListDeclVar IS LInstruction YieldOpt
+      ;
+
+YieldOpt : YIELD expr;
+        | /* epsilon */
+        ;
+
+LInstructionOpt : Instruction LInstructionOpt
+                | /* epsilon */
+                ;
+
+LInstruction : Instruction LInstructionOpt
+              ;
+
+Instruction : expr ';'
+            | Bloc
+            | Cible AFFECT expr ';' 
+            | IF expr THEN Instruction ELSE Instruction
+            | RETURN ';'
+            ;
+Cible : ID 
+      | IDCLASS
+      ;
+
+BlocOpt : Bloc
+        | /* epsilon */ 
+        ;
 /* TODO
  * 
- * ListBlock + ListDecl
+ * ListBlock + ContenuClassOpt
  * 
 */
 
 /*BlocOpt ici est le corps du constructeur*/
-DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ListDecl'}'
+DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}'
             ;
 
-BlocOpt : ;
+ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt;
 
-ListDecl : ;
+LDeclChampsOpt : VAR StaticOpt ID ':'  IDCLASS AffectExprOpt ';'
+              ;
 
-ListParamOpt : LI
+StaticOpt : STATIC
+          | 
+          ;
+
+AffectExprOpt : AFFECT expr;
+              |
+              ;
+
+LDeclMethodeOpt : DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
+              ;
+
+BlocOuExpr : AffectExprOpt
+            | Bloc
+            ;
+
+ListParamOpt : LParam
               | /* epsilon */
               ;
 
-LI : ID':' IDCLASS
-    | ID':' IDCLASS','LI
-;
+LParam : Param
+        | LParam','Param
+        ;
 
+Param : ID':' IDCLASS
+          ;
 
-ListExtendsOpt : EXTENDS IDCLASS'('ListOpt')'
+ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
               | /* epsilon */
               ;
-ListOpt :  | LArg;
+ListOptArg :  | LArg;
 LArg : expr | LArg','expr;
 
 /*
@@ -117,14 +167,19 @@ expr : ID
        | '('expr')'
        | instanciation
        | envoiMessage
+       | RETURN expr ';'
        ;
 
-       /* On peut faire : (new c()).kkchose ou new c().kkchose*/
+       /* On peut faire : (new c()).kkchose ou new c().kkchose
+        new C().f()
+        (new C()).a
+        */
 
 selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
+          | '('instanciation')' '.' ID
          ;
 
 constante : CSTS | CSTE
@@ -140,23 +195,8 @@ envoiMessage : IDCLASS'.'ID'('ListOpt')'
               | ID'.'ID'('ListOpt')'
               | envoiMessage'.'ID'('ListOpt')'
               | selection'.'ID'('ListOpt')'
+              | '('instanciation')' '.' ID'('ListOpt')'
              ;
-
-/* "programme" est l'axiome de la grammaire */
-/*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
-;*/
-
-/* Une liste eventuellement vide de declarations de variables */
-/*declL : | 
-        | decl declL;*/
-
-
-/* une declaration de variable ou de fonction, terminee par un ';'. 
- * AFFECT = ":="
-*/
-/*decl :
-ID AFFECT expr ';'
-;$/
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
