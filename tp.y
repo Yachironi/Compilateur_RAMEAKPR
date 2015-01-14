@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IdClass
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS
 %token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -66,23 +66,32 @@ Programme : LClassOpt Bloc
 LClassOpt : DeclClass LClassOpt
             | /* epsilon */
 
+Bloc : '{' '}'
+;
 /* TODO
  * 
  * ListBlock + ListDecl
  * 
 */
 
-DeclClass : CLASS IdClass'('ListIdentOpt')' ListExtendsOpt ListBloc IS {ListDecl}
+/*BlocOpt ici est le corps du constructeur*/
+DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ListDecl'}'
             ;
 
-ListIdentOpt : LI
+BlocOpt : ;
+
+ListDecl : ;
+
+ListParamOpt : LI
               | /* epsilon */
               ;
 
-LI : ID':' IdClass
-    | ID':' IdClass','LI
+LI : ID':' IDCLASS
+    | ID':' IDCLASS','LI
 ;
-ListExtendsOpt : EXTENDS IdClass'('ListOpt')'
+
+
+ListExtendsOpt : EXTENDS IDCLASS'('ListOpt')'
               | /* epsilon */
               ;
 ListOpt :  | LArg;
@@ -112,7 +121,7 @@ expr : ID
 
        /* On peut faire : (new c()).kkchose ou new c().kkchose*/
 
-selection : IdClass'.'ID
+selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
@@ -121,13 +130,13 @@ selection : IdClass'.'ID
 constante : CSTS | CSTE
           ;
 
-instanciation : NEW IdClass'('ListOpt')'
+instanciation : NEW IDCLASS'('ListOpt')'
               ;
 
 /**
  * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
  */
-envoiMessage : IdClass'.'ID'('ListOpt')'
+envoiMessage : IDCLASS'.'ID'('ListOpt')'
               | ID'.'ID'('ListOpt')'
               | envoiMessage'.'ID'('ListOpt')'
               | selection'.'ID'('ListOpt')'
