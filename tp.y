@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING DEF
 %token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -61,9 +61,13 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
+<<<<<<< HEAD
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
+=======
+
+>>>>>>> 807b491a9a7667c9316df96e62c47e509e3b669f
 Programme : LClassOpt Bloc
           ;
 

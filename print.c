@@ -67,8 +67,8 @@ void pprint(TreeP tree) {
   case CST:   printf("%d", tree->u.val); break;
   case EQ:    pprintTree2(tree, " = "); break;
   case NE:    pprintTree2(tree, " <> "); break;
-  case ADD:   pprintTree2(tree, " + "); break;
-  case SUB:   pprintTree2(tree, " - "); break;
+  case PLUS:   pprintTree2(tree, " + "); break;
+  case MINUS:   pprintTree2(tree, " - "); break;
   case IF:    pprintIf(tree); break;
   default:
     /* On signale le probleme mais on ne quitte pas le programme pour autant */

@@ -6,17 +6,22 @@ Digit [0-9]
 Integer {Digit}+
 Letter  [a-zA-Z]
 LD  ({Letter}|{Digit})
-String (\"[^{Guill|Antislash}]|{Antislash}{All}\")
+Guill "\""
+NotGuillAntislash [^"\\\n]
+NotAntislash [^\\]
+AntislashAll \\.
+String  ({Guill}(({AntislashAll})|{NotGuillAntislash})*{Guill}) 
 Star \*
 NotStar [^*]
 NotStarSlash [^*/]
 Delim [ \n\t\r]
 Symbol [;,(){}:.&]
 All [.]
-Guill "\""
+
 Antislash [\\]
 Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
-
+Majuscul [A-Z]
+idClass ({Majuscul}({LD})*)
 /*
  * ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
  * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")  
@@ -69,8 +74,10 @@ int keywordOrId() {
   if(strcmp(yylval.S,"yield")==0)
     return YIELD;
   if(strcmp(yylval.S,"new")==0)
-    return NEW;                 
-
+    return NEW;
+  if(strcmp(yylval.S,"def")==0)
+    return DEF  ;               
+  
   return(ID);
 }
 
@@ -97,11 +104,14 @@ void lexError(char c) {
  * Attention: le contenu de yylval va etre ecrase a chaque appel a l'analyseur
  * lexical et doit donc etre sauvegarde si besoin.
  */
+
 %}
 
 %%
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
+{idClass}	{ return IDCLASS;}
 {Letter}{LD}*   { return keywordOrId(); }
+{String}	{ return(STRING);}
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
 "*"             { return(MUL); }
@@ -116,4 +126,5 @@ void lexError(char c) {
 ":="            { return AFFECT; }
 {Delim}         { ; }
 {Commentaire}	{ ; }
+.      		{ printf("Erreur lexical \n");}
 %%
