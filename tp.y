@@ -61,16 +61,28 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
+/*
+ * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
+ */ 
 Programme : LClassOpt Bloc
           ;
 
+/*
+ * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
+ */
 LClassOpt : DeclClass LClassOpt
             | /* epsilon */
             ;
- 
+
+/*
+ * Un bloc est defini par une entite avec 2 accolades entourant un contenu
+ */
 Bloc : '{' ContenuBloc '}'
       ;
 
+/*
+ * Le contenu d'un bloc : 
+ */
 ContenuBloc : LInstructionOpt YieldOpt
       | ListDeclVar IS LInstruction YieldOpt
       ;
@@ -85,7 +97,13 @@ LInstructionOpt : Instruction LInstructionOpt
 
 LInstruction : Instruction LInstructionOpt
               ;
-
+/*
+ * Une instruction c'est : 
+    *  expression;
+    * bloc-procedural
+    * cible:= expression;
+    * if expression then instruction else instruction
+ */
 Instruction : expr ';'
             | Bloc
             | Cible AFFECT expr ';' 
@@ -100,12 +118,17 @@ BlocOpt : Bloc
         | /* epsilon */ 
         ;
 
-/*BlocOpt ici est le corps du constructeur*/
+/*
+ * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
+ */
 DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}'
             ;
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt;
 
+/* 
+ * var [static] nom : type [:= expression]; 
+ */
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
               |
               ;
@@ -117,7 +140,10 @@ StaticOpt : STATIC
 AffectExprOpt : AFFECT expr;
               |
               ;
-
+/*
+ * def [override | static] nom (param, ...) returns Classe bloc
+ * def [override | static] nom (param, ...) returns Classe := expression
+ */
 LDeclMethodeOpt : DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr LDeclMethodeOpt
               |
               ;
@@ -155,9 +181,20 @@ LArg : expr | LArg','expr;
   E : E+E
     | Fonc%prec
  Pareil pour + unaire - unaire
+
+  * Une expression est : 
+     * identificateur
+     * selection
+     * constante
+     * (expression)
+     * instanciation
+     * envoi de message
+     * expression arithmetique ou de comparaison
+     * return expression
  */
 expr : ID
        | PLUS expr %prec unaire
+       | MINUS expr %prec unaire
        | expr PLUS expr /* $$ = make_tree(etiquette,nbfils,...liste_filse..) */
        | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
        | expr DIV expr
@@ -170,11 +207,6 @@ expr : ID
        | envoiMessage
        | RETURN expr ';'
        ;
-
-       /* On peut faire : (new c()).kkchose ou new c().kkchose
-        new C().f()
-        (new C()).a
-        */
 
 selection : IDCLASS'.'ID
           | ID'.'ID
@@ -189,9 +221,6 @@ constante : CSTS | CSTE
 instanciation : NEW IDCLASS'('ListOptArg')'
               ;
 
-/**
- * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
- */
 envoiMessage : IDCLASS'.'ID'('ListOptArg')'
               | ID'.'ID'('ListOptArg')'
               | envoiMessage'.'ID'('ListOptArg')'
@@ -208,11 +237,6 @@ envoiMessage : IDCLASS'.'ID'('ListOptArg')'
  * d'arguments (au moins 2). Le premier est l'etiquette du noeud a construire,
  * le second est le nombre de fils.
  */
-
- /* 
-  * FAUX A CORRIGER : à compléter
-  * /!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
-  */
 
 /*
  * TODO : On n'a pas envie d'écrire au niveau des expression <= > < >= etc ..
