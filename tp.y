@@ -61,13 +61,9 @@ extern void yyerror();  /* definie dans tp.c */
  * epsilon est declare au dessus
  */
 
-<<<<<<< HEAD
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-=======
-
->>>>>>> 807b491a9a7667c9316df96e62c47e509e3b669f
 Programme : LClassOpt Bloc
           ;
 
@@ -85,7 +81,10 @@ Bloc : '{' ContenuBloc '}'
       ;
 
 /*
- * Le contenu d'un bloc : 
+ * Le contenu d'un bloc : Une 
+ * une liste d'instruction optionnelle suivi d'un Yield option => S'il y a un yield => bloc procedural
+ * Ou si on a une List de declaration de valeur => oblige apres le IS d'avoir une Liste d'instruction
+ * suivi par un Yield optionnel
  */
 ContenuBloc : LInstructionOpt YieldOpt
       | ListDeclVar IS LInstruction YieldOpt
