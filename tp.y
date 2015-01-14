@@ -98,13 +98,13 @@ LArg : expr | LArg','expr;
  */
 expr : ID
        | PLUS expr %prec unaire
-       | expr PLUS expr
-       | expr MINUS expr
+       | expr PLUS expr /* $$ = make_tree(etiquette,nbfils,...liste_filse..) */
+       | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
        | expr DIV expr
        | expr MUL expr
        | expr RELOP expr
        | selection
-       | constante
+       | constante /* $$ = make_feuille(...) */
        | '('expr')'
        | instanciation
        | envoiMessage
@@ -116,7 +116,7 @@ selection : IdClass'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
-          ;
+         ;
 
 constante : CSTS | CSTE
           ;
@@ -131,8 +131,9 @@ envoiMessage : IdClass'.'ID'('ListOpt')'
               | ID'.'ID'('ListOpt')'
               | envoiMessage'.'ID'('ListOpt')'
               | selection'.'ID'('ListOpt')'
-              ;
- /* "programme" est l'axiome de la grammaire */
+             ;
+
+/* "programme" est l'axiome de la grammaire */
 /*programme : declL BEG expr END  FAUX : il n'y a pas de BEGIN & END
 ;*/
 

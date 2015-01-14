@@ -1,13 +1,20 @@
 // Guillaume m'a dit que qqch est faux dans ça, il faut que je lui demande
+#ifndef __STRUCT__ 
+#define __STRUCT__
+#include "tp.h"
 
+
+struct _struct_var;
+struct _struct_method;
+struct _struct_class;
 
 // Structure d'une classe
 typedef _struct_class{
 	char *nom;						// nom de la classe
 	PVAR param_constructeur;		// paramètres du constructeur de la classe
 	TreeP corps_constructeur;		// corps du constructeur de la classe sous la forme d'un arbre (d'expression)
-	PMETH liste_methodes;			// liste des méthodes de la classe
-	PVAR liste_champs;				// liste des champs de la classe
+	_struct_method *liste_methodes;			// liste des méthodes de la classe
+	_struct_var *liste_champs;				// liste des champs de la classe
 	PCLASS classe_mere;				// classe mère éventuelle de la classe
 } CLASS, *PCLASS;
 
@@ -45,3 +52,4 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 	param méthode -> 3
 	variable locale à un bloc -> 4
 */
+#endif
