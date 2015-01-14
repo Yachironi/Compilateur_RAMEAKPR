@@ -3,7 +3,7 @@
  * syntaxiques ont ete verifies automatiquement.
  */
 class Point(xc: Integer, yc: Integer)
-      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+      { x := xc; y := yc; cpt := cpt+1;}  /* Corps du constructeur */
 is 
 {
   var static cpt : Integer := 1; /* initialisee au lancement du programme */

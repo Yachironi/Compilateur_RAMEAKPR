@@ -131,10 +131,16 @@ int main(int argc, char **argv) {
       }
       printf("Nombre d'identificateurs: %4d\n", nbIdent);
       return 0;
+    case IDCLASS:
+	if (verbose) printf("IDCLASS:\t\t%s\n", yytext);
+      break;
     case ID:
       
       makeIdent(yylineno, yylval.S);
       if (verbose) printf("Identificateur:\t\t%s\n", yylval.S);
+      break;
+    case STRING:
+     if (verbose) printf("String :\t\t%s\n", yytext);
       break;
     case CST:
       if (verbose) printf("Constante:\t\t%d\n", yylval.I);
@@ -167,6 +173,8 @@ if (verbose) printf("Keyword:\t\t%s\n", yytext);
       if (verbose) printf("Symbole:\t\t%s\n",  yytext);
       break;
     case AFFECT:
+      if (verbose) printf("Affectation :\t\t%s\n",  yytext);
+      break;
     case MUL:
     case DIV:
     case PLUS:
