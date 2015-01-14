@@ -69,7 +69,6 @@ LClassOpt : DeclClass LClassOpt
             ;
  
 Bloc : '{' ContenuBloc '}'
-      | 
       ;
 
 ContenuBloc : LInstructionOpt YieldOpt
@@ -100,11 +99,6 @@ Cible : ID
 BlocOpt : Bloc
         | /* epsilon */ 
         ;
-/* TODO
- * 
- * ListBlock + ContenuClassOpt
- * 
-*/
 
 /*BlocOpt ici est le corps du constructeur*/
 DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}'
@@ -112,7 +106,8 @@ DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'Contenu
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt;
 
-LDeclChampsOpt : VAR StaticOpt ID ':'  IDCLASS AffectExprOpt ';'
+LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
+              |
               ;
 
 StaticOpt : STATIC
@@ -123,8 +118,14 @@ AffectExprOpt : AFFECT expr;
               |
               ;
 
-LDeclMethodeOpt : DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
+LDeclMethodeOpt : DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr LDeclMethodeOpt
+              |
               ;
+
+OverrideOuStaticOpt : OVERRIDE
+                      | STATIC
+                      | /* expression */
+                      ;
 
 BlocOuExpr : AffectExprOpt
             | Bloc
@@ -161,7 +162,7 @@ expr : ID
        | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
        | expr DIV expr
        | expr MUL expr
-       | expr RELOP expr
+       | expr REL expr
        | selection
        | constante /* $$ = make_feuille(...) */
        | '('expr')'
@@ -185,17 +186,17 @@ selection : IDCLASS'.'ID
 constante : CSTS | CSTE
           ;
 
-instanciation : NEW IDCLASS'('ListOpt')'
+instanciation : NEW IDCLASS'('ListOptArg')'
               ;
 
 /**
  * Verfier derniere liste envoi Message car on ne l'avait pas avant je l'ai rajoute
  */
-envoiMessage : IDCLASS'.'ID'('ListOpt')'
-              | ID'.'ID'('ListOpt')'
-              | envoiMessage'.'ID'('ListOpt')'
-              | selection'.'ID'('ListOpt')'
-              | '('instanciation')' '.' ID'('ListOpt')'
+envoiMessage : IDCLASS'.'ID'('ListOptArg')'
+              | ID'.'ID'('ListOptArg')'
+              | envoiMessage'.'ID'('ListOptArg')'
+              | selection'.'ID'('ListOptArg')'
+              | '('instanciation')' '.' ID'('ListOptArg')'
              ;
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
@@ -212,31 +213,6 @@ envoiMessage : IDCLASS'.'ID'('ListOpt')'
   * FAUX A CORRIGER : à compléter
   * /!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
   */
-
-/*expr :
-  IF bexpr THEN expr ELSE expr
-    { $$ = makeTree(IF, 3, $2, $4, $6); }
-| expr PLUS expr
-    { $$ = makeTree(PLUS, 2, $1, $3); }
-| expr MINUS expr
-    { $$ = makeTree(MINUS, 2, $1, $3); }
-| expr MUL expr
-    { $$ = makeTree(MUL, 2, $1, $3); }
-| expr DIV expr
-    { $$ = makeTree(DIV, 2, $1, $3); }
-| CST
-    { $$ = makeLeafInt(CST, $1); }
-| ID
-    { $$ = makeLeafStr(ID, $1); }
-| '(' expr ')'      //meme traitement que pour le + unaire.
-    { $$ = $2; }
-;
-
-bexpr : expr REL expr 
-    { $$ = makeTree($2, 2, $1, $3); }
-| '(' bexpr ')'
-    { $$ = $2; }
-;*/
 
 /*
  * TODO : On n'a pas envie d'écrire au niveau des expression <= > < >= etc ..
