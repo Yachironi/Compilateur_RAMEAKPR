@@ -144,7 +144,7 @@ BlocOpt : Bloc
 /*
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
-DeclClass : CLASS IDCLASS'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}'
+DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}'
             ;
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt;
@@ -236,11 +236,11 @@ expr : ID
  * Cas de base C.attributStatique
  * Ou c.x
  */
-selection : IDCLASS'.'ID
-          | ID'.'ID
-          | envoiMessage'.'ID
-          | selection'.'ID
-          | '('instanciation')' '.' ID
+selection : IDCLASS '.' ID
+          | ID '.' ID
+          | envoiMessage '.' ID
+          | selection '.' ID
+          | '(' instanciation ')' '.' ID
          ;
 
 constante : CSTS | CSTE
@@ -249,18 +249,18 @@ constante : CSTS | CSTE
  * new C(...)
  * TODO !!!!!! expression fini par un ';' ???
  */
-instanciation : NEW IDCLASS'('ListOptArg')'
+instanciation : NEW IDCLASS '(' ListOptArg ')'
               ;
 
 /*
  * Cas de base C.f(...)
  * Cas de base x.f(...)
  */
-envoiMessage : IDCLASS'.'ID'('ListOptArg')'
-              | ID'.'ID'('ListOptArg')'
-              | envoiMessage'.'ID'('ListOptArg')'
-              | selection'.'ID'('ListOptArg')'
-              | '('instanciation')' '.' ID'('ListOptArg')'
+envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'
+              | ID '.' ID '(' ListOptArg ')'
+              | envoiMessage '.' ID'('ListOptArg ')'
+              | selection '.' ID '(' ListOptArg ')'
+              | '('instanciation ')' '.' ID '( 'ListOptArg ')'
              ;
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
