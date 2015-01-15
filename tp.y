@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING DEF
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
 %token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -18,6 +18,8 @@
 %left PLUS MINUS
 %left MUL DIV 
 %left unaire
+%left '(' ')'
+%left '{' '}'
 
 /* %empty epsilon
 */
@@ -90,10 +92,19 @@ ContenuBloc : LInstructionOpt YieldOpt
       | ListDeclVar IS LInstruction YieldOpt
       ;
 
+/*
+ * Sert a differencier les deux types de bloc : fonctionnel et procedural
+ */
 YieldOpt : YIELD expr;
         | /* epsilon */
         ;
 
+ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
+            ;
+
+/*
+ * Liste d'instructions optionnel 
+ */
 LInstructionOpt : Instruction LInstructionOpt
                 | /* epsilon */
                 ;
@@ -113,10 +124,19 @@ Instruction : expr ';'
             | IF expr THEN Instruction ELSE Instruction
             | RETURN ';'
             ;
+/*
+ * La cible de l'affectation ne peut etre qu'un identifiant : 
+ * un nom d'un objet x := new Point(1,5)
+ * un nom de classe var res : Point := new Point(x, y);
+ */
 Cible : ID 
       | IDCLASS
+      | selection
       ;
 
+/*
+ * Bloc optionnel
+ */
 BlocOpt : Bloc
         | /* epsilon */ 
         ;
@@ -198,6 +218,7 @@ LArg : expr | LArg','expr;
 expr : ID
        | PLUS expr %prec unaire
        | MINUS expr %prec unaire
+       | expr CONCAT expr
        | expr PLUS expr /* $$ = make_tree(etiquette,nbfils,...liste_filse..) */
        | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
        | expr DIV expr
@@ -211,6 +232,10 @@ expr : ID
        | RETURN expr ';'
        ;
 
+/*
+ * Cas de base C.attributStatique
+ * Ou c.x
+ */
 selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
@@ -220,10 +245,17 @@ selection : IDCLASS'.'ID
 
 constante : CSTS | CSTE
           ;
-
+/*
+ * new C(...)
+ * TODO !!!!!! expression fini par un ';' ???
+ */
 instanciation : NEW IDCLASS'('ListOptArg')'
               ;
 
+/*
+ * Cas de base C.f(...)
+ * Cas de base x.f(...)
+ */
 envoiMessage : IDCLASS'.'ID'('ListOptArg')'
               | ID'.'ID'('ListOptArg')'
               | envoiMessage'.'ID'('ListOptArg')'
