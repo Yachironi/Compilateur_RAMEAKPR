@@ -277,7 +277,7 @@ envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'
               | ID '.' ID '(' ListOptArg ')'
               | envoiMessage '.' ID'('ListOptArg ')'
               | selection '.' ID '(' ListOptArg ')'
-              | '('instanciation ')' '.' ID '( 'ListOptArg ')'
+              | '('instanciation ')' '.' ID '('ListOptArg ')'
              ;
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
