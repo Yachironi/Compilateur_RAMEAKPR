@@ -240,10 +240,10 @@ int eval(TreeP tree, VarDeclP decls) {
 
   /** Distinguer les opérateurs unaires et binaires **/
   case PLUS:
-	// si eval(getChild(tree, 0), decls) == NULL alors unaire?
+	/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
     return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
   case MINUS:
-	// si eval(getChild(tree, 0), decls) == NULL alors unaire?
+	/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
     return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
   /** **/
 
