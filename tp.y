@@ -256,7 +256,8 @@ selection : IDCLASS'.'ID
          ;
 */
 
-constante : CSTS | CSTE
+constante : CSTS  { $$ = makeLeafStr(CSTS,$1); } 
+	  | CSTE  { $$ = makeLeafInt(CSTE,$1); }
           ;
 /*
  * new C(...)
