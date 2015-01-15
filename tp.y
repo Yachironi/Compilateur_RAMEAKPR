@@ -215,16 +215,16 @@ LArg : expr | LArg','expr;
      * expression arithmetique ou de comparaison
      * return expression
  */
-expr : ID
-       | PLUS expr %prec unaire
-       | MINUS expr %prec unaire
-       | expr CONCAT expr
-       | expr PLUS expr /* $$ = make_tree(etiquette,nbfils,...liste_filse..) */
-       | expr MINUS expr /* $$ = make_tree('-',nbfils,...liste_filse..) */
-       | expr DIV expr
-       | expr MUL expr
-       | expr REL expr
-       | selection
+expr : ID 				{ $$ = makeLeafStr(ID, $1); }
+       | PLUS expr %prec unaire		{ $$ = makeTree(PLUS, 1, $1); }
+       | MINUS expr %prec unaire	{ $$ = makeTree(MINUS, 1, $1); }
+       | expr CONCAT expr		{ $$ = makeTree(CONCAT, 2, $1, $2); }
+       | expr PLUS expr 		{ $$ = makeTree(PLUS, 2, $1, $2); }
+       | expr MINUS expr 		{ $$ = makeTree(MINUS, 2, $1, $2); }
+       | expr DIV expr			{ $$ = makeTree(DIV, 2, $1, $2); }
+       | expr MUL expr			{ $$ = makeTree(MUL, 2, $1, $2); }
+       | expr REL expr			{ $$ = makeTree(REL, 2, $1, $2); }
+       | selection			{ $$ = makeTree(, 1, $1); }
        | constante /* $$ = make_feuille(...) */
        | '('expr')'
        | instanciation
@@ -236,12 +236,24 @@ expr : ID
  * Cas de base C.attributStatique
  * Ou c.x
  */
+
+avant_selection : IDCLASS '.'
+	| ID '.'
+	| envoiMessage '.'
+	| selection '.'
+	| '('instanciation')' '.'
+	;
+
+selection : avant_selection ID;
+
+/*
 selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
           | '('instanciation')' '.' ID
          ;
+*/
 
 constante : CSTS | CSTE
           ;
