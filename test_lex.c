@@ -161,12 +161,14 @@ int main(int argc, char **argv) {
     case NEW :
 if (verbose) printf("Keyword:\t\t%s\n", yytext);
       break;
+    case CONCAT :
+if (verbose) printf("Concat symbol:\t\t%s\n", yytext);
+      break;
     case '(':
     case ')':
     case ';':
     case ',':
     case ':':
-    case '&':
     case '.':
     case '}':
     case '{':

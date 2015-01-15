@@ -15,7 +15,7 @@ Star \*
 NotStar [^*]
 NotStarSlash [^*/]
 Delim [ \n\t\r]
-Symbol [;,(){}:.&]
+Symbol [;,(){}:.]
 All [.]
 
 Antislash [\\]
@@ -124,6 +124,7 @@ void lexError(char c) {
 ">="            { yylval.C = GE; return(RELOP); }
 {Symbol}        { return(yytext[0]); }
 ":="            { return AFFECT; }
+"&"		{ return(CONCAT);}	
 {Delim}         { ; }
 {Commentaire}	{ ; }
 .      		{ printf("Erreur lexical \n");}
