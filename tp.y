@@ -247,7 +247,7 @@ avant_selection : IDCLASS		{ $$=makeTree(IDCLASS, 1, $1); }		// ou $$=$1?
 	| '('instanciation')'		{ $$=makeTree(INSTANCIATION, 2, $1, $3); }	// ou $$=$1?
 	;
 
-selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, $2); 	// selection ou '.'?
+selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, $2);} 	// selection ou '.'?
 	;
 
 /*
