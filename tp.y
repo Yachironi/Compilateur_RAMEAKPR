@@ -6,7 +6,7 @@
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
 %token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
-%token <S> ID	CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token <S> ID CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
 
@@ -30,6 +30,8 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 %type <C> REL
+%type <T> expr selection avant_selection constante
+
 //%type <T> 
 
 %{
@@ -217,7 +219,7 @@ LArg : expr | LArg','expr;
  */
 
 /** ATTENTION : FAIRE DES DEFINE OU AUTRES POUR REMPLACER LES REGLES DANS LE MAKETREE **/
-expr : ID 				{ $$=makeLeafStr(ID, $2); }
+expr : ID 				{ $$=makeLeafStr(ID, $1); }
        | PLUS expr %prec unaire		{ $$=makeTree(PLUS, 1, $2); }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUS, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCAT, 2, $1, $3); }
@@ -226,12 +228,12 @@ expr : ID 				{ $$=makeLeafStr(ID, $2); }
        | expr DIV expr			{ $$=makeTree(DIV, 2, $1, $3); }
        | expr MUL expr			{ $$=makeTree(MUL, 2, $1, $3); }
        | expr REL expr			{ $$=makeTree(REL, 2, $1, $3); }
-       | selection			{ $$=makeTree(SELECTION, 1, $1); }	// ou $$=$1?
+       | selection			//{ $$=makeTree(SELECTION, 1, $1); }	// ou $$=$1?
        | constante 			{ $$=makeTree(CONSTANTE, $1); }		// ou $$ = $1?
-       | '('expr')'			{ $$=makeTree(EXPRESSION, 2, $1, $3); }
-       | instanciation			{ $$=makeTree(INSTANCIATION, 1, $1); }	// ou $$=$1?
-       | envoiMessage			{ $$=makeTree(ENVOIMESSAGE, 1, $1); }	// ou $$=$1?
-       | RETURN expr ';'		{ $$=makeTree(EXPRESSION, 2, $1, $3); }
+       | '(' expr ')'			{ $$=makeTree(EXPRESSION, 3, '(',$2, ')'); }
+       | instanciation			//{ $$=$1;}//{ $$=makeTree(INSTANCIATION, 1, $1); }	// ou $$=$1?
+       | envoiMessage			//{}//{ $$=makeTree(ENVOIMESSAGE, 1, $1); }	// ou $$=$1?
+       | RETURN expr ';'		//{ $$=makeTree(EXPRESSION, 2, $1, $3); }
        ;
 
 /*
@@ -240,14 +242,14 @@ expr : ID 				{ $$=makeLeafStr(ID, $2); }
  */
 
 
-avant_selection : IDCLASS		{ $$=makeTree(IDCLASS, 1, $1); }		// ou $$=$1?
-	| ID				{ $$=makeTree(ID, 1, $1); }			// ou $$=$1?
-	| envoiMessage			{ $$=makeTree(ENVOIMESSAGE, 1, $1); }		// ou $$=$1?
-	| selection			{ $$=makeTree(SELECTION, 1, $1); }		// ou $$=$1?
-	| '('instanciation')'		{ $$=makeTree(INSTANCIATION, 2, $1, $3); }	// ou $$=$1?
+avant_selection : IDCLASS		//{ $$=makeTree(IDCLASS, 1, $1); }		// ou $$=$1?
+	| ID				//{ $$=makeTree(ID, 1, $1); }			// ou $$=$1?
+	| envoiMessage			//{ $$=makeTree(ENVOIMESSAGE, 1, $1); }		// ou $$=$1?
+	| selection			//{ $$=makeTree(SELECTION, 1, $1); }		// ou $$=$1?
+	| '('instanciation')'		//{ $$=makeTree(INSTANCIATION, 2, $1, $3); }	// ou $$=$1?
 	;
 
-selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, $2);} 	// selection ou '.'?
+selection : avant_selection '.' ID	//{ $$=makeTree(SELECTION, 2, $1, $2);} 	// selection ou '.'?
 	;
 
 /*
@@ -277,7 +279,7 @@ envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'
               | ID '.' ID '(' ListOptArg ')'
               | envoiMessage '.' ID'('ListOptArg ')'
               | selection '.' ID '(' ListOptArg ')'
-              | '('instanciation ')' '.' ID '( 'ListOptArg ')'
+              | '('instanciation ')' '.' ID '('ListOptArg ')'
              ;
 
 /** On peut pas faire ça? :
