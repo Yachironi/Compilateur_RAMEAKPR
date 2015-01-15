@@ -280,6 +280,12 @@ envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'
               | '('instanciation ')' '.' ID '( 'ListOptArg ')'
              ;
 
+/** On peut pas faire ça? :
+
+envoiMessage : selection '(' ListOptArg ')
+		;
+**/
+
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
  * des operandes sont deja construits au moment de rajouter le noeud courant.
