@@ -171,7 +171,7 @@ PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PME
 	return res;
 }
 
-PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params){
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params){
 	PMETH res=NEW(1, METH);
 	res->suivant = NIL(METH);
 	res->nom=nom;

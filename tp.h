@@ -10,9 +10,9 @@
 #define TRUE 1
 #define FALSE 0 
 
-/*typedef struct _struct_var;
-typedef struct _struct_method;
-typedef struct _struct_class;*/
+struct _struct_var;
+struct _struct_method;
+struct _struct_class;
 
 typedef int bool;
 
@@ -39,7 +39,7 @@ typedef struct _Decl
 /* AJOUT DU Struct.h*/
 
 /* Structure d'une classe */
-typedef struct _struct_class{
+struct _struct_class{
   char *nom;            // nom de la classe
   PVAR param_constructeur;    // paramètres du constructeur de la classe
   TreeP corps_constructeur;   // corps du constructeur de la classe sous la forme d'un arbre (d'expression)
@@ -54,19 +54,19 @@ typedef struct _struct_class{
 **/
 
 // Structure d'une méthode
-typedef struct _struct_method{
+struct _struct_method{
   char *nom;
   int isStatic; //1 si vrai, 0 si non
   int isRedef;  //1 si vrai, 0 si non
   TreeP corps;
-  PClasse typeRetour;
+  PCLASS typeRetour;
   PVAR params;
   PMETH suivant;
   PCLASS home;
 } METH, *PMETH;
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
-typedef struct _struct_var{
+ struct _struct_var{
   char *nom;
   PCLASS type;
   int categorie;
@@ -153,6 +153,6 @@ void pprintMain(TreeP);
 
 // methode rajoute
 PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH *liste_methodes,PVAR *liste_champs, PCLASS classe_mere);
-PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params);
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
 
 #endif
