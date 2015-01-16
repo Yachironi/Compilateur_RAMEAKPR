@@ -160,7 +160,7 @@ TreeP makeLeafInt(short op, int val) {
 }
 
 // methodes rajoutees
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,_struct_method *liste_methodes,_struct_var *liste_champs, PCLASS classe_mere){
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH *liste_methodes,PVAR *liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, CLASS);
 	res->nom=nom;
 	res->param_constructeur=param_constructeur;

@@ -1,3 +1,6 @@
+#ifndef __TP__
+#define __TP__
+
 #include <stdlib.h>
 
 /* deux macros pratiques, utilisees dans les allocations */
@@ -6,6 +9,10 @@
 
 #define TRUE 1
 #define FALSE 0 
+
+/*typedef struct _struct_var;
+typedef struct _struct_method;
+typedef struct _struct_class;*/
 
 typedef int bool;
 
@@ -31,12 +38,8 @@ typedef struct _Decl
 
 /* AJOUT DU Struct.h*/
 
-struct _struct_var;
-struct _struct_method;
-struct _struct_class;
-
 /* Structure d'une classe */
-typedef _struct_class{
+typedef struct _struct_class{
   char *nom;            // nom de la classe
   PVAR param_constructeur;    // paramètres du constructeur de la classe
   TreeP corps_constructeur;   // corps du constructeur de la classe sous la forme d'un arbre (d'expression)
@@ -45,14 +48,13 @@ typedef _struct_class{
   PCLASS classe_mere;       // classe mère éventuelle de la classe
 } CLASS, *PCLASS;
 
-
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
   --> "représentation des arguments des constructeurs de la super classe => type : ??"
 **/
 
 // Structure d'une méthode
-typedef _struct_method{
+typedef struct _struct_method{
   char *nom;
   int isStatic; //1 si vrai, 0 si non
   int isRedef;  //1 si vrai, 0 si non
@@ -64,12 +66,12 @@ typedef _struct_method{
 } METH, *PMETH;
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
-typedef _struct_var{
+typedef struct _struct_var{
   char *nom;
   PCLASS type;
   int categorie;
   TreeP init;
-  _struct_var *suivant; // on peut pas mettre directement PVAR?
+  struct _struct_var *suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
 } VAR, *PVAR;
 
@@ -150,5 +152,7 @@ void pprint(TreeP tree);
 void pprintMain(TreeP);
 
 // methode rajoute
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,_struct_method *liste_methodes,_struct_var *liste_champs,	PCLASS classe_mere);
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH *liste_methodes,PVAR *liste_champs, PCLASS classe_mere);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params);
+
+#endif
