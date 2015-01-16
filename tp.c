@@ -187,7 +187,7 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   int i = 0;
   for(i=0;i<tree.nbChildren;i++)
   {
-    bool b = checkScope(getChild(tree,i))
+    bool b = checkScope(getChild(tree,i),lvar)
     if(!b)
       return FALSE;
     i++
@@ -214,6 +214,7 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
   {
     /* liste mise a jour si besoin */
     VarDeclP listTmp = list;
+    continuer = true;
     while(listTmp!= null && continuer)
     {
       if(strcmp(nouvTmp->name, listTmp->name)==0){
@@ -221,7 +222,7 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
       }
       listeTmp = listTmp->next;
     }
-    if(continuer)
+    if(!continuer)
     {
       VarDeclP listCopie = list;
       list = nouvTmp;
@@ -245,26 +246,46 @@ VarDeclP makeVar(char *name) {
  * l'evaluation de cette expression, sauf si on est en mode noEval
  */
 VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope) {
-  return NIL(VarDecl);
-}
+  
+  if(tree->nbChildren==0)
+  {
+    if(strcmp(tree->u.str,name)==0)
+    {
+      strcpy(currentScope->name,name);
+      currentScope->val = tree->u.val;
+      return currentScope;
+    }
+    else
+    {
+      return NULL;
+    }
+  }
 
+  int i = 0;
+  for(i=0;i<tree.nbChildren;i++)
+  {
+    VarDeclP retour = declVar(name,getChild(tree,i),currentScope);
+    if(retour!=NULL)
+      return retour;
+    i++
+  }
+
+  return NULL;
+}
 
 /* Evaluation d'une variable */
 int evalVar(TreeP tree, VarDeclP decls) {
   return 0;
 }
 
-
 /* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire ! */
 int evalIf(TreeP tree, VarDeclP decls) {
   return 0;
 }
 
-
 VarDeclP evalAff (TreeP tree, VarDeclP decls) {
   return NIL(VarDecl);
 }
-
 
 /* Ici decls correspond au sous-arbre qui est la partie declarative */
 VarDeclP evalDecls (TreeP tree) {
