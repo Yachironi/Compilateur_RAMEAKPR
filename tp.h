@@ -68,6 +68,13 @@ typedef union
 
 #define YYSTYPE YYSTYPE
 
+/*
+	TODO :
+	- Créer la méthode makeMethode
+	- Créer la méthode makeMethode
+*/
+
+
 /* construction des declarations */
 VarDeclP makeVar(char *name);
 VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope);
