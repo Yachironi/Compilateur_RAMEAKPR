@@ -10,9 +10,9 @@
 #define TRUE 1
 #define FALSE 0 
 
-typedef struct _struct_var;
-struct _struct_method;
-struct _struct_class;
+typedef struct _Var;
+struct _Method;
+struct _Class;
 
 typedef int bool;
 
@@ -39,12 +39,12 @@ typedef struct _Decl
 /* AJOUT DU Struct.h*/
 
 /* Structure d'une classe */
-struct _struct_class{
+struct _Class{
   char *nom;            // nom de la classe
   PVAR param_constructeur;    // paramètres du constructeur de la classe
   TreeP corps_constructeur;   // corps du constructeur de la classe sous la forme d'un arbre (d'expression)
-  _struct_method *liste_methodes;     // liste des méthodes de la classe
-  _struct_var *liste_champs;        // liste des champs de la classe
+  _Method *liste_methodes;     // liste des méthodes de la classe
+  _Var *liste_champs;        // liste des champs de la classe
   PCLASS classe_mere;       // classe mère éventuelle de la classe
 } SCLASS, *PCLASS;
 
@@ -54,7 +54,7 @@ struct _struct_class{
 **/
 
 // Structure d'une méthode
-struct _struct_method{
+struct _Method{
   char *nom;
   int isStatic; //1 si vrai, 0 si non
   int isRedef;  //1 si vrai, 0 si non
@@ -66,12 +66,12 @@ struct _struct_method{
 } SMETH, *PMETH;
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
- struct _struct_var{
+ struct _Var{
   char *nom;
   PCLASS type;
   int categorie;
   TreeP init;
-  struct _struct_var *suivant; // on peut pas mettre directement PVAR?
+  struct _Var *suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
 } SVAR, *PVAR;
 
