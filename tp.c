@@ -160,8 +160,8 @@ TreeP makeLeafInt(short op, int val) {
 }
 
 // methodes rajoutees
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH *liste_methodes,PVAR *liste_champs, PCLASS classe_mere){
-	PCLASS res = NEW(1, CLASS);
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
+	PCLASS res = NEW(1, SCLASS);
 	res->nom=nom;
 	res->param_constructeur=param_constructeur;
 	res->corps_constructeur=corps_constructeur;
@@ -172,8 +172,8 @@ PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PME
 }
 
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params){
-	PMETH res=NEW(1, METH);
-	res->suivant = NIL(METH);
+	PMETH res=NEW(1, SMETH);
+	res->suivant = NIL(SMETH);
 	res->nom=nom;
 	res->corps=corps;
 	res->params=params;

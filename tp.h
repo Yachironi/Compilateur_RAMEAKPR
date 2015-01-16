@@ -10,9 +10,9 @@
 #define TRUE 1
 #define FALSE 0 
 
-typedef struct _Var;
-struct _Method;
-struct _Class;
+typedef struct _Var SVAR, *PVAR;
+typedef struct _Method SMETH, *PMETH;
+typedef struct _Class SCLASS, *PCLASS;
 
 typedef int bool;
 
@@ -40,13 +40,13 @@ typedef struct _Decl
 
 /* Structure d'une classe */
 struct _Class{
-  char *nom;            // nom de la classe
-  PVAR param_constructeur;    // paramètres du constructeur de la classe
-  TreeP corps_constructeur;   // corps du constructeur de la classe sous la forme d'un arbre (d'expression)
-  _Method *liste_methodes;     // liste des méthodes de la classe
-  _Var *liste_champs;        // liste des champs de la classe
-  PCLASS classe_mere;       // classe mère éventuelle de la classe
-} SCLASS, *PCLASS;
+  char *nom;            /* nom de la classe */
+  PVAR param_constructeur;    /*  paramètres du constructeur de la classe */
+  TreeP corps_constructeur;   /* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
+  PMETH liste_methodes;     /* liste des méthodes de la classe */
+  PVAR liste_champs;        /* liste des champs de la classe */ 
+  PCLASS classe_mere;       /* classe mère éventuelle de la classe */
+};
 
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
@@ -63,7 +63,7 @@ struct _Method{
   PVAR params;
   PMETH suivant;
   PCLASS home;
-} SMETH, *PMETH;
+} ;
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
  struct _Var{
@@ -71,9 +71,9 @@ struct _Method{
   PCLASS type;
   int categorie;
   TreeP init;
-  struct _Var *suivant; // on peut pas mettre directement PVAR?
+  PVAR suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
-} SVAR, *PVAR;
+} ;
 
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
@@ -152,7 +152,7 @@ void pprint(TreeP tree);
 void pprintMain(TreeP);
 
 // methode rajoute
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH *liste_methodes,PVAR *liste_champs, PCLASS classe_mere);
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
 
 #endif
