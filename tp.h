@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "struct_c.h"
 
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
@@ -93,3 +94,7 @@ void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP);
+
+// methode rajoute
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,_struct_method *liste_methodes,_struct_var *liste_champs,	PCLASS classe_mere);
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params);
