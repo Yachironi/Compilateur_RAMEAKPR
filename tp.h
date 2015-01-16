@@ -10,7 +10,7 @@
 #define TRUE 1
 #define FALSE 0 
 
-struct _struct_var;
+typedef struct _struct_var;
 struct _struct_method;
 struct _struct_class;
 
@@ -46,7 +46,7 @@ struct _struct_class{
   _struct_method *liste_methodes;     // liste des méthodes de la classe
   _struct_var *liste_champs;        // liste des champs de la classe
   PCLASS classe_mere;       // classe mère éventuelle de la classe
-} CLASS, *PCLASS;
+} SCLASS, *PCLASS;
 
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
@@ -63,7 +63,7 @@ struct _struct_method{
   PVAR params;
   PMETH suivant;
   PCLASS home;
-} METH, *PMETH;
+} SMETH, *PMETH;
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
  struct _struct_var{
@@ -73,7 +73,7 @@ struct _struct_method{
   TreeP init;
   struct _struct_var *suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
-} VAR, *PVAR;
+} SVAR, *PVAR;
 
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
