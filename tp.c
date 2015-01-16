@@ -170,6 +170,29 @@ TreeP makeLeafInt(short op, int val) {
  * la valeur de cet id.
  */
 bool checkScope(TreeP tree, VarDeclP lvar) {
+  
+  VarDeclP tmp = lvar;
+  if(tree->nbChildren==0)
+  {
+    bool contains = TRUE;
+    while(tmp!=NULL)
+    {
+      if(strcmp(tmp->name,tree->str)!=0)
+        return FALSE;
+      tmp = tmp->next;
+    }
+    return contains;
+  }
+
+  int i = 0;
+  for(i=0;i<tree.nbChildren;i++)
+  {
+    bool b = checkScope(getChild(tree,i),lvar)
+    if(!b)
+      return FALSE;
+    i++
+  }
+
   return FALSE;
 }
 
@@ -177,7 +200,37 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  * tete et renvoie la nouvelle liste
  */
 VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
-  return NIL(VarDecl);
+  
+  if(nouv==NULL)
+    return list;
+
+  if(list==NULL && nouv!=NULL)
+    return nouv;
+  
+  VarDeclP nouvTmp = nouv;
+  
+  bool continuer = true; 
+  while(nouvTmp != null)
+  {
+    /* liste mise a jour si besoin */
+    VarDeclP listTmp = list;
+    continuer = true;
+    while(listTmp!= null && continuer)
+    {
+      if(strcmp(nouvTmp->name, listTmp->name)==0){
+        continuer = false;
+      }
+      listeTmp = listTmp->next;
+    }
+    if(!continuer)
+    {
+      VarDeclP listCopie = list;
+      list = nouvTmp;
+      list->next = listCopie;
+    }
+    nouvTmp = nouvTmp->next; 
+  }
+  return list;
 }
 
 
@@ -193,26 +246,46 @@ VarDeclP makeVar(char *name) {
  * l'evaluation de cette expression, sauf si on est en mode noEval
  */
 VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope) {
-  return NIL(VarDecl);
-}
+  
+  if(tree->nbChildren==0)
+  {
+    if(strcmp(tree->u.str,name)==0)
+    {
+      strcpy(currentScope->name,name);
+      currentScope->val = tree->u.val;
+      return currentScope;
+    }
+    else
+    {
+      return NULL;
+    }
+  }
 
+  int i = 0;
+  for(i=0;i<tree.nbChildren;i++)
+  {
+    VarDeclP retour = declVar(name,getChild(tree,i),currentScope);
+    if(retour!=NULL)
+      return retour;
+    i++
+  }
+
+  return NULL;
+}
 
 /* Evaluation d'une variable */
 int evalVar(TreeP tree, VarDeclP decls) {
   return 0;
 }
 
-
 /* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire ! */
 int evalIf(TreeP tree, VarDeclP decls) {
   return 0;
 }
 
-
 VarDeclP evalAff (TreeP tree, VarDeclP decls) {
   return NIL(VarDecl);
 }
-
 
 /* Ici decls correspond au sous-arbre qui est la partie declarative */
 VarDeclP evalDecls (TreeP tree) {

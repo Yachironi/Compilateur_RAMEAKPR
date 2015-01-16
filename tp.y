@@ -348,6 +348,12 @@ envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'		{ $$=makeTree(ENVOIMESSAGE, 3,
               | '('instanciation ')' '.' ID '('ListOptArg ')'   { $$=makeTree(ENVOIMESSAGE, 3,$2,makeLeafStr(IDENTIFICATEUR,$5->S),$7); }
              ;
 
+/** On peut pas faire ça? :
+
+envoiMessage : selection '(' ListOptArg ')
+		;
+**/
+
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
  * des operandes sont deja construits au moment de rajouter le noeud courant.
