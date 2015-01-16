@@ -170,6 +170,29 @@ TreeP makeLeafInt(short op, int val) {
  * la valeur de cet id.
  */
 bool checkScope(TreeP tree, VarDeclP lvar) {
+  
+  VarDeclP tmp = lvar;
+  if(tree->nbChildren==0)
+  {
+    bool contains = TRUE;
+    while(tmp!=NULL)
+    {
+      if(strcmp(tmp->name,tree->str)!=0)
+        return FALSE;
+      tmp = tmp->next;
+    }
+    return contains;
+  }
+
+  int i = 0;
+  for(i=0;i<tree.nbChildren;i++)
+  {
+    bool b = checkScope(getChild(tree,i))
+    if(!b)
+      return FALSE;
+    i++
+  }
+
   return FALSE;
 }
 
@@ -177,7 +200,36 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  * tete et renvoie la nouvelle liste
  */
 VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
-  return NIL(VarDecl);
+  
+  if(nouv==NULL)
+    return list;
+
+  if(list==NULL && nouv!=NULL)
+    return nouv;
+  
+  VarDeclP nouvTmp = nouv;
+  
+  bool continuer = true; 
+  while(nouvTmp != null)
+  {
+    /* liste mise a jour si besoin */
+    VarDeclP listTmp = list;
+    while(listTmp!= null && continuer)
+    {
+      if(strcmp(nouvTmp->name, listTmp->name)==0){
+        continuer = false;
+      }
+      listeTmp = listTmp->next;
+    }
+    if(continuer)
+    {
+      VarDeclP listCopie = list;
+      list = nouvTmp;
+      list->next = listCopie;
+    }
+    nouvTmp = nouvTmp->next; 
+  }
+  return list;
 }
 
 
