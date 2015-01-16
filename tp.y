@@ -5,7 +5,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
 %token <S> ID CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
@@ -346,7 +346,7 @@ constante : CSTS  { $$ = makeLeafStr(CSTSTRING,yylval.S); } // yylval.S ou $1 ou
  */
 
 
-instanciation : NEW IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2->S), $4); }
+instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2->S), $4); }
               ;
 
 /*
