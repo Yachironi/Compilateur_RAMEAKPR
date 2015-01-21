@@ -159,6 +159,41 @@ TreeP makeLeafInt(short op, int val) {
   return(tree);
 }
 
+// methodes rajoutees
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
+	PCLASS res = NEW(1, SCLASS);
+	res->nom=nom;
+	res->param_constructeur=param_constructeur;
+	res->corps_constructeur=corps_constructeur;
+	res->liste_methodes=liste_methodes;
+	res->liste_champs=liste_champs;
+	res->classe_mere=classe_mere;
+	return res;
+}
+
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params){
+	PMETH res=NEW(1, SMETH);
+	res->suivant = NIL(SMETH);
+	res->nom=nom;
+	res->corps=corps;
+	res->params=params;
+	res->typeRetour=typeRetour;
+	//res->home????
+	if(OverrideOuStaticOpt == 0){
+		res->isStatic = 0;
+		res->isRedef = 0;
+	}
+	else if(OverrideOuStaticOpt == 1){
+		res->isStatic = 0;
+		res->isRedef = 1;
+	}
+	else{
+		res->isStatic = 1;
+		res->isRedef = 0;
+	}
+	return res;
+}
+
 /*
  * Seconde partie probablement a modifier
  */
@@ -177,7 +212,7 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
     bool contains = TRUE;
     while(tmp!=NULL)
     {
-      if(strcmp(tmp->name,tree->str)!=0)
+      if(strcmp(tmp->name,tree->u.str)!=0)
         return FALSE;
       tmp = tmp->next;
     }
@@ -185,12 +220,12 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   }
 
   int i = 0;
-  for(i=0;i<tree.nbChildren;i++)
+  for(i=0;i<tree->nbChildren;i++)
   {
-    bool b = checkScope(getChild(tree,i),lvar)
+    bool b = checkScope(getChild(tree,i),lvar);
     if(!b)
       return FALSE;
-    i++
+    i++;
   }
 
   return FALSE;
@@ -208,19 +243,18 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
     return nouv;
   
   VarDeclP nouvTmp = nouv;
-  
-  bool continuer = true; 
-  while(nouvTmp != null)
+  bool continuer = TRUE; 
+  while(nouvTmp != NULL)
   {
     /* liste mise a jour si besoin */
     VarDeclP listTmp = list;
-    continuer = true;
-    while(listTmp!= null && continuer)
+    continuer = TRUE;
+    while(listTmp!= NULL && continuer)
     {
       if(strcmp(nouvTmp->name, listTmp->name)==0){
-        continuer = false;
+        continuer = FALSE;
       }
-      listeTmp = listTmp->next;
+      listTmp = listTmp->next;
     }
     if(!continuer)
     {
@@ -232,7 +266,6 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
   }
   return list;
 }
-
 
 /* Construit le squelette d'un couple (variable, valeur), sans la valeur. */
 VarDeclP makeVar(char *name) {
@@ -262,12 +295,12 @@ VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope) {
   }
 
   int i = 0;
-  for(i=0;i<tree.nbChildren;i++)
+  for(i=0;i<tree->nbChildren;i++)
   {
     VarDeclP retour = declVar(name,getChild(tree,i),currentScope);
     if(retour!=NULL)
       return retour;
-    i++
+    i++;
   }
 
   return NULL;

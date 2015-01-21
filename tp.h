@@ -1,3 +1,6 @@
+#ifndef __TP__
+#define __TP__
+
 #include <stdlib.h>
 
 /* deux macros pratiques, utilisees dans les allocations */
@@ -6,6 +9,10 @@
 
 #define TRUE 1
 #define FALSE 0 
+
+typedef struct _Var SVAR, *PVAR;
+typedef struct _Method SMETH, *PMETH;
+typedef struct _Class SCLASS, *PCLASS;
 
 typedef int bool;
 
@@ -29,6 +36,56 @@ typedef struct _Decl
 } VarDecl, *VarDeclP;
 
 
+/* AJOUT DU Struct.h*/
+
+/* Structure d'une classe */
+struct _Class{
+  char *nom;            /* nom de la classe */
+  PVAR param_constructeur;    /*  paramètres du constructeur de la classe */
+  TreeP corps_constructeur;   /* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
+  PMETH liste_methodes;     /* liste des méthodes de la classe */
+  PVAR liste_champs;        /* liste des champs de la classe */ 
+  PCLASS classe_mere;       /* classe mère éventuelle de la classe */
+};
+
+/**
+  J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
+  --> "représentation des arguments des constructeurs de la super classe => type : ??"
+**/
+
+// Structure d'une méthode
+struct _Method{
+  char *nom;
+  int isStatic; //1 si vrai, 0 si non
+  int isRedef;  //1 si vrai, 0 si non
+  TreeP corps;
+  PCLASS typeRetour;
+  PVAR params;
+  PMETH suivant;
+  PCLASS home;
+} ;
+
+// Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
+ struct _Var{
+  char *nom;
+  PCLASS type;
+  int categorie;
+  TreeP init;
+  PVAR suivant; // on peut pas mettre directement PVAR?
+  // ... : j'ai noté ça les 3 points, vous l'avez aussi?
+} ;
+
+/*
+Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
+  champ static -> 1
+  champ non static -> 2
+  param méthode -> 3
+  variable locale à un bloc -> 4
+*/
+
+/**/
+
+
 /* Etiquettes additionnelles pour les arbres de syntaxe abstraite.
  * Les tokens tels que PLUS, MINUS, etc. servent directement d'etiquette.
  * Attention donc a ne pas donner des valeurs identiques a celles des tokens
@@ -40,7 +97,7 @@ typedef struct _Decl
 #define LE 4
 #define GT 5
 #define GE 6
-#define IDENTIFICATEUR 7 
+#define IDENTIFICATEUR 7
 #define PLUSUNAIRE 8
 #define MINUSUNAIRE 9
 #define CONCATENATION 10
@@ -58,7 +115,7 @@ typedef struct _Decl
 #define IDENTIFICATEURCLASS 22
 #define CSTSTRING 23
 #define CSTENTIER 24
-#define LISTE 25
+#define LISTE 25 /* n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction*/
 #define EXTENTION 26
 #define PARAM 27
 #define STATIQUE 28
@@ -67,6 +124,14 @@ typedef struct _Decl
 #define LISTEMETHODE 31
 #define PROGRAM 32
 #define LISTCLASS 33
+#define CONTENUBLOC 34
+#define ETIQUETTE_IS 35
+#define ETIQUETTE_YIELD 36
+#define ETIQUETTE_AFFECT 37
+#define IFTHENELSE 38
+#define CONTENUCLASS 39
+#define LISTEARG 40
+#define LISTEPARAM 41
 
 
 
@@ -97,13 +162,6 @@ typedef union
 
 #define YYSTYPE YYSTYPE
 
-/*
-	TODO :
-	- Créer la méthode makeMethode
-	- Créer la méthode makeMethode
-*/
-
-
 /* construction des declarations */
 VarDeclP makeVar(char *name);
 VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope);
@@ -122,3 +180,9 @@ void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP);
+
+// methode rajoute
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
+
+#endif

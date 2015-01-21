@@ -18,6 +18,7 @@ typedef _struct_class{
 	PCLASS classe_mere;				// classe mère éventuelle de la classe
 } CLASS, *PCLASS;
 
+
 /**
 	J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
 	--> "représentation des arguments des constructeurs de la super classe => type : ??"
@@ -26,8 +27,8 @@ typedef _struct_class{
 // Structure d'une méthode
 typedef _struct_method{
 	char *nom;
-	bool isStatic;
-	bool isRedef;
+	int isStatic;	//1 si vrai, 0 si non
+	int isRedef;	//1 si vrai, 0 si non
 	TreeP corps;
 	PClasse typeRetour;
 	PVAR params;

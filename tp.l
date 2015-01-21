@@ -74,7 +74,7 @@ int keywordOrId() {
   if(strcmp(yylval.S,"yield")==0)
     return YIELD;
   if(strcmp(yylval.S,"new")==0)
-    return NEW;
+    return NEWO;
   if(strcmp(yylval.S,"def")==0)
     return DEF  ;               
   
