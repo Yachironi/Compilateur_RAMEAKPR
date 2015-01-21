@@ -18,8 +18,6 @@
 %left PLUS MINUS
 %left MUL DIV 
 %left unaire
-%left '(' ')'
-%left '{' '}'
 
 
 
@@ -66,7 +64,7 @@ makeMethode(char *nom,	int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PV
 #define IDENTIFICATEURCLASS
 #define CSTSTRING
 #define CSTENTIER
-#define LISTE		// n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction
+#define LISTE		/* n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction*/
 #define EXTENTION
 #define PARAM
 #define STATIQUE
@@ -316,25 +314,24 @@ expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
  */
 
 
-avant_selection : IDCLASS		{ $$=makeLeafStr(IDENTIFICATEURCLASS, $1->S); }
-	| ID				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); }
-	| envoiMessage			{ $$=$1;}
-	| selection			{ $$=$1;}
-	| '('instanciation')'		{ $$=$2;}
-	;
+/*avant_selection : IDCLASS		{ $$=makeLeafStr(IDENTIFICATEURCLASS, $1->S); }
+              	| ID				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); }
+              	| envoiMessage			{ $$=$1;}
+              	| selection			{ $$=$1;}
+              	| '('instanciation')'		{ $$=$2;}
+              	;
 
 
 selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, makeLeafStr(IDENTIFICATEUR,$3->S));}
-	;
+	          ;*/
 
-/*
+
 selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
           | '('instanciation')' '.' ID
          ;
-*/
 
 
 constante : CSTS  { $$ = makeLeafStr(CSTSTRING,yylval.S); } // yylval.S ou $1 ou $1->S
