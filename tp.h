@@ -63,7 +63,7 @@ struct _Method{
   PVAR params;
   PMETH suivant;
   PCLASS home;
-} ;
+};
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
  struct _Var{
@@ -73,7 +73,7 @@ struct _Method{
   TreeP init;
   PVAR suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
-} ;
+};
 
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
@@ -97,9 +97,43 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define LE 4
 #define GT 5
 #define GE 6
+#define IDENTIFICATEUR 7
+#define PLUSUNAIRE 8
+#define MINUSUNAIRE 9
+#define CONCATENATION 10
+#define PLUSBINAIRE 11
+#define MINUSBINAIRE 12
+#define DIVISION 13
+#define MULTIPLICATION 14
+#define OPCOMPARATEUR 15
+#define SELECTION 16
+#define CONSTANTE 17
+#define EXPRESSION 18
+#define INSTANCIATION 19
+#define ENVOIMESSAGE 20
+#define EXPRESSIONRETURN 21
+#define IDENTIFICATEURCLASS 22
+#define CSTSTRING 23
+#define CSTENTIER 24
+#define LISTE 25 /* n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction*/
+#define EXTENTION 26
+#define PARAM 27
+#define STATIQUE 28
+#define SURCHARGE 29
+#define DEFTOKEN 30
+#define LISTEMETHODE 31
+#define PROGRAM 32
+#define LISTCLASS 33
+#define CONTENUBLOC 34
+#define ETIQUETTE_IS 35
+#define ETIQUETTE_YIELD 36
+#define ETIQUETTE_AFFECT 37
+#define IFTHENELSE 38
+#define CONTENUCLASS 39
+#define LISTEARG 40
+#define LISTEPARAM 41
 
 
-#define LIST 8
 
 /* Codes d'erreurs */
 #define NO_ERROR	0
@@ -109,6 +143,9 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define CONTEXT_ERROR	4
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
+
+
+
 
 
 /* Type pour la valeur de retour de Flex et les actions de Bison
@@ -121,16 +158,12 @@ typedef union
   char *S;
   int I; 
   TreeP T;
+  PVAR V;
+  PCLASS CL;
+  PMETH M;
 } YYSTYPE;
 
 #define YYSTYPE YYSTYPE
-
-/*
-	TODO :
-	- Créer la méthode makeMethode
-	- Créer la méthode makeMethode
-*/
-
 
 /* construction des declarations */
 VarDeclP makeVar(char *name);
@@ -154,5 +187,6 @@ void pprintMain(TreeP);
 // methode rajoute
 PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
+PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 
 #endif

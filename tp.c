@@ -194,6 +194,11 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 	return res;
 }
 
+/* TODO */
+PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
+return NULL;
+}
+
 /*
  * Seconde partie probablement a modifier
  */

@@ -5,8 +5,8 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
-%token <S> ID CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
+%token <S> ID CSTS IDCLASS STATIC/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
 
@@ -15,7 +15,7 @@
  * par precedence croissante d'operateurs.
  */
 
-%nonassoc REL
+%nonassoc RELOP
 %left PLUS MINUS
 %left MUL DIV 
 %left unaire
@@ -31,60 +31,16 @@
  * de l'union YYSTYPE (par exemple la variante D ou S, etc.)
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
-%type <C> REL
-%type <T> expr selection constante /*avant_selection */
-
+//%type <C> REL
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage
+%type <V> LClassOpt LInstructionOpt ListDeclVar LInstruction LDeclChampsOpt LDeclMethodeOpt ListParamOpt LParam ListOptArg LArg
+%type <M> Methode
+%type <CL> DeclClass
+%type <I> OverrideOuStaticOpt
 //%type <T> 
-
+ 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-
-/* A implémenter */
-
-/** fait dans tp.c : 
-makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,_struct_method *liste_methodes,_struct_var *liste_champs,	PCLASS classe_mere)
-makeMethode(char *nom,	int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params);
-*/
-/** A faire **/
-/** différencier les listes (regrouper seulement les listes d'expression et les listes d'instruction **/
-#define IDENTIFICATEUR 
-#define PLUSUNAIRE 
-#define MINUSUNAIRE
-#define CONCATENATION
-#define PLUSBINAIRE
-#define MINUSBINAIRE
-#define DIVISION
-#define MULTIPLICATION
-#define OPCOMPARATEUR
-#define SELECTION
-#define CONSTANTE
-#define EXPRESSION
-#define INSTANCIATION
-#define ENVOIMESSAGE
-#define EXPRESSIONRETURN
-#define IDENTIFICATEURCLASS
-#define CSTSTRING
-#define CSTENTIER
-#define LISTE		/* n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction*/
-#define EXTENTION
-#define PARAM
-#define STATIQUE
-#define SURCHARGE
-#define DEFTOKEN
-#define LISTEMETHODE
-#define PROGRAM
-#define LISTCLASS
-#define CONTENUBLOC
-#define ETIQUETTE_IS
-#define ETIQUETTE_YIELD
-#define ETIQUETTE_AFFECT
-#define IFTHENELSE
-#define CONTENUCLASS
-#define LISTEARG
-#define LISTEPARAM
-
-
-
 PCLASS classActuel;
 
 extern int yylex();	/* fournie par Flex */
@@ -119,7 +75,7 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc	{ $$=makeTree(PROGRAM,2,$1,$2); }
+Programme : LClassOpt Bloc	{ $$ = makeTree(PROGRAM,2,$1,$2); }
           ;
 
 /*
@@ -132,7 +88,7 @@ LClassOpt : DeclClass LClassOpt	{$$=makeTree(LISTCLASS,2,$1,$2);}
 /*
  * Un bloc est defini par une entite avec 2 accolades entourant un contenu
  */
-Bloc : '{' ContenuBloc '}'	{$$=makeTree(CONTENUBLOC, 1, $1);}
+Bloc : '{' ContenuBloc '}'	{$$=$2;}
       ;
 
 /*
@@ -213,11 +169,11 @@ LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt	/
               |
               ;
 
-StaticOpt : STATIC	//faire quoi?
+StaticOpt : STATIC	{$$=makeLeafStr(STATIQUE,$1);}//faire quoi?
           | {$$=NIL(Tree);}
           ;
 
-AffectExprOpt : AFFECT expr;	//';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
+AffectExprOpt : AFFECT expr; //';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
               |	{$$=NIL(Tree);}
               ;
 /*
@@ -256,7 +212,7 @@ LParam : Param			{ $$=$1 ;}
 Param : ID':' IDCLASS	{ $$ = makeTree(PARAM, 2, makeLeafStr(IDENTIFICATEURCLASS,$1->S),makeLeafStr(IDENTIFICATEURCLASS,$3->S)); }
           ;
 
-ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{ $$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1->S),$4);} // A verifier $1->S
+ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{ $$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);} // A verifier $1->S
               | /* epsilon */				{ $$=NIL(Tree);}
               ;
 ListOptArg :		{ $$=NIL(Tree);}
@@ -300,7 +256,7 @@ expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
        | expr MINUS expr 		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
        | expr DIV expr			{ $$=makeTree(DIVISION, 2, $1, $3); }
        | expr MUL expr			{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr REL expr			{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | expr RELOP expr		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
        | selection			{ $$=$1; }
        | constante 			{ $$=$1; }
        /*| '(' expr ')'			{ $$=$2; }//{ $$=makeTree(EXPRESSIONPAREN, 3, '(',$2, ')'); }*/
@@ -388,5 +344,5 @@ envoiMessage : selection '(' ListOptArg ')
  * du coup RELOP est une notion qui nous permet de les généraliser dans une seul entité
  * Ici même on récuper grace à lex l'opérateur mis en jeu ! => go en bas du tp.l
  */
-REL : RELOP { $$ = yylval.C; }
-;
+/* REL : RELOP { $$ = yylval.C; }
+;*/
