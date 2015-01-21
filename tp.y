@@ -15,6 +15,7 @@
  * par precedence croissante d'operateurs.
  */
 
+%nonassoc REL
 %left PLUS MINUS
 %left MUL DIV 
 %left unaire
@@ -31,7 +32,7 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 %type <C> REL
-%type <T> expr selection avant_selection constante
+%type <T> expr selection constante /*avant_selection */
 
 //%type <T> 
 
