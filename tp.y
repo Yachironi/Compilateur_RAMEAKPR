@@ -303,10 +303,15 @@ expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
        | expr REL expr			{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
        | selection			{ $$=$1; }
        | constante 			{ $$=$1; }
-       | '(' expr ')'			{ $$=$2; }//{ $$=makeTree(EXPRESSIONPAREN, 3, '(',$2, ')'); }
+       /*| '(' expr ')'			{ $$=$2; }//{ $$=makeTree(EXPRESSIONPAREN, 3, '(',$2, ')'); }*/
        | instanciation			{ $$=$1; }
        | envoiMessage			{ $$=$1; }
        | RETURN expr ';'		{ $$=makeTree(EXPRESSIONRETURN, 1, $2); }
+       | OuRien
+       ;
+
+OuRien : '(' expr ')'
+       | Cible
        ;
 
 /*
@@ -332,6 +337,7 @@ selection : IDCLASS'.'ID
           | envoiMessage'.'ID
           | selection'.'ID
           | '('instanciation')' '.' ID
+          | OuRien '.' ID
          ;
 
 
