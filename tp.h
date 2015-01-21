@@ -63,7 +63,7 @@ struct _Method{
   PVAR params;
   PMETH suivant;
   PCLASS home;
-} ;
+};
 
 // Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
  struct _Var{
@@ -73,7 +73,7 @@ struct _Method{
   TreeP init;
   PVAR suivant; // on peut pas mettre directement PVAR?
   // ... : j'ai noté ça les 3 points, vous l'avez aussi?
-} ;
+};
 
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
@@ -158,6 +158,9 @@ typedef union
   char *S;
   int I; 
   TreeP T;
+  PVAR V;
+  PCLASS CL;
+  PMETH M;
 } YYSTYPE;
 
 #define YYSTYPE YYSTYPE
@@ -184,5 +187,6 @@ void pprintMain(TreeP);
 // methode rajoute
 PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
+PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 
 #endif
