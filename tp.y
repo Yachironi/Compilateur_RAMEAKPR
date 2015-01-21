@@ -5,8 +5,8 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST IDCLASS STRING CONCAT
-%token <S> ID CSTS/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token CLASS VAR EXTENDS IS STATIC DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEW PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
+%token <S> ID CSTS IDCLASS/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
 
@@ -33,46 +33,12 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 %type <C> REL
-%type <T> expr selection avant_selection constante
+%type <T> expr Programme LClassOpt Bloc DeclClass  selection avant_selection constante
 
 //%type <T> 
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-
-/* A implémenter */
-makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,_struct_method *liste_methodes,_struct_var *liste_champs,	PCLASS classe_mere)
-makeMethode(char *nom,	int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params);
-#define IDENTIFICATEUR 
-#define PLUSUNAIRE 
-#define MINUSUNAIRE
-#define CONCATENATION
-#define PLUSBINAIRE
-#define MINUSBINAIRE
-#define DIVISION
-#define MULTIPLICATION
-#define OPCOMPARATEUR
-#define SELECTION
-#define CONSTANTE
-#define EXPRESSION
-#define INSTANCIATION
-#define ENVOIMESSAGE
-#define EXPRESSIONRETURN
-#define IDENTIFICATEURCLASS
-#define CSTSTRING
-#define CSTENTIER
-#define LISTE
-#define EXTENTION
-#define PARAM
-#define STATIQUE
-#define SURCHARGE
-#define DEFTOKEN
-#define LISTEMETHODE
-#define PROGRAM
-#define LISTCLASS
-
-
-
 
 PCLASS classActuel;
 
@@ -108,7 +74,7 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc	{ $$=makeTree(PROGRAM,2,$1,$2); }
+Programme : LClassOpt Bloc	{ $$ = makeTree(PROGRAM,2,$1,$2); }
           ;
 
 /*

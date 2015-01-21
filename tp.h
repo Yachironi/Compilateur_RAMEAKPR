@@ -40,9 +40,35 @@ typedef struct _Decl
 #define LE 4
 #define GT 5
 #define GE 6
+#define IDENTIFICATEUR 7 
+#define PLUSUNAIRE 8
+#define MINUSUNAIRE 9
+#define CONCATENATION 10
+#define PLUSBINAIRE 11
+#define MINUSBINAIRE 12
+#define DIVISION 13
+#define MULTIPLICATION 14
+#define OPCOMPARATEUR 15
+#define SELECTION 16
+#define CONSTANTE 17
+#define EXPRESSION 18
+#define INSTANCIATION 19
+#define ENVOIMESSAGE 20
+#define EXPRESSIONRETURN 21
+#define IDENTIFICATEURCLASS 22
+#define CSTSTRING 23
+#define CSTENTIER 24
+#define LISTE 25
+#define EXTENTION 26
+#define PARAM 27
+#define STATIQUE 28
+#define SURCHARGE 29
+#define DEFTOKEN 30
+#define LISTEMETHODE 31
+#define PROGRAM 32
+#define LISTCLASS 33
 
 
-#define LIST 8
 
 /* Codes d'erreurs */
 #define NO_ERROR	0
@@ -52,6 +78,9 @@ typedef struct _Decl
 #define CONTEXT_ERROR	4
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
+
+
+
 
 
 /* Type pour la valeur de retour de Flex et les actions de Bison
