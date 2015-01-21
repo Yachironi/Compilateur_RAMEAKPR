@@ -13,6 +13,7 @@
 typedef struct _Var SVAR, *PVAR;
 typedef struct _Method SMETH, *PMETH;
 typedef struct _Class SCLASS, *PCLASS;
+typedef struct _LClass LCLASS, *PLCLASS;
 
 typedef int bool;
 
@@ -46,6 +47,7 @@ struct _Class{
   PMETH liste_methodes;     /* liste des méthodes de la classe */
   PVAR liste_champs;        /* liste des champs de la classe */ 
   PCLASS classe_mere;       /* classe mère éventuelle de la classe */
+  PCLASS suivant;
 };
 
 /**
@@ -53,11 +55,11 @@ struct _Class{
   --> "représentation des arguments des constructeurs de la super classe => type : ??"
 **/
 
-// Structure d'une méthode
+/* Structure d'une méthode */
 struct _Method{
   char *nom;
-  int isStatic; //1 si vrai, 0 si non
-  int isRedef;  //1 si vrai, 0 si non
+  int isStatic; /* 1 si vrai, 0 si non */
+  int isRedef;  /* 1 si vrai, 0 si non */
   TreeP corps;
   PCLASS typeRetour;
   PVAR params;
@@ -65,16 +67,22 @@ struct _Method{
   PCLASS home;
 };
 
-// Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x")
+/* Structure d'une variable (pouvant être un paramètre, un champ,... exemple : "int x") */
  struct _Var{
   char *nom;
   PCLASS type;
   int categorie;
   TreeP init;
-  PVAR suivant; // on peut pas mettre directement PVAR?
-  // ... : j'ai noté ça les 3 points, vous l'avez aussi?
+  PVAR suivant; /* on peut pas mettre directement PVAR? */
+  /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
+/* Structure qui décrit une liste de class */
+
+struct _LClass{
+ PCLASS classe;
+ PLCLASS suivant;
+};
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
   champ static -> 1
@@ -115,7 +123,7 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define IDENTIFICATEURCLASS 22
 #define CSTSTRING 23
 #define CSTENTIER 24
-#define LISTE 25 /* n'est jamais appelé pour le moment -> il faut trouver liste expression et liste instruction*/
+#define ETIQUETTE_RETURN 25
 #define EXTENTION 26
 #define PARAM 27
 #define STATIQUE 28
@@ -184,9 +192,10 @@ void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP);
 
-// methode rajoute
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+/* methode rajoute */
+PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP infos_classe, listClassesMeres);
+//PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
-
+PLCLASS makeListClass();
 #endif

@@ -159,7 +159,7 @@ TreeP makeLeafInt(short op, int val) {
   return(tree);
 }
 
-// methodes rajoutees
+/* methodes rajoutees */
 PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, SCLASS);
 	res->nom=nom;
@@ -171,14 +171,14 @@ PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PME
 	return res;
 }
 
-PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params){
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
 	PMETH res=NEW(1, SMETH);
 	res->suivant = NIL(SMETH);
 	res->nom=nom;
 	res->corps=corps;
 	res->params=params;
 	res->typeRetour=typeRetour;
-	//res->home????
+	res->home;
 	if(OverrideOuStaticOpt == 0){
 		res->isStatic = 0;
 		res->isRedef = 0;

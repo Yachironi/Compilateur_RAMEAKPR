@@ -5,8 +5,8 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS RETURN YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
-%token <S> ID CSTS IDCLASS STATIC/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS  YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
+%token <S> ID CSTS IDCLASS RETURN STATIC/* voir %type ci-dessous pour le sens de <S> et Cie */
 %token <I> CSTE
 
 
@@ -31,13 +31,13 @@
  * de l'union YYSTYPE (par exemple la variante D ou S, etc.)
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
-//%type <C> REL
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage
-%type <V> LClassOpt LInstructionOpt ListDeclVar LInstruction LDeclChampsOpt LDeclMethodeOpt ListParamOpt LParam ListOptArg LArg
+
+/* %type <C> REL */
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt
+%type <V> LClassOpt ListDeclVar LDeclChampsOpt LDeclMethodeOpt ListParamOpt LParam ListOptArg LArg
 %type <M> Methode
 %type <CL> DeclClass
 %type <I> OverrideOuStaticOpt
-//%type <T> 
  
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
@@ -81,7 +81,7 @@ Programme : LClassOpt Bloc	{ $$ = makeTree(PROGRAM,2,$1,$2); }
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
  */
-LClassOpt : DeclClass LClassOpt	{$$=makeTree(LISTCLASS,2,$1,$2);}
+LClassOpt : DeclClass LClassOpt	{$1->suivant=$2; $$=$1;}
             | /* epsilon */ {$$=NIL(Tree);}
             ;
 
@@ -108,17 +108,17 @@ YieldOpt : YIELD expr';'	{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
         | /* epsilon */		{$$=NIL(Tree);}
         ;
 
-ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt	// a faire
+ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt {}	// a faire
             ;
 
 /*
  * Liste d'instructions optionnel 
  */
-LInstructionOpt : Instruction LInstructionOpt	// makeTree ou makeList?
-                | /* epsilon */
+LInstructionOpt : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);} // makeTree ou makeList?
+                | /* epsilon */ {$$=NIL(Tree);}
                 ;
 
-LInstruction : Instruction LInstructionOpt	// makeTree ou makeList?
+LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);} // makeTree ou makeList?
               ;
 /*
  * Une instruction c'est : 
@@ -131,7 +131,7 @@ Instruction : expr ';'						{$$=$1}
             | Bloc						{$$=$1}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
-            | RETURN ';'					// on fait quoi?
+            | RETURN ';'					{$$=makeLeaf(ETIQUETTE_RETURN, $1);} // on fait quoi?
             ;
 /*
  * La cible de l'affectation ne peut etre qu'un identifiant : 
@@ -153,10 +153,9 @@ BlocOpt : Bloc		{$$=$1;}
 /*
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
+// A FAIRE 
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{classActuel=$2
-		// faire la suite : makeclass?
-		}
+		//{classActuel=$2; $$=makeClasse($2,$4,$10,$6,$7???);} A VOIIIIIIIIIR
             ;
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,$1,$2);}
@@ -173,6 +172,7 @@ StaticOpt : STATIC	{$$=makeLeafStr(STATIQUE,$1);}//faire quoi?
           | {$$=NIL(Tree);}
           ;
 
+// A FAIRE 
 AffectExprOpt : AFFECT expr; //';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
               |	{$$=NIL(Tree);}
               ;
@@ -183,9 +183,8 @@ AffectExprOpt : AFFECT expr; //';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUE
 
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-	{$$ = makeMethode($3,$2,$9,$8,$5,classActuel);} //strcmp($2->u.s,"static")?1:0;  strcmp($2->u.s,"override")?1:0;
+	{$$ = makeMethode($3,$2,$9,$8,$5,classActuel);}
 	;
-	//makeMethode(char *nom,int OverrideOuStaticOpt,TreeP corps,PClasse typeRetour,PVAR params,PCLASS home;);
 
 LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $$ = makeTree(LISTEMETHODE,$1,$2) }
               |  { $$=NIL(Tree);}
@@ -249,7 +248,7 @@ LArg : expr		{ $$ = $1}
 
 
 expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
-       | PLUS expr %prec unaire		{ $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | PLUS expr %prec unaire		{ $$=$2; }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr 		{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
@@ -282,7 +281,7 @@ expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
 selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, makeLeafStr(IDENTIFICATEUR,$3->S));}
 	          ;*/
 
-
+// A FAIRE 
 selection : IDCLASS'.'ID
           | ID'.'ID
           | envoiMessage'.'ID
@@ -290,7 +289,7 @@ selection : IDCLASS'.'ID
           | '('instanciation')' '.' ID
          ;
 
-
+// A FAIRE 
 constante : CSTS  { $$ = makeLeafStr(CSTSTRING,yylval.S); } // yylval.S ou $1 ou $1->S
 	  | CSTE  { $$ = makeLeafInt(CSTENTIER,yylval.I); }
           ;
@@ -299,7 +298,7 @@ constante : CSTS  { $$ = makeLeafStr(CSTSTRING,yylval.S); } // yylval.S ou $1 ou
  * TODO !!!!!! expression fini par un ';' ???
  */
 
-
+// A FAIRE 
 instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2->S), $4); }
               ;
 
