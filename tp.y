@@ -155,7 +155,7 @@ BlocOpt : Bloc		{$$=$1;}
  */
 // A FAIRE 
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		//{classActuel=$2; $$=makeClasse($2,$4,$10,$6,$7???);} A VOIIIIIIIIIR
+		{classActuel=$2; $$=makeClasse($2,$4,$10,$6,$7);} /* A  VOIIIIIIIIIR*/
             ;
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,$1,$2);}
