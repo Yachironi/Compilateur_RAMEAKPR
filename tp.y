@@ -33,7 +33,7 @@
  */
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien
 %type <V> LClassOpt ListDeclVar LDeclChampsOpt LDeclMethodeOpt ListParamOpt LParam ListOptArg LArg
 %type <M> Methode
 %type <CL> DeclClass
@@ -41,7 +41,8 @@
  
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-PCLASS classActuel;
+PCLASS classActuel=NULL;
+PCLASS listeDeClass=NULL;
 
 extern int yylex();	/* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */
@@ -155,7 +156,7 @@ BlocOpt : Bloc		{$$=$1;}
  */
 // A FAIRE 
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{classActuel=$2; $$=makeClasse($2,$4,$10,$6,$7);} /* A  VOIIIIIIIIIR*/
+		{classActuel=makeClasse(listeDeClass,$2,$4,$10,$6,$7);} /* A  VOIIIIIIIIIR*/
             ;
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,$1,$2);}
@@ -164,16 +165,21 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,$1,
 /* 
  * var [static] nom : type [:= expression]; 
  */
-LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt	// appeler makeVar
-              |
+
+
+LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
+		{$$ = makeListVar($3,$5,int cat,TreeP init);}	// appeler makeVar
+              | {$$=NIL(Tree);}
               ;
 
-StaticOpt : STATIC	{$$=makeLeafStr(STATIQUE,$1);}//faire quoi?
+
+StaticOpt : STATIC	{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
           | {$$=NIL(Tree);}
           ;
 
 // A FAIRE 
-AffectExprOpt : AFFECT expr; //';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
+AffectExprOpt : AFFECT expr ';' {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
+		//';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
               |	{$$=NIL(Tree);}
               ;
 /*
@@ -262,11 +268,11 @@ expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S
        | instanciation			{ $$=$1; }
        | envoiMessage			{ $$=$1; }
        | RETURN expr ';'		{ $$=makeTree(EXPRESSIONRETURN, 1, $2); }
-       | OuRien
+       | OuRien				{ $$=$1; }
        ;
 
-OuRien : '(' expr ')'
-       | Cible
+OuRien : '(' expr ')'			{$$=$2;}
+       | Cible				{$$=$1;}
        ;
 
 /*

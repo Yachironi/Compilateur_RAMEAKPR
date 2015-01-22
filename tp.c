@@ -160,14 +160,23 @@ TreeP makeLeafInt(short op, int val) {
 }
 
 /* methodes rajoutees */
-PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
+PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, SCLASS);
 	res->nom=nom;
 	res->param_constructeur=param_constructeur;
 	res->corps_constructeur=corps_constructeur;
 	res->liste_methodes=liste_methodes;
 	res->liste_champs=liste_champs;
-	res->classe_mere=classe_mere;
+	res->classe_mere=classe_mere;	
+	if(listeClass==NULL){
+		listeClass=res;
+	}else{
+		PCLASS parcour=listeClass;
+		while(parcour->suivant!=NULL){
+			parcour=parcour->suivant;	
+		}
+		parcour->suivant=res;
+	}
 	return res;
 }
 
