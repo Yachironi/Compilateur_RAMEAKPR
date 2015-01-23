@@ -187,11 +187,11 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,mak
 /* TODO */
 
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-		{/*$$ = makeListVar($3,$5,int cat,TreeP init); $$->suivant=$8*/}	// appeler makeVar
+		{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
               | {$$=NIL(Tree);}
               ;
 
-StaticOpt : STATIC	{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
+StaticOpt : STATIC	{$$=1;}//{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
           | {$$=NIL(Tree);}
           ;
 
@@ -207,10 +207,10 @@ AffectExprOpt : AFFECT expr ';' {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
 
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-	{$$ = makeMethode($3,$2,$9,$8,$5,classActuel);}
+	{$$=makeMethode($3,$2,$9,$8,$5,classActuel);}
 	;
 
-LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$ = $1; }
+LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
               |  { $$=NIL(SMETH);}
               ;
 
