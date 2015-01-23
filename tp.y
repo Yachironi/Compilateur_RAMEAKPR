@@ -128,9 +128,13 @@ LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1,
     * cible:= expression;
     * if expression then instruction else instruction
  */
+
+/** TODO Ajout de selection dans cette regle !!!!!!! **/
+
 Instruction : expr ';'						{$$=$1}
             | Bloc						{$$=$1}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
+            | selection AFFECT expr ';'
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
             | RETURN ';'					{$$=makeLeaf(ETIQUETTE_RETURN, $1);} // on fait quoi?
             ;
@@ -141,7 +145,7 @@ Instruction : expr ';'						{$$=$1}
  */
 Cible : ID 		{$$=makeLeafStr(IDENTIFICATEUR,$1->S);}
       | IDCLASS		{$$=makeLeafStr(IDENTIFICATEURCLASS,$1->S);}
-      | selection	{$$=$1;}
+      /*| selection	{$$=$1;}*/
       ;
 
 /*
@@ -263,8 +267,9 @@ LArg : expr		{ $$ = $1}
      * return expression
  */
 
+/* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
-expr : ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1->S
+expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S*/
        | PLUS expr %prec unaire		{ $$=$2; }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
