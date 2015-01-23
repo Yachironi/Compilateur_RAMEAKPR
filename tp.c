@@ -257,19 +257,18 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
     return nouv;
   
   VarDeclP nouvTmp = nouv;
-  bool continuer = TRUE; 
-  while(nouvTmp != NULL)
-  {
+  bool continuer = TRUE;
+  while(nouvTmp!=NULL){
     /* liste mise a jour si besoin */
     VarDeclP listTmp = list;
     continuer = TRUE;
     while(listTmp!= NULL && continuer)
     {
-      if(strcmp(nouvTmp->name, listTmp->name)==0){
+      if(strcmp(nouvTmp->name, listTmp->name)==0){
         continuer = FALSE;
       }
       listTmp = listTmp->next;
-    }
+    }
     if(!continuer)
     {
       VarDeclP listCopie = list;
@@ -277,7 +276,7 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
       list->next = listCopie;
     }
     nouvTmp = nouvTmp->next; 
-  }
+  }
   return list;
 }
 
