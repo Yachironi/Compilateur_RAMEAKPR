@@ -14,10 +14,13 @@
  * ligne (separes par un espace) ont la meme priorite. Les ligns sont donnees
  * par precedence croissante d'operateurs.
  */
+%left CONCAT
 
 %nonassoc RELOP
+
 %left PLUS MINUS
 %left MUL DIV 
+%left '.'
 %left unaire
 
 
@@ -134,7 +137,7 @@ LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1,
 Instruction : expr ';'						{$$=$1;}
             | Bloc						{$$=$1;}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
-            | selection AFFECT expr ';'
+            /*| selection AFFECT expr ';'*/
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
             | RETURN ';'					{$$=makeLeafStr(ETIQUETTE_RETURN, $1);} // on fait quoi?
             ;
@@ -144,8 +147,8 @@ Instruction : expr ';'						{$$=$1;}
  * un nom de classe var res : Point := new Point(x, y);
  */
 Cible : ID 		{$$=makeLeafStr(IDENTIFICATEUR,$1);}
-      | IDCLASS		{$$=makeLeafStr(IDENTIFICATEURCLASS,$1);}
-      /*| selection	{$$=$1;}*/
+/*      | IDCLASS		{$$=makeLeafStr(IDENTIFICATEURCLASS,$1);} */ /*FIXME : on a enleve ca car incorrect niveau grammaire*/
+      | selection	{$$=$1;}
       ;
 
 /*
@@ -184,7 +187,7 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,mak
 /* TODO */
 
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-		{$$ = makeListVar($3,$5,int cat,TreeP init); $$->suivant=$8}	// appeler makeVar
+		{/*$$ = makeListVar($3,$5,int cat,TreeP init); $$->suivant=$8*/}	// appeler makeVar
               | {$$=NIL(Tree);}
               ;
 
@@ -269,13 +272,8 @@ LArg : expr		{ $$ = $1;}
 
 /* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
-<<<<<<< HEAD
-expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S*/
-       PLUS expr %prec unaire		{ $$=$2; }
-=======
 expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
-     /*|*/ PLUS expr %prec unaire		{ $$=$2; }
->>>>>>> 2ca7bf0ab82477f222d6dde8dde1f9f78cb887e3
+       PLUS expr %prec unaire		{ $$=$2; }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr 		{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
@@ -283,7 +281,7 @@ expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
        | expr DIV expr			{ $$=makeTree(DIVISION, 2, $1, $3); }
        | expr MUL expr			{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
        | expr RELOP expr		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | selection			{ $$=$1; }
+       /*| selection			{ $$=$1; }*/
        | constante 			{ $$=$1; }
        /*| '(' expr ')'			{ $$=$2; }//{ $$=makeTree(EXPRESSIONPAREN, 3, '(',$2, ')'); }*/
        | instanciation			{ $$=$1; }
@@ -294,6 +292,7 @@ expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
 
 OuRien : '(' expr ')'			{$$=$2;}
        | Cible				{$$=$1;}
+       /*| '(' instanciation ')'     {$$=$2;}  */
        ;
 
 /*
@@ -314,12 +313,12 @@ selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, makeLeafStr(I
 	          ;*/
 
 // A FAIRE 
-selection : IDCLASS'.'ID			{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
-          | ID'.'ID				{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3));}
-          | envoiMessage'.'ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
-          | selection'.'ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
-          | '('instanciation')' '.' ID		{$$=makeTree(SELECTION, 2, $2,makeLeafStr(IDENTIFICATEUR,$5));}
-          | OuRien '.' ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
+selection : IDCLASS'.'ID	%prec '.'		{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
+          /*| ID'.'ID			%prec '.'	{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3));}*/
+          | envoiMessage'.'ID	%prec '.'		{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
+          /*| selection'.'ID		%prec '.'	{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}*/
+          /*| '('instanciation')' '.' ID	{$$=makeTree(SELECTION, 2, $2,makeLeafStr(IDENTIFICATEUR,$5));}*/
+          | OuRien '.' ID	%prec '.'	{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
          ;
 
 // A FAIRE 
@@ -342,11 +341,11 @@ instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, 
 
 
 
-envoiMessage : IDCLASS '.' ID '(' ListOptArg ')'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | ID '.' ID '(' ListOptArg ')'   			{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | envoiMessage '.' ID'('ListOptArg ')'  	 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | selection '.' ID '(' ListOptArg ')' 	 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | '('instanciation ')' '.' ID '('ListOptArg ')'   { $$=makeTree(ENVOIMESSAGE, 3,$2,makeLeafStr(IDENTIFICATEUR,$5),$7); }
+envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
+              /*| ID '.' ID '(' ListOptArg ')'   	%prec '.'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }*/
+              | envoiMessage '.' ID'('ListOptArg ')' %prec '.' 	 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+              | OuRien '.' ID '(' ListOptArg ')' 	%prec '.' 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+              /*| '('instanciation ')' '.' ID '('ListOptArg ')' %prec '.'  { $$=makeTree(ENVOIMESSAGE, 3,$2,makeLeafStr(IDENTIFICATEUR,$5),$7); }*/
              ;
 
 /** On peut pas faire ça? :
