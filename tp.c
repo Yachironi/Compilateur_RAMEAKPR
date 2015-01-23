@@ -159,6 +159,27 @@ TreeP makeLeafInt(short op, int val) {
   return(tree);
 }
 
+/* Constructeur de feuille dont la valeur est un VAR */
+TreeP makeLeafVar(short op, PVAR var){
+ TreeP tree = makeNode(0, op); 
+  tree->u.var = var;
+  return(tree);
+}
+/* Constructeur de feuille dont la valeur est une Classe */
+TreeP makeLeafClass(short op, PCLASS classe){
+ TreeP tree = makeNode(0, op); 
+  tree->u.classe = classe;
+  return(tree);
+}
+/* Constructeur de feuille dont la valeur est un methode */
+TreeP makeLeafMeth(short op, PMETH methode){
+ TreeP tree = makeNode(0, op); 
+  tree->u.methode = methode;
+  return(tree);
+}
+
+
+
 /* methodes rajoutees */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, SCLASS);
@@ -180,6 +201,17 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 	return res;
 }
 
+/* Renvoi la classe avec un nom donnée */
+
+PCLASS getClasse(PCLASS listeClass,char *nom){
+PCLASS parcour=listeClass;
+while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+	parcour=parcour->suivant;	
+}
+return parcour;
+}
+
+/* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
 	PMETH res=NEW(1, SMETH);
 	res->suivant = NIL(SMETH);
