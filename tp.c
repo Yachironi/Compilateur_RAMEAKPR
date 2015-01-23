@@ -187,7 +187,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 	res->corps=corps;
 	res->params=params;
 	res->typeRetour=typeRetour;
-	res->home;
+	res->home=home;
 	if(OverrideOuStaticOpt == 0){
 		res->isStatic = 0;
 		res->isRedef = 0;

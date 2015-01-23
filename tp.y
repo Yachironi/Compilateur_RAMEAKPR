@@ -270,7 +270,7 @@ LArg : expr		{ $$ = $1}
 /* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
 expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1->S); } // yylval.S ou $1->S*/
-       | PLUS expr %prec unaire		{ $$=$2; }
+     /*|*/ PLUS expr %prec unaire		{ $$=$2; }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr 		{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
