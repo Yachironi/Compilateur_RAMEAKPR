@@ -193,8 +193,8 @@ void pprint(TreeP tree);
 void pprintMain(TreeP);
 
 /* methode rajoute */
-PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP infos_classe,PCLASS classesMeres);
-//PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+/*PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);*/
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PLCLASS makeListClass();

@@ -160,8 +160,19 @@ BlocOpt : Bloc		{$$=$1;}
  */
 // A FAIRE 
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{classActuel=makeClasse(listeDeClass,$2,$4,$10,$6,$7);} /* A  VOIIIIIIIIIR*/
-            ;
+		{ classActuel=makeClasse(listeDeClass		/* Liste de classes du programme */
+					,$2 			/* listeClass */
+					,$4 			/* param_constructeur */
+					,$7 			/* corps_constructeur */
+					,$10->u.(children+1) 	/* liste_methodes */
+					,$10->u.(children) 	/* liste_champs */
+					,$6			/* classe_mere */
+					);
+		} /* A  VOIIIIIIIIIR*/
+         ;
+/* Etête de methode makeClasse : 
+ PCLASS makeClasse(PCLASS listeClass, char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+*/
 
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,$1,$2);}
 		;
@@ -298,12 +309,12 @@ selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, makeLeafStr(I
 	          ;*/
 
 // A FAIRE 
-selection : IDCLASS'.'ID
-          | ID'.'ID
-          | envoiMessage'.'ID
-          | selection'.'ID
-          | '('instanciation')' '.' ID
-          | OuRien '.' ID
+selection : IDCLASS'.'ID			{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
+          | ID'.'ID				{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3));}
+          | envoiMessage'.'ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3);}
+          | selection'.'ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
+          | '('instanciation')' '.' ID		{$$=makeTree(SELECTION, 2, $2,makeLeafStr(IDENTIFICATEUR,$5));}
+          | OuRien '.' ID			{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
          ;
 
 // A FAIRE 
