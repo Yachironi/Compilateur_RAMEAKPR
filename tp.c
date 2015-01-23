@@ -237,6 +237,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 
 /* TODO */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
+/* faire int cat stat ou opt */
 return NULL;
 }
 
