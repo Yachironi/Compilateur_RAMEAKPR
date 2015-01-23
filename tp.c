@@ -159,6 +159,27 @@ TreeP makeLeafInt(short op, int val) {
   return(tree);
 }
 
+/* Constructeur de feuille dont la valeur est un VAR */
+TreeP makeLeafVar(short op, PVAR var){
+ TreeP tree = makeNode(0, op); 
+  tree->u.var = var;
+  return(tree);
+}
+/* Constructeur de feuille dont la valeur est une Classe */
+TreeP makeLeafClass(short op, PCLASS classe){
+ TreeP tree = makeNode(0, op); 
+  tree->u.classe = classe;
+  return(tree);
+}
+/* Constructeur de feuille dont la valeur est un methode */
+TreeP makeLeafMeth(short op, PMETH methode){
+ TreeP tree = makeNode(0, op); 
+  tree->u.methode = methode;
+  return(tree);
+}
+
+
+
 /* methodes rajoutees */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, SCLASS);
@@ -180,6 +201,17 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 	return res;
 }
 
+/* Renvoi la classe avec un nom donnée */
+
+PCLASS getClasse(PCLASS listeClass,char *nom){
+PCLASS parcour=listeClass;
+while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+	parcour=parcour->suivant;	
+}
+return parcour;
+}
+
+/* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
 	PMETH res=NEW(1, SMETH);
 	res->suivant = NIL(SMETH);
@@ -187,7 +219,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 	res->corps=corps;
 	res->params=params;
 	res->typeRetour=typeRetour;
-	res->home;
+	res->home=home;
 	if(OverrideOuStaticOpt == 0){
 		res->isStatic = 0;
 		res->isRedef = 0;
@@ -205,6 +237,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 
 /* TODO */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
+/* faire int cat stat ou opt */
 return NULL;
 }
 
@@ -257,19 +290,18 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
     return nouv;
   
   VarDeclP nouvTmp = nouv;
-  bool continuer = TRUE; 
-  while(nouvTmp != NULL)
-  {
+  bool continuer = TRUE;
+  while(nouvTmp!=NULL){
     /* liste mise a jour si besoin */
     VarDeclP listTmp = list;
     continuer = TRUE;
     while(listTmp!= NULL && continuer)
     {
-      if(strcmp(nouvTmp->name, listTmp->name)==0){
+      if(strcmp(nouvTmp->name, listTmp->name)==0){
         continuer = FALSE;
       }
       listTmp = listTmp->next;
-    }
+    }
     if(!continuer)
     {
       VarDeclP listCopie = list;
@@ -277,7 +309,7 @@ VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
       list->next = listCopie;
     }
     nouvTmp = nouvTmp->next; 
-  }
+  }
   return list;
 }
 

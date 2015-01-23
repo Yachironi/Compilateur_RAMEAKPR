@@ -24,6 +24,9 @@ typedef struct _Tree {
   union {
     char *str;      /* valeur de la feuille si op = ID ou STR */
     int val;        /* valeur de la feuille si op = CST */
+    PVAR var;	    /* valeur de la feuille si op = VAR */
+    PCLASS classe;	    /* valeur de la feuille si op = IDENTIFICATEURCLASS */
+    PMETH methode;        /* valeur de la feuille si op = METHODE */
     struct _Tree **children; /* tableau des sous-arbres */
   } u;
 } Tree, *TreeP;
@@ -140,7 +143,8 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define CONTENUCLASS 39
 #define LISTEARG 40
 #define LISTEPARAM 41
-
+#define LIST_INSTRUCTION 42
+#define LISTEVAR 43
 
 
 /* Codes d'erreurs */
@@ -180,6 +184,9 @@ VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope);
 /* construction pour les arbres */
 TreeP makeLeafStr(short op, char *str);
 TreeP makeLeafInt(short op, int val);
+TreeP makeLeafVar(short op, PVAR val);
+TreeP makeLeafClass(short op, PCLASS val);
+TreeP makeLeafMeth(short op, PMETH val);
 TreeP makeTree(short op, int nbChildren, ...);
 
 /* evaluateur d'expressions */
@@ -193,9 +200,10 @@ void pprint(TreeP tree);
 void pprintMain(TreeP);
 
 /* methode rajoute */
-PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP infos_classe,PCLASS classesMeres);
-//PCLASS makeClasse(char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
-PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params);
+PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
-PLCLASS makeListClass();
+PCLASS getClasse(PCLASS listeClass,char *nom);
+
+
 #endif
