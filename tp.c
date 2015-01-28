@@ -295,7 +295,7 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  * True : OK -> s'il n'y a aucune classe la verification a reussi
  * False : KO
 */
-bool checkLClassOpt()
+bool checkLClassOpt(TreeP tree)
 {
   TreeP tmp = tree;
   int i = 0;
