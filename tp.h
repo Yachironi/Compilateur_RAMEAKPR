@@ -54,6 +54,8 @@ struct _Class{
   PCLASS suivant;
 };
 
+PCLASS listeDeClass=NULL; /* Liste de toutes les classe declare */
+
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
   --> "représentation des arguments des constructeurs de la super classe => type : ??"
@@ -98,7 +100,7 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 typedef struct _Erreur
 {
   char* message;
-  ErreurP suivant;
+  struct _Erreur *suivant;
 } Erreur, *ErreurP;
 
 ErreurP listeErreur;

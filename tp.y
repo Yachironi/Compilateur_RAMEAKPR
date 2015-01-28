@@ -38,7 +38,7 @@
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
 PCLASS classActuel=NULL; /* Classe en cours d'analyse*/
-PCLASS listeDeClass=NULL; /* Liste de toutes les classe declare */
+
 
 extern int yylex();	/* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */

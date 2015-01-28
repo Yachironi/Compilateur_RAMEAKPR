@@ -350,7 +350,7 @@ bool checkHeritage(SCLASS classe)
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 {
   int i = 0;
-  PCLASS listeTmp = listeDeClass;
+  PCLASS listTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
 
