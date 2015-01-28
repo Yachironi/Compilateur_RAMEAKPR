@@ -6,28 +6,20 @@
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
 %token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS  YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
-%token <S> ID CSTS IDCLASS RETURN STATIC/* voir %type ci-dessous pour le sens de <S> et Cie */
+%token <S> ID CSTS IDCLASS RETURN STATIC
 %token <I> CSTE
-
 
 /* indications de precedence d'associativite. Les operateurs sur une meme
  * ligne (separes par un espace) ont la meme priorite. Les ligns sont donnees
  * par precedence croissante d'operateurs.
  */
 %left CONCAT
-
 %nonassoc RELOP
-
 %left PLUS MINUS
 %left MUL DIV 
 %left '.'
 %left unaire
 
-
-
-
-/* %empty epsilon
-*/
 /* voir la definition de YYSTYPE dans main.h 
  * Les indications ci-dessous servent a indiquer a Bison que les "valeurs" $i
  * ou $$ associees a ces non-terminaux doivent utiliser la variante indiquee
@@ -35,17 +27,18 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 
-/* %type <C> REL */
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass
 %type <I> OverrideOuStaticOpt StaticOpt
  
+/* Initialisation des variables globales*/
+
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-PCLASS classActuel=NULL;
-PCLASS listeDeClass=NULL;
+PCLASS classActuel=NULL; /* Classe en cours d'analyse*/
+PCLASS listeDeClass=NULL; /* Liste de toutes les classe declare */
 
 extern int yylex();	/* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */
@@ -79,20 +72,20 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc	{ $$ = makeTree(PROGRAM,2,$1,$2); }
+Programme : LClassOpt Bloc			{ $$ = makeTree(PROGRAM,2,$1,$2); }
           ;
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
  */
-LClassOpt : DeclClass LClassOpt	{$1->suivant=$2; $$=$1;}
-            | /* epsilon */ {$$=NIL(SCLASS);}
+LClassOpt : DeclClass LClassOpt			{$1->suivant=$2; $$=$1;}
+            | /* epsilon */ 			{$$=NIL(SCLASS);}
             ;
 
 /*
  * Un bloc est defini par une entite avec 2 accolades entourant un contenu
  */
-Bloc : '{' ContenuBloc '}'	{$$=$2;}
+Bloc : '{' ContenuBloc '}'			{$$=$2;}
       ;
 
 /*
@@ -108,22 +101,29 @@ ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
-YieldOpt : YIELD expr';'	{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
-        | /* epsilon */		{$$=NIL(Tree);}
+YieldOpt : YIELD expr';'			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
+        | /* epsilon */				{$$=NIL(Tree);}
         ;
 
-ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt {}	// a faire
+ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
+						{
+						$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); 
+						$$->suivant=$8;
+						}
             ;
 
 /*
  * Liste d'instructions optionnel 
  */
-LInstructionOpt : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);} // makeTree ou makeList?
-                | /* epsilon */ {$$=NIL(Tree);}
+LInstructionOpt : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
+                | /* epsilon */			{$$=NIL(Tree);}
                 ;
-
-LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);} // makeTree ou makeList?
+/*
+ * Liste d'instructions obligatoires 
+ */
+LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
               ;
+
 /*
  * Une instruction c'est : 
     *  expression;
