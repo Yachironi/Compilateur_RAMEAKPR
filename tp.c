@@ -305,15 +305,23 @@ if(fils0 != NULL){
 }
 }
 
+checkDeclVar(TreeP){
+}
+
 bool checkListInst(){
-
+  if(listeIntruction->op == LIST_INSTRUCTION);
+  TreeP tmp = listeIntruction; 
+  TreeP partieGauche = getChild(tmp,0);
+  TreeP partiDroite = getChild(tmp,1); 
+  recursifTestInstruction(partieGauche);
 }
 
-bool checkListeDecl(){
-
-
-
+bool recursifTestInstruction(TreeP arbre){
+  for(int i=0; i< arbre-> nbChildren){
+    // A faire 
+  }
 }
+
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */
