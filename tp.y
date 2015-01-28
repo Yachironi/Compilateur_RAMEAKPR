@@ -27,11 +27,6 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 
-<<<<<<< HEAD
-/* %type <C> REL */
-
-=======
->>>>>>> 57a22ad819571f33c37c9687bcd0d48c84e3dae6
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
