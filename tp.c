@@ -290,6 +290,30 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
+bool CheckBloc(TreeP CorpBloc, ListeVar liste){
+
+TreeP tmp = CorpBloc;
+
+TreeP fils0 = getChild(tmp,0); 
+TreeP fils1 = getChild(tmp,1);
+TreeP fils2 = getChild(tmp,2);
+
+if(fils0 != NULL){
+  if(fils1 != NULL){
+       return TRUE; 
+  }
+}
+}
+
+bool checkListInst(){
+
+}
+
+bool checkListeDecl(){
+
+
+
+}
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */
@@ -331,6 +355,7 @@ VarDeclP makeVar(char *name) {
   res->name = name; res->next = NIL(VarDecl);
   return(res);
 }
+
 
 
 /* Associe une variable a l'expression qui definit sa valeur, et procede a 

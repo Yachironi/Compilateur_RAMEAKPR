@@ -82,6 +82,15 @@ struct _Method{
 
 /* Structure qui décrit une liste de class */
 
+
+
+tyoedef struct LVar{
+   SVAR varibale;
+   PVAR suivant; 
+}ListeVar;
+
+
+
 struct _LClass{
  PCLASS classe;
  PLCLASS suivant;
