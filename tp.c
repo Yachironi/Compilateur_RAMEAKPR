@@ -37,7 +37,6 @@ FILE *fd = NIL(FILE);
 int main(int argc, char **argv) {
   int fi;
   int i, res;
-
   if (argc == 1) {
     fprintf(stderr, "Syntax: tp -e -v program.txt\n");
     exit(USAGE_ERROR);
@@ -295,16 +294,22 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  * True : OK -> s'il n'y a aucune classe la verification a reussi
  * False : KO
 */
-bool checkLClassOpt(TreeP tree)
+bool checkLClassOpt()
 {
-  TreeP tmp = tree;
   int i = 0;
   //
-  if(tree.nbChildren==0)
+  if(listeDeClass==NULL)
     return TRUE;
   else
   {
-    return checkClass(getChild(tree,0)) && checkLClassOpt(tree);
+    //return checkClass(getChild(tree,0)) && checkLClassOpt(tree);
+    PCLASS listTmp = listeDeClass;
+    while(listTmp!=NULL)
+    {
+      checkClass(listTmp);
+      listTmp = listTmp->suivant;
+    }
+    
   }
 
   return FALSE;
@@ -334,7 +339,30 @@ bool checkClass(SCLASS classe)
  */
 bool checkHeritage(SCLASS classe)
 {
-  
+  return classExtendsDeclareeAvant(&classe,classe.classe_mere);
+}
+
+/*
+ * Verifie que la classe heritee est declare avant la classe actuelle
+ * Car si on fait class actuelle extends class herite il y a une necessite de 
+ * declaration au dessus (de la classe heritee)
+ */
+bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
+{
+  int i = 0;
+  PCLASS listeTmp = listeDeClass;
+  while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
+  {
+
+    if(strcmp(heritee->nom,listTmp->nom)==0)
+    {
+      return TRUE;
+    }
+
+    listTmp = listTmp->suivant;
+  }
+
+  return FALSE;
 }
 
 bool checkCycleHeritage(SCLASS classe)

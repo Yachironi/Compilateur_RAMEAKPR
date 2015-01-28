@@ -95,6 +95,14 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
   variable locale à un bloc -> 4
 */
 
+typedef struct _Erreur
+{
+  char* message;
+  ErreurP suivant;
+} Erreur, *ErreurP;
+
+ErreurP listeErreur;
+
 /**/
 
 
