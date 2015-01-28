@@ -75,7 +75,7 @@ struct _Method{
   char *nom;
   PCLASS type;
   int categorie;
-  TreeP init;
+  TreeP init;	/* initialisation de la variable */
   PVAR suivant; /* on peut pas mettre directement PVAR? */
   /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
@@ -184,9 +184,9 @@ VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope);
 /* construction pour les arbres */
 TreeP makeLeafStr(short op, char *str);
 TreeP makeLeafInt(short op, int val);
-TreeP makeLeafVar(short op, PVAR val);
-TreeP makeLeafClass(short op, PCLASS val);
-TreeP makeLeafMeth(short op, PMETH val);
+TreeP makeLeafVar(short op, PVAR var);
+TreeP makeLeafClass(short op, PCLASS classe);
+TreeP makeLeafMeth(short op, PMETH methode);
 TreeP makeTree(short op, int nbChildren, ...);
 
 /* evaluateur d'expressions */

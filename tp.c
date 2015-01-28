@@ -204,11 +204,11 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 /* Renvoi la classe avec un nom donnée */
 
 PCLASS getClasse(PCLASS listeClass,char *nom){
-PCLASS parcour=listeClass;
-while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
-	parcour=parcour->suivant;	
-}
-return parcour;
+	PCLASS parcour=listeClass;
+	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+		parcour=parcour->suivant;	
+	}
+	return parcour;
 }
 
 /* Creation de la structure Methode */
@@ -237,8 +237,20 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 
 /* TODO */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
-/* faire int cat stat ou opt */
-return NULL;
+	PVAR res=NEW(1,SVAR);
+	res->nom=nom;
+	res->type=type;
+	res->init=init;
+	res->categorie=cat;	/* a enlever */
+	/* cat */
+	if(cat==1){
+		/* static */
+	}
+	else {
+		/* pas static */
+	}
+
+	return res;
 }
 
 /*
