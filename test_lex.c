@@ -158,7 +158,7 @@ int main(int argc, char **argv) {
     case RETURNS :
     case RETURN :
     case YIELD :
-    case NEW :
+    case NEWO :
 if (verbose) printf("Keyword:\t\t%s\n", yytext);
       break;
     case CONCAT :

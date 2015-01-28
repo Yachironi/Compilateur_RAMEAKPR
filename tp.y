@@ -184,7 +184,7 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,mak
 /* TODO */
 
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-		{$$ = makeListVar($3,$5,int cat,TreeP init); $$->suivant=$8}	// appeler makeVar
+		{$$ = makeListVar($3,$5,$2,$6); $$->suivant=$8}	// appeler makeVar
               | {$$=NIL(Tree);}
               ;
 
