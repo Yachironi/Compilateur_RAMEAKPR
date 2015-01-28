@@ -127,7 +127,7 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define IDENTIFICATEURCLASS 22
 #define CSTSTRING 23
 #define CSTENTIER 24
-#define ETIQUETTE_RETURN 25
+#define RETURN_VOID 25
 #define EXTENTION 26
 #define PARAM 27
 #define STATIQUE 28
@@ -146,6 +146,8 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 #define LISTEPARAM 41
 #define LIST_INSTRUCTION 42
 #define LISTEVAR 43
+
+#define MSG_VOID "void"
 
 
 /* Codes d'erreurs */

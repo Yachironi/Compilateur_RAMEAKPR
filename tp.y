@@ -27,11 +27,6 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 
-<<<<<<< HEAD
-/* %type <C> REL */
-
-=======
->>>>>>> 57a22ad819571f33c37c9687bcd0d48c84e3dae6
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
@@ -77,8 +72,7 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc			{ $$ = makeTree(PROGRAM,2,$1,$2); }
-          ;
+Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
@@ -137,22 +131,20 @@ LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1,
     * if expression then instruction else instruction
  */
 
-/** TODO Ajout de selection dans cette regle !!!!!!! **/
-
 Instruction : expr ';'						{$$=$1;}
+	    | RETURN expr ';'					{$$=makeTree(EXPRESSIONRETURN, 1, $2);}
             | Bloc						{$$=$1;}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
-            /*| selection AFFECT expr ';'*/
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
-            | RETURN ';'					{$$=makeLeafStr(ETIQUETTE_RETURN, $1);} // on fait quoi?
+            | RETURN ';'					{$$=makeLeafStr(RETURN_VOID, MSG_VOID);}	// return void
             ;
 /*
  * La cible de l'affectation ne peut etre qu'un identifiant : 
  * un nom d'un objet x := new Point(1,5)
  * un nom de classe var res : Point := new Point(x, y);
  */
+
 Cible : ID 		{$$=makeLeafStr(IDENTIFICATEUR,$1);}
-/*      | IDCLASS		{$$=makeLeafStr(IDENTIFICATEURCLASS,$1);} */ /*FIXME : on a enleve ca car incorrect niveau grammaire*/
       | selection	{$$=$1;}
       ;
 
@@ -166,7 +158,6 @@ BlocOpt : Bloc		{$$=$1;}
 /*
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
-// A FAIRE 
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
 		{ classActuel=makeClasse(listeDeClass		/* Liste de classes du programme */
 					,$2 			/* listeClass */
@@ -176,84 +167,80 @@ DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'Conten
 					,$10->u.children[0]->u.var 	/* liste_champs */
 					,getClasse(listeDeClass,$6->u.children[0]->u.str) /* classe_mere */
 					);
-		} /* A  VOIIIIIIIIIR*/
+		$$=classActuel;
+		}
          ;
-/* Etête de methode makeClasse : 
- PCLASS makeClasse(PCLASS listeClass, char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
-*/
 
+/* Contenu d'une classe : elle peut contenir une liste des champs et/ou des methodes */
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,makeLeafVar(LISTEVAR,$1),makeLeafMeth(LISTEMETHODE,$2));}
 		;
 
 /* 
  * var [static] nom : type [:= expression]; 
  */
-
-/* TODO */
-
-LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-		{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
-              | {$$=NIL(SVAR);}
+LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
+				{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
+              | 		{$$=NIL(SVAR);}
               ;
 
-StaticOpt : STATIC	{$$=1;}//{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
-          | {$$=0;}
+/* Renvoie un entier : 1 si la methode est static, 0 sinon */
+StaticOpt : STATIC	{$$=1;}
+          | 		{$$=0;}
           ;
 
-// A FAIRE 
-AffectExprOpt : AFFECT expr ';' {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-		//';'? + faire quoi?{$$=$2;} ou {$$=makeTree(ETIQUETTE_AFFECT, 1, $2)? car on a besoin de savoir que c AFFECT
-              |	{$$=NIL(Tree);}
+/* Affectation optionnelle d'une expression */
+AffectExprOpt : AFFECT expr ';' 	{$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
+              |				{$$=NIL(Tree);}
               ;
-/*
+
+/* Declaration d'une Methode :
  * def [override | static] nom (param, ...) returns Classe bloc
  * def [override | static] nom (param, ...) returns Classe := expression
  */
 
-
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-	{$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
+			{$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
 	;
 
-LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
-              |  { $$=NIL(SMETH);}
+/* Liste de methode */
+LDeclMethodeOpt : Methode LDeclMethodeOpt	{$1->suivant=$2; $$=$1;}
+              |  				{$$=NIL(SMETH);}
               ;
 
-OverrideOuStaticOpt : OVERRIDE		 { $$=1; }
-                      | STATIC		 { $$=2; }
-                      | /* expression */ { $$=0;}	// return 0
+/* Renvoie un entier : 0 si la methode n'est ni statique, ni override; 1 si elle est override et 2 si elle est static */ 
+OverrideOuStaticOpt : OVERRIDE		 {$$=1;}
+                      | STATIC		 {$$=2;}
+                      | /* epsilon */ 	 {$$=0;}
                       ;
 
-BlocOuExpr : AffectExprOpt	{ $$=$1;}
-           | Bloc		{ $$=$1;}
+/* Soit un bloc, soit une expression */
+BlocOuExpr : AffectExprOpt		{$$=$1;}
+           | Bloc			{$$=$1;}
            ;
 
-ListParamOpt : LParam 		{ $$=$1; }
-              | /* epsilon */ 	{ $$=NIL(SVAR);}
+ListParamOpt : LParam 			{$$=$1;}
+              | /* epsilon */ 		{$$=NIL(SVAR);}
               ;
 
-LParam : Param			{ $$=$1 ;}
-        | Param','LParam	{ $1->suivant=$3; $$=$1;}
+LParam : Param				{$$=$1 ;}
+        | Param','LParam		{$1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS	{ $$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
+Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
           ;   
 
-ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{ $$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);} // A verifier $1
-               | /* epsilon */				{ $$=NIL(Tree);}
+/** ON RENVOIE UNE CLASSE ? -> NON A CAUSE DE LISTOPTAG? **/
+ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}
+               | /* epsilon */				{$$=NIL(Tree);}
                ;
-ListOptArg :		{ $$=NIL(Tree);}
-	   | LArg	{ $$=$1	;}
+ListOptArg :						{$$=NIL(Tree);}
+	   | LArg					{$$=$1;}
            ;
 
 
-LArg : expr		{ $$ = $1;}
-     | LArg','expr      { $$=makeTree(LISTEARG, 2, $1,$3);}
+LArg : expr						{$$ = $1;}
+     | LArg','expr     					{$$=makeTree(LISTEARG, 2, $1,$3);}
      ;
-
-
-
-
 
 /*
  * RAJOUTER Au meme niveau ADD etc ... tout en haut
@@ -274,10 +261,8 @@ LArg : expr		{ $$ = $1;}
      * return expression
  */
 
-/* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
-
-expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
-       PLUS expr %prec unaire		{ $$=$2; }
+/* Pour info : ID est dans Cible */
+expr : PLUS expr %prec unaire		{ $$=$2; }
        | MINUS expr %prec unaire	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr 		{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
@@ -285,18 +270,14 @@ expr : /*ID 				{ $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
        | expr DIV expr			{ $$=makeTree(DIVISION, 2, $1, $3); }
        | expr MUL expr			{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
        | expr RELOP expr		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       /*| selection			{ $$=$1; }*/
        | constante 			{ $$=$1; }
-       /*| '(' expr ')'			{ $$=$2; }//{ $$=makeTree(EXPRESSIONPAREN, 3, '(',$2, ')'); }*/
        | instanciation			{ $$=$1; }
        | envoiMessage			{ $$=$1; }
-       | RETURN expr ';'		{ $$=makeTree(EXPRESSIONRETURN, 1, $2); }
        | OuRien				{ $$=$1; }
        ;
 
 OuRien : '(' expr ')'			{$$=$2;}
        | Cible				{$$=$1;}
-       /*| '(' instanciation ')'     {$$=$2;}  */
        ;
 
 /*
@@ -304,37 +285,19 @@ OuRien : '(' expr ')'			{$$=$2;}
  * Ou c.x
  */
 
-
-/*avant_selection : IDCLASS		{ $$=makeLeafStr(IDENTIFICATEURCLASS, $1); }
-              	| ID				{ $$=makeLeafStr(IDENTIFICATEUR, $1); }
-              	| envoiMessage			{ $$=$1;}
-              	| selection			{ $$=$1;}
-              	| '('instanciation')'		{ $$=$2;}
-              	;
-
-
-selection : avant_selection '.' ID	{ $$=makeTree(SELECTION, 2, $1, makeLeafStr(IDENTIFICATEUR,$3));}
-	          ;*/
-
-// A FAIRE 
-selection : IDCLASS'.'ID	%prec '.'		{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
-          /*| ID'.'ID			%prec '.'	{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3));}*/
-          | envoiMessage'.'ID	%prec '.'		{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
-          /*| selection'.'ID		%prec '.'	{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}*/
-          /*| '('instanciation')' '.' ID	{$$=makeTree(SELECTION, 2, $2,makeLeafStr(IDENTIFICATEUR,$5));}*/
+selection : IDCLASS'.'ID	%prec '.'		
+			{$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
+          | envoiMessage'.'ID	%prec '.'	{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
           | OuRien '.' ID	%prec '.'	{$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
          ;
 
-// A FAIRE 
-constante : CSTS  { $$ = makeLeafStr(CSTSTRING,yylval.S); } // yylval.S ou $1 ou $1
-	  | CSTE  { $$ = makeLeafInt(CSTENTIER,yylval.I); }
-          ;
 /*
- * new C(...)
- * TODO !!!!!! expression fini par un ';' ???
+ * regle qui defini soit une constante entiere, soit une constante d type string
  */
+constante : CSTS  { $$ = makeLeafStr(CSTSTRING,$1); }
+	  | CSTE  { $$ = makeLeafInt(CSTENTIER,$1); }
+          ;
 
-// A FAIRE 
 instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2), $4); }
               ;
 
@@ -344,19 +307,10 @@ instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, 
  */
 
 
-
 envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              /*| ID '.' ID '(' ListOptArg ')'   	%prec '.'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEUR,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }*/
               | envoiMessage '.' ID'('ListOptArg ')' %prec '.' 	 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
               | OuRien '.' ID '(' ListOptArg ')' 	%prec '.' 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              /*| '('instanciation ')' '.' ID '('ListOptArg ')' %prec '.'  { $$=makeTree(ENVOIMESSAGE, 3,$2,makeLeafStr(IDENTIFICATEUR,$5),$7); }*/
              ;
-
-/** On peut pas faire ça? :
-
-envoiMessage : selection '(' ListOptArg ')
-		;
-**/
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
  * arithmetique. On rappelle que la methode est ascendante, donc les arbres
@@ -373,5 +327,3 @@ envoiMessage : selection '(' ListOptArg ')
  * du coup RELOP est une notion qui nous permet de les généraliser dans une seul entité
  * Ici même on récuper grace à lex l'opérateur mis en jeu ! => go en bas du tp.l
  */
-/* REL : RELOP { $$ = yylval.C; }
-;*/
