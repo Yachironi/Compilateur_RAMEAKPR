@@ -290,6 +290,82 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
+/*
+ * Verifier la liste de classe qui peut etre vide
+ * True : OK -> s'il n'y a aucune classe la verification a reussi
+ * False : KO
+*/
+bool checkLClassOpt()
+{
+  TreeP tmp = tree;
+  int i = 0;
+  //
+  if(tree.nbChildren==0)
+    return TRUE;
+  else
+  {
+    return checkClass(getChild(tree,0)) && checkLClassOpt(tree);
+  }
+
+  return FALSE;
+}
+
+/*
+ * Etudie une classe en particulier
+ * True : OK
+ * False : KO
+*/
+bool checkClass(SCLASS classe)
+{
+  /*
+   * bool checkHeritage(getChild(tmp,0));
+   * bool checkCycleHeritage(SCLASS classe);
+   * bool checkAttribut(SCLASS classe);
+   * bool checkMethode(SCLASS classe);
+    ----
+   * bool checkCorp(SMETH methode)
+    ----
+   * bool checkMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
+  */
+}
+
+/*
+ * Verifie qu'il n'y a pas de cycle d'héritage
+ */
+bool checkHeritage(SCLASS classe)
+{
+  
+}
+
+bool checkCycleHeritage(SCLASS classe)
+{
+
+}
+
+bool checkAttribut(SCLASS classe)
+{
+
+}
+
+bool checkMethode(SCLASS classe)
+{
+
+}
+
+/* 
+ * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
+ * de classe (meme principe que le java)
+ */ 
+bool checkMethodeStatic(SCLASS classe)
+{
+
+} 
+
+bool checkCorp(SMETH methode)
+{
+  //checkBlock()
+}
+
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */

@@ -50,6 +50,7 @@ struct _Class{
   PMETH liste_methodes;     /* liste des méthodes de la classe */
   PVAR liste_champs;        /* liste des champs de la classe */ 
   PCLASS classe_mere;       /* classe mère éventuelle de la classe */
+  int isExtend;             /* si la classe herite ou pas */
   PCLASS suivant;
 };
 
