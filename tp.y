@@ -36,8 +36,8 @@
  */
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien
-%type <V> ListDeclVar LDeclChampsOpt ListParamOpt LParam ListOptArg LArg
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien LArg
+%type <V> ListDeclVar LDeclChampsOpt ListParamOpt LParam ListOptArg 
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass
 %type <I> OverrideOuStaticOpt StaticOpt
