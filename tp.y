@@ -243,8 +243,7 @@ LArg : expr						{$$ = $1;}
      ;
 
 /*
- * RAJOUTER Au meme niveau ADD etc ... tout en haut
- * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5
+ * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5 A VOIRRRRRRRRRRRRRRRRRRRRRRRRRR
 
   E : E+E
     | Fonc%prec
@@ -307,9 +306,12 @@ instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, 
  */
 
 
-envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'		{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | envoiMessage '.' ID'('ListOptArg ')' %prec '.' 	 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | OuRien '.' ID '(' ListOptArg ')' 	%prec '.' 	{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'		
+				{ $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
+              | envoiMessage '.' ID'('ListOptArg ')' %prec '.' 	 	
+				{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+              | OuRien '.' ID '(' ListOptArg ')' 	%prec '.' 	
+				{ $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
              ;
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
