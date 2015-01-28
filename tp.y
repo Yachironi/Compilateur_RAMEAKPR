@@ -36,11 +36,11 @@
  */
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien
 %type <V> ListDeclVar LDeclChampsOpt ListParamOpt LParam ListOptArg LArg
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass
-%type <I> OverrideOuStaticOpt
+%type <I> OverrideOuStaticOpt StaticOpt
  
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
@@ -188,11 +188,11 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,mak
 
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
 		{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
-              | {$$=NIL(Tree);}
+              | {$$=NIL(SVAR);}
               ;
 
 StaticOpt : STATIC	{$$=1;}//{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
-          | {$$=NIL(Tree);}
+          | {$$=0;}
           ;
 
 // A FAIRE 
@@ -207,7 +207,7 @@ AffectExprOpt : AFFECT expr ';' {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
 
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-	{$$=makeMethode($3,$2,$9,$8,$5,classActuel);}
+	{$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
 	;
 
 LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
@@ -216,7 +216,7 @@ LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
 
 OverrideOuStaticOpt : OVERRIDE		 { $$=1; }
                       | STATIC		 { $$=2; }
-                      | /* expression */ { $$=NIL(Tree);}	// return 0
+                      | /* expression */ { $$=0;}	// return 0
                       ;
 
 BlocOuExpr : AffectExprOpt	{ $$=$1;}
