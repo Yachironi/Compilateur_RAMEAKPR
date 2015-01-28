@@ -36,11 +36,11 @@
  */
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt StaticOpt AffectExprOpt BlocOuExpr Param ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien
-%type <V> ListDeclVar LDeclChampsOpt LDeclMethodeOpt ListParamOpt LParam ListOptArg LArg
-%type <M> Methode
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+%type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
+%type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass
-%type <I> OverrideOuStaticOpt
+%type <I> OverrideOuStaticOpt StaticOpt
  
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
@@ -101,8 +101,8 @@ Bloc : '{' ContenuBloc '}'	{$$=$2;}
  * Ou si on a une List de declaration de valeur => oblige apres le IS d'avoir une Liste d'instruction
  * suivi par un Yield optionnel
  */
-ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,2,$1,$2);}				// pas sur
-      | ListDeclVar IS LInstruction YieldOpt	{$$=makeTree(CONTENUBLOC,2,$1,makeTree(ETIQUETTE_IS,2,$3,$4));}	// pas sur
+ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);}
+      | ListDeclVar IS LInstruction YieldOpt	{$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}	
       ;
 
 /*
@@ -188,11 +188,11 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt	{$$=makeTree(CONTENUCLASS,2,mak
 
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
 		{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
-              | {$$=NIL(Tree);}
+              | {$$=NIL(SVAR);}
               ;
 
 StaticOpt : STATIC	{$$=1;}//{$$=makeLeafStr(STATIQUE,"static");}//faire quoi?
-          | {$$=NIL(Tree);}
+          | {$$=0;}
           ;
 
 // A FAIRE 
@@ -207,7 +207,7 @@ AffectExprOpt : AFFECT expr ';' {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
 
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-	{$$=makeMethode($3,$2,$9,$8,$5,classActuel);}
+	{$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
 	;
 
 LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
@@ -216,24 +216,23 @@ LDeclMethodeOpt : Methode LDeclMethodeOpt	{ $1->suivant=$2; $$=$1; }
 
 OverrideOuStaticOpt : OVERRIDE		 { $$=1; }
                       | STATIC		 { $$=2; }
-                      | /* expression */ { $$=NIL(Tree);}	// return 0
+                      | /* expression */ { $$=0;}	// return 0
                       ;
 
 BlocOuExpr : AffectExprOpt	{ $$=$1;}
            | Bloc		{ $$=$1;}
            ;
 
-
 ListParamOpt : LParam 		{ $$=$1; }
-              | /* epsilon */ 	{ $$=NIL(Tree);}
+              | /* epsilon */ 	{ $$=NIL(SVAR);}
               ;
 
 LParam : Param			{ $$=$1 ;}
-        | LParam','Param	{ $$=makeTree(LISTEPARAM, 2,$1,$3);}	// appeler makelist
+        | Param','LParam	{ $1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS	{ $$ = makeTree(PARAM, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEURCLASS,$3)); }
-          ;
+Param : ID':' IDCLASS	{ $$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
+          ;   
 
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{ $$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);} // A verifier $1
                | /* epsilon */				{ $$=NIL(Tree);}
