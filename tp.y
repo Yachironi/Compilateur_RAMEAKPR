@@ -72,7 +72,7 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);}
+Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2); printf("\n\nTEST AFFICHAGE\n\n");}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
@@ -226,7 +226,7 @@ LParam : Param				{$$=$1 ;}
         | Param','LParam		{$1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
+Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}	// 0 = var non static
           ;   
 
 /** ON RENVOIE UNE CLASSE ? -> NON A CAUSE DE LISTOPTAG? **/
@@ -243,7 +243,7 @@ LArg : expr						{$$ = $1;}
      ;
 
 /*
- * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5 A VOIRRRRRRRRRRRRRRRRRRRRRRRRRR
+ * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5 A VOIRRRRRRRRRRRRRRRRRRRRRRRRRR (Amin et Gishan)
 
   E : E+E
     | Fonc%prec

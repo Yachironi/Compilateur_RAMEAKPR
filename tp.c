@@ -177,11 +177,10 @@ TreeP makeLeafMeth(short op, PMETH methode){
   return(tree);
 }
 
-
-
-/* methodes rajoutees */
+/** construit une structure classe (pouvant etre une liste de classe) */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
 	PCLASS res = NEW(1, SCLASS);
+	res->suivant=NIL(SCLASS);	/* verifier si ça ne pose pas de pb */
 	res->nom=nom;
 	res->param_constructeur=param_constructeur;
 	res->corps_constructeur=corps_constructeur;
@@ -213,20 +212,23 @@ PCLASS getClasse(PCLASS listeClass,char *nom){
 /* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
 	PMETH res=NEW(1, SMETH);
-	res->suivant = NIL(SMETH);
+	res->suivant = NIL(SMETH);	/* verifier si ça ne pose pas de pb */
 	res->nom=nom;
 	res->corps=corps;
 	res->params=params;
 	res->typeRetour=typeRetour;
 	res->home=home;
+	/* ni static, ni override */
 	if(OverrideOuStaticOpt == 0){
 		res->isStatic = 0;
 		res->isRedef = 0;
 	}
+	/* override mais pas static */
 	else if(OverrideOuStaticOpt == 1){
 		res->isStatic = 0;
 		res->isRedef = 1;
 	}
+	/* static mais pas override */
 	else{
 		res->isStatic = 1;
 		res->isRedef = 0;
@@ -234,21 +236,14 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 	return res;
 }
 
-/* TODO */
+/* Creer une var pouvant etre un parametre, un champ, .. */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
 	PVAR res=NEW(1,SVAR);
+	res->suivant=NIL(SVAR);	/* verifier si ça ne pose pas de pb */
 	res->nom=nom;
 	res->type=type;
 	res->init=init;
-	res->categorie=cat;	/* a enlever */
-	/* cat */
-	if(cat==1){
-		/* static */
-	}
-	else {
-		/* pas static */
-	}
-
+	res->categorie=cat;	/* si cat=0 ==> var non static. si cat=1 ==> var static */
 	return res;
 }
 
