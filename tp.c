@@ -350,7 +350,7 @@ bool checkHeritage(SCLASS classe)
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 {
   int i = 0;
-  PCLASS listTmp = listeDeClass;
+  PCLASS listeTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
 
@@ -365,11 +365,6 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
   return FALSE;
 }
 
-bool checkCycleHeritage(SCLASS classe)
-{
-
-}
-
 bool checkAttribut(SCLASS classe)
 {
 
@@ -377,7 +372,11 @@ bool checkAttribut(SCLASS classe)
 
 bool checkMethode(SCLASS classe)
 {
-
+  /*
+   * Verifier les parametre de la methode
+   * Verifier le corps de la methode
+   * if(method.static) checkMethodeStatic
+   */
 }
 
 /* 
