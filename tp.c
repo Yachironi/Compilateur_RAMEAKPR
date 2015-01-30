@@ -336,6 +336,8 @@ bool checkClass(SCLASS classe)
 
 /*
  * Verifie qu'il n'y a pas de cycle d'héritage
+ * VRAI : OK (si la classe n'herite d'aucune classe on considere qu'il n'y a pas de cycle)
+ * FAUX : classe mere non declare avant
  */
 bool checkHeritage(SCLASS classe)
 {
@@ -349,11 +351,14 @@ bool checkHeritage(SCLASS classe)
  */
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 {
+  //classe mere inexistante
+  if(heritee==NULL)
+    return TRUE;
   int i = 0;
   PCLASS listeTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
-
+    //On a trouve la classe elle est bien declaree avant
     if(strcmp(heritee->nom,listTmp->nom)==0)
     {
       return TRUE;
