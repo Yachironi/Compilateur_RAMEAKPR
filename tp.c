@@ -323,8 +323,7 @@ bool checkLClassOpt()
 bool checkClass(SCLASS classe)
 {
   /*
-   * bool checkHeritage(getChild(tmp,0));
-   * bool checkCycleHeritage(SCLASS classe);
+   * bool checkHeritage(classe);
    * bool checkAttribut(SCLASS classe);
    * bool checkMethode(SCLASS classe);
     ----
@@ -332,6 +331,11 @@ bool checkClass(SCLASS classe)
     ----
    * bool checkMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
   */
+
+  //TRUE : OK FALSE : NOK
+  bool heritage = checkHeritage(classe);
+
+  bool attribut = checkAttribut(classe);
 }
 
 /*
@@ -355,7 +359,7 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
   if(heritee==NULL)
     return TRUE;
   int i = 0;
-  PCLASS listeTmp = listeDeClass;
+  PCLASS listTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
     //On a trouve la classe elle est bien declaree avant
