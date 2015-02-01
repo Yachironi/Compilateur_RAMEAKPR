@@ -27,10 +27,10 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr ListExtendsOpt selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr /*ListExtendsOpt*/ selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
-%type <CL> LClassOpt DeclClass
+%type <CL> LClassOpt DeclClass ListExtendsOpt
 %type <I> OverrideOuStaticOpt StaticOpt
  
 /* Initialisation des variables globales*/
@@ -72,7 +72,7 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2); printf("\n\nTEST AFFICHAGE\n\n");}
+Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
@@ -159,15 +159,14 @@ BlocOpt : Bloc		{$$=$1;}
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{ classActuel=makeClasse(listeDeClass		/* Liste de classes du programme */
-					,$2 			/* listeClass */
-					,$4 			/* param_constructeur */
-					,$7 			/* corps_constructeur */
-					,$10->u.children[1]->u.methode 	/* liste_methodes */
-					,$10->u.children[0]->u.var 	/* liste_champs */
-					,getClasse(listeDeClass,$6->u.children[0]->u.str) /* classe_mere */
-					);
-		$$=classActuel;
+		{ 	int isExtend; 
+			if($6==NIL(SCLASS)){
+				isExtend=0;
+			}else{
+				isExtend=1;
+			}
+			classActuel=makeClasse(listeDeClass,$2,$4,$7,$10->u.children[1]->u.methode,$10->u.children[0]->u.var,/*getClasse(listeDeClass,$6->u.children[0]->u.str)*/ $6,isExtend);
+			$$=classActuel;
 		}
          ;
 
@@ -229,9 +228,19 @@ LParam : Param				{$$=$1 ;}
 Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}	// 0 = var non static
           ;   
 
-/** ON RENVOIE UNE CLASSE ? -> NON A CAUSE DE LISTOPTAG? **/
-ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'	{$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}
-               | /* epsilon */				{$$=NIL(Tree);}
+/** Julien : j'ai essaye de renvoyer directement une classe **/
+/* Pour Amin : il faut remplacer les commentaires par les verifs que tu dois faire */
+ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
+	{
+		$$=getClasse(listeDeClass, $2);
+		if(classe == NULL){
+			/* la classe n'existe pas: erreur */
+		}
+		else{
+			/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
+		}
+	}	/*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+               | /* epsilon */				{$$=NIL(/*Tree*/ SCLASS);}
                ;
 ListOptArg :						{$$=NIL(Tree);}
 	   | LArg					{$$=$1;}
