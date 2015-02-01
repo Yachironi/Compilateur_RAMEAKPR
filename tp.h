@@ -2,6 +2,8 @@
 #define __TP__
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
@@ -112,7 +114,7 @@ struct _Class{
   PCLASS suivant;		/* suivant permettant de faire une liste */
 };
 
-PCLASS listeDeClass=NULL; 	/* Liste de toutes les classe declarees dans le programme */
+PCLASS listeDeClass; 	/* Liste de toutes les classe declarees dans le programme */
 
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
@@ -158,6 +160,10 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 typedef struct _Erreur
 {
   char* message;
+  SCLASS classe; /*La classe en question*/
+  SMETH methode; /*La methode en question si le probleme vient de la */
+  SVAR variable; /*La variable en jeu*/
+  int ligne;
   struct _Erreur *suivant;
 } Erreur, *ErreurP;
 
@@ -209,7 +215,7 @@ VarDeclP evalDecls (TreeP tree);
 void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
-void pprintMain(TreeP);
+void pprintMain(TreeP tree);
 void pprintTreeN(TreeP tree, char *op, int nbChild);
 void pprintListMethode(PMETH meth);
 void pprintMethode(PMETH meth);
@@ -224,5 +230,18 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
 
+bool appelConstructureEstCorrecte(TreeP args,PCLASS mere);
 
+
+/*
+ * Methode check
+ */
+bool checkLClassOpt();
+bool checkClass(PCLASS classe);
+bool checkHeritage(PCLASS classe);
+bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
+bool checkConstructeur(PCLASS classe);
+bool checkAttribut(PCLASS classe);
+bool checkMethode(PCLASS classe);
+bool checkMethodeStatic(PMETH methode);
 #endif

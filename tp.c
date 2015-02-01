@@ -293,12 +293,11 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
 bool checkLClassOpt()
 {
   int i = 0;
-  //
   if(listeDeClass==NULL)
     return TRUE;
   else
   {
-    //return checkClass(getChild(tree,0)) && checkLClassOpt(tree);
+    /*return checkClass(getChild(tree,0)) && checkLClassOpt(tree);*/
     PCLASS listTmp = listeDeClass;
     while(listTmp!=NULL)
     {
@@ -350,7 +349,7 @@ bool checkClass(PCLASS classe)
   if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
     nomMaj = TRUE;
 
-  //TRUE : OK FALSE : NOK
+  /*TRUE : OK FALSE : NOK*/
   bool heritage = checkHeritage(classe);
 
   bool constructeur = checkConstructeur(classe);
@@ -379,14 +378,14 @@ bool checkHeritage(PCLASS classe)
  */
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 {
-  //classe mere inexistante
+  /*classe mere inexistante*/
   if(heritee==NULL)
     return TRUE;
   int i = 0;
   PCLASS listTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
-    //On a trouve la classe elle est bien declaree avant
+    /*On a trouve la classe elle est bien declaree avant*/
     if(strcmp(heritee->nom,listTmp->nom)==0)
     {
       return TRUE;
@@ -473,7 +472,7 @@ bool checkMethodeStatic(PMETH methode)
 
 bool checkCorp(PMETH methode)
 {
-  //checkBlock()
+  /*checkBlock()*/
 }
 
 bool checkListOptArg(PVAR var)
@@ -631,3 +630,17 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   }
   return errorCode;
 }
+
+PVAR appelConstructureEstCorrecteRecursif(TreeP args,PCLASS mere)
+{
+  TreeP tmp = args;
+
+  return NULL;
+}
+
+bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
+{
+  PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
+}
+
+
