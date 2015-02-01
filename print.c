@@ -130,11 +130,11 @@ void pprintMethode(PMETH meth){
 }
 
 /** affiche une liste de classe **/
-void pprintListClasse(PCLASS class){
-	pprintClasse(class);
+void pprintListClasse(PCLASS classe){
+	pprintClasse(classe);
 	printf("->");
-	if(class->suivant != NIL(SCLASS)){
-		pprintListClasse(class->suivant);
+	if(classe->suivant != NIL(SCLASS)){
+		pprintListClasse(classe->suivant);
 	}
 	else{
 		printf("suivant=NIL\n");
@@ -142,18 +142,18 @@ void pprintListClasse(PCLASS class){
 }
 
 /** affiche une classe **/
-void pprintClass(PCLASS class){
-	printf("classe=(nom=%s, param_constructeur=", class->nom);
-	pprintVAR(class->param_constructeur);
+void pprintClasse(PCLASS classe){
+	printf("classe=(nom=%s, param_constructeur=", classe->nom);
+	pprintVAR(classe->param_constructeur);
 	printf(", corps_constructeur=");
-	pprint(class->corps_constructeur);
+	pprint(classe->corps_constructeur);
 	printf(", liste_methodes=");
-	pprintListMethode(class->liste_methodes);
+	pprintListMethode(classe->liste_methodes);
 	printf(", liste_champs=");
-	pprintListVAR(class->liste_champs);
+	pprintListVAR(classe->liste_champs);
 	printf(", classe_mere=");
-	pprintClasse(class->classe_mere);
-	printf(", isExtend=%d)", class->isExtend);
+	pprintClasse(classe->classe_mere);
+	printf(", isExtend=%d)", classe->isExtend);
 }
 
 /** affiche une liste de var (param, ...) **/
