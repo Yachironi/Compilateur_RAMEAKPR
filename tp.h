@@ -214,7 +214,7 @@ void pprintTreeN(TreeP tree, char *op, int nbChild);
 void pprintListMethode(PMETH meth);
 void pprintMethode(PMETH meth);
 void pprintListClasse(PCLASS classe);
-void pprintClass(PCLASS classe);
+void pprintClasse(PCLASS classe);
 void pprintListVAR(PVAR var);
 void pprintVAR(PVAR var);
 
