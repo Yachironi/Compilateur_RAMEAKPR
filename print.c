@@ -10,6 +10,14 @@ extern TreeP getChild(TreeP tree, int rank);
 extern bool verbose;
 extern bool noEval;
 
+void pprintTreeN(TreeP tree, char *op, int nbChild);
+void pprintListMethode(PMETH meth);
+void pprintMethode(PMETH meth);
+void pprintListClasse(PCLASS class);
+void pprintClass(PCLASS class);
+void pprintListVAR(PVAR var);
+void pprintVAR(PVAR var);
+
 /* Impression : )  de la partie declarative du programme */
 void pprintVar(VarDeclP decl, TreeP tree) {
   if (! verbose) return;
@@ -85,4 +93,95 @@ void pprintMain(TreeP tree) {
   printf("Expression principale : ");
   pprint(tree);
   fflush(NULL);
+}
+
+/** methodes rajoutees par julien **/
+
+/** permet d'afficher un arbre à n fils **/
+void pprintTreeN(TreeP tree, char *op, int nbChild) {
+	int i;
+	printf("(TreeP(%d fils) : op=%s, childs=", nbChild, op);
+	for(i=0; i<nbChild; i++){
+		printf("child[%d]=", i+1);
+		pprintt(getChild(tree, i));
+		if(i<nbChild-1){
+			printf("-");
+		}
+	}
+	printf(")");
+}
+
+/** affiche la liste des methodes **/
+void pprintListMethode(PMETH meth){
+	pprintMethode(meth);
+	printf("->");
+	if(meth->suivant != NIL(SMETH)){
+		pprintListMethode(meth->suivant);
+	}
+	else{
+		printf("suivant=NIL\n");
+	}
+}
+
+/** affiche une methode **/
+void pprintMethode(PMETH meth){
+	printf("methode=(nom=%s, isStatic=%d, isRedef=%d, corps=", meth->nom, meth->isStatic, meth->isRedef);
+	pprint(meth->corps);
+	printf(", typeRetour=");
+	pprintClasse(meth->typeRetour);
+	printf(", params=");
+	pprintVAR(meth->params);
+	printf(", home=");
+	pprintClasse(meth->home);
+	printf(")");
+	
+}
+
+/** affiche une liste de classe **/
+void pprintListClasse(PCLASS class){
+	pprintClasse(class);
+	printf("->");
+	if(class->suivant != NIL(SCLASS)){
+		pprintListClasse(class->suivant);
+	}
+	else{
+		printf("suivant=NIL\n");
+	}
+}
+
+/** affiche une classe **/
+void pprintClass(PCLASS class){
+	printf("classe=(nom=%s, param_constructeur=", class->nom);
+	pprintVAR(class->param_constructeur);
+	printf(", corps_constructeur=");
+	pprint(class->corps_constructeur);
+	printf(", liste_methodes=");
+	pprintListMethode(class->liste_methodes);
+	printf(", liste_champs=");
+	pprintListVAR(class->liste_champs);
+	printf(", classe_mere=");
+	pprintClasse(class->classe_mere);
+	printf(", isExtend=%d)", class->isExtend);
+}
+
+/** affiche une liste de var (param, ...) **/
+void pprintListVAR(PVAR var){
+	pprintVAR(var);
+	printf("->");
+	if(var->suivant != NIL(SVAR)){
+		pprintListVAR(var->suivant);
+	}
+	else{
+		printf("suivant=NIL\n");
+	}
+
+}
+
+/** affiche un var (param, ...) **/
+void pprintVAR(PVAR var){
+	printf("VAR=(nom=%s, type=", var->nom);
+	pprintClasse(var->type);
+	printf(", categorie=%d, init=", var->categorie);
+	pprint(var->init);
+	printf(")");
 }
