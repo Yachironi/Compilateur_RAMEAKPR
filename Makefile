@@ -1,12 +1,19 @@
 OBJ=tp.o tp_l.o tp_y.o print.o
 CC=gcc
 CFLAGS=-Wall -ansi -I./ -g 
-LDFLAGS= -g -ll
+LDFLAGS= -g -lfl
+LDFLAGSMAC= -g -ll
 tp : $(OBJ)
 	$(CC) -o tp $(OBJ) $(LDFLAGS)
 
+mac : $(OBJ)
+	$(CC) -o tp $(OBJ) $(LDFLAGSMAC)
+
 test_lex : tp_l.c test_lex.c tp_y.h
 	$(CC) $(CFLAGS) -o test_lex tp_l.c test_lex.c $(LDFLAGS) 
+
+test_lex_mac : tp_l.c test_lex.c tp_y.h
+	$(CC) $(CFLAGS) -o test_lex tp_l.c test_lex.c $(LDFLAGSMAC) 
 
 tp.c :
 	echo ''
@@ -32,5 +39,5 @@ tp_y.h tp_y.c : tp.y tp.h
 .Phony: clean
 
 clean:
-	rm -f *~ tp.exe* ./tp *.o tp_l.* tp_y.* test_lex
+	rm -f *~ tp.exe* ./tp *.o tp_l.* tp_y.* test_lex test_lex_mac
 	rm -f test/*~ test/*.out test/*.res test/*/*~ test/*/*.out test/*/*.res
