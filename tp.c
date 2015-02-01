@@ -314,8 +314,25 @@ bool checkLClassOpt()
  * Etudie une classe en particulier
  * True : OK
  * False : KO
+
+ struct _Class{
+  char *nom;                      nom de la classe
+  PVAR param_constructeur;        paramètres du constructeur de la classe
+  TreeP corps_constructeur;       corps du constructeur de la classe sous la forme d'un arbre (d'expression)
+  PMETH liste_methodes;           liste des méthodes de la classe
+  PVAR liste_champs;              liste des champs de la classe 
+  PCLASS classe_mere;             classe mère éventuelle de la classe 
+  int isExtend;                   si la classe herite ou pas 
+  PCLASS suivant;                 suivant permettant de faire une liste 
+
+  Question 1: ou vous avez inserez le constructeur de la classe Mere ?
+              Quand on fait un heritage il me semble qu'il appel le constructeur classe mere
+              Comme en C++
+              J'ai vu que vous l'aviez stocker dans un arbre au niveau de la regle ListExtendsOpt
+              Du coup un parcours de l'arbre est obligatoire ? ou tout est dans corps_constructeur ?
+};
 */
-bool checkClass(SCLASS classe)
+bool checkClass(PCLASS classe)
 {
   /*
    * bool checkHeritage(classe);
@@ -327,10 +344,21 @@ bool checkClass(SCLASS classe)
    * bool checkMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
   */
 
+  bool nomMaj = FALSE;
+
+  if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
+    nomMaj = TRUE;
+
   //TRUE : OK FALSE : NOK
   bool heritage = checkHeritage(classe);
 
+  bool constructeur = checkConstructeur(classe);
+
   bool attribut = checkAttribut(classe);
+
+  bool methode = checkMethode(classe);
+
+  return (heritage && constructeur && attribut && methode);
 }
 
 /*
@@ -338,9 +366,9 @@ bool checkClass(SCLASS classe)
  * VRAI : OK (si la classe n'herite d'aucune classe on considere qu'il n'y a pas de cycle)
  * FAUX : classe mere non declare avant
  */
-bool checkHeritage(SCLASS classe)
+bool checkHeritage(PCLASS classe)
 {
-  return classExtendsDeclareeAvant(&classe,classe.classe_mere);
+  return classExtendsDeclareeAvant(classe,classe->classe_mere);
 }
 
 /*
@@ -369,32 +397,87 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
   return FALSE;
 }
 
-bool checkAttribut(SCLASS classe)
+bool checkConstructeur(PCLASS classe)
 {
-
+  PVAR tmp = classe->param_constructeur;
 }
 
-bool checkMethode(SCLASS classe)
+bool checkAttribut(PCLASS classe)
 {
-  /*
-   * Verifier les parametre de la methode
-   * Verifier le corps de la methode
-   * if(method.static) checkMethodeStatic
-   */
+  PVAR tmp = classe->liste_champs;
+
+  while(tmp!=NULL)
+  {
+    /*
+     * Appel de la fonction de Gishan qui verifier une instruction
+     * Integer x; ... et bien d'autres chose
+     */
+    tmp = tmp->suivant;
+  }
+}
+
+/*
+ * 
+
+  struct _Method{
+  char *nom;
+  int isStatic;  1 si vrai, 0 si non 
+  int isRedef;  1 si vrai, 0 si non
+  TreeP corps;
+  PCLASS typeRetour;
+  PVAR params;
+  PMETH suivant;
+  PCLASS home;
+};
+
+
+ */
+bool checkMethode(PCLASS classe)
+{
+  PMETH tmp = classe->liste_methodes;
+
+  while(tmp!=NULL)
+  {
+
+    printf("Je check la methode %s\n",tmp->nom);
+
+    if(tmp->isStatic)
+    {
+      checkMethodeStatic(tmp);
+    }
+    else
+    {
+      /*Verification d'une methode de classe*/
+    }
+    /*
+     * Verifier les parametre de la methode
+     * Verifier le corps de la methode
+     * if(method.static) checkMethodeStatic
+     */
+    tmp = tmp->suivant;
+  }
 }
 
 /* 
  * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
  * de classe (meme principe que le java)
  */ 
-bool checkMethodeStatic(SCLASS classe)
+bool checkMethodeStatic(PMETH methode)
 {
+  /*
+   * Si la classe Point a un attribut x,y
+   * Si dans la methode il fait x = 1; -> erreur
+   */
+}
 
-} 
-
-bool checkCorp(SMETH methode)
+bool checkCorp(PMETH methode)
 {
   //checkBlock()
+}
+
+bool checkListOptArg(PVAR var)
+{
+
 }
 
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en

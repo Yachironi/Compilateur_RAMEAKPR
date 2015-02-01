@@ -10,14 +10,6 @@ extern TreeP getChild(TreeP tree, int rank);
 extern bool verbose;
 extern bool noEval;
 
-void pprintTreeN(TreeP tree, char *op, int nbChild);
-void pprintListMethode(PMETH meth);
-void pprintMethode(PMETH meth);
-void pprintListClasse(PCLASS class);
-void pprintClass(PCLASS class);
-void pprintListVAR(PVAR var);
-void pprintVAR(PVAR var);
-
 /* Impression : )  de la partie declarative du programme */
 void pprintVar(VarDeclP decl, TreeP tree) {
   if (! verbose) return;

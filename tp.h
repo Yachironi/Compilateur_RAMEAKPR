@@ -210,6 +210,13 @@ void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP);
+void pprintTreeN(TreeP tree, char *op, int nbChild);
+void pprintListMethode(PMETH meth);
+void pprintMethode(PMETH meth);
+void pprintListClasse(PCLASS class);
+void pprintClass(PCLASS class);
+void pprintListVAR(PVAR var);
+void pprintVAR(PVAR var);
 
 /* methode rajoute */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
