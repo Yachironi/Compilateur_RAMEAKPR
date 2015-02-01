@@ -299,6 +299,36 @@ if(fils0 != NULL){
 }
 }
 
+ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
+            {
+            $$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); 
+            $$->suivant=$8;
+            }
+            ;
+
+AffectExprOpt : AFFECT expr ';'   {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
+              |       {$$=NIL(Tree);}
+              ;
+
+LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
+        {$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
+              |     {$$=NIL(SVAR);}
+              ;
+
+expr : PLUS expr %prec unaire   { $$=$2; }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante      { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage     { $$=$1; }
+       | OuRien       { $$=$1; }
+       ;
+       
 checkDeclVar(TreeP){
 }
 
