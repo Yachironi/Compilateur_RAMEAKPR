@@ -100,7 +100,7 @@ ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
-YieldOpt : YIELD expr';'			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
+YieldOpt : YIELD expr			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
         | /* epsilon */				{$$=NIL(Tree);}
         ;
 
