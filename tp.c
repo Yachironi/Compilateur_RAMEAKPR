@@ -341,6 +341,7 @@ bool checkListInst(TreeP listInst){
 }
 }
 
+
 bool recursifTestInstruction(TreeP arbre){
   for(int i=0; i< arbre-> nbChildren){
     // A faire 
@@ -350,6 +351,76 @@ bool recursifTestInstruction(TreeP arbre){
  * True : OK -> s'il n'y a aucune classe la verification a reussi
  * False : KO
 */
+
+/* Suppose que le TreeP se situe au niveau d'un envoie message ou instantciation ou selection */ 
+
+bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
+  if(droit==NULL){
+      return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
+  }  
+  else{
+    if(estCoherent(p,droit)) {
+      return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
+    }
+    else return FALSE;
+  }
+} 
+/* a.b ==> a partie gauche, b partie droite */
+bool estCoherent(TreeP gauche, TreeP droite){
+  switch(gauche->op){
+    
+    case ENVOIMESSAGE : 
+      return classeContient(gauche->u.methode->home,droite);
+    break;
+
+    case INSTANCIATION :
+
+    break;
+
+    case SELECTION :
+
+    break;
+
+    case IDENTIFICATEUR :
+
+    break; 
+
+    case IDENTIFICATEURCLASS : 
+
+    break; 
+  }
+}
+
+bool classeContient(PCLASS classe,TreeP droite)
+{
+  
+  switch(droite->op)
+  {
+    case SELECTION:
+    PVAR tmp = classe->liste_champs;
+    PVAR tmpHerite = classe->champs_herite;
+    PVAR fusion = tmp;
+
+    fusion->suivant = tmpHerite;
+
+    while(fusion!=NULL)
+    {
+      if(strcmp(fusion->nom,droite->u.var->nom)==0)
+        return TRUE;
+      fusion = fusion->suivant;
+    }
+
+    break;
+
+    case ENVOIMESSAGE:
+    break;
+  }
+
+    tmp = tmp->suivant;
+  }
+  return FALSE;
+}
+
 bool checkLClassOpt()
 {
   int i = 0;
