@@ -247,7 +247,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 			/* la classe n'existe pas: erreur */
       char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la classe %s n'existe pas",$2);
-      pushErreur(message,*classActuel,NULL,NULL);
+      pushErreur(message,classActuel,NULL,NULL);
 		}
 		else{
 			/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */

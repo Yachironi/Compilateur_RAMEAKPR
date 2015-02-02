@@ -258,15 +258,15 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
 /*
  * Creer une erreur et l'ajoute a la pile
  */
-void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
+void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 {
   ErreurP nouvelle = NEW(1,Erreur);
   nouvelle->message = NEW(SIZE_ERROR,char);
   strcpy(message,nouvelle->message);
   
-  nouvelle->classe = classe;
-  nouvelle->methode = methode;
-  nouvelle->variable = variable;
+  nouvelle->classe = *classe;
+  nouvelle->methode = *methode;
+  nouvelle->variable = *variable;
   
   if(listeErreur==NULL)
   {
@@ -539,7 +539,7 @@ bool checkMethode(PMETH methode)
       {
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur dans la methode statique %s",methode->nom);
-          pushErreur(message,*classActuel,NULL,NULL);
+          pushErreur(message,classActuel,NULL,NULL);
           return FALSE;
       }
     }
@@ -554,7 +554,7 @@ bool checkMethode(PMETH methode)
         {
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
-          pushErreur(message,*classActuel,NULL,NULL);
+          pushErreur(message,classActuel,NULL,NULL);
           return FALSE;
         }
       }
