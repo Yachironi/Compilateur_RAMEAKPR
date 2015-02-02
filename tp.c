@@ -643,3 +643,39 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
 }
 
 
+/** Partie eval **/
+void evalMain(TreeP programme){
+	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
+	evalContenuBloc(programme->children[1]/*->children[0]*/);
+}
+
+void evalContenuBloc(TreeP bloc){
+	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
+	if(bloc->children[0] == NIL(Tree)){
+
+	}
+	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
+	else{
+
+	}
+}
+
+void evalMain(TreeP programme);
+void evalContenuBloc(TreeP bloc);
+
+/* la structure d'un arbre (noeud ou feuille) */
+typedef struct _Tree {
+  short op;         		/* etiquette de l'operateur courant */
+  short nbChildren; 		/* nombre de sous-arbres */
+  union {
+    char *str;     		/* valeur de la feuille si op = ID ou STR */
+    int val;        		/* valeur de la feuille si op = CST */
+    PVAR var;	    		/* valeur de la feuille si op = VAR */
+    PCLASS classe;	   	/* valeur de la feuille si op = IDENTIFICATEURCLASS */
+    PMETH methode;        	/* valeur de la feuille si op = METHODE */
+    struct _Tree **children; 	/* tableau des sous-arbres */
+  } u;
+} Tree, *TreeP;
+
+
+
