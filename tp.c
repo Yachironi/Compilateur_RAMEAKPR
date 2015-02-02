@@ -368,32 +368,38 @@ bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
 /* a.b ==> a partie gauche, b partie droite */
 bool estCoherent(TreeP gauche, TreeP droite){
   switch(gauche->op){
+   
+    case SELECTION :
+      return classeContient(gauche->u.var->type,droite);
+    break;
     
     case ENVOIMESSAGE : 
       return classeContient(gauche->u.methode->home,droite);
+      /*
+      * Vérifier les listOptArg
+      */
     break;
 
     case INSTANCIATION :
-
-    break;
-
-    case SELECTION :
-
+      /*
+      * Vérifier que la classe de l'instanciation contient la partie droite 
+      * Vérifier si la classe existe
+      * vérifier les listOptArgOpt 
+      */
     break;
 
     case IDENTIFICATEUR :
-
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
     break; 
 
     case IDENTIFICATEURCLASS : 
-
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
     break; 
   }
 }
 
 bool classeContient(PCLASS classe,TreeP droite)
 {
-  
   switch(droite->op)
   {
     case SELECTION:
@@ -413,10 +419,23 @@ bool classeContient(PCLASS classe,TreeP droite)
     break;
 
     case ENVOIMESSAGE:
-    break;
-  }
 
-    tmp = tmp->suivant;
+    PMETH tmp = classe->liste_methodes;
+    PMETH tmpHerite = classe->override;
+    PMETH fusion = tmp;
+
+    fusion->suivant = tmpHerite;
+
+    while(fusion!=NULL)
+    {
+      if(strcmp(fusion->nom,droite->u.methode->nom)==0)
+        return TRUE;
+      fusion = fusion->suivant;
+    }
+    break;
+
+    default : 
+      return FALSE;
   }
   return FALSE;
 }
