@@ -138,17 +138,11 @@ struct _Method{
   char *nom;
   PCLASS type;
   int categorie;	/* si categorie = 1 ==> static, si categorie = 0 ==> non static */
-  TreeP init;	/* initialisation de la variable */
-  PVAR suivant; /* on peut pas mettre directement PVAR? */
+  TreeP init;		/* initialisation de la variable */
+  PVAR suivant;
   /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
-/* Structure qui décrit une liste de class */
-
-struct _LClass{
- PCLASS classe;
- PLCLASS suivant;
-};
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
   champ static -> 1
