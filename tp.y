@@ -245,7 +245,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		$$=getClasse(listeDeClass, $2);
 		if($$ == NULL){
 			/* la classe n'existe pas: erreur */
-      char* message = calloc(SIZE_ERROR,sizeof(char));
+      char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la classe %s n'existe pas",$2);
       pushErreur(message,*classActuel,NULL,NULL);
 		}

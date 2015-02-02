@@ -260,8 +260,8 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
  */
 void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
 {
-  ErreurP nouvelle = calloc(1,sizeof(Erreur));
-  nouvelle->message = calloc(SIZE_ERROR,sizeof(char));
+  ErreurP nouvelle = NEW(1,Erreur);
+  nouvelle->message = NEW(SIZE_ERROR,char);
   strcpy(message,nouvelle->message);
   
   nouvelle->classe = classe;
@@ -475,7 +475,7 @@ bool checkListAttribut(PCLASS classe)
      */
     if(!checkListOptArg(tmp))
     {
-      char* message = calloc(SIZE_ERROR,sizeof(char));
+      char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
       pushErreur(message,NULL,NULL,tmp);
       return FALSE;
@@ -509,7 +509,7 @@ bool checkListMethode(PCLASS classe)
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
     if(!checkMethode(tmp))
     {
-      char* message = calloc(SIZE_ERROR,sizeof(char));
+      char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la methode %s est mal forme",tmp->nom);
       pushErreur(message,NULL,tmp,NULL);
       return FALSE;
@@ -537,7 +537,7 @@ bool checkMethode(PMETH methode)
 
       if(!statique)
       {
-          char* message = calloc(SIZE_ERROR,sizeof(char));
+          char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur dans la methode statique %s",methode->nom);
           pushErreur(message,*classActuel,NULL,NULL);
           return FALSE;
@@ -552,7 +552,7 @@ bool checkMethode(PMETH methode)
 
         if(!redef)
         {
-          char* message = calloc(SIZE_ERROR,sizeof(char));
+          char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
           pushErreur(message,*classActuel,NULL,NULL);
           return FALSE;
@@ -579,7 +579,8 @@ bool checkMethode(PMETH methode)
 bool existeMethodeOverride(PCLASS home,PMETH methode)
 {
   PMETH methodeOverride = home->override;
-
+  if(methodeOverride==NULL)
+    return TRUE;
   while(methodeOverride!=NULL)
   {
     if(strcmp(methodeOverride->nom,methode->nom)==0)
