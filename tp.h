@@ -95,7 +95,6 @@ typedef struct _Tree {
   } u;
 } Tree, *TreeP;
 
-
 /* la structure ci-dessous permet de memoriser des listes variable/valeur */
 typedef struct _Decl
 { char *name;
