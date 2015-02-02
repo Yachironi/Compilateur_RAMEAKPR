@@ -3,6 +3,7 @@
 
 /* FIXME Ajouter une methode qui copie les methodes de la classe mere dans l'attribut classe->override
  * SI EXTENDS
+ * Aussi copier les attributs
  */
 
 /* les tokens ici sont ceux supposes etre renvoyes par l'analyseur lexical
