@@ -238,4 +238,11 @@ bool checkConstructeur(PCLASS classe);
 bool checkAttribut(PCLASS classe);
 bool checkMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
+
+/*
+ * Methodes eval
+ */
+void evalMain(TreeP programme);
+void evalContenuBloc(TreeP bloc);
+PVAR evalListDeclVar(TreeP listDeclVar);
 #endif
