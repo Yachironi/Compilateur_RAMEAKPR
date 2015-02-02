@@ -7,6 +7,10 @@
 #include "tp_y.h"
 
 /*
+ * FIXME : ajouter une methode makeErreur(...)
+ */
+
+/*
  * Toute cette premiere partie n'a (normalement) pas besoin d'etre modifiee
  */
 
@@ -251,6 +255,31 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
  * Seconde partie probablement a modifier
  */
 
+/*
+ * Creer une erreur et l'ajoute a la pile
+ */
+void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
+{
+  ErreurP nouvelle = calloc(1,sizeof(Erreur));
+  nouvelle->message = calloc(SIZE_ERROR,sizeof(char));
+  strcpy(message,nouvelle->message);
+  
+  nouvelle->classe = classe;
+  nouvelle->methode = methode;
+  nouvelle->variable = variable;
+  
+  if(listeErreur==NULL)
+  {
+    listeErreur = nouvelle;
+  }
+  else
+  {
+    /*FIXME : Liste d'erreur en LIFO : l'insertion est a l'envers la*/
+    ErreurP tmp = listeErreur;
+    listeErreur = nouvelle;
+    nouvelle->suivant = tmp;
+  }
+}
 
 /* Avant evaluation, verifie si tout id qui apparait dans tree a bien ete declare
  * et est donc dans lvar.
@@ -332,6 +361,25 @@ bool checkLClassOpt()
               Du coup un parcours de l'arbre est obligatoire ? ou tout est dans corps_constructeur ?
 };
 */
+
+/*
+ * Verifie que la classe PCLASS existe belle et bien dans la lis
+ */
+bool containsClasse(PCLASS classe)
+{
+  PCLASS tmp = listeDeClass;
+
+  while(tmp!=NULL)
+  {
+
+    if(strcmp(classe->nom,tmp->nom)==0)
+      return TRUE;
+
+    tmp = tmp->suivant;
+  }
+  return FALSE;
+}
+
 bool checkClass(PCLASS classe)
 {
   /*
@@ -434,7 +482,7 @@ bool checkListAttribut(PCLASS classe)
 
 /*
  * 
-
+  FIXME ajouter une methode equals(PMETH methode1,methode2) -> verifier qu'elle n'est pas declaree 2 fois
   struct _Method{
   char *nom;
   int isStatic;  1 si vrai, 0 si non 
@@ -446,31 +494,61 @@ bool checkListAttribut(PCLASS classe)
   PCLASS home;
 };
 
-
- */
+*/
 bool checkListMethode(PCLASS classe)
 {
   PMETH tmp = classe->liste_methodes;
 
-  bool statique = FALSE;
-  bool redef = FALSE;
-
   while(tmp!=NULL)
   {
-    printf("Je check la methode %s\n",tmp->nom);
-
-    if(tmp->isStatic)
+    /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
+    if(!checkMethode(tmp))
     {
-      checkListMethodeStatic(tmp);
+      return FALSE;
+    }
+
+    tmp = tmp->suivant;
+  }
+
+  return TRUE;
+}
+
+bool checkMethode(PMETH methode)
+{
+    bool statique = FALSE;
+    bool redef = FALSE;
+    printf("Je check la methode %s\n",methode->nom);
+
+    bool corps = checkBloc(methode->corps);
+    bool typeRetour = containsClasse(methode->typeRetour);
+    bool pvar = checkListOptArg(methode->params);
+
+    if(methode->isStatic)
+    {
+      statique = checkMethodeStatic(methode);
+
+      if(!statique)
+      {
+          char* message = calloc(SIZE_ERROR,sizeof(char));
+          sprintf(message,"Erreur dans la methode statique %s",methode->nom);
+          pushErreur(message,*classActuel,NULL,NULL);
+          return FALSE;
+      }
     }
     else
     {
       statique = TRUE;
-      if(tmp->isRedef)
+      if(methode->isRedef)
       {
-        redef = existeMethodeClasseMereOverride(classe->classe_mere,tmp);
+        redef = existeMethodeOverride(methode->home,methode);
 
         if(!redef)
+        {
+          char* message = calloc(SIZE_ERROR,sizeof(char));
+          sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          pushErreur(message,*classActuel,NULL,NULL);
+          return FALSE;
+        }
       }
       else
       {
@@ -484,15 +562,15 @@ bool checkListMethode(PCLASS classe)
      * Verifier le corps de la methode
      * if(method.static) checkListMethodeStatic
      */
-    tmp = tmp->suivant;
-  }
-
-  return (statique&&redef)
+     return (typeRetour&&corps&&statique&&redef&&pvar);
 }
 
-bool existeMethodeClasseMereOverride(PCLASS mere,PMETH methode)
+/*
+ * Verifie si la methode "methode" est declaree dans la classe mere
+ */
+bool existeMethodeOverride(PCLASS home,PMETH methode)
 {
-  PMETH methodeOverride = mere->liste_methodes;
+  PMETH methodeOverride = home->override;
 
   while(methodeOverride!=NULL)
   {
@@ -511,20 +589,27 @@ bool existeMethodeClasseMereOverride(PCLASS mere,PMETH methode)
  * de classe (meme principe que le java)
  * On ne peut pas faire this-> qq chose ou this.
  */ 
-bool checkListMethodeStatic(PMETH methode)
+bool checkMethodeStatic(PMETH methode)
 {
   /*
    * Si la classe Point a un attribut x,y
    * Si dans la methode il fait x = 1; -> erreur
+   * Verifier qu'elle n'utilise j'amais this ni super
    */
+
 }
 
 bool checkCorp(PMETH methode)
 {
-  /*checkBlock()*/
+  /*checkBloc()*/
 }
 
 bool checkListOptArg(PVAR var)
+{
+
+}
+
+bool checkBloc(TreeP tree)
 {
 
 }

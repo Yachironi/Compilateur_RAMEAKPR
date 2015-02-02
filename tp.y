@@ -1,4 +1,7 @@
+
 /** ANALYSE SYNTAXIQUE + GRAMMAIRE **/
+
+/* FIXME Ajouter une methode qui copie les methodes dans la classe mere dans l'attribut classe->override*/
 
 /* les tokens ici sont ceux supposes etre renvoyes par l'analyseur lexical
  * A adapter par chacun en fonction de ce qu'il a ecrit dans tp.l
@@ -235,23 +238,9 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		$$=getClasse(listeDeClass, $2);
 		if($$ == NULL){
 			/* la classe n'existe pas: erreur */
-      ErreurP nouvelle = calloc(1,sizeof(Erreur));
-      nouvelle->message = calloc(100,sizeof(char));
-      sprintf(nouvelle->message,"Erreur la classe %s n'existe pas",$2);
-      nouvelle->classe = *classActuel;
-
-      if(listeErreur==NULL)
-      {
-        listeErreur = nouvelle;
-      }
-      else
-      {
-        /*Erreur en LIFO : l'insertion est a l'envers la*/
-       
-        ErreurP tmp = listeErreur;
-        listeErreur = nouvelle;
-        nouvelle->suivant = tmp;
-      }
+      char* message = calloc(SIZE_ERROR,sizeof(char));
+      sprintf(message,"Erreur la classe %s n'existe pas",$2);
+      pushErreur(message,*classActuel,NULL,NULL);
 		}
 		else{
 			/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */

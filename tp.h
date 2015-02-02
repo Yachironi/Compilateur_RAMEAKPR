@@ -72,6 +72,8 @@
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
 
+#define SIZE_ERROR 100
+
 typedef struct _Var SVAR, *PVAR;
 typedef struct _Method SMETH, *PMETH;
 typedef struct _Class SCLASS, *PCLASS;
@@ -108,6 +110,7 @@ struct _Class{
   PVAR param_constructeur;    	/*  paramètres du constructeur de la classe */
   TreeP corps_constructeur;   	/* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
+  PMETH override;             /* liste de méthodes override */
   PVAR liste_champs;        	/* liste des champs de la classe */ 
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
@@ -235,7 +238,12 @@ bool checkClass(PCLASS classe);
 bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
 bool checkConstructeur(PCLASS classe);
-bool checkAttribut(PCLASS classe);
-bool checkMethode(PCLASS classe);
+bool checkListAttribut(PCLASS classe);
+bool checkListMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
+
+/*
+ * Erreur
+ */
+void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
 #endif
