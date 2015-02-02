@@ -474,7 +474,12 @@ bool checkListAttribut(PCLASS classe)
      * Integer x; ... et bien d'autres chose
      */
     if(!checkListOptArg(tmp))
+    {
+      char* message = calloc(SIZE_ERROR,sizeof(char));
+      sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,NULL,tmp);
       return FALSE;
+    }
     /* /!!!\ Ici il s'arete des qu'un attribut est faux*/
     tmp = tmp->suivant;
   }
@@ -504,6 +509,9 @@ bool checkListMethode(PCLASS classe)
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
     if(!checkMethode(tmp))
     {
+      char* message = calloc(SIZE_ERROR,sizeof(char));
+      sprintf(message,"Erreur la methode %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,tmp,NULL);
       return FALSE;
     }
 
