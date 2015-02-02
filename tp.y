@@ -36,7 +36,8 @@
 
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr /*ListExtendsOpt*/ selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass ListExtendsOpt
@@ -110,9 +111,10 @@ ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(Tre
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
+
 YieldOpt : YIELD expr     {$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
         | /* epsilon */       {$$=NIL(Tree);}
-        ;
+
 
 ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
             {
@@ -291,7 +293,6 @@ LArg : expr           {$$ = $1;}
 
 /* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
-expr : /*ID         { $$=makeLeafStr(IDENTIFICATEUR, $1); } // yylval.S ou $1*/
 /* Pour info : ID est dans Cible */
 expr : PLUS expr %prec unaire   { $$=$2; }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
