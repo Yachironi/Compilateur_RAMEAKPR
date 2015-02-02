@@ -820,32 +820,32 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
 
 
 /** Partie eval **/
-void evalMain(TreeP programme){
+void evalProgramme(TreeP programme){
 	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
-	evalContenuBloc(programme->children[1]/*->children[0]*/);
+	evalContenuBloc(programme->u.children[1]/*->children[0]*/);
 }
 
 void evalContenuBloc(TreeP bloc){
 	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
-	if(bloc->children[0] == NIL(Tree)){
-		if(bloc->children[1] != NIL(Tree)){
+	if(bloc->u.children[0] == NIL(Tree)){
+		if(bloc->u.children[1] != NIL(Tree)){
 			/* eval de LInstruction */
 		}
-		if(bloc->children[2] != NIL(Tree)){
+		if(bloc->u.children[2] != NIL(Tree)){
 			/* eval de Yield => expr*/
 		}
 	}
 	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
 	else{
 		/* eval de ListDeclVar */
-		PVAR listDeclVar = evalListDeclVar(bloc->children[0]);
+		PVAR listDeclVar = evalListDeclVar(bloc->u.children[0]);
 
 		/* eval de LInstruction */
-		if(bloc->children[1] != NIL(Tree)){
+		if(bloc->u.children[1] != NIL(Tree)){
 
 		}
 		/* eval de YieldOpt */
-		if(bloc->children[2] != NIL(Tree)){
+		if(bloc->u.children[2] != NIL(Tree)){
 
 		}		
 	}
@@ -855,10 +855,9 @@ PVAR evalListDeclVar(TreeP listDeclVar){
 	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
 	/* listDeclVar->var = 1ere var et toute la liste*/
 
-	/*
-	PVAR var = listDeclVar->var;
+	/* Que ca a faire??? */
+	PVAR var = listDeclVar->u.var;
 	return var;
-	*/
 }
 
 

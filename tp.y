@@ -36,7 +36,11 @@
 
 
 /* %type <C> REL */
+<<<<<<< HEAD
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr  selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+=======
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr /*ListExtendsOpt*/ selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+>>>>>>> 09c444e37aba4563f3b956c7903c6bfe360fb7a2
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass ListExtendsOpt
@@ -109,7 +113,7 @@ ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
-YieldOpt : YIELD expr			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
+YieldOpt : YIELD expr				{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
         | /* epsilon */				{$$=NIL(Tree);}
         ;
 
