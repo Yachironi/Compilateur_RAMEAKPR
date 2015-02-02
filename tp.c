@@ -7,6 +7,10 @@
 #include "tp_y.h"
 
 /*
+ * FIXME : ajouter une methode makeErreur(...)
+ */
+
+/*
  * Toute cette premiere partie n'a (normalement) pas besoin d'etre modifiee
  */
 
@@ -201,7 +205,6 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 }
 
 /* Renvoi la classe avec un nom donnée */
-
 PCLASS getClasse(PCLASS listeClass,char *nom){
 	PCLASS parcour=listeClass;
 	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
@@ -252,6 +255,31 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
  * Seconde partie probablement a modifier
  */
 
+/*
+ * Creer une erreur et l'ajoute a la pile
+ */
+void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
+{
+  ErreurP nouvelle = calloc(1,sizeof(Erreur));
+  nouvelle->message = calloc(SIZE_ERROR,sizeof(char));
+  strcpy(message,nouvelle->message);
+  
+  nouvelle->classe = classe;
+  nouvelle->methode = methode;
+  nouvelle->variable = variable;
+  
+  if(listeErreur==NULL)
+  {
+    listeErreur = nouvelle;
+  }
+  else
+  {
+    /*FIXME : Liste d'erreur en LIFO : l'insertion est a l'envers la*/
+    ErreurP tmp = listeErreur;
+    listeErreur = nouvelle;
+    nouvelle->suivant = tmp;
+  }
+}
 
 /* Avant evaluation, verifie si tout id qui apparait dans tree a bien ete declare
  * et est donc dans lvar.
@@ -353,15 +381,15 @@ bool recursifTestInstruction(TreeP arbre){
 bool checkLClassOpt()
 {
   int i = 0;
-  //
   if(listeDeClass==NULL)
     return TRUE;
   else
   {
-    //return checkClass(getChild(tree,0)) && checkLClassOpt(tree);
+    /*return checkClass(getChild(tree,0)) && checkLClassOpt(tree);*/
     PCLASS listTmp = listeDeClass;
     while(listTmp!=NULL)
     {
+      /*checkClass : Ne verifie qu'une classe -> methode non recusive*/
       checkClass(listTmp);
       listTmp = listTmp->suivant;
     }
@@ -393,33 +421,65 @@ bool checkLClassOpt()
               Du coup un parcours de l'arbre est obligatoire ? ou tout est dans corps_constructeur ?
 };
 */
+
+/*
+ * Verifie que la classe PCLASS existe belle et bien dans la lis
+ */
+bool containsClasse(PCLASS classe)
+{
+  PCLASS tmp = listeDeClass;
+
+  while(tmp!=NULL)
+  {
+
+    if(strcmp(classe->nom,tmp->nom)==0)
+      return TRUE;
+
+    tmp = tmp->suivant;
+  }
+  return FALSE;
+}
+
 bool checkClass(PCLASS classe)
 {
   /*
    * bool checkHeritage(classe);
-   * bool checkAttribut(SCLASS classe);
-   * bool checkMethode(SCLASS classe);
+   * bool checkListAttribut(SCLASS classe);
+   * bool checkListMethode(SCLASS classe);
     ----
    * bool checkCorp(SMETH methode)
     ----
-   * bool checkMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
+   * bool checkListMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
   */
 
+  /* Le nom de la classe doit avoir une majuscule*/
   bool nomMaj = FALSE;
 
   if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
     nomMaj = TRUE;
 
-  //TRUE : OK FALSE : NOK
-  bool heritage = checkHeritage(classe);
+  /*TRUE : OK FALSE : NOK*/
+  bool heritage = FALSE;
+  /*FIXME : boucle qui verifie que la classe mere n'est pas dans la liste d'erreur !!!
+   * Si c'est le cas -> renvoye faux directement => et ajouter une erreur du style
+   * "Corrigez la classe Mere %s avant",class->classe_mere->nom (utilisez sprintf)
+   */
+  if(classe->isExtend)
+  {
+    heritage = checkHeritage(classe);
+  }
+  else
+  {
+    heritage = TRUE;
+  }
 
   bool constructeur = checkConstructeur(classe);
 
-  bool attribut = checkAttribut(classe);
+  bool attribut = checkListAttribut(classe);
 
-  bool methode = checkMethode(classe);
+  bool methode = checkListMethode(classe);
 
-  return (heritage && constructeur && attribut && methode);
+  return (nomMaj && heritage && constructeur && attribut && methode);
 }
 
 /*
@@ -439,14 +499,14 @@ bool checkHeritage(PCLASS classe)
  */
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 {
-  //classe mere inexistante
+  /*classe mere inexistante*/
   if(heritee==NULL)
     return TRUE;
   int i = 0;
   PCLASS listTmp = listeDeClass;
   while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
   {
-    //On a trouve la classe elle est bien declaree avant
+    /*On a trouve la classe elle est bien declaree avant*/
     if(strcmp(heritee->nom,listTmp->nom)==0)
     {
       return TRUE;
@@ -463,7 +523,7 @@ bool checkConstructeur(PCLASS classe)
   PVAR tmp = classe->param_constructeur;
 }
 
-bool checkAttribut(PCLASS classe)
+bool checkListAttribut(PCLASS classe)
 {
   PVAR tmp = classe->liste_champs;
 
@@ -473,13 +533,16 @@ bool checkAttribut(PCLASS classe)
      * Appel de la fonction de Gishan qui verifier une instruction
      * Integer x; ... et bien d'autres chose
      */
+    if(!checkListOptArg(tmp))
+      return FALSE;
+    /* /!!!\ Ici il s'arete des qu'un attribut est faux*/
     tmp = tmp->suivant;
   }
 }
 
 /*
  * 
-
+  FIXME ajouter une methode equals(PMETH methode1,methode2) -> verifier qu'elle n'est pas declaree 2 fois
   struct _Method{
   char *nom;
   int isStatic;  1 si vrai, 0 si non 
@@ -491,52 +554,122 @@ bool checkAttribut(PCLASS classe)
   PCLASS home;
 };
 
-
- */
-bool checkMethode(PCLASS classe)
+*/
+bool checkListMethode(PCLASS classe)
 {
   PMETH tmp = classe->liste_methodes;
 
   while(tmp!=NULL)
   {
-
-    printf("Je check la methode %s\n",tmp->nom);
-
-    if(tmp->isStatic)
+    /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
+    if(!checkMethode(tmp))
     {
-      checkMethodeStatic(tmp);
+      return FALSE;
+    }
+
+    tmp = tmp->suivant;
+  }
+
+  return TRUE;
+}
+
+bool checkMethode(PMETH methode)
+{
+    bool statique = FALSE;
+    bool redef = FALSE;
+    printf("Je check la methode %s\n",methode->nom);
+
+    bool corps = checkBloc(methode->corps);
+    bool typeRetour = containsClasse(methode->typeRetour);
+    bool pvar = checkListOptArg(methode->params);
+
+    if(methode->isStatic)
+    {
+      statique = checkMethodeStatic(methode);
+
+      if(!statique)
+      {
+          char* message = calloc(SIZE_ERROR,sizeof(char));
+          sprintf(message,"Erreur dans la methode statique %s",methode->nom);
+          pushErreur(message,*classActuel,NULL,NULL);
+          return FALSE;
+      }
     }
     else
     {
+      statique = TRUE;
+      if(methode->isRedef)
+      {
+        redef = existeMethodeOverride(methode->home,methode);
+
+        if(!redef)
+        {
+          char* message = calloc(SIZE_ERROR,sizeof(char));
+          sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          pushErreur(message,*classActuel,NULL,NULL);
+          return FALSE;
+        }
+      }
+      else
+      {
+        redef = TRUE;
+      }
+
       /*Verification d'une methode de classe*/
     }
     /*
      * Verifier les parametre de la methode
      * Verifier le corps de la methode
-     * if(method.static) checkMethodeStatic
+     * if(method.static) checkListMethodeStatic
      */
-    tmp = tmp->suivant;
+     return (typeRetour&&corps&&statique&&redef&&pvar);
+}
+
+/*
+ * Verifie si la methode "methode" est declaree dans la classe mere
+ */
+bool existeMethodeOverride(PCLASS home,PMETH methode)
+{
+  PMETH methodeOverride = home->override;
+
+  while(methodeOverride!=NULL)
+  {
+    if(strcmp(methodeOverride->nom,methode->nom)==0)
+    {
+      return TRUE;
+    }
+
+    methodeOverride = methodeOverride->suivant;
   }
+  return FALSE;
 }
 
 /* 
  * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
  * de classe (meme principe que le java)
+ * On ne peut pas faire this-> qq chose ou this.
  */ 
 bool checkMethodeStatic(PMETH methode)
 {
   /*
    * Si la classe Point a un attribut x,y
    * Si dans la methode il fait x = 1; -> erreur
+   * Verifier qu'elle n'utilise j'amais this ni super
    */
+
 }
 
 bool checkCorp(PMETH methode)
 {
-  //checkBlock()
+  /*checkBloc()*/
 }
 
 bool checkListOptArg(PVAR var)
+{
+
+}
+
+bool checkBloc(TreeP tree)
 {
 
 }
@@ -692,3 +825,60 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   }
   return errorCode;
 }
+
+PVAR appelConstructureEstCorrecteRecursif(TreeP args,PCLASS mere)
+{
+  TreeP tmp = args;
+
+  return NULL;
+}
+
+bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
+{
+  PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
+}
+
+
+/** Partie eval **/
+void evalMain(TreeP programme){
+	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
+	evalContenuBloc(programme->children[1]/*->children[0]*/);
+}
+
+void evalContenuBloc(TreeP bloc){
+	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
+	if(bloc->children[0] == NIL(Tree)){
+		if(bloc->children[1] != NIL(Tree)){
+			/* eval de LInstruction */
+		}
+		if(bloc->children[2] != NIL(Tree)){
+			/* eval de Yield => expr*/
+		}
+	}
+	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
+	else{
+		/* eval de ListDeclVar */
+		PVAR listDeclVar = evalListDeclVar(bloc->children[0]);
+
+		/* eval de LInstruction */
+		if(bloc->children[1] != NIL(Tree)){
+
+		}
+		/* eval de YieldOpt */
+		if(bloc->children[2] != NIL(Tree)){
+
+		}		
+	}
+}
+
+PVAR evalListDeclVar(TreeP listDeclVar){
+	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
+	/* listDeclVar->var = 1ere var et toute la liste*/
+
+	/*
+	PVAR var = listDeclVar->var;
+	return var;
+	*/
+}
+
+

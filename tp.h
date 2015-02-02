@@ -2,6 +2,8 @@
 #define __TP__
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
@@ -70,6 +72,8 @@
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
 
+#define SIZE_ERROR 100
+
 typedef struct _Var SVAR, *PVAR;
 typedef struct _Method SMETH, *PMETH;
 typedef struct _Class SCLASS, *PCLASS;
@@ -106,13 +110,14 @@ struct _Class{
   PVAR param_constructeur;    	/*  paramètres du constructeur de la classe */
   TreeP corps_constructeur;   	/* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
+  PMETH override;             /* liste de méthodes override */
   PVAR liste_champs;        	/* liste des champs de la classe */ 
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
 };
 
-PCLASS listeDeClass=NULL; 	/* Liste de toutes les classe declarees dans le programme */
+PCLASS listeDeClass; 	/* Liste de toutes les classe declarees dans le programme */
 
 /**
   J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
@@ -136,11 +141,12 @@ struct _Method{
   char *nom;
   PCLASS type;
   int categorie;	/* si categorie = 1 ==> static, si categorie = 0 ==> non static */
-  TreeP init;	/* initialisation de la variable */
-  PVAR suivant; /* on peut pas mettre directement PVAR? */
+  TreeP init;		/* initialisation de la variable */
+  PVAR suivant;
   /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
+<<<<<<< HEAD
 /* Structure qui décrit une liste de class */
 
 
@@ -156,6 +162,7 @@ struct _LClass{
  PCLASS classe;
  PLCLASS suivant;
 };
+
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
   champ static -> 1
@@ -167,6 +174,10 @@ Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
 typedef struct _Erreur
 {
   char* message;
+  SCLASS classe; /*La classe en question*/
+  SMETH methode; /*La methode en question si le probleme vient de la */
+  SVAR variable; /*La variable en jeu*/
+  int ligne;
   struct _Erreur *suivant;
 } Erreur, *ErreurP;
 
@@ -218,12 +229,12 @@ VarDeclP evalDecls (TreeP tree);
 void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
-void pprintMain(TreeP);
+void pprintMain(TreeP tree);
 void pprintTreeN(TreeP tree, char *op, int nbChild);
 void pprintListMethode(PMETH meth);
 void pprintMethode(PMETH meth);
 void pprintListClasse(PCLASS classe);
-void pprintClass(PCLASS classe);
+void pprintClasse(PCLASS classe);
 void pprintListVAR(PVAR var);
 void pprintVAR(PVAR var);
 
@@ -233,5 +244,26 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
 
+bool appelConstructureEstCorrecte(TreeP args,PCLASS mere);
 
+
+/*
+ * Methode check
+ */
+bool checkLClassOpt();
+bool checkClass(PCLASS classe);
+bool checkHeritage(PCLASS classe);
+bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
+bool checkConstructeur(PCLASS classe);
+bool checkListAttribut(PCLASS classe);
+bool checkListMethode(PCLASS classe);
+bool checkMethodeStatic(PMETH methode);
+
+/*
+ * Erreur
+ */
+void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable);
+void evalMain(TreeP programme);
+void evalContenuBloc(TreeP bloc);
+PVAR evalListDeclVar(TreeP listDeclVar);
 #endif

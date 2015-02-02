@@ -95,7 +95,7 @@ void pprintTreeN(TreeP tree, char *op, int nbChild) {
 	printf("(TreeP(%d fils) : op=%s, childs=", nbChild, op);
 	for(i=0; i<nbChild; i++){
 		printf("child[%d]=", i+1);
-		pprintt(getChild(tree, i));
+		pprint(getChild(tree, i));
 		if(i<nbChild-1){
 			printf("-");
 		}

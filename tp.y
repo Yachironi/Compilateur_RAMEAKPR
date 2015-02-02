@@ -1,11 +1,16 @@
+
 /** ANALYSE SYNTAXIQUE + GRAMMAIRE **/
+
+/* FIXME Ajouter une methode qui copie les methodes de la classe mere dans l'attribut classe->override
+ * SI EXTENDS
+ */
 
 /* les tokens ici sont ceux supposes etre renvoyes par l'analyseur lexical
  * A adapter par chacun en fonction de ce qu'il a ecrit dans tp.l
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS  YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
+%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
 %token <S> ID CSTS IDCLASS RETURN STATIC
 %token <I> CSTE
 
@@ -103,7 +108,7 @@ ContenuBloc : LInstructionOpt YieldOpt		{$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
-YieldOpt : YIELD expr';'			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
+YieldOpt : YIELD expr			{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
         | /* epsilon */				{$$=NIL(Tree);}
         ;
 
@@ -140,7 +145,7 @@ Instruction : expr ';'						{$$=$1;}
             | Bloc						{$$=$1;}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
-            | RETURN ';'					{$$=makeLeafStr(RETURN_VOID, MSG_VOID);}	// return void
+            | RETURN ';'					{$$=makeLeafStr(RETURN_VOID, MSG_VOID);}	/* return void */
             ;
 /*
  * La cible de l'affectation ne peut etre qu'un identifiant : 
@@ -163,7 +168,12 @@ BlocOpt : Bloc		{$$=$1;}
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{ 	int isExtend; 
+		{ 	
+			if(getClasse(listeDeClass, $2) != NULL){
+				/* probleme : la classe qu'on souhaite declaree existe deja */
+				/* FIXME : gerer l'erreur */
+			}			
+			int isExtend; 
 			if($6==NIL(SCLASS)){
 				isExtend=0;
 			}else{
@@ -229,7 +239,7 @@ LParam : Param				{$$=$1 ;}
         | Param','LParam		{$1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}	// 0 = var non static
+Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}	/* 0 = var non static */
           ;   
 
 /** Julien : j'ai essaye de renvoyer directement une classe **/
@@ -237,11 +247,15 @@ Param : ID':' IDCLASS			{$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tre
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 	{
 		$$=getClasse(listeDeClass, $2);
-		if(classe == NULL){
+		if($$ == NULL){
 			/* la classe n'existe pas: erreur */
+      char* message = calloc(SIZE_ERROR,sizeof(char));
+      sprintf(message,"Erreur la classe %s n'existe pas",$2);
+      pushErreur(message,*classActuel,NULL,NULL);
 		}
 		else{
 			/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
+      appelConstructureEstCorrecte($4,$$);
 		}
 	}	/*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
                | /* epsilon */				{$$=NIL(/*Tree*/ SCLASS);}
@@ -257,7 +271,7 @@ LArg : expr						{$$ = $1;}
 
 /*
  * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5 A VOIRRRRRRRRRRRRRRRRRRRRRRRRRR (Amin et Gishan)
-
+ * Reponse Amin : on a vu avec le prof en fait le + est associtif gauche donc pas de probleme => on avait conclu ca avec Gishan
   E : E+E
     | Fonc%prec
  Pareil pour + unaire - unaire
