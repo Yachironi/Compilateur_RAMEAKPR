@@ -146,10 +146,6 @@ struct _Method{
   /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
-<<<<<<< HEAD
-/* Structure qui décrit une liste de class */
-
-
 
 tyoedef struct LVar{
    SVAR varibale;
@@ -157,7 +153,7 @@ tyoedef struct LVar{
 }ListeVar;
 
 
-
+/* Structure qui décrit une liste de class */
 struct _LClass{
  PCLASS classe;
  PLCLASS suivant;
@@ -184,12 +180,6 @@ typedef struct _Erreur
 ErreurP listeErreur;
 
 /**/
-
-
-
-
-
-
 
 
 /* Type pour la valeur de retour de Flex et les actions de Bison
@@ -262,8 +252,9 @@ bool checkMethodeStatic(PMETH methode);
 /*
  * Erreur
  */
-void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable);
 void evalMain(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
+void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
+
 #endif

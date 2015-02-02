@@ -258,15 +258,15 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
 /*
  * Creer une erreur et l'ajoute a la pile
  */
-void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
+void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 {
-  ErreurP nouvelle = calloc(1,sizeof(Erreur));
-  nouvelle->message = calloc(SIZE_ERROR,sizeof(char));
+  ErreurP nouvelle = NEW(1,Erreur);
+  nouvelle->message = NEW(SIZE_ERROR,char);
   strcpy(message,nouvelle->message);
   
-  nouvelle->classe = classe;
-  nouvelle->methode = methode;
-  nouvelle->variable = variable;
+  nouvelle->classe = *classe;
+  nouvelle->methode = *methode;
+  nouvelle->variable = *variable;
   
   if(listeErreur==NULL)
   {
@@ -328,35 +328,6 @@ if(fils0 != NULL){
 }
 }
 
-ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-            {
-            $$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); 
-            $$->suivant=$8;
-            }
-            ;
-
-AffectExprOpt : AFFECT expr ';'   {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-              |       {$$=NIL(Tree);}
-              ;
-
-LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
-        {$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
-              |     {$$=NIL(SVAR);}
-              ;
-
-expr : PLUS expr %prec unaire   { $$=$2; }
-       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante      { $$=$1; }
-       | instanciation      { $$=$1; }
-       | envoiMessage     { $$=$1; }
-       | OuRien       { $$=$1; }
-       ;
        
 checkDeclVar(TreeP){
 }
@@ -534,7 +505,12 @@ bool checkListAttribut(PCLASS classe)
      * Integer x; ... et bien d'autres chose
      */
     if(!checkListOptArg(tmp))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,NULL,tmp);
       return FALSE;
+    }
     /* /!!!\ Ici il s'arete des qu'un attribut est faux*/
     tmp = tmp->suivant;
   }
@@ -564,6 +540,9 @@ bool checkListMethode(PCLASS classe)
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
     if(!checkMethode(tmp))
     {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur la methode %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,tmp,NULL);
       return FALSE;
     }
 
@@ -589,9 +568,9 @@ bool checkMethode(PMETH methode)
 
       if(!statique)
       {
-          char* message = calloc(SIZE_ERROR,sizeof(char));
+          char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur dans la methode statique %s",methode->nom);
-          pushErreur(message,*classActuel,NULL,NULL);
+          pushErreur(message,classActuel,NULL,NULL);
           return FALSE;
       }
     }
@@ -604,9 +583,9 @@ bool checkMethode(PMETH methode)
 
         if(!redef)
         {
-          char* message = calloc(SIZE_ERROR,sizeof(char));
+          char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
-          pushErreur(message,*classActuel,NULL,NULL);
+          pushErreur(message,classActuel,NULL,NULL);
           return FALSE;
         }
       }
@@ -631,7 +610,8 @@ bool checkMethode(PMETH methode)
 bool existeMethodeOverride(PCLASS home,PMETH methode)
 {
   PMETH methodeOverride = home->override;
-
+  if(methodeOverride==NULL)
+    return TRUE;
   while(methodeOverride!=NULL)
   {
     if(strcmp(methodeOverride->nom,methode->nom)==0)

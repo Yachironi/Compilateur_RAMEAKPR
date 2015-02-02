@@ -141,7 +141,7 @@ LInstruction : Instruction LInstructionOpt	{$$=makeTree(LIST_INSTRUCTION, 2, $1,
  */
 
 Instruction : expr ';'						{$$=$1;}
-	    | RETURN expr ';'					{$$=makeTree(EXPRESSIONRETURN, 1, $2);}
+	          | RETURN expr ';'					{$$=makeTree(EXPRESSIONRETURN, 1, $2);}
             | Bloc						{$$=$1;}
             | Cible AFFECT expr ';'				{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
             | IF expr THEN Instruction ELSE Instruction		{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
@@ -249,9 +249,9 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		$$=getClasse(listeDeClass, $2);
 		if($$ == NULL){
 			/* la classe n'existe pas: erreur */
-      char* message = calloc(SIZE_ERROR,sizeof(char));
+      char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la classe %s n'existe pas",$2);
-      pushErreur(message,*classActuel,NULL,NULL);
+      pushErreur(message,classActuel,NULL,NULL);
 		}
 		else{
 			/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
