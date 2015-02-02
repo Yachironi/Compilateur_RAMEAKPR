@@ -112,6 +112,7 @@ struct _Class{
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
   PMETH override;             /* liste de méthodes override */
   PVAR liste_champs;        	/* liste des champs de la classe */ 
+  PVAR champs_herite;         /* atrributs heritees */
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
