@@ -1,7 +1,9 @@
 
 /** ANALYSE SYNTAXIQUE + GRAMMAIRE **/
 
-/* FIXME Ajouter une methode qui copie les methodes dans la classe mere dans l'attribut classe->override*/
+/* FIXME Ajouter une methode qui copie les methodes de la classe mere dans l'attribut classe->override
+ * SI EXTENDS
+ */
 
 /* les tokens ici sont ceux supposes etre renvoyes par l'analyseur lexical
  * A adapter par chacun en fonction de ce qu'il a ecrit dans tp.l
