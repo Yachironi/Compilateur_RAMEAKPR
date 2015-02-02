@@ -300,6 +300,7 @@ bool checkLClassOpt()
     PCLASS listTmp = listeDeClass;
     while(listTmp!=NULL)
     {
+      /*checkClass : Ne verifie qu'une classe -> methode non recusive*/
       checkClass(listTmp);
       listTmp = listTmp->suivant;
     }
@@ -335,29 +336,42 @@ bool checkClass(PCLASS classe)
 {
   /*
    * bool checkHeritage(classe);
-   * bool checkAttribut(SCLASS classe);
-   * bool checkMethode(SCLASS classe);
+   * bool checkListAttribut(SCLASS classe);
+   * bool checkListMethode(SCLASS classe);
     ----
    * bool checkCorp(SMETH methode)
     ----
-   * bool checkMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
+   * bool checkListMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
   */
 
+  /* Le nom de la classe doit avoir une majuscule*/
   bool nomMaj = FALSE;
 
   if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
     nomMaj = TRUE;
 
   /*TRUE : OK FALSE : NOK*/
-  bool heritage = checkHeritage(classe);
+  bool heritage = FALSE;
+  /*FIXME : boucle qui verifie que la classe mere n'est pas dans la liste d'erreur !!!
+   * Si c'est le cas -> renvoye faux directement => et ajouter une erreur du style
+   * "Corrigez la classe Mere %s avant",class->classe_mere->nom (utilisez sprintf)
+   */
+  if(classe->isExtend)
+  {
+    heritage = checkHeritage(classe);
+  }
+  else
+  {
+    heritage = TRUE;
+  }
 
   bool constructeur = checkConstructeur(classe);
 
-  bool attribut = checkAttribut(classe);
+  bool attribut = checkListAttribut(classe);
 
-  bool methode = checkMethode(classe);
+  bool methode = checkListMethode(classe);
 
-  return (heritage && constructeur && attribut && methode);
+  return (nomMaj && heritage && constructeur && attribut && methode);
 }
 
 /*
@@ -401,7 +415,7 @@ bool checkConstructeur(PCLASS classe)
   PVAR tmp = classe->param_constructeur;
 }
 
-bool checkAttribut(PCLASS classe)
+bool checkListAttribut(PCLASS classe)
 {
   PVAR tmp = classe->liste_champs;
 
@@ -411,6 +425,9 @@ bool checkAttribut(PCLASS classe)
      * Appel de la fonction de Gishan qui verifier une instruction
      * Integer x; ... et bien d'autres chose
      */
+    if(!checkListOptArg(tmp))
+      return FALSE;
+    /* /!!!\ Ici il s'arete des qu'un attribut est faux*/
     tmp = tmp->suivant;
   }
 }
@@ -431,37 +448,70 @@ bool checkAttribut(PCLASS classe)
 
 
  */
-bool checkMethode(PCLASS classe)
+bool checkListMethode(PCLASS classe)
 {
   PMETH tmp = classe->liste_methodes;
 
+  bool statique = FALSE;
+  bool redef = FALSE;
+
   while(tmp!=NULL)
   {
-
     printf("Je check la methode %s\n",tmp->nom);
 
     if(tmp->isStatic)
     {
-      checkMethodeStatic(tmp);
+      checkListMethodeStatic(tmp);
     }
     else
     {
+      statique = TRUE;
+      if(tmp->isRedef)
+      {
+        redef = existeMethodeClasseMereOverride(classe->classe_mere,tmp);
+
+        if(!redef)
+      }
+      else
+      {
+        redef = TRUE;
+      }
+
       /*Verification d'une methode de classe*/
     }
     /*
      * Verifier les parametre de la methode
      * Verifier le corps de la methode
-     * if(method.static) checkMethodeStatic
+     * if(method.static) checkListMethodeStatic
      */
     tmp = tmp->suivant;
   }
+
+  return (statique&&redef)
+}
+
+bool existeMethodeClasseMereOverride(PCLASS mere,PMETH methode)
+{
+  PMETH methodeOverride = mere->liste_methodes;
+
+  while(methodeOverride!=NULL)
+  {
+    if(strcmp(methodeOverride->nom,methode->nom)==0)
+    {
+      return TRUE;
+    }
+
+    methodeOverride = methodeOverride->suivant;
+  }
+  return FALSE;
 }
 
 /* 
  * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
  * de classe (meme principe que le java)
+ * On ne peut pas faire this-> qq chose ou this.
  */ 
-bool checkMethodeStatic(PMETH methode)
+bool checkListMethodeStatic(PMETH methode)
 {
   /*
    * Si la classe Point a un attribut x,y
