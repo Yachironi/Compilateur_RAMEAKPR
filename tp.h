@@ -108,7 +108,7 @@ struct _Class{
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
   PVAR liste_champs;        	/* liste des champs de la classe */ 
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
-  int isExtend;             	/* si la classe herite ou pas */
+  int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
 };
 
@@ -228,7 +228,7 @@ void pprintListVAR(PVAR var);
 void pprintVAR(PVAR var);
 
 /* methode rajoute */
-PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere);
+PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);

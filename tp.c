@@ -178,7 +178,7 @@ TreeP makeLeafMeth(short op, PMETH methode){
 }
 
 /** construit une structure classe (pouvant etre une liste de classe) */
-PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere){
+PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend){
 	PCLASS res = NEW(1, SCLASS);
 	res->suivant=NIL(SCLASS);	/* verifier si ça ne pose pas de pb */
 	res->nom=nom;
@@ -187,6 +187,7 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 	res->liste_methodes=liste_methodes;
 	res->liste_champs=liste_champs;
 	res->classe_mere=classe_mere;	
+	res->isExtend=isExtend;
 	if(listeClass==NULL){
 		listeClass=res;
 	}else{
