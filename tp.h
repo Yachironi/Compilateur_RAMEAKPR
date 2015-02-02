@@ -243,7 +243,15 @@ bool checkListMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
 
 /*
+<<<<<<< HEAD
  * Erreur
  */
 void pushErreur(char* message,SCLASS classe,SMETH methode,SVAR variable)
+=======
+ * Methodes eval
+ */
+void evalMain(TreeP programme);
+void evalContenuBloc(TreeP bloc);
+PVAR evalListDeclVar(TreeP listDeclVar);
+>>>>>>> d1056955f4c4f9cfabf3fe819df0963bd0d30423
 #endif

@@ -162,7 +162,12 @@ BlocOpt : Bloc		{$$=$1;}
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
 DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-		{ 	int isExtend; 
+		{ 	
+			if(getClasse(listeDeClass, $2) != NULL){
+				/* probleme : la classe qu'on souhaite declaree existe deja */
+				/* FIXME : gerer l'erreur */
+			}			
+			int isExtend; 
 			if($6==NIL(SCLASS)){
 				isExtend=0;
 			}else{

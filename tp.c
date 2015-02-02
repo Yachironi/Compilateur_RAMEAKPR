@@ -787,30 +787,37 @@ void evalMain(TreeP programme){
 void evalContenuBloc(TreeP bloc){
 	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
 	if(bloc->children[0] == NIL(Tree)){
-
+		if(bloc->children[1] != NIL(Tree)){
+			/* eval de LInstruction */
+		}
+		if(bloc->children[2] != NIL(Tree)){
+			/* eval de Yield => expr*/
+		}
 	}
 	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
 	else{
+		/* eval de ListDeclVar */
+		PVAR listDeclVar = evalListDeclVar(bloc->children[0]);
 
+		/* eval de LInstruction */
+		if(bloc->children[1] != NIL(Tree)){
+
+		}
+		/* eval de YieldOpt */
+		if(bloc->children[2] != NIL(Tree)){
+
+		}		
 	}
 }
 
-void evalMain(TreeP programme);
-void evalContenuBloc(TreeP bloc);
+PVAR evalListDeclVar(TreeP listDeclVar){
+	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
+	/* listDeclVar->var = 1ere var et toute la liste*/
 
-/* la structure d'un arbre (noeud ou feuille) */
-typedef struct _Tree {
-  short op;         		/* etiquette de l'operateur courant */
-  short nbChildren; 		/* nombre de sous-arbres */
-  union {
-    char *str;     		/* valeur de la feuille si op = ID ou STR */
-    int val;        		/* valeur de la feuille si op = CST */
-    PVAR var;	    		/* valeur de la feuille si op = VAR */
-    PCLASS classe;	   	/* valeur de la feuille si op = IDENTIFICATEURCLASS */
-    PMETH methode;        	/* valeur de la feuille si op = METHODE */
-    struct _Tree **children; 	/* tableau des sous-arbres */
-  } u;
-} Tree, *TreeP;
-
+	/*
+	PVAR var = listDeclVar->var;
+	return var;
+	*/
+}
 
 
