@@ -313,7 +313,7 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
-bool CheckBloc(TreeP CorpBloc, ListeVar liste){
+bool CheckBloc(TreeP CorpBloc){
 
 TreeP tmp = CorpBloc;
 
@@ -332,12 +332,13 @@ if(fils0 != NULL){
 checkDeclVar(TreeP){
 }
 
-bool checkListInst(){
-  if(listeIntruction->op == LIST_INSTRUCTION);
-  TreeP tmp = listeIntruction; 
+bool checkListInst(TreeP listInst){
+  if(listInst->op == LIST_INSTRUCTION){
+  TreeP tmp = listInst; 
   TreeP partieGauche = getChild(tmp,0);
   TreeP partiDroite = getChild(tmp,1); 
   recursifTestInstruction(partieGauche);
+}
 }
 
 bool recursifTestInstruction(TreeP arbre){
