@@ -14,7 +14,6 @@
 
 
 extern char *strdup(const char *);
-void printTree(TreeP tree);
 /* Couple Ident, numero de ligne de sa premiere apparition */
 typedef struct {
   int line;
@@ -91,11 +90,6 @@ int main(int argc, char **argv) {
   int fi;
   int token;
   int i;
-
-printf("=======================\n");
-printf("Affichage de l'arbre : \n");
-printTree(programme);
-printf("=======================\n");
 
 
   for(i = 1; i < argc; i++) {
