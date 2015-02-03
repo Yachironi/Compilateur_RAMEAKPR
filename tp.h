@@ -236,9 +236,8 @@ bool checkListAttribut(PCLASS classe);
 bool checkListMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
 
-/*
- * Erreur
- */
+
+void printTree(TreeP tree); /* Methode pour imprimer toute l'arbre */
 void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
@@ -247,5 +246,6 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
 bool estCoherent(TreeP gauche, TreeP droite);
 bool classeContient(PCLASS classe,TreeP droite);
-
+PCLASS classActuel;
+TreeP programme;
 #endif

@@ -46,8 +46,8 @@
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-PCLASS classActuel=NULL; /* Classe en cours d'analyse*/
-
+extern PCLASS classActuel; /* Classe en cours d'analyse*/
+extern TreeP programme;
 
 extern int yylex(); /* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */
@@ -81,7 +81,8 @@ extern void yyerror();  /* definie dans tp.c */
 /*
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
-Programme : LClassOpt Bloc      {$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);}
+
+Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);programme=$$;}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe

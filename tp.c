@@ -16,6 +16,8 @@
 
 extern int yyparse();
 extern int yylineno;
+extern TreeP programme;
+extern PCLASS classActuel;
 
 int eval(TreeP tree, VarDeclP decls);
 TreeP getChild(TreeP tree, int rank);
@@ -343,7 +345,8 @@ bool checkListInst(TreeP listInst){
 
 
 bool recursifTestInstruction(TreeP arbre){
-  for(int i=0; i< arbre->nbChildren; i++){
+int i;  
+for(i=0; i< arbre->nbChildren; i++){
     /* FIXME A faire */
   }
 }
@@ -404,7 +407,7 @@ bool estCoherent(TreeP gauche, TreeP droite){
 }
 
 bool classeContient(PCLASS classe,TreeP droite)
-{
+{/*
   switch(droite->op)
   {
     case SELECTION:
@@ -441,7 +444,7 @@ bool classeContient(PCLASS classe,TreeP droite)
 
     default : 
       return FALSE;
-  }
+  }*/
   return FALSE;
 }
 
@@ -665,6 +668,7 @@ bool checkListMethode(PCLASS classe)
 
   return TRUE;
 }
+
 
 bool checkMethode(PMETH methode)
 {
@@ -932,6 +936,25 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
   PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
 }
 
+/*
+ * Methode pour imprimer toute l'arbre
+ */
+
+void printTree(TreeP tree){
+if (! verbose ) return;
+printf("Etiquette %d",tree->op);
+ switch (tree->op) {
+  case LISTCLASS:pprintListClasse(tree->u.classe); break;
+  default:
+    fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
+	    tree->op);
+    setError(UNEXPECTED);
+  }
+int i;
+for (i = 0; i < tree->nbChildren; i++) { 
+    printTree(tree->u.children[i]);
+  }
+}
 
 /** Partie eval **/
 void evalProgramme(TreeP programme){
