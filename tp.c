@@ -356,7 +356,22 @@ for(i=0; i< arbre->nbChildren; i++){
  * False : KO
 */
 
-/* Suppose que le TreeP se situe au niveau d'un envoie message ou instantciation ou selection */ 
+
+/*
+* Fonction permettant le parcours recursif de l'arbre
+*/
+
+bool parcourRecursifArbre(){
+
+
+
+
+
+}
+
+
+
+
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
   if(droit==NULL){
@@ -387,7 +402,8 @@ bool estCoherent(TreeP gauche, TreeP droite){
     case INSTANCIATION :
       char * nomClass = getChild(gauche,0)->u.str; 
         /* Vérification si la classe existe */ 
-      PCLASS tmp = getClasse(PCLASS listeClass,char *nom);
+      PCLASS tmp = getClasse(listeClass,nomClass);
+
       if(tmp == NULL) return false; 
         /*Vérifie que la classe de l'instanciation contient la partie droite*/
       contientClasseInst(tmp,droite);
