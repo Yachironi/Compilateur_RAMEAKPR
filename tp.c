@@ -343,7 +343,7 @@ bool checkListInst(TreeP listInst){
 
 
 bool recursifTestInstruction(TreeP arbre){
-  for(int i=0; i< arbre-> nbChildren){
+  for(int i=0; i< arbre->nbChildren){
     // A faire 
   }
 /*
@@ -915,7 +915,7 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
 
 void printTree(TreeP tree){
 if (! verbose ) return;
-printf("Etiquette %d",tree.op);
+printf("Etiquette %d",tree->op);
  switch (tree->op) {
   case LISTCLASS:pprintListClasse(tree->u.classe); break;
   default:
@@ -924,8 +924,8 @@ printf("Etiquette %d",tree.op);
 	    tree->op);
     setError(UNEXPECTED);
   }
-for (i = 0; i < tree.nbChildren; i++) { 
-    printArbre(tree->u.children[i]);
+for (i = 0; i < tree->nbChildren; i++) { 
+    printTree(tree->u.children[i]);
   }
 }
 
