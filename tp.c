@@ -382,9 +382,13 @@ bool estCoherent(TreeP gauche, TreeP droite){
     break;
 
     case INSTANCIATION :
+      char * nomClass = getChild(gauche,0)->u.str; 
+        /* Vérification si la classe existe */ 
+      PCLASS tmp = getClasse(PCLASS listeClass,char *nom);
+      if(tmp == NULL) return false; 
+        /*Vérifie que la classe de l'instanciation contient la partie droite*/
+      contientClasseInst(tmp,droite);
       /*
-      * Vérifier que la classe de l'instanciation contient la partie droite 
-      * Vérifier si la classe existe
       * vérifier les listOptArgOpt 
       */
     break;
@@ -437,6 +441,24 @@ bool classeContient(PCLASS classe,TreeP droite)
 
     default : 
       return FALSE;
+  }
+  return FALSE;
+}
+
+bool  contientClasseInst(PVAR class, TreeP droite){
+  PVAR tmp =  class->liste_champs; 
+  PVAR tmpHerite = class->champs_herite;
+  PVAR fusion = tmp;
+  fusion->suivant = tmpHerite;
+
+  while(fusion!=NULL){
+    while(droite->u.var!= NULL){
+      if(strcmp(fusion->nom,droite->u.var->nom)==0){
+        return TRUE;
+      }
+      droite->u.var = droite->u.var->suivant;
+    }
+    fusion = fusion->suivant;
   }
   return FALSE;
 }
