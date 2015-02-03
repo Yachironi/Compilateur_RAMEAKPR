@@ -209,4 +209,9 @@ if (verbose) printf("Concat symbol:\t\t%s\n", yytext);
       printf("Token non reconnu:\t\"%d\"\n", token);
     }
   }
+
+printf("=======================\n");
+printf("Affichage de l'arbre : \n");
+printTree(programme);
+printf("=======================\n");
 }

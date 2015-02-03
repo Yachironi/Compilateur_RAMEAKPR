@@ -643,4 +643,23 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
   PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
 }
 
+/*
+ * Methode pour imprimer toute l'arbre
+ */
+
+void printTree(TreeP tree){
+if (! verbose ) return;
+printf("Etiquette %d",tree.op);
+ switch (tree->op) {
+  case LISTCLASS:pprintListClasse(tree->u.classe); break;
+  default:
+    /* On signale le probleme mais on ne quitte pas le programme pour autant */
+    fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
+	    tree->op);
+    setError(UNEXPECTED);
+  }
+for (i = 0; i < tree.nbChildren; i++) { 
+    printArbre(tree->u.children[i]);
+  }
+}
 

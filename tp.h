@@ -244,4 +244,11 @@ bool checkConstructeur(PCLASS classe);
 bool checkAttribut(PCLASS classe);
 bool checkMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
+
+/*
+ * Methode pour imprimer toute l'arbre
+ */
+
+void printTree(TreeP tree);
+
 #endif
