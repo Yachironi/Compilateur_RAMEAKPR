@@ -146,19 +146,6 @@ struct _Method{
   /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
-
-tyoedef struct LVar{
-   SVAR varibale;
-   PVAR suivant; 
-}ListeVar;
-
-
-/* Structure qui décrit une liste de class */
-struct _LClass{
- PCLASS classe;
- PLCLASS suivant;
-};
-
 /*
 Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
   champ static -> 1
@@ -256,5 +243,9 @@ void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
+
+bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
+bool estCoherent(TreeP gauche, TreeP droite);
+bool classeContient(PCLASS classe,TreeP droite);
 
 #endif

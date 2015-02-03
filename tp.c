@@ -329,8 +329,8 @@ if(fils0 != NULL){
 }
 
        
-checkDeclVar(TreeP){
-}
+/*checkDeclVar(TreeP p){
+}*/
 
 bool checkListInst(TreeP listInst){
   if(listInst->op == LIST_INSTRUCTION){
@@ -343,9 +343,10 @@ bool checkListInst(TreeP listInst){
 
 
 bool recursifTestInstruction(TreeP arbre){
-  for(int i=0; i< arbre-> nbChildren){
-    // A faire 
+  for(int i=0; i< arbre->nbChildren; i++){
+    /* FIXME A faire */
   }
+}
 /*
  * Verifier la liste de classe qui peut etre vide
  * True : OK -> s'il n'y a aucune classe la verification a reussi
