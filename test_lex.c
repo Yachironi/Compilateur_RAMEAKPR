@@ -12,9 +12,9 @@
 #include "tp.h"
 #include "tp_y.h"
 
-
 extern char *strdup(const char *);
 void printTree(TreeP tree);
+
 /* Couple Ident, numero de ligne de sa premiere apparition */
 typedef struct {
   int line;
@@ -86,6 +86,11 @@ void help() {
  * Les options doivent apparaitre avant le nom du fichier du programme.
  * Options: -[vV] -[hH?]
  */
+
+
+
+
+
 int main(int argc, char **argv) {
   idents = NEW(1000, IdentS); /* liste des identificateurs */
   int fi;
