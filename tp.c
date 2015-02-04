@@ -366,17 +366,98 @@ for(i=0; i< arbre->nbChildren; i++){
 * Fonction permettant le parcours recursif de l'arbre
 */
 
-bool parcourRecursifArbre(){
+bool parcourRecursifArbre(TreeP prog){
+  if(prog==NULL) return TRUE;
+  TreeP tmp = prog; 
+  
+  switch(tmp->op){
+    case PROGRAM:
+      bool droite = f(getChild(tmp,1), tmp->op, NULL); 
+      bool gauche = f(getChild(tmp,0), tmp->op,NULL);
+      
+      bool rec1 = parcourRecursifArbre(getChild(tmp,0);
+      bool rec2 = parcourRecursifArbre(getChild(tmp,1);
+        
+      return droite && gauche && rec1 && rec2;
+      break; 
 
 
+  }
 
 
 
 }
 
+bool f(TreeP tree,short etiquette,PVAR listeVar){
+  switch(etiquette){
+    case PROGRAM :
+      PVAR decl = getChild(tree,0)->u.var;
+      /* Vérifier que la liste d'instruction ets bien correcte */
+      if(decl==NULL)
+      {
+        if(getChild(tree,1)==NULL)
+        {
+          if(getChild(tree,2)==NULL)
+          {
+            return TRUE;
+          }
+          else
+          {
+            return checkExpr(getChild(getChild(tree,2),0),listeVar, tree->op);
+          }
+        }
+        else
+        {
+          return checkListInstr(getChild(tree,1),listeVar,tree->op);
+        }
+      }
+      else
+      {
+        if(getChild(tree,1)==NULL) 
+        {
+          return FALSE;
+        }
+        else
+        {
+          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+          bool res = checkExpr(getChild(getChild(tree,2),0),listeVar,tree->op);
+          return checkListInstr(getChild(tree,1),listeVar,tree->op) && res;
+        }
+      }
+    break;
 
+    case LISTCLASS : 
+        bool res1 = checkListClassBloc(getChild(tree,0),listeVar,tree->op);
+        //bool res2 = checkListClassBloc(getChild(tree,0),listeVar,tree->op);
+    break;
 
+    default : 
+      return FALSE;
+  }
+}
 
+bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
+       // 5 et 6 
+  /* méthode amine */
+  /* Test de blocOpt */
+  PCLASS tempClass = tree->u.classe;
+
+  PVAR tmpVarParam = tempClass->param_constructeur;
+  PVAR tmpListChamp = tempClass->liste_champs;          
+   /* PVAR champs_herite = tempHerite->;   nécessaire ?? */       
+  PVAR fusion;
+  if(tmpVarParam==NULL)
+  {
+    fusion = tmpListChamp; 
+  }
+  else 
+  {
+    fusion = tmpVarParam;
+    fusion->suivant = tmpListChamp;
+  }
+  /* Appeler checkBloc  avec en paramètre fusion */ 
+
+}
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
   if(droit==NULL){
