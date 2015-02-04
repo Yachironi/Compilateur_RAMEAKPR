@@ -246,6 +246,5 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
 bool estCoherent(TreeP gauche, TreeP droite);
 bool classeContient(PCLASS classe,TreeP droite);
-PCLASS classActuel;
-TreeP programme;
+
 #endif

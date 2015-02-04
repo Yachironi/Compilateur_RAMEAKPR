@@ -46,8 +46,8 @@
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-extern PCLASS classActuel; /* Classe en cours d'analyse*/
-extern TreeP programme;
+PCLASS classActuel; /* Classe en cours d'analyse*/
+TreeP programme;
 
 extern int yylex(); /* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */

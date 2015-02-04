@@ -12,8 +12,8 @@
 #include "tp.h"
 #include "tp_y.h"
 
-
 extern char *strdup(const char *);
+
 /* Couple Ident, numero de ligne de sa premiere apparition */
 typedef struct {
   int line;
@@ -90,7 +90,6 @@ int main(int argc, char **argv) {
   int fi;
   int token;
   int i;
-
 
   for(i = 1; i < argc; i++) {
     if (argv[i][0] == '-') {
