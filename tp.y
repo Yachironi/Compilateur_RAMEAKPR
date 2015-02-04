@@ -266,7 +266,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else{
       /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-      appelConstructureEstCorrecte($4,$$);
+      appelConstructeurEstCorrecte($4,$$);
     }
   } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
                | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}

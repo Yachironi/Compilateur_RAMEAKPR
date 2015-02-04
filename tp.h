@@ -221,7 +221,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
 
-bool appelConstructureEstCorrecte(TreeP args,PCLASS mere);
+bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere);
 
 
 /*
