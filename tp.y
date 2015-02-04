@@ -269,7 +269,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 	}
 	else{
 		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-		appelConstructureEstCorrecte($4,$$);
+		/* A REMETTRE appelConstructureEstCorrecte($4,$$);*/
 		/* on ajoute a la classe mere les param passees dans ListOptArg */
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
 			et yc de Point ont les valeurs respectives xc et yc **/
