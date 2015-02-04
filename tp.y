@@ -259,32 +259,41 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 /** Julien : j'ai essaye de renvoyer directement une classe **/
 /* Pour Amin : il faut remplacer les commentaires par les verifs que tu dois faire */
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
-{
-	$$=getClasse(listeDeClass, $2);
-	if($$ == NULL){
-		/* la classe n'existe pas: erreur */
-		char* message = NEW(SIZE_ERROR,char);
-		sprintf(message,"Erreur la classe %s n'existe pas",$2);
-		pushErreur(message,classActuel,NULL,NULL);
-	}
-	else{
-		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-		appelConstructureEstCorrecte($4,$$);
-		/* on ajoute a la classe mere les param passees dans ListOptArg */
-		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
-			et yc de Point ont les valeurs respectives xc et yc **/
-		TreeP listOptArg = $4;
-		PVAR paramConstructeur = $$->param_constructeur;
-		while(listOptArg->u.children[1]!=NIL(Tree)){
-			paramConstructeur->init=listOptArg->u.children[0];
-			listOptArg = listOptArg->u.children[1];
-			paramConstructeur = paramConstructeur->suivant;
-		}
-		if(listOptArg->u.children[0]!=NIL(Tree)){
-			paramConstructeur->init=listOptArg->u.children[0];
-		}
-    	}
-} /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+  {
+    $$=getClasse(listeDeClass, $2);
+    if($$ == NULL){
+      /* la classe n'existe pas: erreur */
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur la classe %s n'existe pas",$2);
+      pushErreur(message,classActuel,NULL,NULL);
+    }
+    else{
+      /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
+      if(checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE))
+      {
+        /* on ajoute a la classe mere les param passees dans ListOptArg */
+        /* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
+          et yc de Point ont les valeurs respectives xc et yc **/
+        TreeP listOptArg = $4;
+        PVAR paramConstructeur = $$->param_constructeur;
+        while(listOptArg->u.children[1]!=NIL(Tree)){
+          paramConstructeur->init=listOptArg->u.children[0];
+          listOptArg = listOptArg->u.children[1];
+          paramConstructeur = paramConstructeur->suivant;
+        }
+        if(listOptArg->u.children[0]!=NIL(Tree)){
+          paramConstructeur->init=listOptArg->u.children[0];
+        }
+      }
+      else
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur l'appel du constructeur de la classe mere dans %s est incorrecte",$2);
+        pushErreur(message,classActuel,NULL,NULL);
+      }
+    }
+  } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+
                | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
                ;
 ListOptArg :            {$$=NIL(Tree);}
@@ -317,7 +326,7 @@ LArg : expr           {$$ = $1;}
 /* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
 /* Pour info : ID est dans Cible */
-expr : PLUS expr %prec unaire   { $$=$2; }
+expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
