@@ -266,7 +266,16 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else{
       /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-      appelConstructeurEstCorrecte($4,$$);
+      if(checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE))
+      {
+
+      }
+      else
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur l'appel du constructeur de la classe mere dans %s est incorrecte",$2);
+        pushErreur(message,classActuel,NULL,NULL);
+      }
     }
   } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
                | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
@@ -301,7 +310,7 @@ LArg : expr           {$$ = $1;}
 /* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
 
 /* Pour info : ID est dans Cible */
-expr : PLUS expr %prec unaire   { $$=$2; }
+expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
        | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }

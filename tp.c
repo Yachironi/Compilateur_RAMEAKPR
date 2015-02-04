@@ -558,7 +558,7 @@ bool classeContient(PCLASS classe,TreeP droite)
   return FALSE;
 }
 
-bool  contientClasseInst(PVAR class, TreeP droite){
+bool contientClasseInst(PVAR class, TreeP droite){
   PVAR tmp =  class->liste_champs; 
   PVAR tmpHerite = class->champs_herite;
   PVAR fusion = tmp;
@@ -723,6 +723,9 @@ bool checkConstructeur(PCLASS classe)
 
 bool checkListAttribut(PCLASS classe)
 {
+  /*
+   * Parcourir les attributs de la classe actuel & verifier qu'il n'y a aucune qui se ressemble !
+   */
   PVAR tmp = classe->liste_champs;
 
   while(tmp!=NULL)
@@ -1034,17 +1037,81 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   return errorCode;
 }
 
-PVAR appelConstructeurEstCorrecteRecursif(TreeP args,PCLASS mere)
+bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere)
 {
-  TreeP tmp = args;
+  /* FIXME a l'arrive d'une leaf IDENTIFICATEUR il faut que je cherche si l'attribut est 
+   * Dans les attributs de classe, la liste de declaration du bloc de la methode ou les parametre
+   * Si c'est un appel de constructeur -> regarder dans this.param_constructeur aussi
+   */
 
-  return NULL;
+   if(args==NULL && paramMeth==NULL)
+    return TRUE;
+
+  PVAR copie = paramMeth;
+
+  return checkAppelMethodeR(listOptArg,paramMeth,isAppelConstructeurMere);
+
 }
 
-bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere)
+bool checkAppelMethodeR(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere)
 {
-  PVAR p = appelConstructeurEstCorrecteRecursif(args,mere);
+  /* FIXME a l'arrive d'une leaf IDENTIFICATEUR il faut que je cherche si l'attribut est 
+   * Dans les attributs de classe, la liste de declaration du bloc de la methode ou les parametre
+   * Si c'est un appel de constructeur -> regarder dans this.param_constructeur aussi
+   */
+
+
+
 }
+
+/*expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante      { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage     { $$=$1; }
+       | OuRien       { $$=$1; }
+       ;*/
+
+PCLASS getType(TreeP listExpression,SVAR recherche)
+{
+  if(listExpression==NULL && recherche!=NULL)
+    return NULL;
+   
+   /* Dans le cas d'une selection, récupérer le dernier élèment */ 
+
+  switch(listOptArg->op){
+
+    PCLASS type;
+    case MINUSUNAIRE:
+    case PLUSUNAIRE :
+      type = getType(getChild(listExpression,0));
+      if(type!=NULL && strcmp(type->nom,"Integer")!=0)
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
+        pushErreur(message,NULL,NULL,tmp);
+        return FALSE;
+      }
+    break;
+
+    case SELECTION : 
+      /* parcours jusqu'a la fin pour recuperer la classe en question */
+    break;
+
+  }
+
+
+
+
+}
+
+PVAR getChampsClasse(PCLASS classe, )
 
 /** Partie eval **/
 void evalProgramme(TreeP programme){
