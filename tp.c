@@ -502,7 +502,20 @@ if(getChild(tmp,0)==NULL)
       }
 }
 
-bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+bool checkExpr(TreeP tree, PVAR listeVar, short etiquette){
+   /* Vérifier que dans le cas d'un plus bianire, d'un minus binaire, d'une multiplication 
+   * d'une division que le type est le même 
+   * dans le cas d'une divison, regarder que le deuxième expr n'est pas  NULL ou 0 
+   * Pour RELOP, les deux fils doivent avoir le même type
+   * Plus unaire, moins unaire ? 
+   */ 
+   switch()
+
+
+
+
+
+
    expr : 
          PLUS expr %prec unaire   { $$=$2; }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
@@ -521,6 +534,10 @@ bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
    OuRien : '(' expr ')'       {$$=$2;}
        | Cible              {$$=$1;}
        ;
+
+   constante : CSTS  { $$ = makeLeafStr(CSTSTRING,$1); }
+              | CSTE  { $$ = makeLeafInt(CSTENTIER,$1); }
+          ;
 
 }
 
