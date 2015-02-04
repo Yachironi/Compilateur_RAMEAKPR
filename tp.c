@@ -52,15 +52,15 @@ int main(int argc, char **argv) {
     if (argv[i][0] == '-') {
       switch (argv[i][1]) {
       case 'v': case 'V':
-	verbose = TRUE; continue;
+  verbose = TRUE; continue;
       case 'e': case 'E':
-	noEval = TRUE; continue;
+  noEval = TRUE; continue;
       case '?': case 'h': case 'H':
-	fprintf(stderr, "Syntax: tp -e -v program.txt\n");
-	exit(USAGE_ERROR);
+  fprintf(stderr, "Syntax: tp -e -v program.txt\n");
+  exit(USAGE_ERROR);
       default:
-	fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
-	exit(USAGE_ERROR);
+  fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
+  exit(USAGE_ERROR);
       }
     } else break;
   }
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
    */
   res = yyparse();
   if (programme == NULL) {
-	printf("Programme est NULL");
+  printf("Programme est NULL");
   }else{
 printf("=======================\n");
 printf("Affichage de l'arbre : \n");
@@ -198,72 +198,72 @@ TreeP makeLeafMeth(short op, PMETH methode){
 
 /** construit une structure classe (pouvant etre une liste de classe) */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend){
-	PCLASS res = NEW(1, SCLASS);
-	res->suivant=NIL(SCLASS);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->param_constructeur=param_constructeur;
-	res->corps_constructeur=corps_constructeur;
-	res->liste_methodes=liste_methodes;
-	res->liste_champs=liste_champs;
-	res->classe_mere=classe_mere;	
-	res->isExtend=isExtend;
-	if(listeClass==NULL){
-		listeClass=res;
-	}else{
-		PCLASS parcour=listeClass;
-		while(parcour->suivant!=NULL){
-			parcour=parcour->suivant;	
-		}
-		parcour->suivant=res;
-	}
-	return res;
+  PCLASS res = NEW(1, SCLASS);
+  res->suivant=NIL(SCLASS); /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->param_constructeur=param_constructeur;
+  res->corps_constructeur=corps_constructeur;
+  res->liste_methodes=liste_methodes;
+  res->liste_champs=liste_champs;
+  res->classe_mere=classe_mere; 
+  res->isExtend=isExtend;
+  if(listeClass==NULL){
+    listeClass=res;
+  }else{
+    PCLASS parcour=listeClass;
+    while(parcour->suivant!=NULL){
+      parcour=parcour->suivant; 
+    }
+    parcour->suivant=res;
+  }
+  return res;
 }
 
 /* Renvoi la classe avec un nom donnée */
 PCLASS getClasse(PCLASS listeClass,char *nom){
-	PCLASS parcour=listeClass;
-	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
-		parcour=parcour->suivant;	
-	}
-	return parcour;
+  PCLASS parcour=listeClass;
+  while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+    parcour=parcour->suivant; 
+  }
+  return parcour;
 }
 
 /* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
-	PMETH res=NEW(1, SMETH);
-	res->suivant = NIL(SMETH);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->corps=corps;
-	res->params=params;
-	res->typeRetour=typeRetour;
-	res->home=home;
-	/* ni static, ni override */
-	if(OverrideOuStaticOpt == 0){
-		res->isStatic = 0;
-		res->isRedef = 0;
-	}
-	/* override mais pas static */
-	else if(OverrideOuStaticOpt == 1){
-		res->isStatic = 0;
-		res->isRedef = 1;
-	}
-	/* static mais pas override */
-	else{
-		res->isStatic = 1;
-		res->isRedef = 0;
-	}
-	return res;
+  PMETH res=NEW(1, SMETH);
+  res->suivant = NIL(SMETH);  /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->corps=corps;
+  res->params=params;
+  res->typeRetour=typeRetour;
+  res->home=home;
+  /* ni static, ni override */
+  if(OverrideOuStaticOpt == 0){
+    res->isStatic = 0;
+    res->isRedef = 0;
+  }
+  /* override mais pas static */
+  else if(OverrideOuStaticOpt == 1){
+    res->isStatic = 0;
+    res->isRedef = 1;
+  }
+  /* static mais pas override */
+  else{
+    res->isStatic = 1;
+    res->isRedef = 0;
+  }
+  return res;
 }
 
 /* Creer une var pouvant etre un parametre, un champ, .. */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
-	PVAR res=NEW(1,SVAR);
-	res->suivant=NIL(SVAR);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->type=type;
-	res->init=init;
-	res->categorie=cat;	/* si cat=0 ==> var non static. si cat=1 ==> var static */
-	return res;
+  PVAR res=NEW(1,SVAR);
+  res->suivant=NIL(SVAR); /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->type=type;
+  res->init=init;
+  res->categorie=cat; /* si cat=0 ==> var non static. si cat=1 ==> var static */
+  return res;
 }
 
 /*
@@ -328,41 +328,6 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
-bool CheckBloc(TreeP CorpBloc){
-
-TreeP tmp = CorpBloc;
-
-TreeP fils0 = getChild(tmp,0); 
-TreeP fils1 = getChild(tmp,1);
-TreeP fils2 = getChild(tmp,2);
-
-if(fils0 != NULL){
-  if(fils1 != NULL){
-       return TRUE; 
-  }
-}
-}
-
-       
-/*checkDeclVar(TreeP p){
-}*/
-
-bool checkListInst(TreeP listInst){
-  if(listInst->op == LIST_INSTRUCTION){
-  TreeP tmp = listInst; 
-  TreeP partieGauche = getChild(tmp,0);
-  TreeP partiDroite = getChild(tmp,1); 
-  recursifTestInstruction(partieGauche);
-}
-}
-
-
-bool recursifTestInstruction(TreeP arbre){
-int i;  
-for(i=0; i< arbre->nbChildren; i++){
-    /* FIXME A faire */
-  }
-}
 /*
  * Verifier la liste de classe qui peut etre vide
  * True : OK -> s'il n'y a aucune classe la verification a reussi
@@ -379,28 +344,32 @@ bool parcourRecursifArbre(TreeP prog){
   TreeP tmp = prog; 
   
   switch(tmp->op){
-    case PROGRAM:
+    case PROGRAM :
       bool droite = f(getChild(tmp,1), tmp->op, NULL); 
-      bool gauche = f(getChild(tmp,0), tmp->op,NULL);
+      bool gauche = f(getChild(tmp,0), tmp->op, NULL);
       
-      bool rec1 = parcourRecursifArbre(getChild(tmp,0);
-      bool rec2 = parcourRecursifArbre(getChild(tmp,1);
+      bool rec1 = parcourRecursifArbre(getChild(tmp,0));
+      bool rec2 = parcourRecursifArbre(getChild(tmp,1));
         
       return droite && gauche && rec1 && rec2;
       break; 
-
-
   }
-
-
 
 }
 
 bool f(TreeP tree,short etiquette,PVAR listeVar){
+  
   switch(etiquette){
     case PROGRAM :
-      PVAR decl = getChild(tree,0)->u.var;
-      /* Vérifier que la liste d'instruction ets bien correcte */
+      PVAR decl;
+      if(getChild(tree,0)!=NULL)
+      {
+        decl = getChild(tree,0)->u.var;
+      }
+      else{
+        decl = NULL;
+      }
+      /* Vérifier que la liste d'instruction est bien correcte */
       if(decl==NULL)
       {
         if(getChild(tree,1)==NULL)
@@ -445,25 +414,113 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
 }
 
 bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
-       // 5 et 6 
   /* méthode amine */
   /* Test de blocOpt */
+  if(tree==NULL)
+  {
+    retrun TRUE;
+  }
   PCLASS tempClass = tree->u.classe;
 
   PVAR tmpVarParam = tempClass->param_constructeur;
   PVAR tmpListChamp = tempClass->liste_champs;          
-   /* PVAR champs_herite = tempHerite->;   nécessaire ?? */       
+  PVAR tmpHerite = tempClass->champs_herite;   
   PVAR fusion;
+  
   if(tmpVarParam==NULL)
-  {
-    fusion = tmpListChamp;
-  }
+  { 
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else{
+      fusion = tmpHerite;
+    } 
+
   else 
   {
     fusion = tmpVarParam;
-    fusion->suivant = tmpListChamp;
+    
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else
+    {
+      fusion = tmpHerite;
+    }
   }
-  /* Appeler checkBloc  avec en paramètre fusion */ 
+  
+
+  /* Vérification de blocOPT, les variables doivent être présente dans la liste fusion 
+  * Appeler la methode qui regarde un bloc, on lui passant en paramètre fusion
+  */ 
+  checkBloc(tempClass->corps_constructeur, fusion);
+}
+
+bool checkBloc(TreeP CorpBloc, PVAR listeVar){
+
+TreeP tmp = CorpBloc;
+
+TreeP fils0 = getChild(tmp,0); 
+TreeP fils1 = getChild(tmp,1);
+TreeP fils2 = getChild(tmp,2);
+
+if(getChild(tmp,0)==NULL)
+      {
+        if(getChild(tmp,1)==NULL)
+        {
+          if(getChild(tmp,2)==NULL)
+          {
+            return TRUE;
+          }
+          else
+          {
+            return checkExpr(getChild(getChild(tmp,2),0),listeVar, tmp->op);
+          }
+        }
+        else
+        {
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op);
+        }
+      }
+      
+      else
+      {
+        if(getChild(tmp,1)==NULL) 
+        {
+          return FALSE;
+        }
+        else
+        {
+          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+          bool res = checkExpr(getChild(getChild(tmp,2),0),listeVar,tmp->op);
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op) && res;
+        }
+      }
+}
+
+bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+   expr : 
+         PLUS expr %prec unaire   { $$=$2; }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante          { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage       { $$=$1; }
+       | OuRien             { $$=$1; }
+       ;
+
+   OuRien : '(' expr ')'       {$$=$2;}
+       | Cible              {$$=$1;}
+       ;
 
 }
 
@@ -879,12 +936,6 @@ bool checkListOptArg(PVAR var)
 {
 
 }
-
-bool checkBloc(TreeP tree)
-{
-
-}
-
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */
@@ -1000,10 +1051,10 @@ int eval(TreeP tree, VarDeclP decls) {
 
   /** Distinguer les opérateurs unaires et binaires **/
   case PLUS:
-	/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
     return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
   case MINUS:
-	/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
     return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
   /** **/
 
@@ -1115,43 +1166,43 @@ PVAR getChampsClasse(PCLASS classe, )
 
 /** Partie eval **/
 void evalProgramme(TreeP programme){
-	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
-	evalContenuBloc(programme->u.children[1]/*->children[0]*/);
+  /* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
+  evalContenuBloc(programme->u.children[1]/*->children[0]*/);
 }
 
 void evalContenuBloc(TreeP bloc){
-	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
-	if(bloc->u.children[0] == NIL(Tree)){
-		if(bloc->u.children[1] != NIL(Tree)){
-			/* eval de LInstruction */
-		}
-		if(bloc->u.children[2] != NIL(Tree)){
-			/* eval de Yield => expr*/
-		}
-	}
-	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
-	else{
-		/* eval de ListDeclVar */
-		PVAR listDeclVar = evalListDeclVar(bloc->u.children[0]);
+  /* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
+  if(bloc->u.children[0] == NIL(Tree)){
+    if(bloc->u.children[1] != NIL(Tree)){
+      /* eval de LInstruction */
+    }
+    if(bloc->u.children[2] != NIL(Tree)){
+      /* eval de Yield => expr*/
+    }
+  }
+  /* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
+  else{
+    /* eval de ListDeclVar */
+    PVAR listDeclVar = evalListDeclVar(bloc->u.children[0]);
 
-		/* eval de LInstruction */
-		if(bloc->u.children[1] != NIL(Tree)){
+    /* eval de LInstruction */
+    if(bloc->u.children[1] != NIL(Tree)){
 
-		}
-		/* eval de YieldOpt */
-		if(bloc->u.children[2] != NIL(Tree)){
+    }
+    /* eval de YieldOpt */
+    if(bloc->u.children[2] != NIL(Tree)){
 
-		}		
-	}
+    }   
+  }
 }
 
 PVAR evalListDeclVar(TreeP listDeclVar){
-	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
-	/* listDeclVar->var = 1ere var et toute la liste*/
+  /** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
+  /* listDeclVar->var = 1ere var et toute la liste*/
 
-	/* Que ca a faire??? */
-	PVAR var = listDeclVar->u.var;
-	return var;
+  /* Que ca a faire??? */
+  PVAR var = listDeclVar->u.var;
+  return var;
 }
 
 /*
@@ -1165,7 +1216,7 @@ printf("Etiquette %d",tree->op);
   case LISTCLASS:pprintListClasse(tree->u.classe); break;
   default:
     fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
-	    tree->op);
+      tree->op);
     setError(UNEXPECTED);
   }
 int i;

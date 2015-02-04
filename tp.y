@@ -184,10 +184,13 @@ DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'Conten
       else
       {
         int isExtend; 
+	/** cas ou une classe n'herite pas d'une classe mere **/
         if($6==NIL(SCLASS)){
-          isExtend=FALSE;
-        }else{
-          isExtend=TRUE;
+          isExtend=0;
+        }
+	/** cas ou une classe herite pas d'une classe mere **/
+	else{
+          isExtend=1;
         }
         classActuel=makeClasse(listeDeClass,$2,$4,$7,$10->u.children[1]->u.methode,$10->u.children[0]->u.var,/*getClasse(listeDeClass,$6->u.children[0]->u.str)*/ $6,isExtend);
         $$=classActuel;
@@ -268,7 +271,19 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
       /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
       if(checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE))
       {
-
+        /* on ajoute a la classe mere les param passees dans ListOptArg */
+        /* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
+          et yc de Point ont les valeurs respectives xc et yc **/
+        TreeP listOptArg = $4;
+        PVAR paramConstructeur = $$->param_constructeur;
+        while(listOptArg->u.children[1]!=NIL(Tree)){
+          paramConstructeur->init=listOptArg->u.children[0];
+          listOptArg = listOptArg->u.children[1];
+          paramConstructeur = paramConstructeur->suivant;
+        }
+        if(listOptArg->u.children[0]!=NIL(Tree)){
+          paramConstructeur->init=listOptArg->u.children[0];
+        }
       }
       else
       {
@@ -278,6 +293,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
       }
     }
   } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+
                | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
                ;
 ListOptArg :            {$$=NIL(Tree);}
