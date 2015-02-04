@@ -46,8 +46,8 @@
 
 %{
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
-extern PCLASS classActuel; /* Classe en cours d'analyse*/
-extern TreeP programme;
+PCLASS classActuel; /* Classe en cours d'analyse*/
+TreeP programme;
 
 extern int yylex(); /* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */
@@ -176,17 +176,24 @@ DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'Conten
       if(getClasse(listeDeClass, $2) != NULL){
         /* probleme : la classe qu'on souhaite declaree existe deja */
         /* FIXME : gerer l'erreur */
+
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur la classe %s est deja declare",$2);
+        pushErreur(message,classActuel,NULL,NULL);
       }     
-      int isExtend; 
-      if($6==NIL(SCLASS)){
-        isExtend=0;
-      }else{
-        isExtend=1;
+      else
+      {
+        int isExtend; 
+        if($6==NIL(SCLASS)){
+          isExtend=FALSE;
+        }else{
+          isExtend=TRUE;
+        }
+        classActuel=makeClasse(listeDeClass,$2,$4,$7,$10->u.children[1]->u.methode,$10->u.children[0]->u.var,/*getClasse(listeDeClass,$6->u.children[0]->u.str)*/ $6,isExtend);
+        $$=classActuel;
       }
-      classActuel=makeClasse(listeDeClass,$2,$4,$7,$10->u.children[1]->u.methode,$10->u.children[0]->u.var,/*getClasse(listeDeClass,$6->u.children[0]->u.str)*/ $6,isExtend);
-      $$=classActuel;
     }
-         ;
+    ;
 
 /* Contenu d'une classe : elle peut contenir une liste des champs et/ou des methodes */
 ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt  {$$=makeTree(CONTENUCLASS,2,makeLeafVar(LISTEVAR,$1),makeLeafMeth(LISTEMETHODE,$2));}

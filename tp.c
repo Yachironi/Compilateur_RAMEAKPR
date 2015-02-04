@@ -40,6 +40,7 @@ FILE *fd = NIL(FILE);
  * Les options doivent apparaitre avant le nom du fichier du programme.
  * Options: -[eE] -[vV] -[hH?]
  */
+
 int main(int argc, char **argv) {
   int fi;
   int i, res;
@@ -92,6 +93,13 @@ int main(int argc, char **argv) {
    * c'est possible.
    */
   res = yyparse();
+  if (programme == NULL) {
+	printf("Programme est NULL");
+  }else{
+printf("=======================\n");
+printf("Affichage de l'arbre : \n");
+printTree(programme);
+printf("=======================\n");}
   if (fd != NIL(FILE)) fclose(fd);
   if (res == 0 && errorCode == NO_ERROR) return 0;
   else {
@@ -99,6 +107,11 @@ int main(int argc, char **argv) {
     printf("Error in file. Kind of error: %d\n", res2); 
     return res2;
   }
+
+  printf("=======================\n");
+printf("Affichage de l'arbre : \n");
+printTree(programme);
+printf("=======================\n");
 }
 
 
@@ -914,26 +927,6 @@ bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
   PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
 }
 
-/*
- * Methode pour imprimer toute l'arbre
- */
-
-void printTree(TreeP tree){
-if (! verbose ) return;
-printf("Etiquette %d",tree->op);
- switch (tree->op) {
-  case LISTCLASS:pprintListClasse(tree->u.classe); break;
-  default:
-    fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
-	    tree->op);
-    setError(UNEXPECTED);
-  }
-int i;
-for (i = 0; i < tree->nbChildren; i++) { 
-    printTree(tree->u.children[i]);
-  }
-}
-
 /** Partie eval **/
 void evalProgramme(TreeP programme){
 	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
@@ -975,4 +968,22 @@ PVAR evalListDeclVar(TreeP listDeclVar){
 	return var;
 }
 
+/*
+ * Methode pour imprimer toute l'arbre
+ */
 
+void printTree(TreeP tree){
+/* if (! verbose ) return;*/
+printf("Etiquette %d",tree->op);
+ switch (tree->op) {
+  case LISTCLASS:pprintListClasse(tree->u.classe); break;
+  default:
+    fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
+	    tree->op);
+    setError(UNEXPECTED);
+  }
+int i;
+for (i = 0; i < tree->nbChildren; i++) { 
+    printTree(tree->u.children[i]);
+  }
+}

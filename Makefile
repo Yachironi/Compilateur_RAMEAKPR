@@ -9,8 +9,8 @@ tp : $(OBJ)
 mac : $(OBJ)
 	$(CC) -o tp $(OBJ) $(LDFLAGSMAC)
 
-test_lex : tp_l.c test_lex.c tp_y.h 
-	$(CC) $(CFLAGS) -o test_lex tp_l.c test_lex.c $(LDFLAGS) 
+test_lex : tp_l.c test_lex.c tp_y.h tp.c
+	$(CC) $(CFLAGS) -o test_lex tp_l.c test_lex.c tp.c $(LDFLAGS) 
 
 test_lex_mac : tp_l.c test_lex.c tp_y.h
 	$(CC) $(CFLAGS) -o test_lex tp_l.c test_lex.c $(LDFLAGSMAC) 
