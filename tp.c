@@ -345,8 +345,10 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
 *
 */
 
-/*
+
 bool parcourRecursifArbre(TreeP prog){
+	return FALSE;
+/*
   if(prog==NULL) return TRUE;
   TreeP tmp = prog; 
   
@@ -361,11 +363,13 @@ bool parcourRecursifArbre(TreeP prog){
       return droite && gauche && rec1 && rec2;
       break; 
   }
-
-}
 */
-/*
+}
+
+
 bool f(TreeP tree,short etiquette,PVAR listeVar){
+	return FALSE;
+/*
   PVAR decl;
   switch(etiquette){
     case PROGRAM :
@@ -377,6 +381,7 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
       else{
         decl = NULL;
       }
+*/
       /* Vérifier que la liste d'instruction est bien correcte */
  /*     if(decl==NULL)
       {
@@ -404,7 +409,7 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
         }
         else
         {
-          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+  */        /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
  /*         bool res = checkExpr(getChild(getChild(tree,2),0),listeVar,tree->op);
           return checkListInstr(getChild(tree,1),listeVar,tree->op) && res;
         }
@@ -418,9 +423,9 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
 
     default : 
       return FALSE;
-  }
+  }*/
 }
-*/
+
 bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
   /* méthode amine */
   /* Test de blocOpt */
@@ -504,13 +509,16 @@ if(getChild(tmp,0)==NULL)
         else
         {
           /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
-          bool res = checkExpr(getChild(getChild(tmp,2),0),listeVar,tmp->op);
+        /* A REMETTRE  bool res = checkExpr(getChild(getChild(tmp,2),0),listeVar,tmp->op); */
+	bool res
           return checkListInstr(getChild(tmp,1),listeVar,tmp->op) && res;
         }
       }
 }
 
-/*bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+	return FALSE;
+}
   
   /*expr : 
          PLUS expr %prec unaire   { $$=$2; }
@@ -533,16 +541,14 @@ if(getChild(tmp,0)==NULL)
   */
 /*}  */
 
-/**
-*
-*
-*  ------------------ A REMETTRE ---------------
-*
-/*
 
 
-/*
+
+
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
+	return FALSE;
+}
+/*
   if(droit==NULL){
       return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
   }  
@@ -563,7 +569,9 @@ bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
 *
 */
 
-/*bool estCoherent(TreeP gauche, TreeP droite){
+bool estCoherent(TreeP gauche, TreeP droite){
+	return FALSE;
+}/*
   switch(gauche->op){
    
     case SELECTION :
