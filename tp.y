@@ -259,32 +259,32 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 /** Julien : j'ai essaye de renvoyer directement une classe **/
 /* Pour Amin : il faut remplacer les commentaires par les verifs que tu dois faire */
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
-  {
-    $$=getClasse(listeDeClass, $2);
-    if($$ == NULL){
-      /* la classe n'existe pas: erreur */
-      char* message = NEW(SIZE_ERROR,char);
-      sprintf(message,"Erreur la classe %s n'existe pas",$2);
-      pushErreur(message,classActuel,NULL,NULL);
-    }
-    else{
-      /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-      appelConstructureEstCorrecte($4,$$);
-	/* on ajoute a la classe mere les param passees dans ListOptArg */
-	/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc et yc de 
-		Point ont les valeurs respectives xc et yc **/
-	TreeP listOptArg = $4;
-	PVAR paramConstructeur = $$->param_constructeur;
-	while(listOptArg->u.children[1]!=NIL(Tree)){
-		paramConstructeur->init=listOptArg->u.children[0];
-		listOptArg = listOptArg->listOptArg->u.children[1];
-		paramConstructeur = paramConstructeur->suivant;
+{
+	$$=getClasse(listeDeClass, $2);
+	if($$ == NULL){
+		/* la classe n'existe pas: erreur */
+		char* message = NEW(SIZE_ERROR,char);
+		sprintf(message,"Erreur la classe %s n'existe pas",$2);
+		pushErreur(message,classActuel,NULL,NULL);
 	}
-	if(listOptArg->u.children[0]!=NIL(Tree)){
-		paramConstructeur->init=listOptArg->u.children[0];
-	}
-    }
-  } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+	else{
+		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
+		appelConstructureEstCorrecte($4,$$);
+		/* on ajoute a la classe mere les param passees dans ListOptArg */
+		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
+			et yc de Point ont les valeurs respectives xc et yc **/
+		TreeP listOptArg = $4;
+		PVAR paramConstructeur = $$->param_constructeur;
+		while(listOptArg->u.children[1]!=NIL(Tree)){
+			paramConstructeur->init=listOptArg->u.children[0];
+			listOptArg = listOptArg->listOptArg->u.children[1];
+			paramConstructeur = paramConstructeur->suivant;
+		}
+		if(listOptArg->u.children[0]!=NIL(Tree)){
+			paramConstructeur->init=listOptArg->u.children[0];
+		}
+    	}
+} /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
                | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
                ;
 ListOptArg :            {$$=NIL(Tree);}

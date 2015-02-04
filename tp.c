@@ -456,7 +456,7 @@ bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
   PVAR fusion;
   if(tmpVarParam==NULL)
   {
-    fusion = tmpListChamp; 
+    fusion = tmpListChamp;
   }
   else 
   {
@@ -1034,16 +1034,16 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   return errorCode;
 }
 
-PVAR appelConstructureEstCorrecteRecursif(TreeP args,PCLASS mere)
+PVAR appelConstructeurEstCorrecteRecursif(TreeP args,PCLASS mere)
 {
   TreeP tmp = args;
 
   return NULL;
 }
 
-bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
+bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere)
 {
-  PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
+  PVAR p = appelConstructeurEstCorrecteRecursif(args,mere);
 }
 
 /** Partie eval **/
