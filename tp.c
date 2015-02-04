@@ -328,25 +328,6 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
-bool CheckBloc(TreeP CorpBloc){
-
-TreeP tmp = CorpBloc;
-
-TreeP fils0 = getChild(tmp,0); 
-TreeP fils1 = getChild(tmp,1);
-TreeP fils2 = getChild(tmp,2);
-
-if(fils0 != NULL){
-  if(fils1 != NULL){
-       return TRUE; 
-  }
-}
-}
-
-       
-/*checkDeclVar(TreeP p){
-}*/
-
 bool checkListInst(TreeP listInst){
   if(listInst->op == LIST_INSTRUCTION){
   TreeP tmp = listInst; 
@@ -388,8 +369,6 @@ bool parcourRecursifArbre(TreeP prog){
         
       return droite && gauche && rec1 && rec2;
       break; 
-
-
   }
 
 
@@ -397,10 +376,18 @@ bool parcourRecursifArbre(TreeP prog){
 }
 
 bool f(TreeP tree,short etiquette,PVAR listeVar){
+  
   switch(etiquette){
     case PROGRAM :
-      PVAR decl = getChild(tree,0)->u.var;
-      /* Vérifier que la liste d'instruction ets bien correcte */
+      PVAR decl;
+      if(getChild(tree,0)!=NULL)
+      {
+        decl = getChild(tree,0)->u.var;
+      }
+      else{
+        decl = NULL;
+      }
+      /* Vérifier que la liste d'instruction est bien correcte */
       if(decl==NULL)
       {
         if(getChild(tree,1)==NULL)
@@ -445,27 +432,136 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
 }
 
 bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
-       // 5 et 6 
   /* méthode amine */
   /* Test de blocOpt */
+  if(tree==NULL)
+  {
+    retrun TRUE;
+  }
   PCLASS tempClass = tree->u.classe;
 
   PVAR tmpVarParam = tempClass->param_constructeur;
   PVAR tmpListChamp = tempClass->liste_champs;          
-   /* PVAR champs_herite = tempHerite->;   nécessaire ?? */       
+  PVAR tmppHerite = tempClass->champs_herite;   
   PVAR fusion;
+  
   if(tmpVarParam==NULL)
-  {
-    fusion = tmpListChamp; 
+  { 
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else{
+      fusion = tmpHerite;
+    }
   }
+  
   else 
   {
     fusion = tmpVarParam;
-    fusion->suivant = tmpListChamp;
+    
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else
+    {
+      fusion = tmpHerite;
+    }
   }
-  /* Appeler checkBloc  avec en paramètre fusion */ 
+  
+
+  /* Vérification de blocOPT, les variables doivent être présente dans la liste fusion 
+  * Appeler la methode qui regarde un bloc, on lui passant en paramètre fusion
+  */ 
+  checkBloc(tempClass->corps_constructeur, fusion);
+}
+
+bool checkBloc(TreeP CorpBloc, PVAR listeVar){
+
+TreeP tmp = CorpBloc;
+
+TreeP fils0 = getChild(tmp,0); 
+TreeP fils1 = getChild(tmp,1);
+TreeP fils2 = getChild(tmp,2);
+
+if(getChild(tmp,0)==NULL)
+      {
+        if(getChild(tmp,1)==NULL)
+        {
+          if(getChild(tmp,2)==NULL)
+          {
+            return TRUE;
+          }
+          else
+          {
+            return checkExpr(getChild(getChild(tmp,2),0),listeVar, tmp->op);
+          }
+        }
+        else
+        {
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op);
+        }
+      }
+      
+      else
+      {
+        if(getChild(tmp,1)==NULL) 
+        {
+          return FALSE;
+        }
+        else
+        {
+          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+          bool res = checkExpr(getChild(getChild(tmp,2),0),listeVar,tmp->op);
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op) && res;
+        }
+      }
+}
+
+bool checkExpr(treeP tree,PVAR listeVar, short etiquette){
+   expr : 
+         PLUS expr %prec unaire   { $$=$2; }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante          { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage       { $$=$1; }
+       | OuRien             { $$=$1; }
+       ;
+
+OuRien : '(' expr ')'       {$$=$2;}
+       | Cible              {$$=$1;}
+       ;
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
   if(droit==NULL){
@@ -876,12 +972,6 @@ bool checkListOptArg(PVAR var)
 {
 
 }
-
-bool checkBloc(TreeP tree)
-{
-
-}
-
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */
