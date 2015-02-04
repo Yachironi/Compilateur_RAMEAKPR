@@ -107,6 +107,11 @@ printf("=======================\n");}
     printf("Error in file. Kind of error: %d\n", res2); 
     return res2;
   }
+
+  printf("=======================\n");
+printf("Affichage de l'arbre : \n");
+printTree(programme);
+printf("=======================\n");
 }
 
 
