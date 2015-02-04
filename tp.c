@@ -328,22 +328,6 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
   return FALSE;
 }
 
-bool checkListInst(TreeP listInst){
-  if(listInst->op == LIST_INSTRUCTION){
-  TreeP tmp = listInst; 
-  TreeP partieGauche = getChild(tmp,0);
-  TreeP partiDroite = getChild(tmp,1); 
-  recursifTestInstruction(partieGauche);
-}
-}
-
-
-bool recursifTestInstruction(TreeP arbre){
-int i;  
-for(i=0; i< arbre->nbChildren; i++){
-    /* FIXME A faire */
-  }
-}
 /*
  * Verifier la liste de classe qui peut etre vide
  * True : OK -> s'il n'y a aucune classe la verification a reussi
@@ -354,32 +338,38 @@ for(i=0; i< arbre->nbChildren; i++){
 /*
 * Fonction permettant le parcours recursif de l'arbre
 */
+/**
+*
+*
+*  ------------------ A REMETTRE ---------------
+*
+*/
 
+/*
 bool parcourRecursifArbre(TreeP prog){
   if(prog==NULL) return TRUE;
   TreeP tmp = prog; 
   
   switch(tmp->op){
-    case PROGRAM:
+    case PROGRAM :
       bool droite = f(getChild(tmp,1), tmp->op, NULL); 
-      bool gauche = f(getChild(tmp,0), tmp->op,NULL);
+      bool gauche = f(getChild(tmp,0), tmp->op, NULL);
       
-      bool rec1 = parcourRecursifArbre(getChild(tmp,0);
-      bool rec2 = parcourRecursifArbre(getChild(tmp,1);
+      bool rec1 = parcourRecursifArbre(getChild(tmp,0));
+      bool rec2 = parcourRecursifArbre(getChild(tmp,1));
         
       return droite && gauche && rec1 && rec2;
       break; 
   }
 
-
-
 }
-
+*/
+/*
 bool f(TreeP tree,short etiquette,PVAR listeVar){
-  
+  PVAR decl;
   switch(etiquette){
     case PROGRAM :
-      PVAR decl;
+      
       if(getChild(tree,0)!=NULL)
       {
         decl = getChild(tree,0)->u.var;
@@ -388,7 +378,7 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
         decl = NULL;
       }
       /* Vérifier que la liste d'instruction est bien correcte */
-      if(decl==NULL)
+ /*     if(decl==NULL)
       {
         if(getChild(tree,1)==NULL)
         {
@@ -415,7 +405,7 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
         else
         {
           /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
-          bool res = checkExpr(getChild(getChild(tree,2),0),listeVar,tree->op);
+ /*         bool res = checkExpr(getChild(getChild(tree,2),0),listeVar,tree->op);
           return checkListInstr(getChild(tree,1),listeVar,tree->op) && res;
         }
       }
@@ -430,19 +420,19 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
       return FALSE;
   }
 }
-
+*/
 bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
   /* méthode amine */
   /* Test de blocOpt */
   if(tree==NULL)
   {
-    retrun TRUE;
+    return TRUE;
   }
   PCLASS tempClass = tree->u.classe;
 
   PVAR tmpVarParam = tempClass->param_constructeur;
   PVAR tmpListChamp = tempClass->liste_champs;          
-  PVAR tmppHerite = tempClass->champs_herite;   
+  PVAR tmpHerite = tempClass->champs_herite;   
   PVAR fusion;
   
   if(tmpVarParam==NULL)
@@ -454,9 +444,8 @@ bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
     }
     else{
       fusion = tmpHerite;
-    }
+    } 
   }
-  
   else 
   {
     fusion = tmpVarParam;
@@ -521,8 +510,9 @@ if(getChild(tmp,0)==NULL)
       }
 }
 
-bool checkExpr(treeP tree,PVAR listeVar, short etiquette){
-   expr : 
+/*bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+  
+  /*expr : 
          PLUS expr %prec unaire   { $$=$2; }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
        | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
@@ -537,32 +527,21 @@ bool checkExpr(treeP tree,PVAR listeVar, short etiquette){
        | OuRien             { $$=$1; }
        ;
 
-OuRien : '(' expr ')'       {$$=$2;}
+   OuRien : '(' expr ')'       {$$=$2;}
        | Cible              {$$=$1;}
        ;
+  */
+/*}  */
+
+/**
+*
+*
+*  ------------------ A REMETTRE ---------------
+*
+/*
 
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
   if(droit==NULL){
       return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
@@ -574,8 +553,17 @@ bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
     else return FALSE;
   }
 } 
+*/
 /* a.b ==> a partie gauche, b partie droite */
-bool estCoherent(TreeP gauche, TreeP droite){
+
+/**
+*
+*
+*  ------------------ A REMETTRE ---------------
+*
+*/
+
+/*bool estCoherent(TreeP gauche, TreeP droite){
   switch(gauche->op){
    
     case SELECTION :
@@ -587,30 +575,31 @@ bool estCoherent(TreeP gauche, TreeP droite){
       /*
       * Vérifier les listOptArg
       */
-    break;
+  /*    break;
 
     case INSTANCIATION :
       char * nomClass = getChild(gauche,0)->u.str; 
         /* Vérification si la classe existe */ 
-      PCLASS tmp = getClasse(listeClass,nomClass);
+/*      PCLASS tmp = getClasse(listeClass,nomClass);
 
       if(tmp == NULL) return false; 
         /*Vérifie que la classe de l'instanciation contient la partie droite*/
-      contientClasseInst(tmp,droite);
+/*      contientClasseInst(tmp,droite);
       /*
       * vérifier les listOptArgOpt 
       */
-    break;
+ /*   break;
 
     case IDENTIFICATEUR :
       /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
+ /*   break; 
 
     case IDENTIFICATEURCLASS : 
       /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
+/*    break; 
   }
 }
+*/
 
 bool classeContient(PCLASS classe,TreeP droite)
 {/*
@@ -653,8 +642,15 @@ bool classeContient(PCLASS classe,TreeP droite)
   }*/
   return FALSE;
 }
+/**
+*
+*
+*  ------------------ A REMETTRE ---------------
+*
+/*
 
-bool  contientClasseInst(PVAR class, TreeP droite){
+/*
+bool contientClasseInst(PVAR class, TreeP droite){
   PVAR tmp =  class->liste_champs; 
   PVAR tmpHerite = class->champs_herite;
   PVAR fusion = tmp;
@@ -671,7 +667,7 @@ bool  contientClasseInst(PVAR class, TreeP droite){
   }
   return FALSE;
 }
-
+*/
 bool checkLClassOpt()
 {
   int i = 0;
@@ -881,8 +877,9 @@ bool checkMethode(PMETH methode)
     bool statique = FALSE;
     bool redef = FALSE;
     printf("Je check la methode %s\n",methode->nom);
-
-    bool corps = checkBloc(methode->corps);
+    /* A ENLEVER */
+    PVAR var;
+    bool corps = checkBloc(methode->corps,var);
     bool typeRetour = containsClasse(methode->typeRetour);
     bool pvar = checkListOptArg(methode->params);
 
@@ -1124,16 +1121,16 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   return errorCode;
 }
 
-PVAR appelConstructureEstCorrecteRecursif(TreeP args,PCLASS mere)
+PVAR appelConstructeurEstCorrecteRecursif(TreeP args,PCLASS mere)
 {
   TreeP tmp = args;
 
   return NULL;
 }
 
-bool appelConstructureEstCorrecte(TreeP args,PCLASS mere)
+bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere)
 {
-  PVAR p = appelConstructureEstCorrecteRecursif(args,mere);
+  PVAR p = appelConstructeurEstCorrecteRecursif(args,mere);
 }
 
 /** Partie eval **/

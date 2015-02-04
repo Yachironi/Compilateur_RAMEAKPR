@@ -72,6 +72,7 @@ void pprint(TreeP tree) {
   case PLUS:   pprintTree2(tree, " + "); break;
   case MINUS:   pprintTree2(tree, " - "); break;
   case IF:    pprintIf(tree); break;
+	/* CONTINUER ???????????????????????????? */
   default:
     /* On signale le probleme mais on ne quitte pas le programme pour autant */
     fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 

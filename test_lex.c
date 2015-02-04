@@ -85,6 +85,11 @@ void help() {
  * Les options doivent apparaitre avant le nom du fichier du programme.
  * Options: -[vV] -[hH?]
  */
+
+
+
+
+
 int main(int argc, char **argv) {
   idents = NEW(1000, IdentS); /* liste des identificateurs */
   int fi;

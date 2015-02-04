@@ -109,9 +109,9 @@ struct _Class{
   PVAR param_constructeur;    	/*  paramètres du constructeur de la classe */
   TreeP corps_constructeur;   	/* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
-  PMETH override;             /* liste de méthodes override */
+  PMETH override;             /* liste de méthodes override */			/** A GERERRRRR **/
   PVAR liste_champs;        	/* liste des champs de la classe */ 
-  PVAR champs_herite;         /* atrributs heritees */
+  PVAR champs_herite;         /* atrributs heritees */				/** A GERERRRRR **/
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
@@ -221,7 +221,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
 
-bool appelConstructureEstCorrecte(TreeP args,PCLASS mere);
+bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere);
 
 
 /*
