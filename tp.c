@@ -52,15 +52,15 @@ int main(int argc, char **argv) {
     if (argv[i][0] == '-') {
       switch (argv[i][1]) {
       case 'v': case 'V':
-	verbose = TRUE; continue;
+  verbose = TRUE; continue;
       case 'e': case 'E':
-	noEval = TRUE; continue;
+  noEval = TRUE; continue;
       case '?': case 'h': case 'H':
-	fprintf(stderr, "Syntax: tp -e -v program.txt\n");
-	exit(USAGE_ERROR);
+  fprintf(stderr, "Syntax: tp -e -v program.txt\n");
+  exit(USAGE_ERROR);
       default:
-	fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
-	exit(USAGE_ERROR);
+  fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
+  exit(USAGE_ERROR);
       }
     } else break;
   }
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
    */
   res = yyparse();
   if (programme == NULL) {
-	printf("Programme est NULL");
+  printf("Programme est NULL");
   }else{
 printf("=======================\n");
 printf("Affichage de l'arbre : \n");
@@ -198,72 +198,72 @@ TreeP makeLeafMeth(short op, PMETH methode){
 
 /** construit une structure classe (pouvant etre une liste de classe) */
 PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend){
-	PCLASS res = NEW(1, SCLASS);
-	res->suivant=NIL(SCLASS);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->param_constructeur=param_constructeur;
-	res->corps_constructeur=corps_constructeur;
-	res->liste_methodes=liste_methodes;
-	res->liste_champs=liste_champs;
-	res->classe_mere=classe_mere;	
-	res->isExtend=isExtend;
-	if(listeClass==NULL){
-		listeClass=res;
-	}else{
-		PCLASS parcour=listeClass;
-		while(parcour->suivant!=NULL){
-			parcour=parcour->suivant;	
-		}
-		parcour->suivant=res;
-	}
-	return res;
+  PCLASS res = NEW(1, SCLASS);
+  res->suivant=NIL(SCLASS); /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->param_constructeur=param_constructeur;
+  res->corps_constructeur=corps_constructeur;
+  res->liste_methodes=liste_methodes;
+  res->liste_champs=liste_champs;
+  res->classe_mere=classe_mere; 
+  res->isExtend=isExtend;
+  if(listeClass==NULL){
+    listeClass=res;
+  }else{
+    PCLASS parcour=listeClass;
+    while(parcour->suivant!=NULL){
+      parcour=parcour->suivant; 
+    }
+    parcour->suivant=res;
+  }
+  return res;
 }
 
 /* Renvoi la classe avec un nom donnée */
 PCLASS getClasse(PCLASS listeClass,char *nom){
-	PCLASS parcour=listeClass;
-	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
-		parcour=parcour->suivant;	
-	}
-	return parcour;
+  PCLASS parcour=listeClass;
+  while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+    parcour=parcour->suivant; 
+  }
+  return parcour;
 }
 
 /* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
-	PMETH res=NEW(1, SMETH);
-	res->suivant = NIL(SMETH);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->corps=corps;
-	res->params=params;
-	res->typeRetour=typeRetour;
-	res->home=home;
-	/* ni static, ni override */
-	if(OverrideOuStaticOpt == 0){
-		res->isStatic = 0;
-		res->isRedef = 0;
-	}
-	/* override mais pas static */
-	else if(OverrideOuStaticOpt == 1){
-		res->isStatic = 0;
-		res->isRedef = 1;
-	}
-	/* static mais pas override */
-	else{
-		res->isStatic = 1;
-		res->isRedef = 0;
-	}
-	return res;
+  PMETH res=NEW(1, SMETH);
+  res->suivant = NIL(SMETH);  /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->corps=corps;
+  res->params=params;
+  res->typeRetour=typeRetour;
+  res->home=home;
+  /* ni static, ni override */
+  if(OverrideOuStaticOpt == 0){
+    res->isStatic = 0;
+    res->isRedef = 0;
+  }
+  /* override mais pas static */
+  else if(OverrideOuStaticOpt == 1){
+    res->isStatic = 0;
+    res->isRedef = 1;
+  }
+  /* static mais pas override */
+  else{
+    res->isStatic = 1;
+    res->isRedef = 0;
+  }
+  return res;
 }
 
 /* Creer une var pouvant etre un parametre, un champ, .. */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
-	PVAR res=NEW(1,SVAR);
-	res->suivant=NIL(SVAR);	/* verifier si ça ne pose pas de pb */
-	res->nom=nom;
-	res->type=type;
-	res->init=init;
-	res->categorie=cat;	/* si cat=0 ==> var non static. si cat=1 ==> var static */
-	return res;
+  PVAR res=NEW(1,SVAR);
+  res->suivant=NIL(SVAR); /* verifier si ça ne pose pas de pb */
+  res->nom=nom;
+  res->type=type;
+  res->init=init;
+  res->categorie=cat; /* si cat=0 ==> var non static. si cat=1 ==> var static */
+  return res;
 }
 
 /*
@@ -301,12 +301,791 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
  * On impose que ca soit le cas y compris si on n'a pas besoin a l'evaluation de
  * la valeur de cet id.
  */
+bool checkScope(TreeP tree, VarDeclP lvar) {
+  
+  VarDeclP tmp = lvar;
+  if(tree->nbChildren==0)
+  {
+    bool contains = TRUE;
+    while(tmp!=NULL)
+    {
+      if(strcmp(tmp->name,tree->u.str)!=0)
+        return FALSE;
+      tmp = tmp->next;
+    }
+    return contains;
+  }
+
+  int i = 0;
+  for(i=0;i<tree->nbChildren;i++)
+  {
+    bool b = checkScope(getChild(tree,i),lvar);
+    if(!b)
+      return FALSE;
+    i++;
+  }
+
+  return FALSE;
+}
+
+/*
+ * Verifier la liste de classe qui peut etre vide
+ * True : OK -> s'il n'y a aucune classe la verification a reussi
+ * False : KO
+*/
 
 
 /*
- * Methode pour imprimer toute l'arbre
+* Fonction permettant le parcours recursif de l'arbre
+*/
+
+bool parcourRecursifArbre(TreeP prog){
+  if(prog==NULL) return TRUE;
+  TreeP tmp = prog; 
+  
+  switch(tmp->op){
+    case PROGRAM :
+      bool droite = f(getChild(tmp,1), tmp->op, NULL); 
+      bool gauche = f(getChild(tmp,0), tmp->op, NULL);
+      
+      bool rec1 = parcourRecursifArbre(getChild(tmp,0));
+      bool rec2 = parcourRecursifArbre(getChild(tmp,1));
+        
+      return droite && gauche && rec1 && rec2;
+      break; 
+  }
+
+}
+
+bool f(TreeP tree,short etiquette,PVAR listeVar){
+  
+  switch(etiquette){
+    case PROGRAM :
+      PVAR decl;
+      if(getChild(tree,0)!=NULL)
+      {
+        decl = getChild(tree,0)->u.var;
+      }
+      else{
+        decl = NULL;
+      }
+      /* Vérifier que la liste d'instruction est bien correcte */
+      if(decl==NULL)
+      {
+        if(getChild(tree,1)==NULL)
+        {
+          if(getChild(tree,2)==NULL)
+          {
+            return TRUE;
+          }
+          else
+          {
+            return checkExpr(getChild(getChild(tree,2),0),listeVar, tree->op);
+          }
+        }
+        else
+        {
+          return checkListInstr(getChild(tree,1),listeVar,tree->op);
+        }
+      }
+      else
+      {
+        if(getChild(tree,1)==NULL) 
+        {
+          return FALSE;
+        }
+        else
+        {
+          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+          bool res = checkExpr(getChild(getChild(tree,2),0),listeVar,tree->op);
+          return checkListInstr(getChild(tree,1),listeVar,tree->op) && res;
+        }
+      }
+    break;
+
+    case LISTCLASS : 
+        bool res1 = checkListClassBloc(getChild(tree,0),listeVar,tree->op);
+        //bool res2 = checkListClassBloc(getChild(tree,0),listeVar,tree->op);
+    break;
+
+    default : 
+      return FALSE;
+  }
+}
+
+bool checkListClassBloc(TreeP tree, PVAR listeVar, short eti){
+  /* méthode amine */
+  /* Test de blocOpt */
+  if(tree==NULL)
+  {
+    retrun TRUE;
+  }
+  PCLASS tempClass = tree->u.classe;
+
+  PVAR tmpVarParam = tempClass->param_constructeur;
+  PVAR tmpListChamp = tempClass->liste_champs;          
+  PVAR tmpHerite = tempClass->champs_herite;   
+  PVAR fusion;
+  
+  if(tmpVarParam==NULL)
+  { 
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else{
+      fusion = tmpHerite;
+    } 
+
+  else 
+  {
+    fusion = tmpVarParam;
+    
+    if(tmpListChamp!=NULL)
+    {
+      fusion = tmpListChamp; 
+      fusion->suivant = tmpHerite;
+    }
+    else
+    {
+      fusion = tmpHerite;
+    }
+  }
+  
+
+  /* Vérification de blocOPT, les variables doivent être présente dans la liste fusion 
+  * Appeler la methode qui regarde un bloc, on lui passant en paramètre fusion
+  */ 
+  checkBloc(tempClass->corps_constructeur, fusion);
+}
+
+bool checkBloc(TreeP CorpBloc, PVAR listeVar){
+
+TreeP tmp = CorpBloc;
+
+TreeP fils0 = getChild(tmp,0); 
+TreeP fils1 = getChild(tmp,1);
+TreeP fils2 = getChild(tmp,2);
+
+if(getChild(tmp,0)==NULL)
+      {
+        if(getChild(tmp,1)==NULL)
+        {
+          if(getChild(tmp,2)==NULL)
+          {
+            return TRUE;
+          }
+          else
+          {
+            return checkExpr(getChild(getChild(tmp,2),0),listeVar, tmp->op);
+          }
+        }
+        else
+        {
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op);
+        }
+      }
+      
+      else
+      {
+        if(getChild(tmp,1)==NULL) 
+        {
+          return FALSE;
+        }
+        else
+        {
+          /* Si dans checkExpr ou dans checkList l'arbre est null, on retourne TRUE*/
+          bool res = checkExpr(getChild(getChild(tmp,2),0),listeVar,tmp->op);
+          return checkListInstr(getChild(tmp,1),listeVar,tmp->op) && res;
+        }
+      }
+}
+
+bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+   expr : 
+         PLUS expr %prec unaire   { $$=$2; }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante          { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage       { $$=$1; }
+       | OuRien             { $$=$1; }
+       ;
+
+   OuRien : '(' expr ')'       {$$=$2;}
+       | Cible              {$$=$1;}
+       ;
+
+}
+
+bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
+  if(droit==NULL){
+      return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
+  }  
+  else{
+    if(estCoherent(p,droit)) {
+      return checkExprEnvoiSelecInst(getChild(p,0), getChild(p,1));
+    }
+    else return FALSE;
+  }
+} 
+/* a.b ==> a partie gauche, b partie droite */
+bool estCoherent(TreeP gauche, TreeP droite){
+  switch(gauche->op){
+   
+    case SELECTION :
+      return classeContient(gauche->u.var->type,droite);
+    break;
+    
+    case ENVOIMESSAGE : 
+      return classeContient(gauche->u.methode->home,droite);
+      /*
+      * Vérifier les listOptArg
+      */
+    break;
+
+    case INSTANCIATION :
+      char * nomClass = getChild(gauche,0)->u.str; 
+        /* Vérification si la classe existe */ 
+      PCLASS tmp = getClasse(listeClass,nomClass);
+
+      if(tmp == NULL) return false; 
+        /*Vérifie que la classe de l'instanciation contient la partie droite*/
+      contientClasseInst(tmp,droite);
+      /*
+      * vérifier les listOptArgOpt 
+      */
+    break;
+
+    case IDENTIFICATEUR :
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
+    break; 
+
+    case IDENTIFICATEURCLASS : 
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
+    break; 
+  }
+}
+
+bool classeContient(PCLASS classe,TreeP droite)
+{/*
+  switch(droite->op)
+  {
+    case SELECTION:
+    PVAR tmp = classe->liste_champs;
+    PVAR tmpHerite = classe->champs_herite;
+    PVAR fusion = tmp;
+
+    fusion->suivant = tmpHerite;
+
+    while(fusion!=NULL)
+    {
+      if(strcmp(fusion->nom,droite->u.var->nom)==0)
+        return TRUE;
+      fusion = fusion->suivant;
+    }
+
+    break;
+
+    case ENVOIMESSAGE:
+
+    PMETH tmp = classe->liste_methodes;
+    PMETH tmpHerite = classe->override;
+    PMETH fusion = tmp;
+
+    fusion->suivant = tmpHerite;
+
+    while(fusion!=NULL)
+    {
+      if(strcmp(fusion->nom,droite->u.methode->nom)==0)
+        return TRUE;
+      fusion = fusion->suivant;
+    }
+    break;
+
+    default : 
+      return FALSE;
+  }*/
+  return FALSE;
+}
+
+bool contientClasseInst(PVAR class, TreeP droite){
+  PVAR tmp =  class->liste_champs; 
+  PVAR tmpHerite = class->champs_herite;
+  PVAR fusion = tmp;
+  fusion->suivant = tmpHerite;
+
+  while(fusion!=NULL){
+    while(droite->u.var!= NULL){
+      if(strcmp(fusion->nom,droite->u.var->nom)==0){
+        return TRUE;
+      }
+      droite->u.var = droite->u.var->suivant;
+    }
+    fusion = fusion->suivant;
+  }
+  return FALSE;
+}
+
+bool checkLClassOpt()
+{
+  int i = 0;
+  if(listeDeClass==NULL)
+    return TRUE;
+  else
+  {
+    /*return checkClass(getChild(tree,0)) && checkLClassOpt(tree);*/
+    PCLASS listTmp = listeDeClass;
+    while(listTmp!=NULL)
+    {
+      /*checkClass : Ne verifie qu'une classe -> methode non recusive*/
+      checkClass(listTmp);
+      listTmp = listTmp->suivant;
+    }
+    
+  }
+
+  return FALSE;
+}
+
+/*
+ * Etudie une classe en particulier
+ * True : OK
+ * False : KO
+
+ struct _Class{
+  char *nom;                      nom de la classe
+  PVAR param_constructeur;        paramètres du constructeur de la classe
+  TreeP corps_constructeur;       corps du constructeur de la classe sous la forme d'un arbre (d'expression)
+  PMETH liste_methodes;           liste des méthodes de la classe
+  PVAR liste_champs;              liste des champs de la classe 
+  PCLASS classe_mere;             classe mère éventuelle de la classe 
+  int isExtend;                   si la classe herite ou pas 
+  PCLASS suivant;                 suivant permettant de faire une liste 
+
+  Question 1: ou vous avez inserez le constructeur de la classe Mere ?
+              Quand on fait un heritage il me semble qu'il appel le constructeur classe mere
+              Comme en C++
+              J'ai vu que vous l'aviez stocker dans un arbre au niveau de la regle ListExtendsOpt
+              Du coup un parcours de l'arbre est obligatoire ? ou tout est dans corps_constructeur ?
+};
+*/
+
+/*
+ * Verifie que la classe PCLASS existe belle et bien dans la lis
  */
- PVAR appelConstructeurEstCorrecteRecursif(TreeP args,PCLASS mere)
+bool containsClasse(PCLASS classe)
+{
+  PCLASS tmp = listeDeClass;
+
+  while(tmp!=NULL)
+  {
+
+    if(strcmp(classe->nom,tmp->nom)==0)
+      return TRUE;
+
+    tmp = tmp->suivant;
+  }
+  return FALSE;
+}
+
+bool checkClass(PCLASS classe)
+{
+  /*
+   * bool checkHeritage(classe);
+   * bool checkListAttribut(SCLASS classe);
+   * bool checkListMethode(SCLASS classe);
+    ----
+   * bool checkCorp(SMETH methode)
+    ----
+   * bool checkListMethodeStatic(SCLASS classe); // n'utilise pas genre les attribut de classe comme en java
+  */
+
+  /* Le nom de la classe doit avoir une majuscule*/
+  bool nomMaj = FALSE;
+
+  if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
+    nomMaj = TRUE;
+
+  /*TRUE : OK FALSE : NOK*/
+  bool heritage = FALSE;
+  /*FIXME : boucle qui verifie que la classe mere n'est pas dans la liste d'erreur !!!
+   * Si c'est le cas -> renvoye faux directement => et ajouter une erreur du style
+   * "Corrigez la classe Mere %s avant",class->classe_mere->nom (utilisez sprintf)
+   */
+  if(classe->isExtend)
+  {
+    heritage = checkHeritage(classe);
+  }
+  else
+  {
+    heritage = TRUE;
+  }
+
+  bool constructeur = checkConstructeur(classe);
+
+  bool attribut = checkListAttribut(classe);
+
+  bool methode = checkListMethode(classe);
+
+  return (nomMaj && heritage && constructeur && attribut && methode);
+}
+
+/*
+ * Verifie qu'il n'y a pas de cycle d'héritage
+ * VRAI : OK (si la classe n'herite d'aucune classe on considere qu'il n'y a pas de cycle)
+ * FAUX : classe mere non declare avant
+ */
+bool checkHeritage(PCLASS classe)
+{
+  return classExtendsDeclareeAvant(classe,classe->classe_mere);
+}
+
+/*
+ * Verifie que la classe heritee est declare avant la classe actuelle
+ * Car si on fait class actuelle extends class herite il y a une necessite de 
+ * declaration au dessus (de la classe heritee)
+ */
+bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
+{
+  /*classe mere inexistante*/
+  if(heritee==NULL)
+    return TRUE;
+  int i = 0;
+  PCLASS listTmp = listeDeClass;
+  while(listTmp!=NULL && strcmp(actuelle->nom,listTmp->nom)!=0)
+  {
+    /*On a trouve la classe elle est bien declaree avant*/
+    if(strcmp(heritee->nom,listTmp->nom)==0)
+    {
+      return TRUE;
+    }
+
+    listTmp = listTmp->suivant;
+  }
+
+  return FALSE;
+}
+
+bool checkConstructeur(PCLASS classe)
+{
+  PVAR tmp = classe->param_constructeur;
+}
+
+bool checkListAttribut(PCLASS classe)
+{
+  PVAR tmp = classe->liste_champs;
+
+  while(tmp!=NULL)
+  {
+    /*
+     * Appel de la fonction de Gishan qui verifier une instruction
+     * Integer x; ... et bien d'autres chose
+     */
+    if(!checkListOptArg(tmp))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,NULL,tmp);
+      return FALSE;
+    }
+    /* /!!!\ Ici il s'arete des qu'un attribut est faux*/
+    tmp = tmp->suivant;
+  }
+}
+
+/*
+ * 
+  FIXME ajouter une methode equals(PMETH methode1,methode2) -> verifier qu'elle n'est pas declaree 2 fois
+  struct _Method{
+  char *nom;
+  int isStatic;  1 si vrai, 0 si non 
+  int isRedef;  1 si vrai, 0 si non
+  TreeP corps;
+  PCLASS typeRetour;
+  PVAR params;
+  PMETH suivant;
+  PCLASS home;
+};
+
+*/
+bool checkListMethode(PCLASS classe)
+{
+  PMETH tmp = classe->liste_methodes;
+
+  while(tmp!=NULL)
+  {
+    /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
+    if(!checkMethode(tmp))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur la methode %s est mal forme",tmp->nom);
+      pushErreur(message,NULL,tmp,NULL);
+      return FALSE;
+    }
+
+    tmp = tmp->suivant;
+  }
+
+  return TRUE;
+}
+
+
+bool checkMethode(PMETH methode)
+{
+    bool statique = FALSE;
+    bool redef = FALSE;
+    printf("Je check la methode %s\n",methode->nom);
+
+    bool corps = checkBloc(methode->corps);
+    bool typeRetour = containsClasse(methode->typeRetour);
+    bool pvar = checkListOptArg(methode->params);
+
+    if(methode->isStatic)
+    {
+      statique = checkMethodeStatic(methode);
+
+      if(!statique)
+      {
+          char* message = NEW(SIZE_ERROR,char);
+          sprintf(message,"Erreur dans la methode statique %s",methode->nom);
+          pushErreur(message,classActuel,NULL,NULL);
+          return FALSE;
+      }
+    }
+    else
+    {
+      statique = TRUE;
+      if(methode->isRedef)
+      {
+        redef = existeMethodeOverride(methode->home,methode);
+
+        if(!redef)
+        {
+          char* message = NEW(SIZE_ERROR,char);
+          sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          pushErreur(message,classActuel,NULL,NULL);
+          return FALSE;
+        }
+      }
+      else
+      {
+        redef = TRUE;
+      }
+
+      /*Verification d'une methode de classe*/
+    }
+    /*
+     * Verifier les parametre de la methode
+     * Verifier le corps de la methode
+     * if(method.static) checkListMethodeStatic
+     */
+     return (typeRetour&&corps&&statique&&redef&&pvar);
+}
+
+/*
+ * Verifie si la methode "methode" est declaree dans la classe mere
+ */
+bool existeMethodeOverride(PCLASS home,PMETH methode)
+{
+  PMETH methodeOverride = home->override;
+  if(methodeOverride==NULL)
+    return TRUE;
+  while(methodeOverride!=NULL)
+  {
+    if(strcmp(methodeOverride->nom,methode->nom)==0)
+    {
+      return TRUE;
+    }
+
+    methodeOverride = methodeOverride->suivant;
+  }
+  return FALSE;
+}
+
+/* 
+ * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
+ * de classe (meme principe que le java)
+ * On ne peut pas faire this-> qq chose ou this.
+ */ 
+bool checkMethodeStatic(PMETH methode)
+{
+  /*
+   * Si la classe Point a un attribut x,y
+   * Si dans la methode il fait x = 1; -> erreur
+   * Verifier qu'elle n'utilise j'amais this ni super
+   */
+
+}
+
+bool checkCorp(PMETH methode)
+{
+  /*checkBloc()*/
+}
+
+bool checkListOptArg(PVAR var)
+{
+
+}
+/* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
+ * tete et renvoie la nouvelle liste
+ */
+VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
+  
+  if(nouv==NULL)
+    return list;
+
+  if(list==NULL && nouv!=NULL)
+    return nouv;
+  
+  VarDeclP nouvTmp = nouv;
+  bool continuer = TRUE;
+  while(nouvTmp!=NULL){
+    /* liste mise a jour si besoin */
+    VarDeclP listTmp = list;
+    continuer = TRUE;
+    while(listTmp!= NULL && continuer)
+    {
+      if(strcmp(nouvTmp->name, listTmp->name)==0){
+        continuer = FALSE;
+      }
+      listTmp = listTmp->next;
+    }
+    if(!continuer)
+    {
+      VarDeclP listCopie = list;
+      list = nouvTmp;
+      list->next = listCopie;
+    }
+    nouvTmp = nouvTmp->next; 
+  }
+  return list;
+}
+
+/* Construit le squelette d'un couple (variable, valeur), sans la valeur. */
+VarDeclP makeVar(char *name) {
+  VarDeclP res = NEW(1, VarDecl);
+  res->name = name; res->next = NIL(VarDecl);
+  return(res);
+}
+
+
+
+/* Associe une variable a l'expression qui definit sa valeur, et procede a 
+ * l'evaluation de cette expression, sauf si on est en mode noEval
+ */
+VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope) {
+  
+  if(tree->nbChildren==0)
+  {
+    if(strcmp(tree->u.str,name)==0)
+    {
+      strcpy(currentScope->name,name);
+      currentScope->val = tree->u.val;
+      return currentScope;
+    }
+    else
+    {
+      return NULL;
+    }
+  }
+
+  int i = 0;
+  for(i=0;i<tree->nbChildren;i++)
+  {
+    VarDeclP retour = declVar(name,getChild(tree,i),currentScope);
+    if(retour!=NULL)
+      return retour;
+    i++;
+  }
+
+  return NULL;
+}
+
+/* Evaluation d'une variable */
+int evalVar(TreeP tree, VarDeclP decls) {
+  return 0;
+}
+
+/* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire ! */
+int evalIf(TreeP tree, VarDeclP decls) {
+  return 0;
+}
+
+VarDeclP evalAff (TreeP tree, VarDeclP decls) {
+  return NIL(VarDecl);
+}
+
+/* Ici decls correspond au sous-arbre qui est la partie declarative */
+VarDeclP evalDecls (TreeP tree) {
+  return NIL(VarDecl);
+}
+
+
+/* Evaluation par parcours recursif de l'arbre representant une expression. 
+ * Les valeurs des identificateurs situes aux feuilles de l'arbre sont a
+ * rechercher dans la liste decls
+ * Attention a n'evaluer que ce qui doit l'etre et au bon moment
+ * selon la semantique de l'operateur (cas du IF, etc.)
+ */
+int eval(TreeP tree, VarDeclP decls) {
+  if (tree == NIL(Tree)) { exit(UNEXPECTED); }
+  switch (tree->op) {
+  case ID:
+    return evalVar(tree, decls);
+  case CST:
+    return(tree->u.val);
+  case EQ:
+    return (eval(getChild(tree, 0), decls) == eval(getChild(tree, 1), decls));
+  case NE:
+    return (eval(getChild(tree, 0), decls) != eval(getChild(tree, 1), decls));
+
+  /** Distinguer les opérateurs unaires et binaires **/
+  case PLUS:
+  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+    return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
+  case MINUS:
+  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+    return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
+  /** **/
+
+  case MUL:
+    return (eval(getChild(tree, 0), decls) * eval(getChild(tree, 1), decls));
+  case DIV:
+    if(eval(getChild(tree, 1), decls)!=0)
+    {
+      return (eval(getChild(tree, 0), decls) / eval(getChild(tree, 1), decls));
+    }
+    else
+    {
+      return EVAL_ERROR;
+    }
+  case IF:
+    return evalIf(tree, decls);
+  default: 
+    fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
+    exit(UNEXPECTED);
+  }
+}
+
+int evalMain(TreeP tree, VarDeclP lvar) {
+  int res;
+  if (noEval) {
+    fprintf(stderr, "\nSkipping evaluation step.\n");
+  } else {
+      res = eval(tree, lvar);
+      printf("\n/*Result: %d*/\n", res);
+  }
+  return errorCode;
+}
+
+PVAR appelConstructeurEstCorrecteRecursif(TreeP args,PCLASS mere)
 {
   TreeP tmp = args;
 
@@ -318,6 +1097,51 @@ bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere)
   PVAR p = appelConstructeurEstCorrecteRecursif(args,mere);
 }
 
+/** Partie eval **/
+void evalProgramme(TreeP programme){
+  /* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
+  evalContenuBloc(programme->u.children[1]/*->children[0]*/);
+}
+
+void evalContenuBloc(TreeP bloc){
+  /* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
+  if(bloc->u.children[0] == NIL(Tree)){
+    if(bloc->u.children[1] != NIL(Tree)){
+      /* eval de LInstruction */
+    }
+    if(bloc->u.children[2] != NIL(Tree)){
+      /* eval de Yield => expr*/
+    }
+  }
+  /* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
+  else{
+    /* eval de ListDeclVar */
+    PVAR listDeclVar = evalListDeclVar(bloc->u.children[0]);
+
+    /* eval de LInstruction */
+    if(bloc->u.children[1] != NIL(Tree)){
+
+    }
+    /* eval de YieldOpt */
+    if(bloc->u.children[2] != NIL(Tree)){
+
+    }   
+  }
+}
+
+PVAR evalListDeclVar(TreeP listDeclVar){
+  /** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
+  /* listDeclVar->var = 1ere var et toute la liste*/
+
+  /* Que ca a faire??? */
+  PVAR var = listDeclVar->u.var;
+  return var;
+}
+
+/*
+ * Methode pour imprimer toute l'arbre
+ */
+
 void printTree(TreeP tree){
 /* if (! verbose ) return;*/
 printf("Etiquette %d",tree->op);
@@ -325,7 +1149,7 @@ printf("Etiquette %d",tree->op);
   case LISTCLASS:pprintListClasse(tree->u.classe); break;
   default:
     fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
-	    tree->op);
+      tree->op);
     setError(UNEXPECTED);
   }
 int i;
