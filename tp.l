@@ -109,9 +109,9 @@ void lexError(char c) {
 
 %%
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
-{idClass}	{ return IDCLASS;}
+{idClass}	      { return IDCLASS;}
 {Letter}{LD}*   { return keywordOrId(); }
-{String}	{ return(STRING);}
+{String}	      { return(STRING);}
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
 "*"             { return(MUL); }
@@ -124,8 +124,8 @@ void lexError(char c) {
 ">="            { yylval.C = GE; return(RELOP); }
 {Symbol}        { return(yytext[0]); }
 ":="            { return AFFECT; }
-"&"		{ return(CONCAT);}	
+"&"		          { return(CONCAT);}	
 {Delim}         { ; }
-{Commentaire}	{ ; }
+{Commentaire}	  { ; }
 .      		{ printf("Erreur lexical \n");}
 %%

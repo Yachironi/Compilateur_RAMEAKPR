@@ -464,10 +464,6 @@ bool checkBloc(TreeP CorpBloc, PVAR listeVar){
 
 TreeP tmp = CorpBloc;
 
-TreeP fils0 = getChild(tmp,0); 
-TreeP fils1 = getChild(tmp,1);
-TreeP fils2 = getChild(tmp,2);
-
 if(getChild(tmp,0)==NULL)
       {
         if(getChild(tmp,1)==NULL)
@@ -502,7 +498,21 @@ if(getChild(tmp,0)==NULL)
       }
 }
 
-bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
+bool checkExpr(TreeP tree, PVAR listeVar, short etiquette){
+   /* Vérifier que dans le cas d'un plus bianire, d'un minus binaire, d'une multiplication 
+   * d'une division que le type est le même 
+   * dans le cas d'une divison, regarder que le deuxième expr n'est pas  NULL ou 0 
+   * Pour RELOP, les deux fils doivent avoir le même type
+   * Plus unaire, moins unaire ? 
+   */ 
+  
+  /* switch()
+
+
+
+
+
+
    expr : 
          PLUS expr %prec unaire   { $$=$2; }
        | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
@@ -522,6 +532,10 @@ bool checkExpr(TreeP tree,PVAR listeVar, short etiquette){
        | Cible              {$$=$1;}
        ;
 
+   constante : CSTS  { $$ = makeLeafStr(CSTSTRING,$1); }
+             | CSTE  { $$ = makeLeafInt(CSTENTIER,$1); }
+          ;
+  */
 }
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
@@ -536,42 +550,7 @@ bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
   }
 } 
 /* a.b ==> a partie gauche, b partie droite */
-bool estCoherent(TreeP gauche, TreeP droite){
-  switch(gauche->op){
-   
-    case SELECTION :
-      return classeContient(gauche->u.var->type,droite);
-    break;
-    
-    case ENVOIMESSAGE : 
-      return classeContient(gauche->u.methode->home,droite);
-      /*
-      * Vérifier les listOptArg
-      */
-    break;
 
-    case INSTANCIATION :
-      char * nomClass = getChild(gauche,0)->u.str; 
-        /* Vérification si la classe existe */ 
-      PCLASS tmp = getClasse(listeClass,nomClass);
-
-      if(tmp == NULL) return false; 
-        /*Vérifie que la classe de l'instanciation contient la partie droite*/
-      contientClasseInst(tmp,droite);
-      /*
-      * vérifier les listOptArgOpt 
-      */
-    break;
-
-    case IDENTIFICATEUR :
-      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
-
-    case IDENTIFICATEURCLASS : 
-      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
-  }
-}
 
 bool classeContient(PCLASS classe,TreeP droite)
 {/*
@@ -632,6 +611,7 @@ bool contientClasseInst(PVAR class, TreeP droite){
   }
   return FALSE;
 }
+
 
 bool checkLClassOpt()
 {
@@ -936,6 +916,7 @@ bool checkListOptArg(PVAR var)
 {
 
 }
+
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
  * tete et renvoie la nouvelle liste
  */
@@ -1110,9 +1091,6 @@ bool checkAppelMethodeR(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeur
    * Dans les attributs de classe, la liste de declaration du bloc de la methode ou les parametre
    * Si c'est un appel de constructeur -> regarder dans this.param_constructeur aussi
    */
-
-
-
 }
 
 /*expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
@@ -1129,40 +1107,149 @@ bool checkAppelMethodeR(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeur
        | OuRien       { $$=$1; }
        ;*/
 
-PCLASS getType(TreeP listExpression,SVAR recherche)
+PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant)
 {
-  if(listExpression==NULL && recherche!=NULL)
+  if(arbre==NULL)
     return NULL;
    
    /* Dans le cas d'une selection, récupérer le dernier élèment */ 
 
-  switch(listOptArg->op){
+  switch(arbre->op){
 
     PCLASS type;
+    PCLASS type2;
+    char* message = NEW(SIZE_ERROR,char);
     case MINUSUNAIRE:
     case PLUSUNAIRE :
-      type = getType(getChild(listExpression,0));
+      type = getType(getChild(arbre,0),arbre,courant);
+      
       if(type!=NULL && strcmp(type->nom,"Integer")!=0)
       {
-        char* message = NEW(SIZE_ERROR,char);
-        sprintf(message,"Erreur l'attribut %s est mal forme",tmp->nom);
-        pushErreur(message,NULL,NULL,tmp);
-        return FALSE;
+        sprintf(message,"Erreur l'attribut %s n'est pas un entier",type->nom);
+        pushErreur(message,type,NULL,NULL);
+        return NULL;
+      }
+      else
+      {
+        return type;
       }
     break;
 
+    case PLUSBINAIRE : 
+    case MINUSUNAIRE : 
+    case MULTIPLICATION :
+    case DIVISION : 
+    case OPCOMPARATEUR :
+    type = getType(getChild(arbre,0),arbre,courant);
+    type2 = getType(getChild(arbre,1),arbre,courant);
+    if(equalsType(type,type2) && strcmp(type->nom,"Integer")==0){
+      return type;
+    }
+    else
+    {
+      return NULL;
+    }
+    break; 
+
+    case CONCATENATION : 
+      type = getType(getChild(arbre,0),arbre,courant);
+      type2 = getType(getChild(arbre,1),arbre,courant);
+      
+      if(type!=NULL && strcmp(type->nom,"String")!=0){  
+        sprintf(message,"Erreur l'attribut %s n'est pas un entier",type->nom);
+        pushErreur(message,type,NULL,NULL);
+        return NULL;
+      } 
+      
+      if(type2!=NULL && strcmp(type2->nom,"String")!=0)){
+        sprintf(message,"Erreur l'attribut %s n'est pas un entier",type2->nom);
+        pushErreur(message,type,NULL,NULL);
+        return NULL;   
+      }
+      return type;
+      break;
+
     case SELECTION : 
-      /* parcours jusqu'a la fin pour recuperer la classe en question */
+      if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE){
+        estCoherent(getChild(arbre,1),getChild(ancien,1));
+      }
+      else{
+        return getType(getChild(arbre,0),arbre,courant);
+      }
     break;
 
   }
-
-
-
-
 }
 
-PVAR getChampsClasse(PCLASS classe, )
+void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
+  if(getChild(arbre,0)==NULL)
+  {
+    return;
+  }
+  if(liste==NULL){
+    liste = getChild(arbre,1);
+  }
+  else{
+    LTreeP tmp = liste;
+    liste = getChild(arbre,1);
+    liste->suivant = tmp;
+  }
+  transFormSelectOuEnvoi(getChild(arbre,0),liste);
+}
+
+
+bool estCoherent(TreeP gauche, TreeP droite){
+  
+  switch(gauche->op){
+   
+    case SELECTION :
+      /* regarder les deux fils de la selection */ 
+      
+      return classeContient(gauche->u.var->type,droite);
+    break;
+    
+    case ENVOIMESSAGE : 
+      return classeContient(gauche->u.methode->home,droite);
+      /*
+      * Vérifier les listOptArg
+      */
+    break;
+
+    case INSTANCIATION :
+      char * nomClass = getChild(gauche,0)->u.str; 
+        /* Vérification si la classe existe */ 
+      PCLASS tmp = getClasse(listeClass,nomClass);
+
+      if(tmp == NULL) return false; 
+        /*Vérifie que la classe de l'instanciation contient la partie droite*/
+      contientClasseInst(tmp,droite);
+      /*
+      * vérifier les listOptArgOpt 
+      */
+    break;
+
+    case IDENTIFICATEUR :
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
+    break; 
+
+    case IDENTIFICATEURCLASS : 
+      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
+    break; 
+  }
+}
+
+bool equalsType(PCLASS gauche, PCLASS droit){
+  if(gauche==NULL)
+  {
+    return FALSE;
+  }
+  if(droite==NULL){
+    return FALSE;
+  }
+  return (strcmp(gauche->nom,droit->nom)==0);
+}
+
+
 
 /** Partie eval **/
 void evalProgramme(TreeP programme){
