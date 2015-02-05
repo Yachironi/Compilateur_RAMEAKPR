@@ -1107,18 +1107,18 @@ bool checkAppelMethodeR(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeur
        | OuRien       { $$=$1; }
        ;*/
 
-PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant)
+PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
   if(arbre==NULL)
     return NULL;
    
    /* Dans le cas d'une selection, récupérer le dernier élèment */ 
-
+  PCLASS type;
+  PCLASS type2;
+  LTreeP liste;
+  char* message = NEW(SIZE_ERROR,char);
+  
   switch(arbre->op){
-
-    PCLASS type;
-    PCLASS type2;
-    char* message = NEW(SIZE_ERROR,char);
     case MINUSUNAIRE:
     case PLUSUNAIRE :
       type = getType(getChild(arbre,0),arbre,courant);
@@ -1170,20 +1170,183 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant)
       break;
 
     case SELECTION : 
-      if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE){
-        estCoherent(getChild(arbre,1),getChild(ancien,1));
-      }
-      else{
+      if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE)
+      {
         return getType(getChild(arbre,0),arbre,courant);
+      }
+      else
+      {
+        transFormSelectOuEnvoi(arbre,liste);
+        estCoherent(liste, courant);
       }
     break;
 
+    case ENVOIMESSAGE : 
+        if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE)
+        {
+            return getType(getChild(arbre,0),arbre,courant);
+        }
+        else
+        {
+        transFormSelectOuEnvoi(arbre,liste);
+        estCoherentEnvoi(liste, courant, methode,listeDecl);
+        }   
   }
 }
 
+bool estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl){
+  LTreeP tmp = liste;
+  PCLASS init = NULL;
+  if(liste==NULL || tmp->elem==NULL)
+  {
+    return FALSE;
+  }
+  if(tmp->elem->op==IDENTIFICATEUR){
+    init = getTypeClass(tmp->elem->u.str, classe, methode, listeDecl);
+    if(init == NULL)
+    {
+      return FALSE;
+    }
+  }
+  else if(tmp->elem->op == IDENTIFICATEURCLASS)
+  {
+    init = getClasse(listeClasse, tmp->elem->u.str);
+  }
+  
+  while(tmp!=NULL){
+    /* regarder si le tmp->suivant appartient effectivent à la classe mere 
+    *  Pour le premier element, on le fait en dur 
+    *  init
+    *  suivant
+    *  suivant appartient à init ? 
+    *  si oui ... continue 
+    *  si non ... return false
+    */
+    tmp = tmp->suivant;
+    if(!appartient(init,tmp,true))
+    {
+
+    }
+
+  }
+
+}
+
+bool appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage){
+  if(fille==NULL || mere==NULL){
+    return TRUE;
+  }
+
+  if(isEnvoiMessage)
+  {
+    PMETH listMeth = mere->liste_methodes;
+    while(listMeth!=NULL)
+    {
+      if(strcmp(listMeth->nom,fille->u.str)==0)
+      {
+        /* Verifie si les parametre de de listMeth->param & fille */
+        bool isVerifOk = FALSE;
+
+        if(isVerifOk)
+        {
+          return TRUE;
+        }
+      }
+      listMeth = listMeth->suivant;
+    }
+    return FALSE;
+  }
+  else
+  {
+    PVAR listeVar = mere->liste_champs;
+
+    while(listVar!=NULL)
+    {
+      if(strcmp(listeVar->nom,fille->u.str)==0)
+      {
+        return TRUE;
+      }
+      listVar = listVar->suivant;
+    }
+    return FALSE;
+  }
+}
+
+
+/* Retourne le type d'une varibable suivant les paramètre de la méthode, 
+* de la classe et de la liste de déclaration 
+*/
+PCLASS getTypeClass(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
+  bool estDansParamMeth = FALSE;
+  bool estDansListeDecl =  FALSE;
+  bool estDansAttributClasse = FALSE;
+  PCLASS res = NULL;
+  
+  if(methode != NULL)
+  {
+  PVAR param = methode->params;
+
+    while(param!=NULL)
+    {
+      if(strcmp(nom,param->nom)==0)
+      {
+        estDansParamMeth = TRUE;
+        res = param->type;
+        break;
+      }
+    param = param->suivant;
+    }
+  }
+  
+  if(listeDecl!=NULL)
+  {
+  PVAR listDeclaration = listeDecl; 
+  
+    while(listDeclaration!=NULL)
+    {
+      if(strcmp(nom,listDeclaration->nom)==0 && estDansParamMeth==TRUE)
+      {
+        return NULL;
+      }
+      else if(strcmp(nom,listDeclaration->nom)==0 && estDansParamMeth==FALSE){
+        estDansListeDecl = TRUE;
+        res = listDeclaration->type;
+        break;
+      }
+      listDeclaration = listDeclaration->suivant;
+    }
+  }
+  
+  if(classe->liste_champs != NULL)
+  {
+    PVAR listeClasse = classe->liste_champs;
+
+    while(listeClasse!=NULL)
+    {
+      if(strcmp(nom,listeClasse->nom)==0 && (estDansListeDecl==TRUE))
+      {
+        return NULL;
+      }
+      else if(strcmp(nom,listeClasse->nom)==0 && estDansListeDecl==FALSE){
+        estDansAttributClasse = TRUE;
+        res = listeClasse->type;
+        break;
+      }
+      listeClasse = listeClasse->suivant;
+    }
+  }
+  return res;
+}
+
+
+
+/* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
   if(getChild(arbre,0)==NULL)
   {
+    LTreeP tmp = liste;
+    liste = arbre;
+    liste->suivant = tmp;
     return;
   }
   if(liste==NULL){
@@ -1193,6 +1356,7 @@ void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
     LTreeP tmp = liste;
     liste = getChild(arbre,1);
     liste->suivant = tmp;
+    
   }
   transFormSelectOuEnvoi(getChild(arbre,0),liste);
 }
