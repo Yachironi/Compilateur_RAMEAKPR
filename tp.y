@@ -40,7 +40,7 @@
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
 %type <CL> LClassOpt DeclClass ListExtendsOpt
-%type <I> OverrideOuStaticOpt StaticOpt
+%type <I> OverrideOuStaticOpt StaticOpt 
  
 /* Initialisation des variables globales*/
 
@@ -282,7 +282,6 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
           paramConstructeur = paramConstructeur->suivant;
         }
         if(listOptArg->u.children[0]!=NIL(Tree)){
-          paramConstructeur->init=listOptArg->u.children[0];
         }
       }
       else

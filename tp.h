@@ -184,6 +184,14 @@ typedef union
   PMETH M;
 } YYSTYPE;
 
+/* Structure representant une liste de tree, utile pour la vérification
+* des selections et des envois de message
+*/
+typedef struct _listeTree {
+  TreeP elem;
+  struct _listeTree *suivant;
+}listeTree, *LTreeP;
+
 #define YYSTYPE YYSTYPE
 
 /* construction des declarations */
