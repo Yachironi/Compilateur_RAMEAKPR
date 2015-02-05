@@ -1180,7 +1180,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant)
 
   }
 }
-
+/*
+ * Transforme une instruction du type a.b.c.d(...)
+ * En une liste chainee a->b->c->d(...)
+ */
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
   if(getChild(arbre,0)==NULL)
   {
@@ -1198,8 +1201,8 @@ void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
 }
 
 
-bool estCoherent(TreeP gauche, TreeP droite){
-  
+bool estCoherent(LTreeP liste,PCLASS actuelle)
+{  
   switch(gauche->op){
    
     case SELECTION :
