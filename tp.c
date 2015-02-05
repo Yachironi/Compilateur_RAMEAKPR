@@ -858,7 +858,7 @@ bool checkMethode(PMETH methode)
       {
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur dans la methode statique %s",methode->nom);
-          pushErreur(message,classActuel,NULL,NULL);
+          pushErreur(message,classActuel,methode,NULL);
           return FALSE;
       }
     }
@@ -873,7 +873,7 @@ bool checkMethode(PMETH methode)
         {
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
-          pushErreur(message,classActuel,NULL,NULL);
+          pushErreur(message,classActuel,methode,NULL);
           return FALSE;
         }
       }
@@ -1222,5 +1222,25 @@ printf("Etiquette %d",tree->op);
 int i;
 for (i = 0; i < tree->nbChildren; i++) { 
     printTree(tree->u.children[i]);
+  }
+}
+
+void afficheListeErreur(ErreurP listeE)
+{
+  if(listeE==NULL)
+  {
+    printf("Aucune erreur : OK\n");
+    return;
+  }
+  else
+  {
+    ErreurP tmp = listeE;
+    int i = 1;
+    while(tmp!=NULL)
+    {
+      printf("Erreur %d : %s\n",i,message);
+      tmp = tmp->suivant;
+      i++;
+    }
   }
 }
