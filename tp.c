@@ -505,37 +505,6 @@ bool checkExpr(TreeP tree, PVAR listeVar, short etiquette){
    * Pour RELOP, les deux fils doivent avoir le même type
    * Plus unaire, moins unaire ? 
    */ 
-  
-  /* switch()
-
-
-
-
-
-
-   expr : 
-         PLUS expr %prec unaire   { $$=$2; }
-       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante          { $$=$1; }
-       | instanciation      { $$=$1; }
-       | envoiMessage       { $$=$1; }
-       | OuRien             { $$=$1; }
-       ;
-
-   OuRien : '(' expr ')'       {$$=$2;}
-       | Cible              {$$=$1;}
-       ;
-
-   constante : CSTS  { $$ = makeLeafStr(CSTSTRING,$1); }
-             | CSTE  { $$ = makeLeafInt(CSTENTIER,$1); }
-          ;
-  */
 }
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit){
@@ -1170,7 +1139,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case SELECTION : 
-      if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE)
+      if(ancien!=NULL && (ancien->op == SELECTION || ancien->op == ENVOIMESSAGE))
       {
         return getType(getChild(arbre,0),arbre,courant);
       }
@@ -1182,7 +1151,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     break;
 
     case ENVOIMESSAGE : 
-        if(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE)
+        if(ancien!=NULL &&(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE))
         {
             return getType(getChild(arbre,0),arbre,courant);
         }
@@ -1201,8 +1170,9 @@ bool estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl
   {
     return FALSE;
   }
-  if(tmp->elem->op==IDENTIFICATEUR){
-    init = getTypeClass(tmp->elem->u.str, classe, methode, listeDecl);
+  if(tmp->elem->op == IDENTIFICATEUR)
+  {
+    init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl);
     if(init == NULL)
     {
       return FALSE;
@@ -1211,28 +1181,47 @@ bool estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl
   else if(tmp->elem->op == IDENTIFICATEURCLASS)
   {
     init = getClasse(listeClasse, tmp->elem->u.str);
-  }
+  }  
   
-  while(tmp!=NULL){
-    /* regarder si le tmp->suivant appartient effectivent à la classe mere 
-    *  Pour le premier element, on le fait en dur 
-    *  init
-    *  suivant
-    *  suivant appartient à init ? 
-    *  si oui ... continue 
-    *  si non ... return false
-    */
-    tmp = tmp->suivant;
-    if(!appartient(init,tmp,true))
-    {
+  short etiquette = tmp->elem->op;
 
+  while(tmp!=NULL)
+  {
+    tmp = tmp->suivant;
+    if(tmp == NULL)
+    {
+      return TRUE;
+    }
+    TreeP tmpElem = tmp->elem;
+
+    if(tmp->elem->op == IDENTIFICATEURCLASS || tmp->elem->op == INSTANCIATION)
+    { 
+      return FALSE;    
     }
 
+    if(tmp->elem->suivant!=NULL)
+    {
+      init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette);
+      if(init==NULL)
+      {
+      return FALSE;
+      }
+    }
+    else 
+    {
+      init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette);
+      if(init ==NULL)
+      {
+      return FALSE;
+      }
+    }
+    etiquette = tmp->elem->op;
   }
+  return TRUE;
 
 }
 
-bool appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage){
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette){
   if(fille==NULL || mere==NULL){
     return TRUE;
   }
@@ -1245,30 +1234,24 @@ bool appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage){
       if(strcmp(listMeth->nom,fille->u.str)==0)
       {
         /* Verifie si les parametre de de listMeth->param & fille */
-        bool isVerifOk = FALSE;
+        bool isVerifOk = getTypeMethode(listMeth->nom,mere,etiquette,tmp->elem->suivant,methode,listeDecl);
 
         if(isVerifOk)
         {
-          return TRUE;
+          return listMeth->typeRetour;
+        }
+        else
+        {
+          return NULL;
         }
       }
       listMeth = listMeth->suivant;
     }
-    return FALSE;
+    return NULL;
   }
   else
   {
-    PVAR listeVar = mere->liste_champs;
-
-    while(listVar!=NULL)
-    {
-      if(strcmp(listeVar->nom,fille->u.str)==0)
-      {
-        return TRUE;
-      }
-      listVar = listVar->suivant;
-    }
-    return FALSE;
+    return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl);
   }
 }
 
@@ -1276,7 +1259,7 @@ bool appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage){
 /* Retourne le type d'une varibable suivant les paramètre de la méthode, 
 * de la classe et de la liste de déclaration 
 */
-PCLASS getTypeClass(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
   bool estDansParamMeth = FALSE;
   bool estDansListeDecl =  FALSE;
   bool estDansAttributClasse = FALSE;
@@ -1338,9 +1321,95 @@ PCLASS getTypeClass(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
   return res;
 }
 
+PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl){
+  if(classe == NULL || nom == NULL){
+    return NULL;
+  }
+  PMETH tmp = classe->liste_methodes;
+  while(tmp!=NULL)
+  {
+    if(precedant == IDENTIFICATEURCLASS)
+    {
+      if(strcmp(nom,tmp->nom)==0 && tmp->isStatic)
+      {
+        /* FIXME :  Vérifier qu'elles ont les mêmes parametres */ 
+        bool verifOk = compareParametreMethode(tmp->params,appelMethode, methode, listeDecl);
+        if(verifOk)
+        {
+          return tmp->home;
+        }
+        else {return NULL;}
+      }
+    }
+    else if(precedant == IDENTIFICATEUR)
+    {
+      if(strcmp(nom,tmp->nom)==0 && !tmp->isStatic)
+      {
+        bool verifOk = FALSE;
+        if(verifOk)
+        {
+          return tmp->home;
+        }
+        else {return NULL;}
+      }
+    }
 
+    tmp = tmp->suivant;
+  }
+  return NULL;
+}
 
-/* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
+bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PMETH methode, PVAR listeDecl)
+{
+  if((appelMethode==NULL && declaration!=NULL) || (appelMethode!=NULL && declaration==NULL))
+  {
+    return FALSE;
+  }
+  else if (appelMethode==NULL && declaration==NULL)
+  {
+    return TRUE;
+  }
+
+  /*Transformer a->b->c*/
+  PCLASS liste = NULL;
+  transformerAppel(appelMethode,liste);
+
+  PCLASS tmp = liste;
+  while(tmp!=NULL)
+  {
+
+    tmp = tmp->suivant;
+  }
+
+}
+
+void transformerAppel(TreeP appelMethode,PCLASS liste)
+{
+  if(appelMethode==NULL) {return NULL;}/*Cas impossible normalement juste au cas ou*/
+
+  if(getChild(appelMethode,0)==NULL)
+  {
+    PCLASS tmp = liste;
+    getType(TreeP arbre, NULL, PCLASS courant, PMETH methode, PVAR listeDecl)
+    liste = getType(getChild(appelMethode,0),appelMethode);
+    liste->suivant = tmp;
+  }
+
+  if(liste==NULL)
+  {
+    liste = appelMethode;
+  }
+  else
+  {
+    PCLASS tmp = liste;
+    liste = getChild(appelMethode,1);
+    liste->suivant = tmp;
+  }
+
+  transformerAppel(getChild(appelMethode,0),liste);
+}
+
+/* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message */
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
   if(getChild(arbre,0)==NULL)
   {
@@ -1351,12 +1420,14 @@ void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
   }
   if(liste==NULL){
     liste = getChild(arbre,1);
+    liste->elem->suivant = getChild(arbre,2);
   }
   else{
     LTreeP tmp = liste;
     liste = getChild(arbre,1);
     liste->suivant = tmp;
-    
+    liste->elem->suivant = getChild(arbre,2);
+
   }
   transFormSelectOuEnvoi(getChild(arbre,0),liste);
 }
