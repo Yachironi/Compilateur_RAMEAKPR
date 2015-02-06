@@ -1109,7 +1109,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     case MULTIPLICATION :
     case DIVISION : 
     case OPCOMPARATEUR :
-    type = getType(getChild(arbre,0),arbre,courant);
+    type =  getType(getChild(arbre,0),arbre,courant);
     type2 = getType(getChild(arbre,1),arbre,courant);
     if(equalsType(type,type2) && strcmp(type->nom,"Integer")==0){
       return type;
