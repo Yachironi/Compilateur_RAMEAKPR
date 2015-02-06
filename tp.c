@@ -883,7 +883,7 @@ bool checkCorp(PMETH methode)
 
 bool checkListOptArg(PVAR var)
 {
-
+       
 }
 
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
@@ -1146,6 +1146,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       else
       {
         transFormSelectOuEnvoi(arbre,liste);
+        /* A changer estCoherent */  
         estCoherent(liste, courant);
       }
     break;
@@ -1159,7 +1160,8 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         {
         transFormSelectOuEnvoi(arbre,liste);
         estCoherentEnvoi(liste, courant, methode,listeDecl);
-        }   
+        } 
+
   }
 }
 
@@ -1180,7 +1182,15 @@ bool estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl
   }
   else if(tmp->elem->op == IDENTIFICATEURCLASS)
   {
-    init = getClasse(listeClasse, tmp->elem->u.str);
+    init = getClasse(listeDeClass, tmp->elem->u.str);
+  }
+  else if(tmp->elem->op == INSTANCIATION)
+  {
+      char * nomClass = getChild(tmp->elem,0)->u.str; 
+
+      PCLASS tmp = getClasse(listeDeClass,nomClass);
+
+      if(tmp == NULL) return FALSE; 
   }  
   
   short etiquette = tmp->elem->op;
@@ -1453,7 +1463,7 @@ bool estCoherent(TreeP gauche, TreeP droite){
     case INSTANCIATION :
       char * nomClass = getChild(gauche,0)->u.str; 
         /* Vérification si la classe existe */ 
-      PCLASS tmp = getClasse(listeClass,nomClass);
+      PCLASS tmp = getClasse(listeDeClass,nomClass);
 
       if(tmp == NULL) return false; 
         /*Vérifie que la classe de l'instanciation contient la partie droite*/
