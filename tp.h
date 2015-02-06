@@ -72,7 +72,7 @@
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
 
-#define SIZE_ERROR 100
+#define SIZE_ERROR 200
 #define RED "\033[31m" /* Red */
 #define BLACK "\033[30m" /* Black */
 
