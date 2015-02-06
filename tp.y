@@ -144,10 +144,10 @@ LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1
     * if expression then instruction else instruction
  */
 
-Instruction : expr ';'            {$$=$1;}
+Instruction : expr ';'                {$$=$1;}
             | RETURN expr ';'         {$$=makeTree(EXPRESSIONRETURN, 1, $2);}
-            | Bloc            {$$=$1;}
-            | Cible AFFECT expr ';'       {$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
+            | Bloc                    {$$=$1;}
+            | Cible AFFECT expr ';'    {$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
             | IF expr THEN Instruction ELSE Instruction   {$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
             | RETURN ';'          {$$=makeLeafStr(RETURN_VOID, MSG_VOID);}  /* return void */
             ;

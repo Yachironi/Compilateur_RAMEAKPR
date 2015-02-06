@@ -194,7 +194,7 @@ typedef union
 typedef struct _listeTree {
   TreeP elem;
   struct _listeTree *suivant;
-}LTree, *LTreeP;
+}listeTree, *LTreeP;
 
 #define YYSTYPE YYSTYPE
 
@@ -267,11 +267,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 bool f(TreeP tree,short etiquette,PVAR listeVar);
 bool equalsType(PCLASS gauche, PCLASS droit);
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
-void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
+LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
 PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl);
 PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette);
 void transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH methode, PVAR listeDecl);
-void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
 PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl);
 bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl);
  
