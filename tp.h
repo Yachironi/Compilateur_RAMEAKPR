@@ -93,6 +93,8 @@ typedef struct _Tree {
     PMETH methode;        	/* valeur de la feuille si op = METHODE */
     struct _Tree **children; 	/* tableau des sous-arbres */
   } u;
+
+  struct _Tree *suivant; /*Utilise pour les check et uniquement les checks*/
 } Tree, *TreeP;
 
 /* la structure ci-dessous permet de memoriser des listes variable/valeur */
@@ -243,6 +245,7 @@ bool checkListAttribut(PCLASS classe);
 bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
+bool checkMethode(PMETH methode);
 
 
 void printTree(TreeP tree); /* Methode pour imprimer toute l'arbre */
@@ -252,7 +255,29 @@ PVAR evalListDeclVar(TreeP listDeclVar);
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
-bool estCoherent(TreeP gauche, TreeP droite);
+bool estCoherent(TreeP gauche, PCLASS droite);
 bool classeContient(PCLASS classe,TreeP droite);
+
+/*
+ * Nouvelle fonction
+ */
+
+bool f(TreeP tree,short etiquette,PVAR listeVar);
+bool equalsType(PCLASS gauche, PCLASS droit);
+PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
+void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl);
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette);
+void transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH methode, PVAR listeDecl);
+void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
+PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl);
+bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl);
+ /*
+  * A voire
+  */
+bool contientClasseInst(PVAR classe, TreeP droite);
+bool checkListOptArg(PVAR var);
+bool existeMethodeOverride(PCLASS home,PMETH methode); /* JULIEN ? */
+
 
 #endif

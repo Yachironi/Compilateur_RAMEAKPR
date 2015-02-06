@@ -269,7 +269,8 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else{
       /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-      if(checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE))
+      /* checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE) */
+      if(TRUE)
       {
         /* on ajoute a la classe mere les param passees dans ListOptArg */
         /* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
