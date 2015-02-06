@@ -89,15 +89,39 @@ int main(int argc, char **argv) {
     point2D->nom = calloc(100,sizeof(char));
     strcpy(point2D->nom,"Point2D");
 
+    PCLASS couleur = NEW(1,SCLASS);
+    couleur->nom = calloc(100,sizeof(char));
+    strcpy(couleur->nom,"Couleur");
+
     PVAR p = NEW(1,SVAR);
     p->nom = calloc(100,sizeof(char));
     strcpy(p->nom,"b");
     p->type = point2D;
 
+    PVAR c = NEW(1,SVAR);
+    c->nom = calloc(100,sizeof(char));
+    strcpy(c->nom,"b");
+    c->type = couleur;
+
     point->liste_champs = p;
+    point2D->liste_champs = c;
 
     TreeP ourien = makeLeafStr(IDENTIFICATEUR,"a");
     TreeP selection = makeTree(SELECTION, 2, ourien,makeLeafStr(IDENTIFICATEUR,"b"));
+    TreeP selectionBis = makeTree(SELECTION, 2, selection,makeLeafStr(IDENTIFICATEUR,"c"));
+
+    LTreeP liste;
+    printf("1111\n");
+    liste = transFormSelectOuEnvoi(selectionBis, liste);
+
+    LTreeP tmpL=liste;
+
+    while(tmpL!=NULL)
+    {
+      printf("caca\n");
+      printf("%s->\n",tmpL->elem->u.str );
+      tmpL = tmpL->suivant;
+    }
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
     /*
@@ -106,7 +130,7 @@ int main(int argc, char **argv) {
     /*LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
                   ;*/
 
-    TreeP instruction = makeTree(LIST_INSTRUCTION, 2, selection, NULL);
+    TreeP instruction = makeTree(LIST_INSTRUCTION, 2, selectionBis, NULL);
     TreeP contenu = makeTree(CONTENUBLOC,3,listDeclVar,instruction,NULL);
 
     resultat = getType(contenu,NULL,NULL,NULL,listDeclVar);
