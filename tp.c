@@ -1405,7 +1405,6 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PMETH methode,
 void transformerAppel(TreeP appelMethode,PCLASS liste)
 {
   if(appelMethode==NULL) {return NULL;}/*Cas impossible normalement juste au cas ou*/
-
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
   if(getChild(appelMethode,0)==NULL)
   {
