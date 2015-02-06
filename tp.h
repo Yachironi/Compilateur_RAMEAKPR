@@ -73,6 +73,8 @@
 #define UNEXPECTED	10
 
 #define SIZE_ERROR 100
+#define RED "\033[31m" /* Red */
+#define BLACK "\033[30m" /* Black */
 
 typedef struct _Var SVAR, *PVAR;
 typedef struct _Method SMETH, *PMETH;
@@ -261,7 +263,7 @@ bool classeContient(PCLASS classe,TreeP droite);
 /*
  * Nouvelle fonction
  */
-
+PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool f(TreeP tree,short etiquette,PVAR listeVar);
 bool equalsType(PCLASS gauche, PCLASS droit);
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
@@ -272,6 +274,9 @@ void transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH method
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
 PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl);
 bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl);
+ 
+void afficheListeErreur(ErreurP listeE);
+bool verifAttributClasse(PCLASS classe);
  /*
   * A voire
   */
