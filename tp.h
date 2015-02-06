@@ -240,6 +240,7 @@ bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
 bool checkConstructeur(PCLASS classe);
 bool checkListAttribut(PCLASS classe);
+bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(PCLASS classe);
 bool checkMethodeStatic(PMETH methode);
 

@@ -215,6 +215,10 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
       parcour=parcour->suivant; 
     }
     parcour->suivant=res;
+
+    PCLASS tmp = listeClass;
+
+    listeClass = res;
   }
   return res;
 }
@@ -760,6 +764,11 @@ bool checkConstructeur(PCLASS classe)
 
 bool checkListAttribut(PCLASS classe)
 {
+
+  if(!verifAttributClasse(classe))
+  {
+    return FALSE;
+  }
   /*
    * Parcourir les attributs de la classe actuel & verifier qu'il n'y a aucune qui se ressemble !
    */
@@ -1337,17 +1346,9 @@ PCLASS getTypeClass(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
   }
   return res;
 }
-<<<<<<< HEAD
-/*
- * Transforme une instruction du type a.b.c.d(...)
- * En une liste chainee a->b->c->d(...)
- */
-=======
-
 
 
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
->>>>>>> 83f1ae67775aadddf4a0a06a00dbe7678535289d
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste){
   if(getChild(arbre,0)==NULL)
   {
@@ -1501,4 +1502,30 @@ void afficheListeErreur(ErreurP listeE)
       i++;
     }
   }
+}
+/*
+ * True : si la classe n'a pas des attributs en doublons
+ * False : NOK
+ */
+bool verifAttributClasse(PCLASS classe)
+{
+  /* FIXME Verifier qu'il n'y a pas 2 attribut qui on le même nom !!!!!!!!!!!!*/
+  PVAR tmp = classe->liste_champs;
+  PVAR reste = tmp->suivant;
+  while(tmp!=NULL)
+  {
+    reste = tmp->suivant;
+
+    while(reste!=NULL)
+    {
+      if(strcmp(reste->nom,tmp->nom)==0)
+      {
+        return FALSE;
+      }
+      reste = reste->suivant;
+    }
+    tmp = tmp->suivant;
+  }
+
+  return TRUE;
 }
