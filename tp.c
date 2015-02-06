@@ -43,6 +43,16 @@ FILE *fd = NIL(FILE);
 
 int main(int argc, char **argv) {
 
+  int *po = NEW(1,int);
+  *po = 2;
+
+  int tmp = *po;
+
+  tmp = 3;
+
+  printf("%d\n",*po );
+
+  exit(0);
   /*
    * TEST
    */
@@ -53,6 +63,7 @@ int main(int argc, char **argv) {
    printf("2\n");
 
    TreeP lesdeuxexpression = makeTree(CONCATENATION, 2, gauche, droite);
+
    /*PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
    PCLASS resultat = getType(lesdeuxexpression,NULL,NULL,NULL,NULL);
    if(resultat!=NULL)
@@ -115,6 +126,8 @@ int main(int argc, char **argv) {
      }
 
     printf("FIN DES TEST\n");
+
+    afficheListeErreur(listeErreur);
     /*
       | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}  
 
@@ -1080,12 +1093,24 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 }
 
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl){
+  
   LTreeP tmp = liste;
   PCLASS init = NULL;
+
+  printf("liste NULL %d? tmp->elem : NULL ?%d\n",(liste==NULL)?TRUE:FALSE,1 );
+
   if(liste==NULL || tmp->elem==NULL)
   {
     char* message = NEW(SIZE_ERROR,char);
-    sprintf(message,"Erreur la methode %s est mal forme - Classe : %s",methode->nom,classe->nom);
+    if(methode!=NULL && classe!=NULL)
+    {
+      sprintf(message,"Erreur la methode %s est mal forme - Classe : %s",methode->nom,classe->nom);
+    }
+    else
+    {
+      sprintf(message,"Erreur envoi de message");
+    }
+    
     pushErreur(message,classe,methode,NULL);
     return NULL;
   }
@@ -1416,7 +1441,8 @@ void transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH met
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message */
 void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
 {
-  if(getChild(arbre,0)==NULL)
+
+  if(getChild(arbre,0)==NULL || arbre->nbChildren)
   {
     if(liste!=NULL)
     {
@@ -1424,38 +1450,23 @@ void transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
       liste->elem = arbre;
       liste->suivant = tmp;
     }
-   
     return;
   }
   if(liste==NULL){
-    printf("Debut premier ajout\n");
     liste = NEW(1,struct _listeTree);
-    printf("Alloc\n");
     liste->elem = getChild(arbre,1);
-    printf("ajout\n");
     liste->elem->suivant = getChild(arbre,2);
-    printf("Fin ajout\n");
   }
   else{
 
-    LTreeP tmp = liste;
+    /*LTreeP tmp = liste;
+    tmp->elem = getChild(arbre,1);
+    tmp->suivant = liste;
 
-    printf("Appel child\n");
-    printf("null ? %d\n",getChild(arbre,2)==NULL?TRUE:FALSE );;
-    printf("Appel fin\n");
+    tmp->elem->suivant = getChild(arbre,2);
 
-    liste->elem = getChild(arbre,1);
-    liste->suivant = tmp;
-    printf("YYY\n");
-
-     printf("Appel elem\n");
-    printf("null ? %d\n",liste->elem==NULL?TRUE:FALSE );
-    printf("Appel elelm\n");
-
-    liste->elem->suivant = getChild(arbre,2);
-
-    printf("XXX\n");
-
+    LTreeP tmp2 = tmp;
+    liste->suivant = tmp;*/
   }
   transFormSelectOuEnvoi(getChild(arbre,0),liste);
 }
