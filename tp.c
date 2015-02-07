@@ -1195,6 +1195,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         
         if(tmp->elem->suivant!=NULL)
         {
+            //printf("tmp->elem->suivant %s \n",tmp->elem->suivant->op);
             printf("25-25-25\n");
             init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette);
             if(init==NULL)
@@ -1225,7 +1226,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 
 
 PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette){
-  printf("Appartient : %s   %s\n",mere->nom, fille->u.str);
+  printf("Appartient : %s\t%s\n",mere->nom, fille->u.str);
   
   if(fille==NULL || mere==NULL){
     char* message = NEW(SIZE_ERROR,char);
@@ -1327,7 +1328,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
     printf("1.1.6\n");
   }
   printf("1.1.6.1\n");
-  printf("classe->liste_champs null ? %d\n",classe==NULL?TRUE:FALSE);
+  /*printf("classe->liste_champs null ? %d\n",classe==NULL?TRUE:FALSE);*/
   if(classe!=NULL && classe->liste_champs != NULL)
   {
     printf("1.1.7\n");
