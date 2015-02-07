@@ -1562,6 +1562,12 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   if(liste==NULL)
   {
     printf("a.7.0\n");
+    if(appelMethode == NULL){
+      printf("AppelMethode est null\n");
+    }
+     if(getChild(appelMethode,1) == NULL){
+      printf("AppelMethode est null\n");
+    }
     liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
     printf("a.7.1\n");
   }
