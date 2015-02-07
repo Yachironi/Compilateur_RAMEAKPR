@@ -58,7 +58,6 @@ int main(int argc, char **argv) {
 
    printf("nb %d\n",(getChild(lesdeuxexpression,1)==NULL)?TRUE:FALSE );
    printf("d\n");
-   PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
    PCLASS resultat = getType(lesdeuxexpression,NULL,NULL,NULL,NULL);
    if(resultat!=NULL)
    {
@@ -130,7 +129,7 @@ int main(int argc, char **argv) {
     strcpy(f->nom,"f");
     f->home = point4D;
     PVAR paramsMethode = makeListVar("p",point,0,NIL(Tree));
-    paramsMethode->suivant = makeListVar("toto",point4D,0,NIL(Tree));
+    paramsMethode->suivant = makeListVar("toto",point,0,NIL(Tree));
 
     /*
      
@@ -1055,7 +1054,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     pushErreur(message,classActuel,methode,NULL);
     return NULL;
   }
-   PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
+   PCLASS integer = NEW(1,SCLASS); PCLASS string = NEW(1,SCLASS);
    printf("1\n");
    printf("arbre NIL : ? %d\n",arbre->op==NULL?TRUE:FALSE );
    printf("Etiquette %d\n",arbre->op );
@@ -1536,9 +1535,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   liste = transformerAppel(appelMethode,liste,classe,methode, listeDecl);
   printf("a.7\n");
   
-  printf("lelena : %s\n",liste->nom);
-  printf("lelena : %s\n",liste->suivant->nom);
-
+  printf("%d", appelMethode->op);
   if(appelMethode!=NULL && liste==NULL)
   {
     printf("return 2\n");
@@ -1611,7 +1608,6 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   printf("%d\n",(appelMethode==NULL)?TRUE:FALSE );
   if(appelMethode==NULL) {return NULL;}/*Cas impossible normalement juste au cas ou*/
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
-  printf("***** = %d\n",appelMethode->op );
   
   /*if((getChild(appelMethode,0)==NULL || appelMethode->nbChildren==0) && liste!=NULL)
   {
@@ -1629,23 +1625,17 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
     liste->suivant = &tmp;
     return liste;
   }
-*/
+*/    
+  printf("etiquette : %d\n",appelMethode->op);
   if(liste==NULL)
   {
-    printf("a.7.0\n");
-
-    printf("etiquette : %d\n",appelMethode->op);
     if(appelMethode->op!=LISTEARG)
     {
-      printf("Je suis en ident\n");
       liste = getType(appelMethode,NULL, courant, methode, listeDecl);
-      printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
-      printf("liste->classe %s \n",liste->nom);
       return liste;
     }
     else
     {
-      printf("Je suis PAS INIT\n");
       liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
       if(liste==NULL)
       {
@@ -1671,14 +1661,26 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
         printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
         printf("liste->classe %s \n",liste->nom);
         liste->suivant = &tmp;
+        int cpt = 0;
+        while(liste!=NULL){
+          printf("val de cette merde ======> %s\n", liste->nom);
+          cpt++;
+          liste= liste->suivant;
+        }
+        printf("compteur :%d\n", cpt);
         return liste;
       }
       else
       {
         printf("Je suis PAS INIT\n");
         liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
-        printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
-        printf("liste->classe %s \n",liste->nom);
+        if(liste==NULL)
+        {
+          char* message = NEW(SIZE_ERROR,char);
+          sprintf(message,"L'attribut %s n'a pas ete trouver",getChild(appelMethode,1)->u.str);
+          pushErreur(message,courant,methode,NULL);
+          return NULL; 
+        }
         liste->suivant = &tmp;
       }
     }
