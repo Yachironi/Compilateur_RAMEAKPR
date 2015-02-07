@@ -123,7 +123,6 @@ int main(int argc, char **argv) {
 
     TreeP instruction = makeTree(LIST_INSTRUCTION, 2, selection1,NULL);
     TreeP contenu = makeTree(CONTENUBLOC,3,listDeclVar,instruction,NULL);
-    
     resultat = getType(contenu,NULL,NULL,NULL,listDeclVar);
    
 
@@ -1492,29 +1491,15 @@ LTreeP transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message */
 LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
 {
-  printf("Je suis dans la fonction qui transforme\n");
-  
-
   if(liste==NULL){
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-    printf("fsxghefhjjhjdsvjhvdsghvdghvdghscdghdsghs\n");
-
-    if(getChild(arbre,8)==NULL){
+  if(getChild(arbre,8)==NULL){
       printf("elementaire \n");
-    } 
-
-
+  } 
     liste = NEW(1,struct _listeTree);  
     liste->elem = getChild(arbre,1);
-    
-    liste->elem->suivant = getChild(arbre,2);
+    if(arbre->nbChildren == 3){
+        liste->elem->suivant = getChild(arbre,2);
+    }
   }
   else
   {
@@ -1522,7 +1507,9 @@ LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
     liste->elem = getChild(arbre,1);
     liste->suivant = NEW(1,listeTree);
     *liste->suivant = tmp;
-    liste->elem->suivant = getChild(arbre,2);
+    if(arbre->nbChildren == 3){
+        liste->elem->suivant = getChild(arbre,2);
+    }
   }
 
 
