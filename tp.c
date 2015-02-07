@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
    printf("c\n");
 
    printf("nb %d\n",(getChild(lesdeuxexpression,1)==NULL)?TRUE:FALSE );
-    printf("d\n");
+   printf("d\n");
    PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
    PCLASS resultat = getType(lesdeuxexpression,NULL,NULL,NULL,NULL);
    if(resultat!=NULL)
@@ -1493,12 +1493,10 @@ LTreeP transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
 LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
 {
   if(liste==NULL){
-  if(getChild(arbre,8)==NULL){
-      printf("elementaire \n");
-  } 
     liste = NEW(1,struct _listeTree);  
     liste->elem = getChild(arbre,1);
-    if(arbre->nbChildren == 3){
+    if(arbre->nbChildren == 3)
+    {
         liste->elem->suivant = getChild(arbre,2);
     }
   }
@@ -1508,8 +1506,9 @@ LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
     liste->elem = getChild(arbre,1);
     liste->suivant = NEW(1,listeTree);
     *liste->suivant = tmp;
-    if(arbre->nbChildren == 3){
-        liste->elem->suivant = getChild(arbre,2);
+    if(arbre->nbChildren == 3)
+    {
+      liste->elem->suivant = getChild(arbre,2);
     }
   }
 
