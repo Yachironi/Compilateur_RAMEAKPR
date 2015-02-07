@@ -129,13 +129,23 @@ int main(int argc, char **argv) {
     f->nom = calloc(100,sizeof(char));
     strcpy(f->nom,"f");
     f->home = point4D;
-    PVAR paramsMethode;
+    PVAR paramsMethode = makeListVar("p",point,0,NIL(Tree));;
 
     /*
-     *
-     */
      
-    f->params = NULL;
+ListParamOpt : LParam       {$$=$1;}
+              |    {$$=NIL(SVAR);}
+              ;
+
+LParam : Param        {$$=$1 ;}
+        | Param','LParam    {$1->suivant=$3; $$=$1;}
+        ;
+
+Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
+          ; 
+     */
+
+    f->params = paramsMethode;
     f->typeRetour = point;
     f->isStatic = FALSE;
     f->isRedef = FALSE;
@@ -143,7 +153,15 @@ int main(int argc, char **argv) {
 
     point4D->liste_methodes = f;
 
-    TreeP envoiMessage = makeTree(ENVOIMESSAGE, 3,selection2,makeLeafStr(IDENTIFICATEUR,"f"),NULL);
+    TreeP argumentAppel = makeLeafStr(IDENTIFICATEUR,"a");
+
+    /*
+    LArg : expr           {$$ = $1;}
+     | LArg','expr              {$$=makeTree(LISTEARG, 2, $1,$3);}
+     ;
+     */
+
+    TreeP envoiMessage = makeTree(ENVOIMESSAGE, 3,selection2,makeLeafStr(IDENTIFICATEUR,"f"),argumentAppel);
 
     TreeP selectionBis = makeTree(SELECTION, 2,envoiMessage,makeLeafStr(IDENTIFICATEUR,"b"));
 
@@ -1032,14 +1050,17 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     return NULL;
   }
    PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
+   printf("1\n");
+   printf("arbre NIL : ? %d\n",arbre->op==NULL?TRUE:FALSE );
    printf("Etiquette %d\n",arbre->op );
+   printf("2\n");
    /* Dans le cas d'une selection, récupérer le dernier élèment */ 
   PCLASS type = NULL;
   PCLASS type2 = NULL;
   LTreeP liste = NULL;
   LTreeP tmpL = NULL;
   char* message = NEW(SIZE_ERROR,char);
-  
+
   switch(arbre->op){
     case MINUSUNAIRE:
     case PLUSUNAIRE :
@@ -1309,8 +1330,9 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
       if(strcmp(listMeth->nom,fille->u.str)==0)
       {
         /* Verifie si les parametre de de listMeth->param & fille */
+        printf("Allez isVerif ?\n");
         bool isVerifOk = getTypeMethode(listMeth->nom,mere,etiquette,tmp->elem->suivant,methode,listeDecl)!=NULL?TRUE:FALSE;
-
+        printf("Fin isVerif\n");
         if(isVerifOk)
         {
           return listMeth->typeRetour;
@@ -1434,8 +1456,10 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
   PMETH tmp = classe->liste_methodes;
   while(tmp!=NULL)
   {
+    printf("a.1\n");
     if(precedant == IDENTIFICATEURCLASS)
     {
+      printf("a.2\n");
       if(strcmp(nom,tmp->nom)==0 && tmp->isStatic)
       {
         bool verifOk = compareParametreMethode(tmp->params,appelMethode, classe,methode, listeDecl);
@@ -1454,9 +1478,12 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
     }
     else if(precedant == IDENTIFICATEUR)
     {
+      printf("a.3\n");
       if(strcmp(nom,tmp->nom)==0 && !tmp->isStatic)
       {
+        printf("a.4\n");
         bool verifOk = compareParametreMethode(tmp->params,appelMethode, classe,methode, listeDecl);
+        printf("a.5\n");
         if(verifOk)
         {
           return tmp->home;
@@ -1489,7 +1516,11 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 
   /*Transformer a->b->c*/
   PCLASS liste = NULL;
+  printf("a.6\n");
   transformerAppel(appelMethode,liste,classe,methode, listeDecl);
+  printf("a.7\n");
+
+
 
   if(appelMethode!=NULL && liste==NULL)
   {
@@ -1524,31 +1555,37 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 
 }
 
-LTreeP transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH methode, PVAR listeDecl)
+PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
   if(appelMethode==NULL) {return NULL;}/*Cas impossible normalement juste au cas ou*/
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
   if(liste==NULL)
   {
+    printf("a.7\n");
     liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
+    printf("a.7.1\n");
   }
   else
   {
-    PCLASS tmp = liste;
+    printf("a.8\n");
+    SCLASS tmp = *liste;
     liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
     if(liste==NULL)
       return NULL;
-    liste->suivant = tmp;
+    liste->suivant = &tmp;
   }
+  printf("a.9\n");
   /* FIXME : look at this */
-  if(getChild(appelMethode,0)==NULL)
+  printf("EtEt le pokemon attaque avec etiquette %d\n",appelMethode->op );
+  printf("OtOt le pokemon attaque avec etiquette %d\n",getChild(appelMethode,0)->op );
+  if(getChild(appelMethode,0)==NULL || appelMethode->nbChildren==0)
   {
-    PCLASS tmp = liste;
+    SCLASS tmp = *liste;
     /* PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
     liste = getType(getChild(appelMethode,0),appelMethode,courant,methode,listeDecl);
     if(liste==NULL)
       return NULL;
-    liste->suivant = tmp;
+    liste->suivant = &tmp;
     return liste;
   }
 
