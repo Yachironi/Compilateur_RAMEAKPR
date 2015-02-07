@@ -1285,7 +1285,21 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     if(tmp->elem->op == IDENTIFICATEUR)
     {
         printf("1.1\n");
-        init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl);
+
+        if(classe!=NULL && strcmp(tmp->elem->u.str,"super")==0)
+        {
+          init = classe->classe_mere;
+        }
+        else (classe!=NULL && strcmp(tmp->elem->u.str,"this")==0)
+        {
+          init = classe;
+        }
+        else
+        {
+          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl);
+        } 
+
+        
 
         if(init == NULL)
         {
@@ -1333,10 +1347,10 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         }
         TreeP tmpElem = tmp->elem;
         tempoAffiche = init;
-        if(tmp->elem->op == IDENTIFICATEURCLASS || tmp->elem->op == INSTANCIATION)
+        if(tmp->elem->op == IDENTIFICATEURCLASS || tmp->elem->op == INSTANCIATION || strcmp(tmp->elem->u.str,"super")==0 || strcmp(tmp->elem->u.str,"this")==0)
         {
             char* message = NEW(SIZE_ERROR,char);
-            sprintf(message," Identificateur de classe ou instanciation en plein milieu : %s",tmp->elem->u.str);
+            sprintf(message," Identificateur de classe, instanciation, super ou this en plein milieu : %s",tmp->elem->u.str);
             pushErreur(message,classe,methode,NULL);
             printf("il y a un soucis\n");
             return NULL;
@@ -1843,7 +1857,15 @@ bool equalsType(PCLASS gauche, PCLASS droite)
   if(droite==NULL){
     return FALSE;
   }
-  return (strcmp(gauche->nom,droite->nom)==0);
+  if(strcmp(gauche->nom,droite->nom)==0)
+  {
+    return TRUE;
+  }
+  else
+  {
+    
+  }
+  return FALSE;
 }
 
 
