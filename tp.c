@@ -1183,6 +1183,14 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         return string;
       break;
 
+    case IDENTIFICATEUR:
+      return getTypeAttribut(arbre->u.str, courant, methode, listeDecl);
+    break;
+
+    case IDENTIFICATEURCLASS:
+      return getClasse(listeDeClass,arbre->u.str);
+    break;
+
     case CONTENUBLOC:
         return getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
       break;
@@ -1507,6 +1515,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 {
   if((appelMethode==NULL && declaration!=NULL)||(appelMethode!=NULL && declaration==NULL))
   {
+    printf("return 1\n");
     return FALSE;
   }
   else if (appelMethode==NULL && declaration==NULL)
@@ -1517,13 +1526,15 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   /*Transformer a->b->c*/
   PCLASS liste = NULL;
   printf("a.6\n");
-  transformerAppel(appelMethode,liste,classe,methode, listeDecl);
+
+  liste = transformerAppel(appelMethode,liste,classe,methode, listeDecl);
   printf("a.7\n");
 
 
 
   if(appelMethode!=NULL && liste==NULL)
   {
+    printf("return 2\n");
     return FALSE;
   }
 
@@ -1535,15 +1546,40 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
     return TRUE;
   }
 
+  PCLASS tmp2 = tmp;
+  int cpt = 0;
+
+  while(tmp2!=NULL)
+  {
+    cpt++;
+    printf("---- : %s \n",tmp2->nom );
+    tmp2 = tmp2->suivant;
+  }
+
+  printf("Liste contient : %d element\n",cpt );
+
+  PCLASS tmpDeclarationOfficiel2 = tmpDeclarationOfficiel;
+  cpt = 0;
+
+  while(tmpDeclarationOfficiel2!=NULL)
+  {
+    cpt++;
+
+    tmpDeclarationOfficiel2 = tmpDeclarationOfficiel2->suivant;
+  }
+  printf("DeclarationOfficiel contient : %d element\n",cpt );
+
   while(tmp!=NULL)
   {
     if(tmpDeclarationOfficiel==NULL)
     {
+      printf("return 3\n");
       return FALSE;
     }
 
     if(!equalsType(tmpDeclarationOfficiel->type,tmp))
     {
+      printf("return 4\n");
       return FALSE;
     }
 
@@ -1562,7 +1598,19 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   if(liste==NULL)
   {
     printf("a.7.0\n");
-    liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
+    printf("etiquette valeur : %s\n",appelMethode->u.str);
+    if(appelMethode->op==IDENTIFICATEUR)
+    {
+      printf("Je suis en ident\n");
+      liste = getType(appelMethode,NULL, courant, methode, listeDecl);
+      printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
+      printf("liste->classe %s \n",liste->nom);
+    }
+    else
+    {
+      liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
+    }
+    
     printf("a.7.1\n");
   }
   else
@@ -1574,17 +1622,31 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
       return NULL;
     liste->suivant = &tmp;
   }
-  printf("a.9\n");
+  printf("a.8.1\n");
   /* FIXME : look at this */
-  printf("EtEt le pokemon attaque avec etiquette %d\n",appelMethode->op );
-  printf("OtOt le pokemon attaque avec etiquette %d\n",getChild(appelMethode,0)->op );
+  /*printf("EtEt le pokemon attaque avec etiquette %d\n",appelMethode->op );*/
+  /*printf("OtOt le pokemon attaque avec etiquette %d\n",getChild(appelMethode,0)->op );*/
   if(getChild(appelMethode,0)==NULL || appelMethode->nbChildren==0)
   {
+    printf("a.9\n");
+    /*FIXME AMIN*/
+    if(liste==NULL)
+    {
+      printf("Oula ::::::::\n");
+      return NULL;
+    }
     SCLASS tmp = *liste;
     /* PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
-    liste = getType(getChild(appelMethode,0),appelMethode,courant,methode,listeDecl);
-    if(liste==NULL)
-      return NULL;
+    printf("a.10\n");
+    if(appelMethode->op==IDENTIFICATEUR)
+    {
+      liste = getType(appelMethode,NULL, courant, methode, listeDecl);
+    }
+    else
+    {
+      liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
+    }
+    /*liste = getType(getChild(appelMethode,0),appelMethode,courant,methode,listeDecl);*/
     liste->suivant = &tmp;
     return liste;
   }
