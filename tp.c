@@ -159,7 +159,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
     point4D->liste_methodes = f;
 
-    TreeP argumentAppel = makeTree(LISTEARG,2,makeLeafStr(IDENTIFICATEUR,"a"),makeLeafStr(IDENTIFICATEUR,"d"));
+    TreeP argumentAppel = makeTree(LISTEARG,2,makeLeafStr(IDENTIFICATEUR,"a"),makeLeafStr(IDENTIFICATEUR,"a"));
 
     /*
     LArg : expr           {$$ = $1;}
@@ -1551,19 +1551,24 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   {
     return TRUE;
   }
-
+  printf("..1.. \n");
   SCLASS contenuTMP = *tmp;
+  printf("..2.. \n");
   PCLASS tmp2 = &contenuTMP;
-  
+  printf("..3.. \n");
   int cpt = 0;
   while(tmp2!=NULL)
   {
     cpt++;
+    printf("3.d\n");
     tmp2 = tmp2->suivant;
   }
+  printf("..4.. \n");
 
   SVAR contenuDeclaration = *tmpDeclarationOfficiel;
+  printf("..5.. \n");
   PVAR tmpDeclarationOfficiel2 = &contenuDeclaration;
+  printf("..6.. \n");
   int cptDeclaration = 0;
   while(tmpDeclarationOfficiel2!=NULL)
   {
@@ -1631,21 +1636,26 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   if(liste==NULL)
   {
     printf("a.7.0\n");
-    printf("etiquette valeur : %s\n",appelMethode->u.str);
+    printf("etiquette valeur : %d\n",appelMethode->op);
     if(appelMethode->op!=LISTEARG)
     {
       printf("Je suis en ident\n");
       liste = getType(appelMethode,NULL, courant, methode, listeDecl);
-      printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
+      printf("liste = NULL ??????? || %d\n",liste==NULL?TRUE:FALSE );
       printf("liste->classe %s \n",liste->nom);
       return liste;
     }
     else
     {
-      printf("Je suis PAS INIT\n");
+      printf("Je suis PAS INIT : %s \n",getChild(appelMethode,1)->u.str);
       liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
-      printf("liste = NULL ??????? %d\n",liste==NULL?TRUE:FALSE );
+      if(liste==NULL)
+      {
+        return NULL;
+      }
+      printf("liste = NULL ??????? -- %d\n",liste==NULL?TRUE:FALSE );
       printf("liste->classe %s \n",liste->nom);
+
     }
     
     printf("a.7.1\n");
@@ -1666,6 +1676,8 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   
 
   return transformerAppel(getChild(appelMethode,0),liste,courant,methode,listeDecl);
+
+
 }
 
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message */
