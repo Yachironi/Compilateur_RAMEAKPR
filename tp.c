@@ -99,6 +99,7 @@ int main(int argc, char **argv) {
     strcpy(p->nom,"b");
     p->type = point2D;
 
+
     PVAR p1 = NEW(1,SVAR);
     p1->nom = calloc(100,sizeof(char));
     strcpy(p1->nom,"c");
