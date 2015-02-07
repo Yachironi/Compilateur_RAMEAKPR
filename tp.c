@@ -1561,7 +1561,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
 /* Cree une liste chainee lorsqu'il y a une selection ou un envoi de message*/
   if(liste==NULL)
   {
-    printf("a.7\n");
+    printf("a.7.0\n");
     liste = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
     printf("a.7.1\n");
   }
