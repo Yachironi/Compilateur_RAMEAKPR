@@ -97,6 +97,7 @@ typedef struct _Tree {
   } u;
 
   struct _Tree *suivant; /*Utilise pour les check et uniquement les checks*/
+  int isEnvoiMessage;
 } Tree, *TreeP;
 
 /* la structure ci-dessous permet de memoriser des listes variable/valeur */
