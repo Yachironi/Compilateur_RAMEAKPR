@@ -101,13 +101,19 @@ int main(int argc, char **argv) {
       PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
       */
 
+    
+
     PCLASS point = NEW(1,SCLASS);
     point->nom = calloc(100,sizeof(char));
     strcpy(point->nom,"Point");
+    
 
     PCLASS point2D = NEW(1,SCLASS);
     point2D->nom = calloc(100,sizeof(char));
     strcpy(point2D->nom,"Point2D");
+    
+    PVAR parametre = makeListVar("caca",point,FALSE,NULL);
+    point2D->param_constructeur = parametre;
 
     PCLASS point3D = NEW(1,SCLASS);
     point3D->nom = calloc(100,sizeof(char));
@@ -135,17 +141,30 @@ int main(int argc, char **argv) {
     strcpy(p2->nom,"d");
     p2->type = point4D;
     
-
+    /*PVAR p4 = NEW(1,SVAR);
+    p4->nom = calloc(100,sizeof(char));
+    strcpy(p4->nom,"z");
+    p4->type = point;
+    */
     point->liste_champs = p;
     point2D->liste_champs =p1; 
     point3D->liste_champs=p2;
+
+    listeDeClass = point;
+    listeDeClass->suivant =point2D;
 
     TreeP ourien = makeLeafStr(IDENTIFICATEUR,"a");
     
     TreeP selection = makeTree(SELECTION, 2,ourien,makeLeafStr(IDENTIFICATEUR,"b"));
     TreeP selection1 = makeTree(SELECTION, 2,selection,makeLeafStr(IDENTIFICATEUR,"c"));
     TreeP selection2 = makeTree(SELECTION, 2,selection1,makeLeafStr(IDENTIFICATEUR,"d"));
+    
+    
+    TreeP lArg = makeLeafStr(IDENTIFICATEUR,"z");
+    TreeP instanciation = makeTree(INSTANCIATION,2,makeLeafStr(IDENTIFICATEURCLASS,"Point2D"),lArg);
+    
 
+    
     PMETH f = NEW(1,SMETH);
     f->nom = calloc(100,sizeof(char));
     strcpy(f->nom,"f");
@@ -209,6 +228,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
+    listDeclVar->suivant = makeListVar("z",point,FALSE,NULL);
     //xslistDeclVar 
 
     /*
@@ -217,7 +237,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
     /*LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
                   ;*/
 
-    TreeP instruction = makeTree(LIST_INSTRUCTION, 2, selectionBis,NULL);
+    TreeP instruction = makeTree(LIST_INSTRUCTION, 2, instanciation,NULL);
     TreeP contenu = makeTree(CONTENUBLOC,3,listDeclVar,instruction,NULL);
     resultat = getType(contenu,NULL,NULL,NULL,listDeclVar);
    
@@ -1086,7 +1106,11 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   PCLASS type2 = NULL;
   LTreeP liste = NULL;
   LTreeP tmpL = NULL;
+  bool instCorrecte = FALSE;
   char* message = NEW(SIZE_ERROR,char);
+  char *nomC = NULL;
+  char * nomClass =NULL;
+  PCLASS tmp = NULL;
 
   switch(arbre->op){
     case MINUSUNAIRE:
@@ -1277,6 +1301,28 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
       break;
 
+    case INSTANCIATION : 
+        printf("op : %s", getChild(arbre,0)->u.str);
+        nomClass = getChild(arbre,0)->u.str;
+        tmp = getClasse(listeDeClass,nomClass);
+        if(tmp == NULL)
+        {
+          sprintf(message,"Erreur d'instanciation : %s n'existe pas",nomClass);
+          pushErreur(message,type,NULL,NULL);
+        }
+        else
+        {
+          nomC = calloc(100,sizeof(char));
+          sprintf(nomC,"constructeur %s",nomClass);
+          instCorrecte = compareParametreMethode(tmp->param_constructeur,getChild(arbre,1),courant,methode,listeDecl,nomC);
+          if(!instCorrecte)
+          {
+          sprintf(message,"Erreur d'instanciation : %s mal appelee",nomClass);
+          pushErreur(message,type,NULL,NULL);
+          }
+        }
+      break;
+
     defalut : 
         printf("L'etiquette %d n'a pas ete gerer\n", arbre->op);
 
@@ -1377,8 +1423,8 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
             sprintf(message,"La classe %s n'est pas declare ",nomClass);
             pushErreur(message,classe,methode,NULL);
             return NULL;
-            printf("3.5\n");
-        };
+        }
+        init = tmp;
     }
     
     short etiquette = tmp->elem->op;
@@ -1642,7 +1688,6 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 {
   if((appelMethode==NULL && declaration!=NULL)||(appelMethode!=NULL && declaration==NULL))
   {
-    printf("return 1\n");
     return FALSE;
   }
   else if (appelMethode==NULL && declaration==NULL)
@@ -1683,9 +1728,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   while(tmp2!=NULL)
   {
     cpt++;
-
     printf("Val 1 : %s\n", tmp2->nom);
-
     tmp2 = tmp2->suivant;
   }
   printf("..4.. \n");
@@ -1698,11 +1741,11 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   while(tmpDeclarationOfficiel2!=NULL)
   {
     cptDeclaration++;
-
+    printf("ParamOfficiel : %s\n",tmpDeclarationOfficiel2->nom);
     tmpDeclarationOfficiel2 = tmpDeclarationOfficiel2->suivant;
   }
   printf("DeclarationOfficiel contient : %d element\n",cptDeclaration );
-
+   
   if(cpt!=cptDeclaration)
   {
     char* message = NEW(SIZE_ERROR,char);
