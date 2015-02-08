@@ -247,7 +247,7 @@ bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
 bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool verifAttributClasse(PCLASS classe);
-bool checkListMethode(PTreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkMethodeStatic(PMETH methode);
 bool checkMethode(PMETH methode);
 

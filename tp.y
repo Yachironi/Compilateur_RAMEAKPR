@@ -104,8 +104,8 @@ Bloc : '{' ContenuBloc '}'      {$$=$2;}
  * suivi par un Yield optionnel
  */
  /*JULIEN : {$$=makeTree(CONTENUBLOC,3,NIL(SVAR),$1,$2);} -> a {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);} */
-ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(SVAR),$1,$2);}
-      | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}  
+ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);}
+      | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,makeLeafVar(LISTEVAR, $1),$3,$4);}  
       ;
 
 /*
@@ -261,10 +261,10 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
   {
     $$=getClasse(listeDeClass, $2);
+    char* message = NEW(SIZE_ERROR,char);
     if($$ == NULL)
     {
       /* la classe n'existe pas: erreur */
-      char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la classe %s n'existe pas",$2);
       pushErreur(message,classActuel,NULL,NULL);
     }
@@ -276,8 +276,8 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
       bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,NULL,NULL,nomC);
       if(!constCorrecte)
       {
-        sprintf(message,"Erreur d'appel constructeur : %s mal appelee",nomClass);
-        pushErreur(message,type,NULL,NULL);
+        sprintf(message,"Erreur d'appel constructeur : %s mal appelee",classActuel->nom);
+        pushErreur(message,classActuel,NULL,NULL);
       }    
     }
   } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/

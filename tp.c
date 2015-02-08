@@ -505,7 +505,7 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
   }
   else
   {
-    /*FIXME : Liste d'erreur en LIFO : l'insertion est a l'envers la*/
+    
     ErreurP tmp = listeErreur;
     listeErreur = nouvelle;
     nouvelle->suivant = tmp;
@@ -534,7 +534,7 @@ bool checkProgramme(TreeP prog){
     *liste = tmp;
   }
   /* FIXME : transformer getChild(bloc,0) en PVAR */
-  bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0));
+  bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
   if(!checkLC)
   {
      while(liste!=NULL)
@@ -650,7 +650,7 @@ bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR l
   /* Le nom de la classe doit avoir une majuscule*/
   bool nomMaj = FALSE;
 
-  if(classe->nom!=NULL && (classe->nom[0] >= 'A' && classe->nom[0] <= 'Z'))
+  if(courant->nom!=NULL && (courant->nom[0] >= 'A' && courant->nom[0] <= 'Z'))
     nomMaj = TRUE;
 
   /*TRUE : OK FALSE : NOK*/
@@ -659,9 +659,9 @@ bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR l
    * Si c'est le cas -> renvoye faux directement => et ajouter une erreur du style
    * "Corrigez la classe Mere %s avant",class->classe_mere->nom (utilisez sprintf)
    */
-  if(classe->isExtend)
+  if(courant->isExtend)
   {
-    heritage = checkHeritage(classe);
+    heritage = checkHeritage(courant);
   }
   else
   {
@@ -670,9 +670,9 @@ bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR l
 
   bool attribut = checkListAttribut(arbre,ancien,courant,methode,listeDecl);
 
-  bool methode = checkListMethode(arbre,ancien,courant,methode,listeDecl);
+  bool methodeC = checkListMethode(arbre,ancien,courant,methode,listeDecl);
 
-  return (nomMaj && heritage && attribut && methode);
+  return (nomMaj && heritage && attribut && methodeC);
 }
 
 /*
@@ -713,14 +713,14 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
 
-  if(!verifAttributClasse(classe))
+  if(!verifAttributClasse(courant))
   {
     return FALSE;
   }
   /*
    * Parcourir les attributs de la classe actuel & verifier qu'il n'y a aucune qui se ressemble !
    */
-  PVAR tmp = classe->liste_champs;
+  PVAR tmp = courant->liste_champs;
 
   while(tmp!=NULL)
   {
@@ -767,7 +767,7 @@ bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode,
 */
 bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
-  SMETH copie = *classe->liste_methodes;
+  SMETH copie = *courant->liste_methodes;
   PMETH tmp = NEW(1,SMETH);
   *tmp = copie;
 
@@ -776,9 +776,10 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
     if(!checkMethode(tmp))
     {
+      /* Pas besoin du message = checkMethode en genere deja un
       char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la methode %s est mal construite",tmp->nom);
-      pushErreur(message,NULL,tmp,NULL);
+      pushErreur(message,NULL,tmp,NULL);*/
       return FALSE;
     }
 
@@ -791,6 +792,13 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
 
 bool checkMethode(PMETH methode)
 {
+    if(methode->typeRetour==NULL)
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur type de retour de la methode %s inconnu",methode->nom);
+      pushErreur(message,classActuel,methode,NULL);
+      return FALSE;
+    }
     bool statique = FALSE;
     bool redef = FALSE;
     printf("Je check la methode %s\n",methode->nom);
