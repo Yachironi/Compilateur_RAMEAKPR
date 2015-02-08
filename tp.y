@@ -217,7 +217,7 @@ StaticOpt : STATIC  {$$=1;}
 
 /* Affectation optionnelle d'une expression */
 AffectExprOpt : AFFECT expr ';'   {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-              |       {$$=NIL(Tree);}
+              | {$$=NIL(Tree);}
               ;
 
 /* Declaration d'une Methode :
