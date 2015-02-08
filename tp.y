@@ -39,8 +39,13 @@
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
+<<<<<<< HEAD
 %type <CL> LClassOpt DeclClass ListExtendsOpt DefClass
 %type <I> OverrideOuStaticOpt StaticOpt
+=======
+%type <CL> LClassOpt DeclClass ListExtendsOpt
+%type <I> OverrideOuStaticOpt StaticOpt 
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
  
 /* Initialisation des variables globales*/
 
@@ -103,7 +108,7 @@ Bloc : '{' ContenuBloc '}'      	{$$=$2;}
  * Ou si on a une List de declaration de valeur => oblige apres le IS d'avoir une Liste d'instruction
  * suivi par un Yield optionnel
  */
- 
+ /*JULIEN : {$$=makeTree(CONTENUBLOC,3,NIL(SVAR),$1,$2);} -> a {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);} */
 ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);}
       | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,makeLeafVar(LISTEVAR, $1),$3,$4);}  
       ;
@@ -144,12 +149,21 @@ LInstruction : Instruction LInstructionOpt  	{$$=makeTree(LIST_INSTRUCTION, 2, $
     * if expression then instruction else instruction
  */
 
+<<<<<<< HEAD
 Instruction : expr ';'            				{$$=$1;}
             | RETURN expr ';'         				{$$=makeTree(EXPRESSIONRETURN, 1, $2);}
             | Bloc           					{$$=$1;}
             | Cible AFFECT expr ';'       			{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
             | IF expr THEN Instruction ELSE Instruction   	{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
             | RETURN ';'          				{$$=makeLeafStr(RETURN_VOID, MSG_VOID);}  /* return void */
+=======
+Instruction : expr ';'                {$$=$1;}
+            | RETURN expr ';'         {$$=makeTree(EXPRESSIONRETURN, 1, $2);}
+            | Bloc                    {$$=$1;}
+            | Cible AFFECT expr ';'    {$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
+            | IF expr THEN Instruction ELSE Instruction   {$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
+            | RETURN ';'          {$$=makeLeafStr(RETURN_VOID, MSG_VOID);}  /* return void */
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
             ;
 /*
  * La cible de l'affectation ne peut etre qu'un identifiant : 
@@ -363,6 +377,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 /** Julien : j'ai essaye de renvoyer directement une classe **/
 /* Pour Amin : il faut remplacer les commentaires par les verifs que tu dois faire */
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
+<<<<<<< HEAD
 {
 	$$=getClasse(listeDeClass, $2);
 	if($$ == NULL){
@@ -407,6 +422,32 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     	}
 } 
                | /* epsilon */        {$$=NIL(SCLASS);}
+=======
+  {
+    $$=getClasse(listeDeClass, $2);
+    char* message = NEW(SIZE_ERROR,char);
+    if($$ == NULL)
+    {
+      /* la classe n'existe pas: erreur */
+      sprintf(message,"Erreur la classe %s n'existe pas",$2);
+      pushErreur(message,classActuel,NULL,NULL);
+    }
+    else
+    {
+   
+      char * nomC = calloc(100,sizeof(char));
+      sprintf(nomC,"constructeur %s",$$->nom);   
+      bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,NULL,NULL,nomC);
+      if(!constCorrecte)
+      {
+        sprintf(message,"Erreur d'appel constructeur : %s mal appelee",classActuel->nom);
+        pushErreur(message,classActuel,NULL,NULL);
+      }    
+    }
+  } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
+
+               | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
                ;
 ListOptArg :        {$$=NIL(Tree);}
      | LArg         {$$=$1;}
@@ -418,6 +459,7 @@ LArg : expr           	{$$=$1;}
      ;
 
 /* Pour info : ID est dans Cible */
+<<<<<<< HEAD
 expr : PLUS expr %prec unaire   	{$$=$2;}
        | MINUS expr %prec unaire  	{$$=makeTree(MINUSUNAIRE,1,$2);}
        | expr CONCAT expr   		{$$=makeTree(CONCATENATION,2,$1,$3);}
@@ -430,6 +472,20 @@ expr : PLUS expr %prec unaire   	{$$=$2;}
        | instanciation      		{$$=$1;}
        | envoiMessage     		{$$=$1;}
        | OuRien       			{$$=$1;}
+=======
+expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante      { $$=$1; }
+       | instanciation      { $$=$1; }
+       | envoiMessage     { $$=$1; }
+       | OuRien       { $$=$1; }
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
        ;
 
 OuRien : '(' expr ')'  			{$$=$2;}

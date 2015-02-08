@@ -109,9 +109,16 @@ void lexError(char c) {
 %}
 
 %%
+<<<<<<< HEAD
 {Integer}       { yylval.I = strtol(yytext, NULL, 0); return(CSTE); }
 {Letter}{LD}*   { return keywordOrId(); }
 {String}	{ yylval.S = strdup(yytext); return(CSTS);}
+=======
+{Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
+{idClass}	      { return IDCLASS;}
+{Letter}{LD}*   { return keywordOrId(); }
+{String}	      { return(STRING);}
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
 "*"             { return(MUL); }
@@ -124,8 +131,8 @@ void lexError(char c) {
 ">="            { yylval.C = GE; return(RELOP); }
 {Symbol}        { yylval.C = yytext[0]; return(yytext[0]); }
 ":="            { return AFFECT; }
-"&"		{ return(CONCAT);}	
+"&"		          { return(CONCAT);}	
 {Delim}         { ; }
-{Commentaire}	{ ; }
+{Commentaire}	  { ; }
 .      		{ printf("Erreur lexical \n");}
 %%

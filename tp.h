@@ -12,6 +12,8 @@
 #define TRUE 1
 #define FALSE 0 
 
+#define CATEGORIE_STATIC 1
+
 /* Etiquettes additionnelles pour les arbres de syntaxe abstraite.
  * Les tokens tels que PLUS, MINUS, etc. servent directement d'etiquette.
  * Attention donc a ne pas donner des valeurs identiques a celles des tokens
@@ -72,7 +74,9 @@
 #define EVAL_ERROR	5
 #define UNEXPECTED	10
 
-#define SIZE_ERROR 100
+#define SIZE_ERROR 200
+#define RED "\033[31m" /* Red */
+#define BLACK "\033[30m" /* Black */
 
 typedef struct _Var SVAR, *PVAR;
 typedef struct _Method SMETH, *PMETH;
@@ -93,6 +97,9 @@ typedef struct _Tree {
     PMETH methode;        	/* valeur de la feuille si op = METHODE */
     struct _Tree **children; 	/* tableau des sous-arbres */
   } u;
+
+  struct _Tree *suivant; /*Utilise pour les check et uniquement les checks*/
+  int isEnvoiMessage;
 } Tree, *TreeP;
 
 /* la structure ci-dessous permet de memoriser des listes variable/valeur */
@@ -184,6 +191,14 @@ typedef union
   PMETH M;
 } YYSTYPE;
 
+/* Structure representant une liste de tree, utile pour la vérification
+* des selections et des envois de message
+*/
+typedef struct _listeTree {
+  TreeP elem;
+  struct _listeTree *suivant;
+}listeTree, *LTreeP;
+
 #define YYSTYPE YYSTYPE
 
 /* construction des declarations */
@@ -225,24 +240,27 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
+<<<<<<< HEAD
 bool methodeDansClasse(PCLASS classe, PMETH methode);
 bool memeTreeP(TreeP tree1, TreeP tree2);
 bool memeVar(PVAR var1, PVAR var2);
+=======
+PCLASS getClasseBis(PCLASS listeClass,char *nom);
+>>>>>>> b7515da4057f45c2be62777f766329e4d7abdfca
 
-bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere);
-
+bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 
 /*
  * Methode check
  */
-bool checkLClassOpt();
-bool checkClass(PCLASS classe);
+bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
-bool checkConstructeur(PCLASS classe);
-bool checkListAttribut(PCLASS classe);
-bool checkListMethode(PCLASS classe);
+bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool verifAttributClasse(PCLASS classe);
+bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkMethodeStatic(PMETH methode);
+bool checkMethode(PMETH methode);
 
 
 void printTree(TreeP tree); /* Methode pour imprimer toute l'arbre */
@@ -252,7 +270,33 @@ PVAR evalListDeclVar(TreeP listDeclVar);
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
-bool estCoherent(TreeP gauche, TreeP droite);
 bool classeContient(PCLASS classe,TreeP droite);
+
+/*
+ * Nouvelle fonction
+ */
+PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool f(TreeP tree,short etiquette,PVAR listeVar);
+bool equalsType(PCLASS gauche, PCLASS droit);
+PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
+LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic);
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic);
+PCLASS transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH methode, PVAR listeDecl);
+PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl, bool isStatic);
+bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl, char* nom);
+LTreeP transformeParam(TreeP arbre, LTreeP liste);
+void afficheListeErreur(ErreurP listeE);
+bool verifAttributClasse(PCLASS classe);
+bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool checkProgramme(TreeP prog);
+bool checkDoublon(char** variable,int n);
+ /*
+  * A voire
+  */
+bool contientClasseInst(PVAR classe, TreeP droite);
+bool checkListOptArg(PVAR var);
+bool existeMethodeOverride(PCLASS home,PMETH methode); /* JULIEN ? */
+
 
 #endif
