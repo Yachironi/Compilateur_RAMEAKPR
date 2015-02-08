@@ -20,8 +20,7 @@ All [.]
 
 Antislash [\\]
 Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
-Majuscul [A-Z]
-idClass ({Majuscul}({LD})*)
+
 /*
  * ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
  * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")  
@@ -76,7 +75,9 @@ int keywordOrId() {
   if(strcmp(yylval.S,"new")==0)
     return NEWO;
   if(strcmp(yylval.S,"def")==0)
-    return DEF  ;               
+    return DEF  ;   
+  if(yylval.S[0]>='A' && yylval.S[0]<='Z')
+    return IDCLASS;           
   
   return(ID);
 }
@@ -108,10 +109,9 @@ void lexError(char c) {
 %}
 
 %%
-{Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
-{idClass}	      { return IDCLASS;}
+{Integer}       { yylval.I = strtol(yytext, NULL, 0); return(CSTE); }
 {Letter}{LD}*   { return keywordOrId(); }
-{String}	      { return(STRING);}
+{String}	{ yylval.S = strdup(yytext); return(CSTS);}
 "+"             { return(PLUS); }
 "-"             { return(MINUS); }
 "*"             { return(MUL); }
@@ -122,7 +122,7 @@ void lexError(char c) {
 "<="            { yylval.C = LE; return(RELOP); }
 ">"             { yylval.C = GT; return(RELOP); }
 ">="            { yylval.C = GE; return(RELOP); }
-{Symbol}        { return(yytext[0]); }
+{Symbol}        { yylval.C = yytext[0]; return(yytext[0]); }
 ":="            { return AFFECT; }
 "&"		          { return(CONCAT);}	
 {Delim}         { ; }
