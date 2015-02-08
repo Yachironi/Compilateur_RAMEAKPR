@@ -281,6 +281,7 @@ void afficheListeErreur(ErreurP listeE);
 bool verifAttributClasse(PCLASS classe);
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkProgramme(TreeP prog);
+bool checkDoublon(char** variable,int n);
  /*
   * A voire
   */

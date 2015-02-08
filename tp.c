@@ -1559,7 +1559,32 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   if(methode != NULL)
   {
     printf("1.1.2\n");
-  PVAR param = methode->params;
+    
+    PVAR paramParcours = methode->params;
+    char** variable = calloc(1,sizeof(char*));
+    int i = 0;
+    while(paramParcours!=NULL)
+    {
+      variable[i] = calloc(100,sizeof(char));
+      strcpy(variable[i],paramParcours->nom);
+      i++;
+      paramParcours = paramParcours->suivant;
+    }
+
+    /*
+     * Si on trouve deux variable ayant le meme nom (FALSE)
+     */
+    if(!checkDoublon(variable,i-1))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur doublons dans les parametre de la methode %s",methode->nom);
+      pushErreur(message,classe,methode,NULL);
+      return FALSE;
+    }
+    
+
+
+    PVAR param = methode->params;
 
     while(param!=NULL)
     {
@@ -1583,7 +1608,29 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   if(listeDecl!=NULL)
   {
     printf("1.1.5\n");
-  PVAR listDeclaration = listeDecl; 
+
+    PVAR listDeclParcours = listeDecl;
+    char** variable = calloc(1,sizeof(char*));
+    int i = 0;
+    while(listDeclParcours!=NULL)
+    {
+      variable[i] = calloc(100,sizeof(char));
+      strcpy(variable[i],listDeclParcours->nom);
+      i++;
+      listDeclParcours = listDeclParcours->suivant;
+    }
+    /*
+     * Si on trouve deux variable ayant le meme nom (FALSE)
+     */
+    if(!checkDoublon(variable,i-1))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur doublons dans la liste de declaration");
+      pushErreur(message,classe,methode,NULL);
+      return FALSE;
+    }
+
+    PVAR listDeclaration = listeDecl; 
   
     while(listDeclaration!=NULL)
     {
@@ -1613,6 +1660,28 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   if(classe!=NULL && classe->liste_champs != NULL)
   {
     printf("1.1.7\n");
+
+    PVAR listeClasseParcours = listeDecl;
+    char** variable = calloc(1,sizeof(char*));
+    int i = 0;
+    while(listeClasseParcours!=NULL)
+    {
+      variable[i] = calloc(100,sizeof(char));
+      strcpy(variable[i],listeClasseParcours->nom);
+      i++;
+      listeClasseParcours = listeClasseParcours->suivant;
+    }
+    /*
+     * Si on trouve deux variable ayant le meme nom (FALSE)
+     */
+    if(!checkDoublon(variable,i-1))
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur doublons dans les attribut de la classe %s",classe->nom);
+      pushErreur(message,classe,methode,NULL);
+      return FALSE;
+    }
+
     PVAR listeClasse = classe->liste_champs;
     printf("1.1.8\n");
     while(listeClasse!=NULL)
@@ -1652,6 +1721,26 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   }
   printf("1.1.6.2\n");
   return res;
+}
+
+/*
+ * Si VRAI : aucun doublon
+ */
+bool checkDoublon(char** variable,int n)
+{
+  int i = 0;
+  int j = 0;
+  for (i = 0; i <= n; i++)
+  {
+    for (j = i+1; j <= n; j++)
+    {
+      if(strcmp(variable[i],variable[j])==0)
+      {
+        return FALSE;
+      }
+    }
+  }
+  return TRUE;
 }
 
 PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl, bool isStatic)
