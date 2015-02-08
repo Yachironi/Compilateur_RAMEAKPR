@@ -235,6 +235,7 @@ PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corp
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
+PCLASS getClasseBis(PCLASS listeClass,char *nom);
 
 bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 
@@ -260,7 +261,6 @@ PVAR evalListDeclVar(TreeP listDeclVar);
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
-bool estCoherent(TreeP gauche, PCLASS droite);
 bool classeContient(PCLASS classe,TreeP droite);
 
 /*
