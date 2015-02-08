@@ -242,14 +242,12 @@ bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurM
 /*
  * Methode check
  */
-bool checkLClassOpt();
-bool checkClass(PCLASS classe);
+bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
-bool checkConstructeur(PCLASS classe);
-bool checkListAttribut(PCLASS classe);
+bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool verifAttributClasse(PCLASS classe);
-bool checkListMethode(PCLASS classe);
+bool checkListMethode(PTreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkMethodeStatic(PMETH methode);
 bool checkMethode(PMETH methode);
 

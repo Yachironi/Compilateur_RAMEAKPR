@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     printf("Erreur de type 1\n");
    }
 
-   //afficheListeErreur(listeErreur);
+   /*afficheListeErreur(listeErreur);*/
 
    
     printf("FIN DES TEST\n");
@@ -228,7 +228,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
-    listDeclVar->suivant = makeListVar("z",point,FALSE,NULL);
+    listDeclVar->suivant = makeListVar("a",point,FALSE,NULL);
 
     //xslistDeclVar 
 
@@ -539,7 +539,7 @@ bool checkProgramme(TreeP prog){
   {
      while(liste!=NULL)
      {
-      checkClass(liste);
+      checkClass(bloc,prog,liste, NULL, NULL);
       liste = liste->suivant;
      }
   }
@@ -611,27 +611,6 @@ bool f(TreeP tree,short etiquette,PVAR listeVar){
   return FALSE;
 }
 
-bool checkLClassOpt()
-{
-  int i = 0;
-  if(listeDeClass==NULL)
-    return TRUE;
-  else
-  {
-    /*return checkClass(getChild(tree,0)) && checkLClassOpt(tree);*/
-    PCLASS listTmp = listeDeClass;
-    while(listTmp!=NULL)
-    {
-      /*checkClass : Ne verifie qu'une classe -> methode non recusive*/
-      checkClass(listTmp);
-      listTmp = listTmp->suivant;
-    }
-    
-  }
-
-  return FALSE;
-}
-
 /*
  * Etudie une classe en particulier
  * True : OK
@@ -656,7 +635,7 @@ bool checkLClassOpt()
 */
 
 
-bool checkClass(PCLASS classe)
+bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
   /*
    * bool checkHeritage(classe);
@@ -688,14 +667,12 @@ bool checkClass(PCLASS classe)
   {
     heritage = TRUE;
   }
-  /* FIXME : checkBlock !!! ici ce n'est pas une methode -> creer fausse methode constructeur*/
-  bool constructeur = checkConstructeur(classe);
 
-  bool attribut = checkListAttribut(classe);
+  bool attribut = checkListAttribut(arbre,ancien,courant,methode,listeDecl);
 
-  bool methode = checkListMethode(classe);
+  bool methode = checkListMethode(arbre,ancien,courant,methode,listeDecl);
 
-  return (nomMaj && heritage && constructeur && attribut && methode);
+  return (nomMaj && heritage && attribut && methode);
 }
 
 /*
@@ -733,13 +710,7 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
   return FALSE;
 }
 
-bool checkConstructeur(PCLASS classe)
-{
-  PVAR tmp = classe->param_constructeur;
-  return FALSE;
-}
-
-bool checkListAttribut(PCLASS classe)
+bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
 
   if(!verifAttributClasse(classe))
@@ -794,7 +765,7 @@ bool checkListAttribut(PCLASS classe)
 };
 
 */
-bool checkListMethode(PCLASS classe)
+bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
   SMETH copie = *classe->liste_methodes;
   PMETH tmp = NEW(1,SMETH);
@@ -1304,11 +1275,9 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case INSTANCIATION : 
-        printf("MMMMM\n");
         /*printf("op : %s", getChild(arbre,0)->u.str);*/
         nomClass = getChild(arbre,0)->u.str;
         tmp = getClasseBis(listeDeClass,nomClass);
-        printf("NNNNN\n");
         if(tmp == NULL)
         {
           sprintf(message,"Erreur d'instanciation : %s n'existe pas",nomClass);
@@ -1316,21 +1285,17 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         }
         else
         {
-          printf("OOOOOO\n");
           nomC = calloc(100,sizeof(char));
           sprintf(nomC,"constructeur %s",nomClass);
           
           instCorrecte = compareParametreMethode(tmp->param_constructeur,getChild(arbre,1),courant,methode,listeDecl,nomC);
-          printf("PPPPPP\n");
           if(!instCorrecte)
           {
-            printf("QQQQQQ\n");
             sprintf(message,"Erreur d'instanciation : %s mal appelee",nomClass);
             pushErreur(message,type,NULL,NULL);
           }
           else
           {
-            printf("RRRRRR\n");
             return tmp;
           }
         }

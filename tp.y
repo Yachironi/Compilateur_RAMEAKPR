@@ -103,8 +103,8 @@ Bloc : '{' ContenuBloc '}'      {$$=$2;}
  * Ou si on a une List de declaration de valeur => oblige apres le IS d'avoir une Liste d'instruction
  * suivi par un Yield optionnel
  */
- 
-ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);}
+ /*JULIEN : {$$=makeTree(CONTENUBLOC,3,NIL(SVAR),$1,$2);} -> a {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);} */
+ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(SVAR),$1,$2);}
       | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}  
       ;
 
