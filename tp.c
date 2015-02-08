@@ -633,23 +633,6 @@ bool checkLClassOpt()
 };
 */
 
-/*
- * Verifie que la classe PCLASS existe belle et bien dans la lis
- */
-bool containsClasse(PCLASS classe)
-{
-  PCLASS tmp = listeDeClass;
-
-  while(tmp!=NULL)
-  {
-
-    if(strcmp(classe->nom,tmp->nom)==0)
-      return TRUE;
-
-    tmp = tmp->suivant;
-  }
-  return FALSE;
-}
 
 bool checkClass(PCLASS classe)
 {
@@ -683,7 +666,7 @@ bool checkClass(PCLASS classe)
   {
     heritage = TRUE;
   }
-
+  /* FIXME : checkBlock !!! ici ce n'est pas une methode -> creer fausse methode constructeur*/
   bool constructeur = checkConstructeur(classe);
 
   bool attribut = checkListAttribut(classe);
@@ -748,6 +731,13 @@ bool checkListAttribut(PCLASS classe)
 
   while(tmp!=NULL)
   {
+    if(tmp->type==NULL)
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur la classe de l'attribut %s n'existe pas",tmp->nom);
+      pushErreur(message,NULL,NULL,tmp);
+      return FALSE;
+    }
     /*
      * Appel de la fonction de Gishan qui verifier une instruction
      * Integer x; ... et bien d'autres chose
@@ -764,7 +754,7 @@ bool checkListAttribut(PCLASS classe)
     tmp = tmp->suivant;
   }
 
-  return FALSE;
+  return TRUE;
 }
 
 /*
@@ -784,7 +774,9 @@ bool checkListAttribut(PCLASS classe)
 */
 bool checkListMethode(PCLASS classe)
 {
-  PMETH tmp = classe->liste_methodes;
+  SMETH copie = *classe->liste_methodes;
+  PMETH tmp = NEW(1,SMETH);
+  *tmp = copie;
 
   while(tmp!=NULL)
   {
@@ -792,7 +784,7 @@ bool checkListMethode(PCLASS classe)
     if(!checkMethode(tmp))
     {
       char* message = NEW(SIZE_ERROR,char);
-      sprintf(message,"Erreur la methode %s est mal forme",tmp->nom);
+      sprintf(message,"Erreur la methode %s est mal construite",tmp->nom);
       pushErreur(message,NULL,tmp,NULL);
       return FALSE;
     }
@@ -811,12 +803,14 @@ bool checkMethode(PMETH methode)
     printf("Je check la methode %s\n",methode->nom);
 
     /*FIXME bool corps = checkBloc(methode->corps);*/
+    /* FIXME : concat des messafes*/
     bool corps = TRUE;
-    bool typeRetour = containsClasse(methode->typeRetour);
+    bool typeRetour = (methode->typeRetour!=NULL);
     bool pvar = checkListOptArg(methode->params);
 
     if(methode->isStatic)
     {
+      redef = TRUE;
       statique = checkMethodeStatic(methode);
 
       if(!statique)
@@ -837,7 +831,7 @@ bool checkMethode(PMETH methode)
         if(!redef)
         {
           char* message = NEW(SIZE_ERROR,char);
-          sprintf(message,"Erreur la methode %s n'est pas une redefinition de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          sprintf(message,"Erreur la methode %s de la classe %s",methode->nom,methode->home->classe_mere->nom);
           pushErreur(message,classActuel,methode,NULL);
           return FALSE;
         }
@@ -901,6 +895,7 @@ bool checkCorp(PMETH methode)
 
 bool checkListOptArg(PVAR var)
 {
+  /*FIXME : verifier que deux var n'ont pas meme parametre ou que le type retour = NULL*/
     return FALSE;   
 }
 
@@ -1082,7 +1077,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   }
    PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
    printf("1\n");
-   printf("arbre NIL : ? %d\n",arbre->op==NULL?TRUE:FALSE );
+   printf("arbre NIL : ? %d\n",arbre==NULL?TRUE:FALSE );
    printf("Etiquette %d\n",arbre->op );
    printf("2\n");
    /* Dans le cas d'une selection, récupérer le dernier élèment */ 
@@ -1306,12 +1301,14 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     {
         printf("1.1\n");
 
-        if(classe!=NULL && strcmp(tmp->elem->u.str,"super")==0)
+        if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
         {
+          /*FIXME verifier que la methode n'est pas statique et n'est pas NULL*/
           init = classe->classe_mere;
         }
-        else (classe!=NULL && strcmp(tmp->elem->u.str,"this")==0)
+        else if(classe!=NULL && (strcmp(tmp->elem->u.str,"this")==0))
         {
+          /* FIXME pareille que le FIXME au dessus*/
           init = classe;
         }
         else
@@ -1671,7 +1668,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   {
     char* message = NEW(SIZE_ERROR,char);
     sprintf(message,"Erreur la methode %s attend %d parametre(s) et vous lui avez passez %d parametre(s)",nom,cptDeclaration,cpt);
-    pushErreur(message,NULL,tmp,NULL);
+    pushErreur(message,NULL,NULL,NULL);
     return FALSE;
   }
 
@@ -1883,7 +1880,7 @@ bool equalsType(PCLASS gauche, PCLASS droite)
   }
   else
   {
-    
+
   }
   return FALSE;
 }
