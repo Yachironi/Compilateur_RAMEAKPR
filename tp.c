@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
     TreeP selection2 = makeTree(SELECTION, 2,selection1,makeLeafStr(IDENTIFICATEUR,"d"));
     
     
-    TreeP lArg = makeLeafStr(IDENTIFICATEUR,"z");
+    TreeP lArg = makeLeafStr(IDENTIFICATEUR,"a");
 
     TreeP instanciation = makeTree(INSTANCIATION,2,makeLeafStr(IDENTIFICATEURCLASS,"Point2D"),lArg);
     
@@ -1287,6 +1287,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case IDENTIFICATEUR:
+      printf("MALABAR AUSSI\n");
       return getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE);
     break;
 
@@ -1562,7 +1563,11 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
       if(strcmp(nom,param->nom)==0)
       {
         estDansParamMeth = TRUE;
-        res = param->type;
+        SCLASS copie = *param->type;
+        PCLASS pointeurCopie = NEW(1,SCLASS);
+        *pointeurCopie = copie;
+        res = pointeurCopie;
+        res->suivant = NULL;
         break;
       }
 
@@ -1587,7 +1592,12 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
       }
       else if(strcmp(nom,listDeclaration->nom)==0 && estDansParamMeth==FALSE){
         estDansListeDecl = TRUE;
-        res = listDeclaration->type;
+
+        SCLASS copie = *listDeclaration->type;
+        PCLASS pointeurCopie = NEW(1,SCLASS);
+        *pointeurCopie = copie;
+        res = pointeurCopie;
+        res->suivant = NULL;
         break;
       }
       listDeclaration = listDeclaration->suivant;
@@ -1617,7 +1627,11 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
         if((listeClasse->categorie==CATEGORIE_STATIC && isStatic)||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic))
         {
           estDansAttributClasse = TRUE;
-          res = listeClasse->type;
+          SCLASS copie = *listeClasse->type;
+          PCLASS pointeurCopie = NEW(1,SCLASS);
+          *pointeurCopie = copie;
+          res = pointeurCopie;
+          res->suivant = NULL;
           break;
           printf("1.1.13\n");
         }
@@ -1727,7 +1741,6 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 
   liste = transformerAppel(appelMethode,liste,classe,methode,listeDecl);
   printf("a.7\n");
-  
 
   /*printf("--D1-- lelena : %s\n ----F1--\n",liste->nom);
   printf("--D2-- lelena : %s\n ----F2---\n",liste->suivant->nom);*/
@@ -1770,7 +1783,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   while(tmpDeclarationOfficiel2!=NULL)
   {
     cptDeclaration++;
-    printf("ParamOfficiel : %s\n",tmpDeclarationOfficiel2->nom);
+    printf("ParamOfficiel : %s\n",tmpDeclarationOfficiel2->type->nom);
     tmpDeclarationOfficiel2 = tmpDeclarationOfficiel2->suivant;
   }
   printf("DeclarationOfficiel contient : %d element\n",cptDeclaration );
@@ -1815,6 +1828,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
     {
       printf("je suis ici 2 -- 2\n");
       PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
+      
       /*printf("1 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
       return getTypeRetour;
