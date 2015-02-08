@@ -731,6 +731,17 @@ bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode,
       pushErreur(message,NULL,NULL,tmp);
       return FALSE;
     }
+
+    if(tmp->init!=NIL(Tree) || tmp->init!=NULL)
+    {
+      PCLASS type = getType(getChild(tmp->init,0),arbre,courant,methodeOverride,listeDecl);
+      if(type!=NULL && equalsType(type,tmp->type))
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur affectation d'un %s par un %s",tmp->nom,type->nom);
+        pushErreur(message,courant,methode,NULL);
+      }
+    }
     /*
      * Appel de la fonction de Gishan qui verifier une instruction
      * Integer x; ... et bien d'autres chose

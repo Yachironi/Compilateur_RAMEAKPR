@@ -255,9 +255,7 @@ LParam : Param        {$$=$1 ;}
 
 Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
           ;   
-
-/** Julien : j'ai essaye de renvoyer directement une classe **/
-/* Pour Amin : il faut remplacer les commentaires par les verifs que tu dois faire */
+          
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
   {
     $$=getClasse(listeDeClass, $2);
