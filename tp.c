@@ -491,27 +491,44 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 }
 
 /*
-* Fonction permettant le parcours recursif de l'arbre
+* Fonction permettant le parcours de l'arbre
 */
 
-bool parcourRecursifArbre(TreeP prog){
-  if(prog==NULL) return TRUE;
-  TreeP tmp = prog; 
-  bool droite,gauche,rec1,rec2;
-  switch(tmp->op){
-    case PROGRAM :
-      droite = f(getChild(tmp,1), tmp->op, NULL); 
-      gauche = f(getChild(tmp,0), tmp->op, NULL);
-      
-      rec1 = parcourRecursifArbre(getChild(tmp,0));
-      rec2 = parcourRecursifArbre(getChild(tmp,1));
-        
-      return droite && gauche && rec1 && rec2;
-      break; 
+bool checkProgramme(TreeP prog){
+  if(prog==NULL) return FALSE;
+  /* Acces statique au bloc Main */
+  TreeP bloc = getChild(prog,1);
+  bool  checkLC= FALSE;
+  SCLASS tmp;
+  PCLASS liste = NULL;
+  if(listeDeClass == NULL)
+  {
+    checkLC = TRUE;
   }
+  else
+  {
+    tmp = *listeDeClass;
+    liste = NEW(1,SCLASS);
+    *liste = tmp;
+  }
+  
+  bool blockMain = checkBloc(bloc,prog,NULL, NULL,getChild(bloc,0));
+  if(!checkLC)
+  {
+     while(liste!=NULL)
+     {
+      checkClass(liste);
+      liste = liste->suivant;
+     }
+  }
+  return blockMain && checkLC;
 
-  return FALSE;
 }
+
+bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl){
+  return TRUE;
+}
+
 
 bool f(TreeP tree,short etiquette,PVAR listeVar){
   PVAR decl;
@@ -1255,6 +1272,9 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     case LIST_INSTRUCTION:
         return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
       break;
+
+    defalut : 
+        printf("L'etiquette %d n'a pas ete gerer\n", arbre->op);
 
   }
   return NULL;
