@@ -230,7 +230,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
-    listDeclVar->suivant = makeListVar("z",point,FALSE,NULL);
+    listDeclVar->suivant = makeListVar("dsfsf",point,FALSE,NULL);
 
     //xslistDeclVar 
 
@@ -1305,9 +1305,11 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case INSTANCIATION : 
-        printf("op : %s", getChild(arbre,0)->u.str);
+        printf("MMMMM\n");
+        /*printf("op : %s", getChild(arbre,0)->u.str);*/
         nomClass = getChild(arbre,0)->u.str;
         tmp = getClasseBis(listeDeClass,nomClass);
+        printf("NNNNN\n");
         if(tmp == NULL)
         {
           sprintf(message,"Erreur d'instanciation : %s n'existe pas",nomClass);
@@ -1315,17 +1317,21 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         }
         else
         {
+          printf("OOOOOO\n");
           nomC = calloc(100,sizeof(char));
           sprintf(nomC,"constructeur %s",nomClass);
           
           instCorrecte = compareParametreMethode(tmp->param_constructeur,getChild(arbre,1),courant,methode,listeDecl,nomC);
+          printf("PPPPPP\n");
           if(!instCorrecte)
           {
+            printf("QQQQQQ\n");
             sprintf(message,"Erreur d'instanciation : %s mal appelee",nomClass);
             pushErreur(message,type,NULL,NULL);
           }
           else
           {
+            printf("RRRRRR\n");
             return tmp;
           }
         }
@@ -1815,7 +1821,6 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
       PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
       /*printf("1 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
-      getTypeRetour->suivant = NULL;
       return getTypeRetour;
     }
     else
