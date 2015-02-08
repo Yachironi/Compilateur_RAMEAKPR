@@ -152,6 +152,7 @@ int main(int argc, char **argv) {
 
     listeDeClass = point;
     listeDeClass->suivant =point2D;
+    listeDeClass->suivant->suivant = point3D;
 
     TreeP ourien = makeLeafStr(IDENTIFICATEUR,"a");
     
@@ -230,6 +231,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
     listDeclVar->suivant = makeListVar("z",point,FALSE,NULL);
+
     //xslistDeclVar 
 
     /*
@@ -1291,7 +1293,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     break;
 
     case IDENTIFICATEURCLASS:
-      return getClasse(listeDeClass,arbre->u.str);
+      return getClasseBis(listeDeClass,arbre->u.str);
     break;
 
     case CONTENUBLOC:
@@ -1305,7 +1307,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     case INSTANCIATION : 
         printf("op : %s", getChild(arbre,0)->u.str);
         nomClass = getChild(arbre,0)->u.str;
-        tmp = getClasse(listeDeClass,nomClass);
+        tmp = getClasseBis(listeDeClass,nomClass);
         if(tmp == NULL)
         {
           sprintf(message,"Erreur d'instanciation : %s n'existe pas",nomClass);
@@ -1315,6 +1317,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         {
           nomC = calloc(100,sizeof(char));
           sprintf(nomC,"constructeur %s",nomClass);
+          
           instCorrecte = compareParametreMethode(tmp->param_constructeur,getChild(arbre,1),courant,methode,listeDecl,nomC);
           if(!instCorrecte)
           {
@@ -1407,7 +1410,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     {
       isStatic = TRUE;
       printf("2.1\n");
-        init = getClasse(listeDeClass, tmp->elem->u.str);
+        init = getClasseBis(listeDeClass, tmp->elem->u.str);
         printf("2.2\n");
     }
     else if(tmp->elem->op == INSTANCIATION)
@@ -1415,7 +1418,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         printf("3.1\n");
         char * nomClass = getChild(tmp->elem,0)->u.str;
         printf("3.2\n");
-        PCLASS tmp = getClasse(listeDeClass,nomClass);
+        PCLASS tmp = getClasseBis(listeDeClass,nomClass);
         printf("3.3\n");
         if(tmp == NULL)
         {
@@ -1685,6 +1688,22 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
   return NULL;
 }
 
+PCLASS getClasseBis(PCLASS listeClass,char *nom)
+{
+  PCLASS retour = getClasse(listeClass,nom);
+  
+  if(retour ==NULL)
+  {
+    return NULL; 
+  }
+  SCLASS classe = *retour;
+  PCLASS classeFin = NEW(1,SCLASS);
+  *classeFin = classe;
+  classeFin->suivant = NULL;
+  return classeFin;
+}
+
+
 bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe, PMETH methode, PVAR listeDecl, char*nom)
 {
   if((appelMethode==NULL && declaration!=NULL)||(appelMethode!=NULL && declaration==NULL))
@@ -1700,11 +1719,16 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   PCLASS liste = NULL;
   printf("a.6\n");
 
-  liste = transformerAppel(appelMethode,liste,classe,methode, listeDecl);
-
-
+  liste = transformerAppel(appelMethode,liste,classe,methode,listeDecl);
   printf("a.7\n");
   
+  while(liste != NULL)
+  {
+    printf(" combien   ===============> %s", liste->nom);
+    liste = liste->suivant;
+  }
+
+
   /*printf("--D1-- lelena : %s\n ----F1--\n",liste->nom);
   printf("--D2-- lelena : %s\n ----F2---\n",liste->suivant->nom);*/
 
@@ -1782,11 +1806,13 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 
 PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
+  printf("ETIQUETE   ----------- op : %d\n", appelMethode->op);
   if(liste==NULL)
   {
+    printf("je suis ici 1 --- 1 \n");
     if(appelMethode->op!=LISTEARG)
     {
-      printf("XYZXYZ\n");
+      printf("je suis ici 2 -- 2\n");
       PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
       /*printf("1 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
@@ -1814,6 +1840,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
       liste = getTypeRetour;
       liste->suivant = NEW(1,SCLASS);
       *liste->suivant = tmp;
+      
       return liste;
     }
     else
@@ -1821,8 +1848,6 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
       printf("ABCABC 2\n");
       SCLASS tmp = *liste;
       PCLASS getTypeRetour = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
-      /*printf("4 ?????? \n");
-      printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
       liste = getTypeRetour;
       liste->suivant = NEW(1,SCLASS);
       *liste->suivant = tmp;
@@ -1911,48 +1936,6 @@ LTreeP transformeParam(TreeP arbre, LTreeP liste)
     return liste;
   }
   return transformeParam(getChild(arbre,0),liste);
-}
-
-
-bool estCoherent(TreeP gauche,PCLASS actuelle)
-{
-  char * nomClass = NULL;
-  switch(gauche->op){
-   
-    case SELECTION :
-      /* regarder les deux fils de la selection */ 
-      
-      /*return classeContient(gauche->u.var->type,droite);*/
-    break;
-    
-    case ENVOIMESSAGE : 
-      /*return classeContient(gauche->u.methode->home,droite);*/
-      /*
-      * Vérifier les listOptArg
-      */
-    break;
-
-    case INSTANCIATION :
-      nomClass = getChild(gauche,0)->u.str; 
-        /* Vérification si la classe existe */ 
-      PCLASS tmp = getClasse(listeDeClass,nomClass);
-
-      if(tmp == NULL) return FALSE; 
-        /*Vérifie que la classe de l'instanciation contient la partie droite*/
-      /*contientClasseInst(tmp,droite);*/
-      /*
-      * vérifier les listOptArgOpt 
-      */
-    break;
-
-    case IDENTIFICATEUR :
-      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
-
-    case IDENTIFICATEURCLASS : 
-      /* Condition d'arrêt, retrun True que si appartient à la partie droite */ 
-    break; 
-  }
 }
 
 bool equalsType(PCLASS gauche, PCLASS droite)
