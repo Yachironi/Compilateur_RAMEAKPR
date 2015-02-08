@@ -165,8 +165,6 @@ int main(int argc, char **argv) {
 
     TreeP instanciation = makeTree(INSTANCIATION,2,makeLeafStr(IDENTIFICATEURCLASS,"Point2D"),lArg);
     
-
-    
     PMETH f = NEW(1,SMETH);
     f->nom = calloc(100,sizeof(char));
     strcpy(f->nom,"f");
@@ -230,7 +228,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 
 
     PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
-    listDeclVar->suivant = makeListVar("dsfsf",point,FALSE,NULL);
+    listDeclVar->suivant = makeListVar("z",point,FALSE,NULL);
 
     //xslistDeclVar 
 
@@ -535,8 +533,8 @@ bool checkProgramme(TreeP prog){
     liste = NEW(1,SCLASS);
     *liste = tmp;
   }
-  
-  bool blockMain = checkBloc(bloc,prog,NULL, NULL,getChild(bloc,0));
+  /* FIXME : transformer getChild(bloc,0) en PVAR */
+  bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0));
   if(!checkLC)
   {
      while(liste!=NULL)
@@ -1337,7 +1335,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         }
       break;
 
-    defalut : 
+    default : 
         printf("L'etiquette %d n'a pas ete gerer\n", arbre->op);
 
   }
@@ -1395,7 +1393,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         else
         {
           /*si il y a this ou super dans le bloc main -> erreur*/
-          if((classe==NULL) && (strcmp(tmp->elem->u.str,"this")==0)||(strcmp(tmp->elem->u.str,"super")==0))
+          if((classe==NULL) && ((strcmp(tmp->elem->u.str,"this")==0)||(strcmp(tmp->elem->u.str,"super")==0)))
           {
             sprintf(message,"Erreur this ou super present dans le bloc main");
             pushErreur(message,classe,methode,NULL);
@@ -1403,8 +1401,6 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
           }
           init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE);
         } 
-
-        
 
         if(init == NULL)
         {
@@ -1418,8 +1414,8 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     }
     else if(tmp->elem->op == IDENTIFICATEURCLASS)
     {
-      isStatic = TRUE;
-      printf("2.1\n");
+        isStatic = TRUE;
+        printf("2.1\n");
         init = getClasseBis(listeDeClass, tmp->elem->u.str);
         printf("2.2\n");
     }
@@ -1432,7 +1428,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         printf("3.3\n");
         if(tmp == NULL)
         {
-          printf("3.4\n");
+            printf("3.4\n");
             char* message = NEW(SIZE_ERROR,char);
             sprintf(message,"La classe %s n'est pas declare ",nomClass);
             pushErreur(message,classe,methode,NULL);
