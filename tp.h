@@ -277,6 +277,8 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
 LTreeP transformeParam(TreeP arbre, LTreeP liste);
 void afficheListeErreur(ErreurP listeE);
 bool verifAttributClasse(PCLASS classe);
+bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool checkProgramme(TreeP prog);
  /*
   * A voire
   */
