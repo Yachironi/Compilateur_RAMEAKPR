@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
    }
    else
    {
-    printf("Erreur de type\n");
+    printf("Erreur de type 1\n");
    }
 
    //afficheListeErreur(listeErreur);
@@ -251,7 +251,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
     }
      else
      {
-      printf("Erreur de type\n");
+      printf("Erreur de type 2\n");
      }
 
     afficheListeErreur(listeErreur);
@@ -1321,8 +1321,12 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
           instCorrecte = compareParametreMethode(tmp->param_constructeur,getChild(arbre,1),courant,methode,listeDecl,nomC);
           if(!instCorrecte)
           {
-          sprintf(message,"Erreur d'instanciation : %s mal appelee",nomClass);
-          pushErreur(message,type,NULL,NULL);
+            sprintf(message,"Erreur d'instanciation : %s mal appelee",nomClass);
+            pushErreur(message,type,NULL,NULL);
+          }
+          else
+          {
+            return tmp;
           }
         }
       break;
@@ -1722,12 +1726,6 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   liste = transformerAppel(appelMethode,liste,classe,methode,listeDecl);
   printf("a.7\n");
   
-  while(liste != NULL)
-  {
-    printf(" combien   ===============> %s", liste->nom);
-    liste = liste->suivant;
-  }
-
 
   /*printf("--D1-- lelena : %s\n ----F1--\n",liste->nom);
   printf("--D2-- lelena : %s\n ----F2---\n",liste->suivant->nom);*/
@@ -1756,9 +1754,10 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   while(tmp2!=NULL)
   {
     cpt++;
-    printf("Val 1 : %s\n", tmp2->nom);
+    printf("AppelMethode : %s\n", tmp2->nom);
     tmp2 = tmp2->suivant;
   }
+  printf("AppelMethode contient : %d\n", cpt);
   printf("..4.. \n");
 
   SVAR contenuDeclaration = *tmpDeclarationOfficiel;
