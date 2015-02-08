@@ -11,7 +11,7 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CST STRING CONCAT
+%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CONCAT
 %token <S> ID CSTS IDCLASS RETURN STATIC
 %token <I> CSTE
 
@@ -36,10 +36,10 @@
 
 
 /* %type <C> REL */
-%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr /*ListExtendsOpt*/ selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
+%type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
-%type <CL> LClassOpt DeclClass ListExtendsOpt
+%type <CL> LClassOpt DeclClass ListExtendsOpt DefClass
 %type <I> OverrideOuStaticOpt StaticOpt
  
 /* Initialisation des variables globales*/
@@ -82,19 +82,19 @@ extern void yyerror();  /* definie dans tp.c */
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
 
-Programme : LClassOpt Bloc			{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);programme=$$;}
+Programme : LClassOpt Bloc		{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);programme=$$;}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
  */
-LClassOpt : DeclClass LClassOpt     {$1->suivant=$2; $$=$1;}
-            | /* epsilon */       {$$=NIL(SCLASS);}
+LClassOpt : DeclClass LClassOpt   	{$1->suivant=$2; $$=$1;}
+            | /* epsilon */       	{$$=NIL(SCLASS);}
             ;
 
 /*
  * Un bloc est defini par une entite avec 2 accolades entourant un contenu
  */
-Bloc : '{' ContenuBloc '}'      {$$=$2;}
+Bloc : '{' ContenuBloc '}'      	{$$=$2;}
       ;
 
 /*
@@ -105,21 +105,21 @@ Bloc : '{' ContenuBloc '}'      {$$=$2;}
  */
  
 ContenuBloc : LInstructionOpt YieldOpt        {$$=makeTree(CONTENUBLOC,3,NIL(Tree),$1,$2);}
-      | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}  
+      | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,makeLeafVar(LISTEVAR, $1),$3,$4);}  
       ;
 
 /*
  * Sert a differencier les deux types de bloc : fonctionnel et procedural
  */
 
-YieldOpt : YIELD expr     {$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
-        | /* epsilon */       {$$=NIL(Tree);}
-
+YieldOpt : YIELD expr     	{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
+        | /* epsilon */       	{$$=NIL(Tree);}
+	;
 
 ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
             {
-            $$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); 
-            $$->suivant=$8;
+		$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6);
+            	$$->suivant=$8;
             }
             ;
 
@@ -127,13 +127,13 @@ ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
  * Liste d'instructions optionnel 
  */
 
-LInstructionOpt : Instruction LInstructionOpt {$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);} // makeTree ou makeList?
-                | /* epsilon */ {$$=NIL(Tree);}
+LInstructionOpt : Instruction LInstructionOpt 	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
+                | /* epsilon */ 		{$$=NIL(Tree);}
                 ;
 /*
  * Liste d'instructions obligatoires 
  */
-LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
+LInstruction : Instruction LInstructionOpt  	{$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
               ;
 
 /*
@@ -144,12 +144,12 @@ LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1
     * if expression then instruction else instruction
  */
 
-Instruction : expr ';'            {$$=$1;}
-            | RETURN expr ';'         {$$=makeTree(EXPRESSIONRETURN, 1, $2);}
-            | Bloc            {$$=$1;}
-            | Cible AFFECT expr ';'       {$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
-            | IF expr THEN Instruction ELSE Instruction   {$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
-            | RETURN ';'          {$$=makeLeafStr(RETURN_VOID, MSG_VOID);}  /* return void */
+Instruction : expr ';'            				{$$=$1;}
+            | RETURN expr ';'         				{$$=makeTree(EXPRESSIONRETURN, 1, $2);}
+            | Bloc           					{$$=$1;}
+            | Cible AFFECT expr ';'       			{$$=makeTree(ETIQUETTE_AFFECT, 2, $1, $3);} 
+            | IF expr THEN Instruction ELSE Instruction   	{$$=makeTree(IFTHENELSE, 3, $2, $4, $6);}
+            | RETURN ';'          				{$$=makeLeafStr(RETURN_VOID, MSG_VOID);}  /* return void */
             ;
 /*
  * La cible de l'affectation ne peut etre qu'un identifiant : 
@@ -157,45 +157,149 @@ Instruction : expr ';'            {$$=$1;}
  * un nom de classe var res : Point := new Point(x, y);
  */
 
-Cible : ID    {$$=makeLeafStr(IDENTIFICATEUR,$1);}
-      | selection {$$=$1;}
+Cible : ID    			{$$=makeLeafStr(IDENTIFICATEUR,$1);}
+      | selection 		{$$=$1;}
       ;
 
 /*
  * Bloc optionnel
  */
-BlocOpt : Bloc    {$$=$1;}
-        | /* epsilon */ {$$=NIL(Tree);}
+BlocOpt : Bloc 		   	{$$=$1;}
+        | /* epsilon */ 	{$$=NIL(Tree);}
         ;
+
+
+/* 	Definition de la classe (exemple : class Point) poour que cette classe puisse avoir des methode/champs 
+ *	qui sont du meme type que la classe
+ */
+DefClass : CLASS IDCLASS 
+{		
+		/* probleme : la classe qu'on souhaite declaree existe deja */		
+		if(getClasse(listeDeClass, $2) != NULL){
+			printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
+			char* message = NEW(SIZE_ERROR,char);
+			sprintf(message,"Erreur la classe %s est deja declare",$2);
+			/* TODO A MODIF pushErreur(message,classActuel,NULL,NULL); */
+			$$ = NULL; 	/* FIXME bon? */
+		} 
+	
+		/* Pas de probleme : ajout de la classe */
+		else{
+			$$=makeDefClasse($2); 
+			classActuel=$$; 		
+			/* mise a jour de la variable globale (la liste des classes) */
+			if(listeDeClass==NULL){
+				listeDeClass=$$;
+			}
+			else{
+				PCLASS tmp=listeDeClass;
+				while(tmp->suivant!=NULL){
+					tmp=tmp->suivant;	
+				}
+				tmp->suivant=$$;
+			}
+		}
+}
+	 ;
 
 /*
  * class nom(param, ...) [extends nom(arg, ...)] [bloc] is {decl, ...}
  */
-DeclClass : CLASS IDCLASS '('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
-    {   
-      if(getClasse(listeDeClass, $2) != NULL){
-        /* probleme : la classe qu'on souhaite declaree existe deja */
-        /* FIXME : gerer l'erreur */
+DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
+{   
+    	if($1 == NULL){
+		printf("Erreur dans DefClass\n");
+	}
+	else {
+		int isExtend; 
+		/** cas ou une classe n'herite pas d'une classe mere **/
+       		if($5==NIL(SCLASS)){
+          		isExtend=0;
+        	}
+		/** cas ou une classe herite pas d'une classe mere **/
+		else{
+          		isExtend=1;
+       		 }
 
-        char* message = NEW(SIZE_ERROR,char);
-        sprintf(message,"Erreur la classe %s est deja declare",$2);
-        pushErreur(message,classActuel,NULL,NULL);
-      }     
-      else
-      {
-        int isExtend; 
-	/** cas ou une classe n'herite pas d'une classe mere **/
-        if($6==NIL(SCLASS)){
-          isExtend=0;
-        }
-	/** cas ou une classe herite pas d'une classe mere **/
-	else{
-          isExtend=1;
-        }
-        classActuel=makeClasse(listeDeClass,$2,$4,$7,$10->u.children[1]->u.methode,$10->u.children[0]->u.var,/*getClasse(listeDeClass,$6->u.children[0]->u.str)*/ $6,isExtend);
-        $$=classActuel;
-      }
-    }
+        	$1=makeClasseApresDef($1,$3,$6,$9->u.children[1]->u.methode,$9->u.children[0]->u.var, $5,isExtend);
+
+		/* FIXME VERIFIER SI LA MISE A JOUR EST CORRECTEMENT EFFECTUER (cf TypeREtour) */
+
+		/*      Pour nous simplifier la tache, on copie les attributs et methodes 
+		 *	de la classe mere dans les attributs et methodes de la classe fille 
+		 */
+		/** FIXME A VERIFIER **/
+		if(isExtend == 1){ 
+			/* Ajout des attributs ($5=classe mere)*/ 
+			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
+				/* cas ou la classe fille a des attributs -> faut ceux de la mere ajouter a la fin */
+				if(classActuel->liste_champs!=NULL){
+					PVAR tmp_liste_champs = classActuel->liste_champs;
+					while(tmp_liste_champs->suivant != NULL){
+						tmp_liste_champs=tmp_liste_champs->suivant;
+					}
+					/* ajout des attributs (en fin de liste) */
+					tmp_liste_champs->suivant = $5->liste_champs;
+				}
+				/* cas ou la classe fille n'a pas d'attributs -> on ajoute directement ceux de la mere */
+				else{
+					classActuel->liste_champs = $5->liste_champs;	
+				}
+			}
+			/* Ajout des methodes ($5 = classe mere)
+			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
+			 */
+			if($5->liste_methodes != NULL){
+				/* cas ou la classe fille n'a pas de methode -> on ajoute directement celles de la mere */
+				if(classActuel->liste_methodes==NULL){
+					classActuel->liste_methodes = $5->liste_methodes;
+				}
+				/* cas ou la classe fille a des methodes -> on doit aller a la fin de la liste */
+				else{
+					PMETH tmp_liste_methodes = classActuel->liste_methodes;
+					while(tmp_liste_methodes->suivant != NULL){
+						tmp_liste_methodes=tmp_liste_methodes->suivant;
+					}
+	 				/* Ajout de maniere iterative les methodes car il faut les verifier 1 par 1 */
+					PMETH tmp_liste_methodes_classMere = $5->liste_methodes;
+					PMETH liste_a_ajoutee = NULL;
+					PMETH tmp_liste_a_ajoutee = NULL;
+					/* Parcours des methodes de la classe mere */
+					while(tmp_liste_methodes_classMere != NULL){
+
+						/* FIXME A FINIR */ 
+						/* Condition pour que la classe mere puisse etre ajoutee dans la classe fille */
+						if(tmp_liste_methodes_classMere->isStatic == 0 && methodeDansClasse(classActuel, 									tmp_liste_methodes_classMere)==FALSE){
+
+							/* TODO A verifier */ 
+
+							if(tmp_liste_a_ajoutee == NULL){
+								printf("1ere methode =%s\n", tmp_liste_methodes_classMere->nom);
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/*a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+								tmp_liste_a_ajoutee = liste_a_ajoutee;
+							}
+							else{
+								printf("Autre ajout\n");
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/*a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+							}
+							liste_a_ajoutee = liste_a_ajoutee->suivant;
+							/*liste_a_ajoutee->suivant = NULL;*/
+						}
+						tmp_liste_methodes_classMere = tmp_liste_methodes_classMere->suivant;
+					}
+					printf("====\nListe a ajoute = \n");
+					while(tmp_liste_a_ajoutee != NULL){
+						printf("tmp_liste_a_ajoutee=%s\n", tmp_liste_a_ajoutee->nom);
+						tmp_liste_a_ajoutee=tmp_liste_a_ajoutee->suivant;
+					}
+					printf("====\n");
+					tmp_liste_methodes->suivant = tmp_liste_a_ajoutee;
+				}
+			}	
+		}
+   		$$=classActuel;
+	}
+}
     ;
 
 /* Contenu d'une classe : elle peut contenir une liste des champs et/ou des methodes */
@@ -206,18 +310,18 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt  {$$=makeTree(CONTENUCLASS,2,ma
  * var [static] nom : type [:= expression]; 
  */
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
-        {$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
-              |     {$$=NIL(SVAR);}
+       			{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
+              |     	{$$=NIL(SVAR);}
               ;
 
 /* Renvoie un entier : 1 si la methode est static, 0 sinon */
-StaticOpt : STATIC  {$$=1;}
-          |     {$$=0;}
+StaticOpt : STATIC 	{$$=1;}
+          |     	{$$=0;}
           ;
 
 /* Affectation optionnelle d'une expression */
-AffectExprOpt : AFFECT expr ';'   {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-              |       {$$=NIL(Tree);}
+AffectExprOpt : AFFECT expr 	{$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
+              | 		{$$=NIL(Tree);}
               ;
 
 /* Declaration d'une Methode :
@@ -230,27 +334,27 @@ Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuE
   ;
 
 /* Liste de methode */
-LDeclMethodeOpt : Methode LDeclMethodeOpt {$1->suivant=$2; $$=$1;}
-              |         {$$=NIL(SMETH);}
+LDeclMethodeOpt : Methode LDeclMethodeOpt 	{$1->suivant=$2; $$=$1;}
+              |         			{$$=NIL(SMETH);}
               ;
 
 /* Renvoie un entier : 0 si la methode n'est ni statique, ni override; 1 si elle est override et 2 si elle est static */ 
-OverrideOuStaticOpt : OVERRIDE     {$$=1;}
-                      | STATIC     {$$=2;}
-                      | /* epsilon */    {$$=0;}
+OverrideOuStaticOpt : OVERRIDE     	{$$=1;}
+                      | STATIC     	{$$=2;}
+                      | /* epsilon */   {$$=0;}
                       ;
 
 /* Soit un bloc, soit une expression */
-BlocOuExpr : AffectExprOpt    {$$=$1;}
-           | Bloc     {$$=$1;}
+BlocOuExpr : AffectExprOpt    	{$$=$1;}
+           | Bloc     		{$$=$1;}
            ;
 
-ListParamOpt : LParam       {$$=$1;}
-              | /* epsilon */     {$$=NIL(SVAR);}
+ListParamOpt : LParam       	{$$=$1;}
+              | /* epsilon */   {$$=NIL(SVAR);}
               ;
 
-LParam : Param        {$$=$1 ;}
-        | Param','LParam    {$1->suivant=$3; $$=$1;}
+LParam : Param        		{$$=$1;}
+        | Param','LParam    	{$1->suivant=$3; $$=$1;}
         ;
 
 Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
@@ -263,76 +367,73 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 	$$=getClasse(listeDeClass, $2);
 	if($$ == NULL){
 		/* la classe n'existe pas: erreur */
+		printf("Erreur dans ListExtendsOpt avec idClass=%s\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
 		sprintf(message,"Erreur la classe %s n'existe pas",$2);
 		pushErreur(message,classActuel,NULL,NULL);
+		
 	}
 	else{
+		/*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
 		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-		appelConstructureEstCorrecte($4,$$);
+
+		/* A REMETTRE appelConstructureEstCorrecte($4,$$);*/
+
 		/* on ajoute a la classe mere les param passees dans ListOptArg */
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
 			et yc de Point ont les valeurs respectives xc et yc **/
+		
+	/** C'est de l'eval : attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
+	/*	COMPLETEMENT FAUX CAR L'ARBRE N'EST PAS DANS LE BON SENS
 		TreeP listOptArg = $4;
 		PVAR paramConstructeur = $$->param_constructeur;
+		printf("while\n");
 		while(listOptArg->u.children[1]!=NIL(Tree)){
+			printf("1\n");
 			paramConstructeur->init=listOptArg->u.children[0];
+			printf("2\n");
 			listOptArg = listOptArg->u.children[1];
+			printf("3\n");
 			paramConstructeur = paramConstructeur->suivant;
+			printf("4\n");
+			printf("nb de  children = %d\n", listOptArg->nbChildren);
 		}
+		printf("if\n");
 		if(listOptArg->u.children[0]!=NIL(Tree)){
 			paramConstructeur->init=listOptArg->u.children[0];
 		}
+		printf("-----passer-----\n");
+	*/
     	}
-} /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
-               | /* epsilon */        {$$=NIL(/*Tree*/ SCLASS);}
+} 
+               | /* epsilon */        {$$=NIL(SCLASS);}
                ;
-ListOptArg :            {$$=NIL(Tree);}
+ListOptArg :        {$$=NIL(Tree);}
      | LArg         {$$=$1;}
            ;
 
 
-LArg : expr           {$$ = $1;}
-     | LArg','expr              {$$=makeTree(LISTEARG, 2, $1,$3);}
+LArg : expr           	{$$=$1;}
+     | LArg','expr      {$$=makeTree(LISTEARG, 2, $1,$3);}
      ;
 
-/*
- * pour envoiMessage : fonction() + 5; ==> fonction prioritaire par rapport a 5 A VOIRRRRRRRRRRRRRRRRRRRRRRRRRR (Amin et Gishan)
- * Reponse Amin : on a vu avec le prof en fait le + est associtif gauche donc pas de probleme => on avait conclu ca avec Gishan
-  E : E+E
-    | Fonc%prec
- Pareil pour + unaire - unaire
-
-  * Une expression est : 
-     * identificateur
-     * selection
-     * constante
-     * (expression)
-     * instanciation
-     * envoi de message
-     * expression arithmetique ou de comparaison
-     * return expression
- */
-
-/* !!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!! ID passe dans OuRien->Cible */
-
 /* Pour info : ID est dans Cible */
-expr : PLUS expr %prec unaire   { $$=$2; }
-       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante      { $$=$1; }
-       | instanciation      { $$=$1; }
-       | envoiMessage     { $$=$1; }
-       | OuRien       { $$=$1; }
+expr : PLUS expr %prec unaire   	{$$=$2;}
+       | MINUS expr %prec unaire  	{$$=makeTree(MINUSUNAIRE,1,$2);}
+       | expr CONCAT expr   		{$$=makeTree(CONCATENATION,2,$1,$3);}
+       | expr PLUS expr     		{$$=makeTree(PLUSBINAIRE,2,$1,$3);}
+       | expr MINUS expr    		{$$=makeTree(MINUSBINAIRE,2,$1,$3);}
+       | expr DIV expr      		{$$=makeTree(DIVISION,2,$1,$3);}
+       | expr MUL expr      		{$$=makeTree(MULTIPLICATION,2,$1,$3);}
+       | expr RELOP expr    		{$$=makeTree(OPCOMPARATEUR,2,$1,$3);}
+       | constante      		{$$=$1;}
+       | instanciation      		{$$=$1;}
+       | envoiMessage     		{$$=$1;}
+       | OuRien       			{$$=$1;}
        ;
 
-OuRien : '(' expr ')'     {$$=$2;}
-       | Cible        {$$=$1;}
+OuRien : '(' expr ')'  			{$$=$2;}
+       | Cible        			{$$=$1;}
        ;
 
 /*
@@ -340,17 +441,16 @@ OuRien : '(' expr ')'     {$$=$2;}
  * Ou c.x
  */
 
-selection : IDCLASS'.'ID  %prec '.'   
-      {$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
-          | envoiMessage'.'ID %prec '.' {$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
-          | OuRien '.' ID %prec '.' {$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
+selection : IDCLASS'.'ID  %prec '.'       {$$=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3));}
+          | envoiMessage'.'ID %prec '.'   {$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
+          | OuRien '.' ID %prec '.' 	  {$$=makeTree(SELECTION, 2, $1,makeLeafStr(IDENTIFICATEUR,$3));}
          ;
 
 /*
  * regle qui defini soit une constante entiere, soit une constante d type string
  */
-constante : CSTS  { $$ = makeLeafStr(CSTSTRING,$1); }
-    | CSTE  { $$ = makeLeafInt(CSTENTIER,$1); }
+constante : CSTS		{$$ = makeLeafStr(CSTSTRING,$1); }
+    	  | CSTE  		{$$ = makeLeafInt(CSTENTIER,$1); }
           ;
 
 instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2), $4); }
@@ -363,11 +463,13 @@ instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, 
 
 
 envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'    
-        { $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
+        {$$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
               | envoiMessage '.' ID'('ListOptArg ')' %prec '.'    
-        { $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+        {$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
               | OuRien '.' ID '(' ListOptArg ')'  %prec '.'   
-        { $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+        {$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	      | constante '.' ID '(' ListOptArg ')' %prec '.'
+	{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
              ;
 
 /* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression

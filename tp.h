@@ -109,9 +109,9 @@ struct _Class{
   PVAR param_constructeur;    	/*  paramètres du constructeur de la classe */
   TreeP corps_constructeur;   	/* corps du constructeur de la classe sous la forme d'un arbre (d'expression) */
   PMETH liste_methodes;     	/* liste des méthodes de la classe */
-  PMETH override;            	/* liste de méthodes override */			/** A GERERRRRR **/
+
   PVAR liste_champs;        	/* liste des champs de la classe */ 
-  PVAR champs_herite;         	/* atrributs heritees */				/** A GERERRRRR **/
+
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
@@ -207,19 +207,27 @@ void pprintVar(VarDeclP decl, TreeP tree);
 void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP tree);
-void pprintTreeN(TreeP tree, char *op, int nbChild);
+void pprintTreeMain(TreeP tree);
 void pprintListMethode(PMETH meth);
 void pprintMethode(PMETH meth);
 void pprintListClasse(PCLASS classe);
 void pprintClasse(PCLASS classe);
 void pprintListVAR(PVAR var);
 void pprintVAR(PVAR var);
+void printVar(PVAR var);
+void printClasse(PCLASS classe);
+void printMethode(PMETH methode);
 
 /* methode rajoute */
-PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend);
+PCLASS makeDefClasse(char *nom);
+PCLASS makeClasseApresDef(PCLASS classe, PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend);
+PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend);
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
+bool methodeDansClasse(PCLASS classe, PMETH methode);
+bool memeTreeP(TreeP tree1, TreeP tree2);
+bool memeVar(PVAR var1, PVAR var2);
 
 bool appelConstructeurEstCorrecte(TreeP args,PCLASS mere);
 
