@@ -261,36 +261,24 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
   {
     $$=getClasse(listeDeClass, $2);
-    if($$ == NULL){
+    if($$ == NULL)
+    {
       /* la classe n'existe pas: erreur */
       char* message = NEW(SIZE_ERROR,char);
       sprintf(message,"Erreur la classe %s n'existe pas",$2);
       pushErreur(message,classActuel,NULL,NULL);
     }
-    else{
-      /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-      /* checkAppelMethode($4,$$->classe_mere->param_constructeur,TRUE) */
-      if(TRUE)
+    else
+    {
+   
+      char * nomC = calloc(100,sizeof(char));
+      sprintf(nomC,"constructeur %s",$$->nom);   
+      bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,NULL,NULL,nomC);
+      if(!constCorrecte)
       {
-        /* on ajoute a la classe mere les param passees dans ListOptArg */
-        /* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
-          et yc de Point ont les valeurs respectives xc et yc **/
-        TreeP listOptArg = $4;
-        PVAR paramConstructeur = $$->param_constructeur;
-        while(listOptArg->u.children[1]!=NIL(Tree)){
-          paramConstructeur->init=listOptArg->u.children[0];
-          listOptArg = listOptArg->u.children[1];
-          paramConstructeur = paramConstructeur->suivant;
-        }
-        if(listOptArg->u.children[0]!=NIL(Tree)){
-        }
-      }
-      else
-      {
-        char* message = NEW(SIZE_ERROR,char);
-        sprintf(message,"Erreur l'appel du constructeur de la classe mere %s dans %s est incorrecte",$2,classActuel->nom);
-        pushErreur(message,classActuel,NULL,NULL);
-      }
+        sprintf(message,"Erreur d'appel constructeur : %s mal appelee",nomClass);
+        pushErreur(message,type,NULL,NULL);
+      }    
     }
   } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
 
