@@ -288,7 +288,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
       else
       {
         char* message = NEW(SIZE_ERROR,char);
-        sprintf(message,"Erreur l'appel du constructeur de la classe mere dans %s est incorrecte",$2);
+        sprintf(message,"Erreur l'appel du constructeur de la classe mere %s dans %s est incorrecte",$2,classActuel->nom);
         pushErreur(message,classActuel,NULL,NULL);
       }
     }

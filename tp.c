@@ -161,6 +161,7 @@ int main(int argc, char **argv) {
     
     
     TreeP lArg = makeLeafStr(IDENTIFICATEUR,"z");
+
     TreeP instanciation = makeTree(INSTANCIATION,2,makeLeafStr(IDENTIFICATEURCLASS,"Point2D"),lArg);
     
 
@@ -1381,7 +1382,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         else
         {
           /*si il y a this ou super dans le bloc main -> erreur*/
-          if(classe==NULL && (strcmp(tmp->elem->u.str,"this")==0)||(strcmp(tmp->elem->u.str,"super")==0))
+          if((classe==NULL) && (strcmp(tmp->elem->u.str,"this")==0)||(strcmp(tmp->elem->u.str,"super")==0))
           {
             sprintf(message,"Erreur this ou super present dans le bloc main");
             pushErreur(message,classe,methode,NULL);
@@ -1700,6 +1701,8 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   printf("a.6\n");
 
   liste = transformerAppel(appelMethode,liste,classe,methode, listeDecl);
+
+
   printf("a.7\n");
   
   /*printf("--D1-- lelena : %s\n ----F1--\n",liste->nom);
@@ -1721,7 +1724,8 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   printf("..1.. \n");
   SCLASS contenuTMP = *tmp;
   printf("..2.. \n");
-  PCLASS tmp2 = &contenuTMP;
+  PCLASS tmp2 = NEW(1,SCLASS);
+  *tmp2 = contenuTMP;
   printf("..3.. \n");
   int cpt = 0;
   
@@ -1782,13 +1786,16 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   {
     if(appelMethode->op!=LISTEARG)
     {
+      printf("XYZXYZ\n");
       PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
       /*printf("1 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
+      getTypeRetour->suivant = NULL;
       return getTypeRetour;
     }
     else
     {
+      printf("ABCABC\n");
       PCLASS getTypeRetour = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
       /*printf("2 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
@@ -1799,8 +1806,8 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
   {
     if(appelMethode->op!=LISTEARG)
     {
+      printf("XYZXYZ 2\n");
       SCLASS tmp = *liste;
-
       PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
       /*printf("3 ?????? \n");
       printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
@@ -1811,6 +1818,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
     }
     else
     {
+      printf("ABCABC 2\n");
       SCLASS tmp = *liste;
       PCLASS getTypeRetour = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
       /*printf("4 ?????? \n");
