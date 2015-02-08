@@ -12,6 +12,8 @@
 #define TRUE 1
 #define FALSE 0 
 
+#define CATEGORIE_STATIC 1
+
 /* Etiquettes additionnelles pour les arbres de syntaxe abstraite.
  * Les tokens tels que PLUS, MINUS, etc. servent directement d'etiquette.
  * Attention donc a ne pas donner des valeurs identiques a celles des tokens
@@ -269,10 +271,10 @@ bool f(TreeP tree,short etiquette,PVAR listeVar);
 bool equalsType(PCLASS gauche, PCLASS droit);
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
 LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
-PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl);
-PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette);
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic);
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic);
 PCLASS transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH methode, PVAR listeDecl);
-PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl);
+PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl, bool isStatic);
 bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl, char* nom);
 LTreeP transformeParam(TreeP arbre, LTreeP liste);
 void afficheListeErreur(ErreurP listeE);

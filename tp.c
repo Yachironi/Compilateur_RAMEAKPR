@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
    printf("Debut\n");
    TreeP gauche = makeLeafInt(CSTENTIER,1);
    printf("a\n");
-   TreeP droite = makeLeafStr(IDENTIFICATEUR,"a");
+   TreeP droite = makeLeafStr(CSTENTIER,3);
    printf("b\n");
 
    TreeP lesdeuxexpression = makeTree(OPCOMPARATEUR, 2, gauche, droite);
@@ -122,6 +122,7 @@ int main(int argc, char **argv) {
     p->nom = calloc(100,sizeof(char));
     strcpy(p->nom,"b");
     p->type = point2D;
+    /*p->categorie = CATEGORIE_STATIC;*/
 
 
     PVAR p1 = NEW(1,SVAR);
@@ -1261,7 +1262,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case IDENTIFICATEUR:
-      return getTypeAttribut(arbre->u.str, courant, methode, listeDecl);
+      return getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE);
     break;
 
     case IDENTIFICATEURCLASS:
@@ -1289,10 +1290,12 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     PCLASS init = NULL;
     printf("rentrer\n");
 
+    bool isStatic = FALSE;
 
+    char* message = NEW(SIZE_ERROR,char);
     if(liste==NULL || tmp->elem==NULL)
     {
-        char* message = NEW(SIZE_ERROR,char);
+        
         if(methode!=NULL && classe!=NULL)
         {
             sprintf(message,"Erreur la methode %s est mal forme - Classe : %s",methode->nom,classe->nom);
@@ -1311,17 +1314,34 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 
         if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
         {
-          /*FIXME verifier que la methode n'est pas statique et n'est pas NULL*/
+          if(methode!=NULL && methode->isStatic)
+          {
+            sprintf(message,"Erreur super present dans une methode statique");
+            pushErreur(message,classe,methode,NULL);
+            return NULL;
+          }
           init = classe->classe_mere;
         }
         else if(classe!=NULL && (strcmp(tmp->elem->u.str,"this")==0))
         {
-          /* FIXME pareille que le FIXME au dessus*/
+          if(methode!=NULL && methode->isStatic)
+          {
+            sprintf(message,"Erreur this present dans une methode statique");
+            pushErreur(message,classe,methode,NULL);
+            return NULL;
+          }
           init = classe;
         }
         else
         {
-          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl);
+          /*si il y a this ou super dans le bloc main -> erreur*/
+          if(classe==NULL && (strcmp(tmp->elem->u.str,"this")==0)||(strcmp(tmp->elem->u.str,"super")==0))
+          {
+            sprintf(message,"Erreur this ou super present dans le bloc main");
+            pushErreur(message,classe,methode,NULL);
+            return NULL;
+          }
+          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE);
         } 
 
         
@@ -1338,6 +1358,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     }
     else if(tmp->elem->op == IDENTIFICATEURCLASS)
     {
+      isStatic = TRUE;
       printf("2.1\n");
         init = getClasse(listeDeClass, tmp->elem->u.str);
         printf("2.2\n");
@@ -1385,7 +1406,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         {
             //printf("tmp->elem->suivant %s \n",tmp->elem->suivant->op);
             printf("25-25-25\n");
-            init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette);
+            init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette,isStatic);
             if(init==NULL)
             {
                 char* message = NEW(SIZE_ERROR,char);
@@ -1398,7 +1419,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         else if(tmp->elem->isEnvoiMessage==FALSE)
         { 
             printf("26_26_26\n");
-            init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette);
+            init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette, isStatic);
             if(init ==NULL)
             {
                 char* message = NEW(SIZE_ERROR,char);
@@ -1414,7 +1435,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 }
 
 
-PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette){
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic){
   printf("Appartient : %s\t%s\n",mere->nom, fille->u.str);
   
   if(fille==NULL || mere==NULL){
@@ -1435,7 +1456,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
       {
         /* Verifie si les parametre de de listMeth->param & fille */
         printf("Allez isVerif ?\n");
-        bool isVerifOk = getTypeMethode(listMeth->nom,mere,etiquette,tmp->elem->suivant,methode,listeDecl)!=NULL?TRUE:FALSE;
+        bool isVerifOk = getTypeMethode(listMeth->nom,mere,etiquette,tmp->elem->suivant,methode,listeDecl,isStatic)!=NULL?TRUE:FALSE;
         printf("Fin isVerif\n");
         if(isVerifOk)
         {
@@ -1458,7 +1479,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
   }
   else
   {
-     return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl);    
+     return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl,isStatic);    
   }
 }
 
@@ -1466,7 +1487,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
 /* Retourne le type d'une varibable suivant les paramètre de la méthode, 
 * de la classe et de la liste de déclaration 
 */
-PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic){
   printf("nom : %s\n",nom);
   printf("1.1.1\n");
   bool estDansParamMeth = FALSE;
@@ -1537,10 +1558,20 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
         printf("1.1.11\n");
       }
       else if(strcmp(nom,listeClasse->nom)==0 && estDansListeDecl==FALSE){
-        estDansAttributClasse = TRUE;
-        res = listeClasse->type;
-        break;
-        printf("1.1.13\n");
+        if((listeClasse->categorie==CATEGORIE_STATIC && isStatic)||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic))
+        {
+          estDansAttributClasse = TRUE;
+          res = listeClasse->type;
+          break;
+          printf("1.1.13\n");
+        }
+        else
+        {
+          char* message = NEW(SIZE_ERROR,char);
+          sprintf(message,"Erreur l'attribut %s n'a pas le droit d'etre utilise de cette maniere",nom);
+          pushErreur(message,classe,methode,NULL);
+          return NULL;
+        }
       }
       listeClasse = listeClasse->suivant;
     }
@@ -1549,7 +1580,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl){
   return res;
 }
 
-PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl)
+PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl, bool isStatic)
 {
   if(classe == NULL || nom == NULL){
     char* message = NEW(SIZE_ERROR,char);
@@ -1564,7 +1595,7 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
     if(precedant == IDENTIFICATEURCLASS)
     {
       printf("a.2\n");
-      if(strcmp(nom,tmp->nom)==0 && tmp->isStatic)
+      if(strcmp(nom,tmp->nom)==0 && tmp->isStatic && isStatic)
       {
         bool verifOk = compareParametreMethode(tmp->params,appelMethode, classe,methode, listeDecl, nom);
         if(verifOk)
@@ -1583,7 +1614,7 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
     else if(precedant == IDENTIFICATEUR)
     {
       printf("a.3\n");
-      if(strcmp(nom,tmp->nom)==0 && !tmp->isStatic)
+      if(strcmp(nom,tmp->nom)==0 && !tmp->isStatic && !isStatic)
       {
         printf("a.4\n");
         bool verifOk = compareParametreMethode(tmp->params,appelMethode, classe,methode, listeDecl, nom);
