@@ -1060,7 +1060,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   }
    PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
    printf("1\n");
-   printf("arbre NIL : ? %d\n",arbre->op==NULL?TRUE:FALSE );
+   printf("arbre NIL : ? %d\n",arbre==NULL?TRUE:FALSE );
    printf("Etiquette %d\n",arbre->op );
    printf("2\n");
    /* Dans le cas d'une selection, récupérer le dernier élèment */ 
@@ -1281,12 +1281,12 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     {
         printf("1.1\n");
 
-        if(classe!=NULL && strcmp(tmp->elem->u.str,"super")==0)
+        if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
         {
           /*FIXME verifier que la methode n'est pas statique et n'est pas NULL*/
           init = classe->classe_mere;
         }
-        else (classe!=NULL && strcmp(tmp->elem->u.str,"this")==0)
+        else if(classe!=NULL && (strcmp(tmp->elem->u.str,"this")==0))
         {
           /* FIXME pareille que le FIXME au dessus*/
           init = classe;
@@ -1648,7 +1648,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   {
     char* message = NEW(SIZE_ERROR,char);
     sprintf(message,"Erreur la methode %s attend %d parametre(s) et vous lui avez passez %d parametre(s)",nom,cptDeclaration,cpt);
-    pushErreur(message,NULL,tmp,NULL);
+    pushErreur(message,NULL,NULL,NULL);
     return FALSE;
   }
 
