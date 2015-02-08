@@ -803,7 +803,7 @@ bool checkMethode(PMETH methode)
     printf("Je check la methode %s\n",methode->nom);
 
     /*FIXME bool corps = checkBloc(methode->corps);*/
-    /* FIXME : concat des messafes*/
+    /* FIXME : concat des messafes???*/
     bool corps = TRUE;
     bool typeRetour = (methode->typeRetour!=NULL);
     bool pvar = checkListOptArg(methode->params);
@@ -1130,6 +1130,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         {
           sprintf(message,"Erreur operation arithmetique entre un objet de type %s et %s",type->nom,type2->nom);
         }
+        else
+        {
+          sprintf(message,"Le type a cote de %s n'est pas reconnu",type->nom);
+        }
       }
       else
       {
@@ -1156,6 +1160,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         if(type2!=NULL)
         {
           sprintf(message,"Erreur operation de comparaison entre un objet de type %s et %s",type->nom,type2->nom);
+        }
+        else
+        {
+          sprintf(message,"Le type a cote de %s n'est pas reconnu",type->nom);
         }
       }
       else
