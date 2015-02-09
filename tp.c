@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
 	PCLASS Void = makeClasse("Void", NULL, NULL, NULL, NULL, NULL, 0);
 
 	/* Creation des methodes predefinies */
-	PMETH toString = makeMethode("toString", 1, NIL(Tree), String, NIL(SVAR), Integer);
-	PMETH println = makeMethode("println", 1, NIL(Tree), String, NIL(SVAR), String);
-	PMETH print = makeMethode("print", 1, NIL(Tree), String, NIL(SVAR), String);
+	PMETH toString = makeMethode("toString", 0, NIL(Tree), String, NIL(SVAR), Integer);
+	PMETH println = makeMethode("println", 0, NIL(Tree), String, NIL(SVAR), String);
+	PMETH print = makeMethode("print", 0, NIL(Tree), String, NIL(SVAR), String);
 	toString->suivant = NULL;
 	print->suivant = NULL;
 	println->suivant = print;
@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
   	else{
     		/*Faire eval ici*/
   	}  
- 	/* exit(0); */
+ 	exit(0);
 
 	printf("tp.c -> res=%d\n", res);
 	if (programme == NULL) {
@@ -1874,7 +1874,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
       }
       getTypeRetour = getClasseBis(listeDeClass,getTypeRetour->nom);
       /*printf("1 ?????? \n");
-     printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
+      printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
       return getTypeRetour;
     }
     else
@@ -1882,7 +1882,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
      printf("ABCABC\n");
       PCLASS getTypeRetour = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);
       /*printf("2 ?????? \n");
-     printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
+      printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
       if(getTypeRetour==NULL)
       {
         return NULL;
@@ -1946,7 +1946,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
         liste = getTypeRetour;
         liste->suivant = NEW(1,SCLASS);
         *liste->suivant = tmp;
-        return liste;
+        /*return liste;*/
       }
       else
       {
