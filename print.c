@@ -234,11 +234,9 @@ void printMethode(PMETH methode){
 			pprintTreeMain(tmp->corps);
 		}
 		*/
-		/* TODO : a mon avis ici typeRetour il y a toute une liste de classe alors qu'on veut que la 1ere = pb */
 		if(tmp->typeRetour != NULL){
 			printf("typeRetour = %s\n", tmp->typeRetour->nom);
-			/* FONCTIONNE AUSSI : printf("typeRetour =\n"); */
-			printClasse(tmp->typeRetour);
+			/* FONCTIONNE AUSSI : printClasse(tmp->typeRetour); */
 		}
 		if(tmp->params != NULL){
 			printf("Liste de param :\n");
@@ -267,12 +265,18 @@ void printVar(PVAR var){
 			printf("========= FIN ARBRE DE TYPE ==========");
 		}
 		printf("categorie = %d\n", tmp->categorie);
+<<<<<<< HEAD
 		printf("init = \n", tmp->categorie);
 		if(!(tmp->init==NIL(Tree))){
 		pprintTreeMain(tmp->init);
 		}else{
 			printf("NULL");
 			}
+=======
+		/*if(tmp->init != NULL){
+			pprintTreeMain(tmp->init);
+		}*/
+>>>>>>> aa6a88b2d8514c75a66826aa34868dd0abd8e1ce
 		printf("_______________________\n");
 		printVar(tmp->suivant);
 	}
