@@ -124,8 +124,8 @@ void lexError(char c) {
 ">="            { yylval.C = GE; return(RELOP); }
 {Symbol}        { yylval.C = yytext[0]; return(yytext[0]); }
 ":="            { return AFFECT; }
-"&"		          { return(CONCAT);}	
+"&"		{ return(CONCAT);}	
 {Delim}         { ; }
-{Commentaire}	  { ; }
+{Commentaire}	{ ; }
 .      		{ printf("Erreur lexical \n");}
 %%
