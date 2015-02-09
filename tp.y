@@ -214,7 +214,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 	else {
 		int isExtend; 
 		/** cas ou une classe n'herite pas d'une classe mere **/
-       		if($5==NIL(SCLASS)){
+       		if($5==NIL(SCLASS) || $5==NULL){
           		isExtend=0;
         	}
 		/** cas ou une classe herite pas d'une classe mere **/
