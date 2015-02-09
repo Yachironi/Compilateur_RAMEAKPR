@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
 	PCLASS Void = makeClasse("Void", NULL, NULL, NULL, NULL, NULL, 0);
 
 	/* Creation des methodes predefinies */
-	PMETH toString = makeMethode("toString", 1, NIL(Tree), String, NIL(SVAR), Integer);
-	PMETH println = makeMethode("println", 1, NIL(Tree), String, NIL(SVAR), String);
-	PMETH print = makeMethode("print", 1, NIL(Tree), String, NIL(SVAR), String);
+	PMETH toString = makeMethode("toString", 0, NIL(Tree), String, NIL(SVAR), Integer);
+	PMETH println = makeMethode("println", 0, NIL(Tree), String, NIL(SVAR), String);
+	PMETH print = makeMethode("print", 0, NIL(Tree), String, NIL(SVAR), String);
 	toString->suivant = NULL;
 	print->suivant = NULL;
 	println->suivant = print;

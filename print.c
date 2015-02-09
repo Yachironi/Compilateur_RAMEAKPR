@@ -234,11 +234,9 @@ void printMethode(PMETH methode){
 			pprintTreeMain(tmp->corps);
 		}
 		*/
-		/* TODO : a mon avis ici typeRetour il y a toute une liste de classe alors qu'on veut que la 1ere = pb */
 		if(tmp->typeRetour != NULL){
 			printf("typeRetour = %s\n", tmp->typeRetour->nom);
-			/* FONCTIONNE AUSSI : printf("typeRetour =\n"); */
-			printClasse(tmp->typeRetour);
+			/* FONCTIONNE AUSSI : printClasse(tmp->typeRetour); */
 		}
 		if(tmp->params != NULL){
 			printf("Liste de param :\n");
