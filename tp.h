@@ -246,8 +246,7 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
 bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
-bool checkMethodeStatic(PMETH methode);
-bool checkMethode(PMETH methode);
+bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 
 /** AUTRE **/
 void evalProgramme(TreeP programme);
@@ -265,8 +264,8 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 bool equalsType(PCLASS gauche, PCLASS droit);
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl);
 LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste);
-PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic);
-PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic);
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic, bool agerer);
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic, bool agerer);
 PCLASS transformerAppel(TreeP appelMethode,PCLASS liste,PCLASS classe,PMETH methode, PVAR listeDecl);
 PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMethode, PMETH methode, PVAR listeDecl, bool isStatic);
 bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,PMETH methode, PVAR listeDecl, char* nom);
@@ -280,7 +279,7 @@ bool checkDoublon(char** variable,int n);
   * A voire
   */
 bool contientClasseInst(PVAR classe, TreeP droite);
-bool checkListOptArg(PVAR var);
+bool checkListOptArg(PVAR var, PMETH methode);
 bool existeMethodeOverride(PCLASS home,PMETH methode); /* JULIEN ? */
 
 
