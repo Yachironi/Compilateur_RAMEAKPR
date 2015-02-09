@@ -233,6 +233,7 @@ bool estDansListClasse(PCLASS listeClasse, char *nom);
 bool methodeDansClasse(PCLASS classe, PMETH methode);
 bool memeVar(PVAR var1, PVAR var2);
 PCLASS getClasseBis(PCLASS listeClass,char *nom);
+PMETH getMethode(PCLASS classe, PMETH methode);
 
 bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 
