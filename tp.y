@@ -224,12 +224,9 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 
         	$1=makeClasseApresDef($1,$3,$6,$9->u.children[1]->u.methode,$9->u.children[0]->u.var, $5,isExtend);
 
-		/* FIXME VERIFIER SI LA MISE A JOUR EST CORRECTEMENT EFFECTUER (cf TypeREtour) */
-
 		/*      Pour nous simplifier la tache, on copie les attributs et methodes 
 		 *	de la classe mere dans les attributs et methodes de la classe fille 
 		 */
-		/** FIXME A VERIFIER **/
 		if(isExtend == 1){ 
 			/* Ajout des attributs ($5=classe mere)*/ 
 			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
@@ -267,22 +264,28 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 
 					/* Parcours des methodes de la classe mere */
 					while(tmp_liste_methodes_classMere != NULL){
+						/* TODO Amin & Gishan : regarder si faut le faire */
+						/* On regarde si la classe fille a la meme methode que la classe mere
+							-> si oui : on regarde isRedef de la methode de la classe fille
+								-> si il est = a 0 : le mettre à 1 */
+						/*if(methodeDansClasse(classActuel, tmp_liste_methodes_classMere)==TRUE){
+	
+							PMETH methClassActuel=getMethode(classActuel, tmp_liste_methodes_classMere);
+							methClassActuel->isRedef = 1;
+						}
+						*/
 
-						/* FIXME A FINIR */ 
 						/* Condition pour que la classe mere puisse etre ajoutee dans la classe fille */
 						if(tmp_liste_methodes_classMere->isStatic == 0 && methodeDansClasse(classActuel, 									tmp_liste_methodes_classMere)==FALSE){
-
-							/* TODO A verifier */ 
-
+							/* Ici, les methodes ajoutees ne peuvent pas etre static ni etre override */
+							/* Il faut gerer le cas ou elles sont pas dites "redefinies" alors qu'elles le sont */
 							if(liste_a_ajoutee == NULL){
-								printf("1ere methode =%s\n", tmp_liste_methodes_classMere->nom);
-								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/* FIXME a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
 								/*tmp_liste_a_ajoutee = liste_a_ajoutee;*/
 							}
 							else{
-								printf("Autre ajout\n");
 								SMETH copie = *liste_a_ajoutee;
-								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/* FIXME a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
 								liste_a_ajoutee->suivant = NEW(1,SMETH);
 								*liste_a_ajoutee->suivant = copie;
 							}

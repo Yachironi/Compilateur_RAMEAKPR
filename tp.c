@@ -297,7 +297,7 @@ bool estDansListClasse(PCLASS listeClasse, char *nom){
 }
 /** TODO A VERIFIER */
 /* Renvoi vrai si la methode est dans la classe, faux sinon */
-bool methodeDansClasse(PCLASS classe, PMETH methode){
+int methodeDansClasse(PCLASS classe, PMETH methode){
 	PMETH tmp_liste_methodes_classe = classe->liste_methodes;
 	PMETH tmp_liste_methode = methode;
 	if(methode == NULL)	return FALSE;
