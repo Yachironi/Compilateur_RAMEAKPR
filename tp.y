@@ -118,7 +118,7 @@ YieldOpt : YIELD expr     	{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
 
 ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
             {
-		$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6);
+		$$=makeListVar($3,getClasseBis(listeDeClass,$5),$2,$6);
             	$$->suivant=$8;
             }
             ;
@@ -176,7 +176,7 @@ BlocOpt : Bloc 		   	{$$=$1;}
 DefClass : CLASS IDCLASS 
 {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
-	if(getClasse(listeDeClass, $2) != NULL){
+	if(estDansListClasse(listeDeClass, $2) == TRUE){
 		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
 		sprintf(message,"Erreur la classe %s est deja declare",$2);
@@ -224,12 +224,9 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 
         	$1=makeClasseApresDef($1,$3,$6,$9->u.children[1]->u.methode,$9->u.children[0]->u.var, $5,isExtend);
 
-		/* FIXME VERIFIER SI LA MISE A JOUR EST CORRECTEMENT EFFECTUER (cf TypeREtour) */
-
 		/*      Pour nous simplifier la tache, on copie les attributs et methodes 
 		 *	de la classe mere dans les attributs et methodes de la classe fille 
 		 */
-		/** FIXME A VERIFIER **/
 		if(isExtend == 1){ 
 			/* Ajout des attributs ($5=classe mere)*/ 
 			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
@@ -267,22 +264,28 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 
 					/* Parcours des methodes de la classe mere */
 					while(tmp_liste_methodes_classMere != NULL){
+						/* TODO Amin & Gishan : regarder si faut le faire */
+						/* On regarde si la classe fille a la meme methode que la classe mere
+							-> si oui : on regarde isRedef de la methode de la classe fille
+								-> si il est = a 0 : le mettre à 1 */
+						/*if(methodeDansClasse(classActuel, tmp_liste_methodes_classMere)==TRUE){
+	
+							PMETH methClassActuel=getMethode(classActuel, tmp_liste_methodes_classMere);
+							methClassActuel->isRedef = 1;
+						}
+						*/
 
-						/* FIXME A FINIR */ 
 						/* Condition pour que la classe mere puisse etre ajoutee dans la classe fille */
 						if(tmp_liste_methodes_classMere->isStatic == 0 && methodeDansClasse(classActuel, 									tmp_liste_methodes_classMere)==FALSE){
-
-							/* TODO A verifier */ 
-
+							/* Ici, les methodes ajoutees ne peuvent pas etre static ni etre override */
+							/* Il faut gerer le cas ou elles sont pas dites "redefinies" alors qu'elles le sont */
 							if(liste_a_ajoutee == NULL){
-								printf("1ere methode =%s\n", tmp_liste_methodes_classMere->nom);
-								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/* FIXME a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
 								/*tmp_liste_a_ajoutee = liste_a_ajoutee;*/
 							}
 							else{
-								printf("Autre ajout\n");
 								SMETH copie = *liste_a_ajoutee;
-								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0/* FIXME a modif*/, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+								liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
 								liste_a_ajoutee->suivant = NEW(1,SMETH);
 								*liste_a_ajoutee->suivant = copie;
 							}
@@ -322,7 +325,7 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt  {$$=makeTree(CONTENUCLASS,2,ma
  * var [static] nom : type [:= expression]; 
  */
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
-       			{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
+       			{$$=makeListVar($3,getClasseBis(listeDeClass,$5),$2,$6); $$->suivant=$8;}
               |     	{$$=NIL(SVAR);}
               ;
 
@@ -342,7 +345,7 @@ AffectExprOpt : AFFECT expr    	{$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
  */
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-      {$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
+      {$$=makeMethode($3,$2,$9,getClasseBis(listeDeClass,$8),$5,classActuel);}
   ;
 
 /* Liste de methode */
@@ -369,13 +372,13 @@ LParam : Param        		{$$=$1;}
         | Param','LParam    	{$1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
+Param : ID':' IDCLASS     {$$= makeListVar($1,getClasseBis(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
           ;   
           
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 {
 
-	$$=getClasse(listeDeClass, $2);
+	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
 	printf("le nom de la classe est : %s",$$->nom);
 	char* message = NEW(SIZE_ERROR,char);
 	if($$ == NULL){
@@ -384,7 +387,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		pushErreur(message,classActuel,NULL,NULL);
 	}
 	else{
-    classActuel->appel_constructeur_mere = $4;
+		classActuel->appel_constructeur_mere = $4;
 		
 		/* TODO */
 		/*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
@@ -422,6 +425,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 } 
                | /* epsilon */        {$$=NIL(SCLASS);}
                ;
+
 ListOptArg :        {$$=NIL(Tree);}
      | LArg         {$$=$1;}
            ;

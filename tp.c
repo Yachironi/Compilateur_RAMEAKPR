@@ -126,7 +126,7 @@ int main(int argc, char **argv) {
   }
 
   
-  exit(0);
+ /* exit(0); */
 
 	printf("tp.c -> res=%d\n", res);
 	if (programme == NULL) {
@@ -281,9 +281,23 @@ PCLASS getClasse(PCLASS listeClass,char *nom){
 		return parcour;
 	}
 }
+
+/* Renvoie vrai si une classe est dans une liste de classe */
+bool estDansListClasse(PCLASS listeClasse, char *nom){
+	PCLASS parcour=listeClasse;
+	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
+		parcour=parcour->suivant;	
+	}
+	if(parcour == NULL){
+		return FALSE;
+	}
+	else{
+		return TRUE;
+	}
+}
 /** TODO A VERIFIER */
 /* Renvoi vrai si la methode est dans la classe, faux sinon */
-bool methodeDansClasse(PCLASS classe, PMETH methode){
+int methodeDansClasse(PCLASS classe, PMETH methode){
 	PMETH tmp_liste_methodes_classe = classe->liste_methodes;
 	PMETH tmp_liste_methode = methode;
 	if(methode == NULL)	return FALSE;
@@ -1906,10 +1920,6 @@ bool equalsType(PCLASS gauche, PCLASS droite)
   if(strcmp(gauche->nom,droite->nom)==0)
   {
     return TRUE;
-  }
-  else
-  {
-
   }
   return FALSE;
 }
