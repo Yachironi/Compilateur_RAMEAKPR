@@ -260,11 +260,23 @@ void printVar(PVAR var){
 		printf("-- var=%s\n", tmp->nom);
 		if(tmp->type != NULL){
 			printf("type = %s\n", tmp->type->nom);
+				printf("========= DEB ARBRE DE TYPE ==========");
+				printClasse(tmp->type);
+			printf("========= FIN ARBRE DE TYPE ==========");
 		}
 		printf("categorie = %d\n", tmp->categorie);
+
+		printf("init = \n");
+		if(!(tmp->init==NIL(Tree))){
+		pprintTreeMain(tmp->init);
+		}else{
+			printf("NULL");
+			}
+
 		/*if(tmp->init != NULL){
 			pprintTreeMain(tmp->init);
 		}*/
+
 		printf("_______________________\n");
 		printVar(tmp->suivant);
 	}
@@ -272,3 +284,4 @@ void printVar(PVAR var){
 		printf("\n");
 	}
 }
+
