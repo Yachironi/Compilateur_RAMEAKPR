@@ -264,7 +264,9 @@ void printVar(PVAR var){
 			printf("type = %s\n", tmp->type->nom);
 		}
 		printf("categorie = %d\n", tmp->categorie);
-		/* pprintTreeMain(tmp->init); */
+		/*if(tmp->init != NULL){
+			pprintTreeMain(tmp->init);
+		}*/
 		printf("_______________________\n");
 		printVar(tmp->suivant);
 	}

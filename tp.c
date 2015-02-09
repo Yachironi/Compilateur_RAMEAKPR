@@ -42,16 +42,30 @@ FILE *fd = NIL(FILE);
  */
 
 int main(int argc, char **argv) {
-  printf("10\n");
+  	printf("10\n");
 	listeDeClass = NULL;
+
 	/* Ajout des classes predefinies : Integer, String et Void 
-	 *	Remarque -> les constructeurs (et ses parametres) + liste de methode + liste de champ + classe mere sont à NULL
+	 * + ajout des methodes predefinies toString (-> integer) et println & print (-> string)
 	 */
 
-  	/* FIXME : ajouter les methodes INTEGER : toString & STRING : println & print ? */
+	/* Creation des classes predefinies */
 	PCLASS Integer = makeClasse("Integer", NULL, NULL, NULL, NULL, NULL, 0);
 	PCLASS String = makeClasse("String", NULL, NULL, NULL, NULL, NULL, 0);
 	PCLASS Void = makeClasse("Void", NULL, NULL, NULL, NULL, NULL, 0);
+
+	/* Creation des methodes predefinies */
+	PMETH toString = makeMethode("toString", 1, NIL(Tree), String, NIL(SVAR), Integer);
+	PMETH println = makeMethode("println", 1, NIL(Tree), String, NIL(SVAR), String);
+	PMETH print = makeMethode("print", 1, NIL(Tree), String, NIL(SVAR), String);
+	toString->suivant = NULL;
+	print->suivant = NULL;
+	println->suivant = print;
+
+	/* Ajout des methodes dans leurs classes respectives */
+	Integer->liste_methodes = toString;
+	String->liste_methodes = println;
+
 	/* Ajout de ces classes predefinies dans la liste de classe */
 	Void->suivant = NULL;
 	String->suivant = Void;
@@ -112,21 +126,18 @@ int main(int argc, char **argv) {
 
 	printf("tp.c -> avant res\n");
 	res = yyparse();
-  printf("--------------------------------------------------------------\n");
-  bool checkProg = checkProgramme(programme);
-  printf("--------------------------------------------------------------\n");
-  printf("FIN de la COMPILATION\n");
-  if(!checkProg)
-  {
-    afficheListeErreur(listeErreur);
-  }
-  else
-  {
-    /*Faire eval ici*/
-  }
-
+  	printf("--------------------------------------------------------------\n");
+  	bool checkProg = checkProgramme(programme);
+  	printf("--------------------------------------------------------------\n");
+  	printf("FIN de la COMPILATION\n");
+  	if(!checkProg){
+    		afficheListeErreur(listeErreur);
+  	}
+  	else{
+    		/*Faire eval ici*/
+  	}
   
- /* exit(0); */
+ 	/* exit(0); */
 
 	printf("tp.c -> res=%d\n", res);
 	if (programme == NULL) {
@@ -266,8 +277,7 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 	return res;
 }
 
-/* Renvoi la classe avec un nom donnée */
-/* TODO Creer une copie ? */
+/* Renvoi le pointeur de classe avec un nom donnée */
 PCLASS getClasse(PCLASS listeClass,char *nom){
 	PCLASS parcour=listeClass;
 	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
@@ -280,6 +290,39 @@ PCLASS getClasse(PCLASS listeClass,char *nom){
 		/*parcour->suivant = NULL;*/
 		return parcour;
 	}
+}
+
+/** Renvoie une copie de la classe cherchee */
+PCLASS getClasseBis(PCLASS listeClass,char *nom)
+{
+  PCLASS retour = getClasse(listeClass,nom);
+  
+  if(retour ==NULL)
+  {
+    return NULL; 
+  }
+  SCLASS classe = *retour;
+  PCLASS classeFin = NEW(1,SCLASS);
+  *classeFin = classe;
+  classeFin->suivant = NULL;
+  return classeFin;
+}
+
+/** Renvoie un pointeur de la methode recherchee */	
+PMETH getMethode(PCLASS classe, PMETH methode){
+	PMETH tmp_liste_methodes_classe = classe->liste_methodes;
+	PMETH tmp_liste_methode = methode;
+	if(methode == NULL)	return FALSE;
+
+	while(tmp_liste_methodes_classe != NULL){
+		/* si 2 methodes ont le meme noms, les memes classes de retour (meme noms) et memes param ==> meme methode */
+		if(strcmp(tmp_liste_methodes_classe->nom, tmp_liste_methode->nom)==0 && strcmp(tmp_liste_methodes_classe->typeRetour->nom, tmp_liste_methode->typeRetour->nom)==0 && memeVar(tmp_liste_methodes_classe->params, tmp_liste_methode->params)==TRUE ){
+			return tmp_liste_methodes_classe;
+		}
+		tmp_liste_methodes_classe = tmp_liste_methodes_classe->suivant;
+	}
+
+	return NULL;
 }
 
 /* Renvoie vrai si une classe est dans une liste de classe */
@@ -295,9 +338,9 @@ bool estDansListClasse(PCLASS listeClasse, char *nom){
 		return TRUE;
 	}
 }
-/** TODO A VERIFIER */
+
 /* Renvoi vrai si la methode est dans la classe, faux sinon */
-int methodeDansClasse(PCLASS classe, PMETH methode){
+bool methodeDansClasse(PCLASS classe, PMETH methode){
 	PMETH tmp_liste_methodes_classe = classe->liste_methodes;
 	PMETH tmp_liste_methode = methode;
 	if(methode == NULL)	return FALSE;
@@ -305,7 +348,6 @@ int methodeDansClasse(PCLASS classe, PMETH methode){
 	while(tmp_liste_methodes_classe != NULL){
 		/* si 2 methodes ont le meme noms, les memes classes de retour (meme noms) et memes param ==> meme methode */
 		if(strcmp(tmp_liste_methodes_classe->nom, tmp_liste_methode->nom)==0 && strcmp(tmp_liste_methodes_classe->typeRetour->nom, tmp_liste_methode->typeRetour->nom)==0 && memeVar(tmp_liste_methodes_classe->params, tmp_liste_methode->params)==TRUE ){
-			/* FIXME je n'ai pas mis isRedef = 1 si il était = a 0 */
 			return TRUE;
 		}
 		tmp_liste_methodes_classe = tmp_liste_methodes_classe->suivant;
@@ -1597,21 +1639,6 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
     tmp = tmp->suivant;
   }
   return NULL;
-}
-
-PCLASS getClasseBis(PCLASS listeClass,char *nom)
-{
-  PCLASS retour = getClasse(listeClass,nom);
-  
-  if(retour ==NULL)
-  {
-    return NULL; 
-  }
-  SCLASS classe = *retour;
-  PCLASS classeFin = NEW(1,SCLASS);
-  *classeFin = classe;
-  classeFin->suivant = NULL;
-  return classeFin;
 }
 
 
