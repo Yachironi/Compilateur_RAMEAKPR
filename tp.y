@@ -372,15 +372,17 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else
     {
-   
+      printf("Gestion de la classe %s \n",classActuel->nom);
       char * nomC = calloc(100,sizeof(char));
       sprintf(nomC,"constructeur %s",$$->nom);   
-      printf(RED"Debug DEBUT \n\n\n\n\n\n\n\n");
+      
       printf("NOMC ======= %s \n ",nomC);
       PVAR tmp = $$->param_constructeur;
+      printf("a\n");
       while(tmp!=NULL)
       {
-        printf("--------------------- %s\n ",tmp->type->nom);
+        printf("zzzz\n");
+        printf("--------------------- %s\n ",tmp->nom);
         tmp = tmp->suivant;
       }
       printf("caca1\n");
@@ -389,7 +391,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
       methodeFakeConstructeur->nom = calloc(100,sizeof(char));
       sprintf(methodeFakeConstructeur->nom,"constructeur %s",classActuel->nom);
       methodeFakeConstructeur->params = classActuel->param_constructeur;
-      printf("caca2\n");
+      printf(RED"Debug DEBUT \n");
       bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,methodeFakeConstructeur,NULL,nomC);
       printf("Debug FIN\n");
       /*exit(0);*/
