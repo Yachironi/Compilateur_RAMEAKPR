@@ -373,7 +373,6 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else
     {
-   
       char * nomC = calloc(100,sizeof(char));
       sprintf(nomC,"constructeur %s",$$->nom);   
       printf(RED"Debug DEBUT \n\n\n\n\n\n\n\n");
@@ -388,9 +387,10 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 
       PMETH methodeFakeConstructeur = NEW(1,SMETH);
       methodeFakeConstructeur->nom = calloc(100,sizeof(char));
-      sprintf(methodeFakeConstructeur->nom,"constructeur %s",classActuel->nom);
       methodeFakeConstructeur->params = classActuel->param_constructeur;
+      printf(" ----- param : %s", methodeFakeConstructeur->params->nom);
       printf("caca2\n");
+      printf("----------%s",methodeFakeConstructeur->nom);
       bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,methodeFakeConstructeur,NULL,nomC);
       printf("Debug FIN\n");
       /*exit(0);*/

@@ -1662,6 +1662,13 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
       listeClasse = listeClasse->suivant;
     }
   }
+  if(res==NULL)
+  {
+    printf("gros soucis");
+  }
+  else{
+    printf("lolololo");
+  }
   printf("1.1.6.2\n");
   return res;
 }
