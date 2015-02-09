@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
 	PCLASS Void = makeClasse("Void", NULL, NULL, NULL, NULL, NULL, 0);
 
 	/* Creation des methodes predefinies */
-	PMETH toString = makeMethode("toString", 1, NIL(Tree), String, NIL(SVAR), Integer);
-	PMETH println = makeMethode("println", 1, NIL(Tree), String, NIL(SVAR), String);
-	PMETH print = makeMethode("print", 1, NIL(Tree), String, NIL(SVAR), String);
+	PMETH toString = makeMethode("toString", 0, NIL(Tree), String, NIL(SVAR), Integer);
+	PMETH println = makeMethode("println", 0, NIL(Tree), String, NIL(SVAR), String);
+	PMETH print = makeMethode("print", 0, NIL(Tree), String, NIL(SVAR), String);
 	toString->suivant = NULL;
 	print->suivant = NULL;
 	println->suivant = print;
@@ -135,7 +135,9 @@ int main(int argc, char **argv) {
   	else{
     		/*Faire eval ici*/
   	}  
- 	/* exit(0); */
+  printf("Fin des checks\n");
+  
+  exit(0);
 
 	printf("tp.c -> res=%d\n", res);
 	if (programme == NULL) {
@@ -460,7 +462,8 @@ bool checkProgramme(TreeP prog){
   }
  printf("Entree 2\n");
   /* FIXME : transformer getChild(bloc,0) en PVAR */
-  bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
+bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
+
  printf("Entree 3\n");
   if(!checkLC)
   {
@@ -757,12 +760,12 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
    printf("TRUUUUUUUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n");
    printf("\n\n\n\n\n\n\n\n________FIN_________\n\n\n\n\n\n\n\n");
   }
-
+  printf("Aucune methode avant\n");
   if(courant->liste_methodes==NULL)
   {
     return TRUE;
   }
-
+  printf("AUcune methode apres\n");
   SMETH copie = *courant->liste_methodes;
   PMETH tmp = NEW(1,SMETH);
   *tmp = copie;
@@ -771,6 +774,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
   {
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
     /*bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
+    printf("************************ Je suis en train de check la methode : %s \n",tmp->nom );
     if(!checkMethode(arbre,ancien,courant,tmp,listeDecl))
     {
       /* Pas besoin du message = checkMethode en genere deja un
@@ -802,9 +806,11 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
 
     /*FIXME bool corps = checkBloc(methode->corps);*/
     /* FIXME : concat des messafes???*/
+    printf("1\n");
     bool typeRetour = (methode->typeRetour!=NULL);
+    printf("2\n");
     bool pvar = checkListOptArg(methode->params,methode);
-
+    printf("3\n");
     if(methode->isStatic)
     {
       redef = TRUE;
@@ -816,8 +822,9 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
       {
         /* FIXME : existeMethodeOverride */
         /*int methodeDansClasse(PCLASS classe, PMETH methode){*/
+        printf("3.1\n");
         redef = methodeDansClasse(methode->home->classe_mere,methode);
-
+        printf("3.2\n");
         if(!redef)
         {
           char* message = NEW(SIZE_ERROR,char);
@@ -839,6 +846,7 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
      * if(method.static) checkListMethodeStatic
      */
      /*bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
+     printf("4\n");
      bool bloc = checkBloc(methode->corps,arbre,courant,methode,listeDecl);
      return (bloc&&typeRetour&&statique&&redef&&pvar);
 }
@@ -1946,7 +1954,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
         liste = getTypeRetour;
         liste->suivant = NEW(1,SCLASS);
         *liste->suivant = tmp;
-        return liste;
+        /*return liste;*/
       }
       else
       {
