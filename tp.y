@@ -421,7 +421,6 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 	}
 } 
                | /* epsilon */        {$$=NIL(SCLASS);}
->>>>>>> fe74088c5e25edcda23e31c4716114112febe606
                ;
 ListOptArg :        {$$=NIL(Tree);}
      | LArg         {$$=$1;}

@@ -553,10 +553,10 @@ bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode,
     if(tmp->init!=NIL(Tree) || tmp->init!=NULL)
     {
       PCLASS type = getType(getChild(tmp->init,0),arbre,courant,methode,listeDecl);
-      if(type!=NULL && equalsType(type,tmp->type))
+      if(type!=NULL && !equalsType(type,tmp->type))
       {
         char* message = NEW(SIZE_ERROR,char);
-        sprintf(message,"Erreur affectation d'un %s par un %s",tmp->nom,type->nom);
+        sprintf(message,"Erreur affectation d'un %s par un %s",tmp->type->nom,type->nom);
         pushErreur(message,courant,methode,NULL);
       }
     }
@@ -1075,7 +1075,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
     case IDENTIFICATEUR:
       printf("MALABAR AUSSI\n");
-      tmpDebug = getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE);
+      tmpDebug = getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE,FALSE);
       printf("CACACACACACA 1\n");
       return tmpDebug;
     break;
@@ -1133,6 +1133,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     printf("rentrer\n");
 
     bool isStatic = FALSE;
+    bool agerer = FALSE;
 
     char* message = NEW(SIZE_ERROR,char);
     if(liste==NULL || tmp->elem==NULL)
@@ -1187,7 +1188,8 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
             return NULL;
           }
           printf("getTypeAttribut\n");
-          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE);
+          /*ici true*/
+          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE, FALSE);
           printf("getTypeAttribut fin\n");
         } 
 
@@ -1204,6 +1206,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
     else if(tmp->elem->op == IDENTIFICATEURCLASS)
     {
         isStatic = TRUE;
+        agerer = TRUE;
         printf("2.1\n");
         init = getClasseBis(listeDeClass, tmp->elem->u.str);
         printf("2.2\n");
@@ -1251,7 +1254,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         {
             /*printf("tmp->elem->suivant %s \n",tmp->elem->suivant->op);*/
             printf("25-25-25\n");
-            init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette,isStatic);
+            init = appartient(init,tmpElem,TRUE,methode,listeDecl,tmp,etiquette,isStatic,agerer);
             if(init==NULL)
             {
                 char* message = NEW(SIZE_ERROR,char);
@@ -1264,7 +1267,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         else if(tmp->elem->isEnvoiMessage==FALSE)
         { 
             printf("26_26_26\n");
-            init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette, isStatic);
+            init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette, isStatic,agerer);
             if(init ==NULL)
             {
                 char* message = NEW(SIZE_ERROR,char);
@@ -1280,7 +1283,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 }
 
 
-PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic){
+PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, PVAR listeDecl, LTreeP tmp,short etiquette, bool isStatic, bool agerer){
   printf("Appartient : %s\t%s\n",mere->nom, fille->u.str);
   
   if(fille==NULL || mere==NULL){
@@ -1324,7 +1327,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
   }
   else
   {
-     return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl,isStatic);    
+     return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl,isStatic, agerer);    
   }
 }
 
@@ -1332,7 +1335,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
 /* Retourne le type d'une varibable suivant les paramètre de la méthode, 
 * de la classe et de la liste de déclaration 
 */
-PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic){
+PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, bool isStatic, bool agerer){
   
   printf("1.1.1\n");
   bool estDansParamMeth = FALSE;
@@ -1396,13 +1399,16 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
     PVAR listDeclParcours = listeDecl;
     char** variable = calloc(1,sizeof(char*));
     int i = 0;
+    
     while(listDeclParcours!=NULL)
     {
+
       variable[i] = calloc(100,sizeof(char));
       strcpy(variable[i],listDeclParcours->nom);
       i++;
       listDeclParcours = listDeclParcours->suivant;
     }
+
     /*
      * Si on trouve deux variable ayant le meme nom (FALSE)
      */
@@ -1440,21 +1446,26 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
     printf("1.1.6\n");
   }
   printf("1.1.6.1\n");
+  printf("IS CLASSE NULLLLLLLLLLLL %d\n",classe->liste_champs==NULL );
   /*printf("classe->liste_champs null ? %d\n",classe==NULL?TRUE:FALSE);*/
   if(classe!=NULL && classe->liste_champs != NULL)
   {
     printf("1.1.7\n");
 
-    PVAR listeClasseParcours = listeDecl;
+    PVAR listeClasseParcours = classe->liste_champs;
     char** variable = calloc(1,sizeof(char*));
     int i = 0;
+
+    printf("\n\n\n DEBUT LISTE DECL \n\n\n");
     while(listeClasseParcours!=NULL)
     {
+      printf(" : : : : %s\n",listeClasseParcours->nom );
       variable[i] = calloc(100,sizeof(char));
       strcpy(variable[i],listeClasseParcours->nom);
       i++;
       listeClasseParcours = listeClasseParcours->suivant;
     }
+    printf("\n\n\nFIN LISTE DECL \n\n\n");
     /*
      * Si on trouve deux variable ayant le meme nom (FALSE)
      */
@@ -1481,7 +1492,17 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
         printf("1.1.11\n");
       }
       else if(strcmp(nom,listeClasse->nom)==0 && estDansListeDecl==FALSE){
-        if((listeClasse->categorie==CATEGORIE_STATIC && isStatic)||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic))
+        if(!agerer)
+        {
+          estDansAttributClasse = TRUE;
+          SCLASS copie = *listeClasse->type;
+          PCLASS pointeurCopie = NEW(1,SCLASS);
+          *pointeurCopie = copie;
+          res = pointeurCopie;
+          res->suivant = NULL;
+          break;
+        }
+        else if((listeClasse->categorie==CATEGORIE_STATIC && isStatic)||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic))
         {
           estDansAttributClasse = TRUE;
           SCLASS copie = *listeClasse->type;
@@ -1619,6 +1640,16 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   printf("a.6\n");
 
   liste = transformerAppel(appelMethode,liste,classe,methode,listeDecl);
+
+  PCLASS pointeur = liste;
+  if(classe!=NULL)
+    printf("Classe courante %s \n",classe->nom );
+  while(pointeur!=NULL)
+  {
+    printf("CLASSSSE APP %s\n",pointeur->nom );
+    pointeur = pointeur->suivant;
+  }
+
   if(liste==NULL)
   {
     return FALSE;
@@ -1769,7 +1800,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
         liste = getTypeRetour;
         liste->suivant = NEW(1,SCLASS);
         *liste->suivant = tmp;
-        return liste;
+        /*return liste;*/
       }
       else
       {
