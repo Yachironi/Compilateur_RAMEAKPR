@@ -191,7 +191,7 @@ class Test() is {
   var dp : DefaultPoint := new DefaultPoint();
   var t : Test := new Test(); /* pour palier l'absence de methode statique... */
 is
-  p2.move(p1.get(), p1.gety());
+  p2.move(p1.getx(), p1.gety());
   o.setName("origine");
   p2.move(p1.getx()-2*5-3, p1.gety());
   o.print();
