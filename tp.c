@@ -46,248 +46,44 @@ int main(int argc, char **argv) {
 	/* Ajout des classes predefinies : Integer, String et Void 
 	 *	Remarque -> les constructeurs (et ses parametres) + liste de methode + liste de champ + classe mere sont à NULL
 	 */
-  /* FIXME : ajouter les methodes INTEGER : toString*/
+  	/* FIXME : ajouter les methodes INTEGER : toString & STRING : println & print ? */
 	PCLASS Integer = makeClasse("Integer", NULL, NULL, NULL, NULL, NULL, 0);
 	PCLASS String = makeClasse("String", NULL, NULL, NULL, NULL, NULL, 0);
 	PCLASS Void = makeClasse("Void", NULL, NULL, NULL, NULL, NULL, 0);
+	/* Ajout de ces classes predefinies dans la liste de classe */
 	Void->suivant = NULL;
 	String->suivant = Void;
 	Integer->suivant = String;
 	listeDeClass = Integer;
+	
+	/* debut du main */
+	int fi;
+	int i, res;
+	if (argc == 1) {
+		fprintf(stderr, "Syntax: tp -e -v program.txt\n");
+		exit(USAGE_ERROR);
+	}
+	for(i = 1; i < argc; i++) {
+		if (argv[i][0] == '-') {
+			switch (argv[i][1]) {
+				case 'v': case 'V':
+					verbose = TRUE; continue;
+				case 'e': case 'E':
+					noEval = TRUE; continue;
+				case '?': case 'h': case 'H':
+					fprintf(stderr, "Syntax: tp -e -v program.txt\n");
+					exit(USAGE_ERROR);
+				default:
+					fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
+					exit(USAGE_ERROR);
+     			}
+    		} else break;
+  	}
 
-  /*
-   * TEST
-   */
-   printf("Debut\n");
-   TreeP gauche = makeLeafInt(CSTENTIER,1);
-   printf("a\n");
-   TreeP droite = makeLeafStr(CSTENTIER,3);
-   printf("b\n");
-
-   TreeP lesdeuxexpression = makeTree(OPCOMPARATEUR, 2, gauche, droite);
-   
-   printf("c\n");
-
-   printf("nb %d\n",(getChild(lesdeuxexpression,1)==NULL)?TRUE:FALSE );
-   printf("d\n");
-   /*PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);*/
-   PCLASS resultat = getType(lesdeuxexpression,NULL,NULL,NULL,NULL);
-   printf("sortie\n");
-   if(resultat!=NULL)
-   {
-    printf("Type %s\n",resultat->nom);
-   }
-   else
-   {
-    printf("Erreur de type 1\n");
-   }
-
-   /*afficheListeErreur(listeErreur);*/
-
-   
-    printf("FIN DES TEST\n");
-    afficheListeErreur(listeErreur);
-
-
-    /*
-      | ListDeclVar IS LInstruction YieldOpt  {$$=makeTree(CONTENUBLOC,3,$1,$3,$4);}  
-
-
-      ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
-            {
-            $$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); 
-            $$->suivant=$8;
-            }
-
-      AffectExprOpt : AFFECT expr ';'   {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-              |       {$$=NIL(Tree);}
-              ;
-     */
-
-    /*
-    * TEST 2
-    */
-    /*
-     PCLASS makeClasse(PCLASS listeClass,char *nom,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend);
-      PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
-      PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
-      */
-
-    /*
-
-    PCLASS point = NEW(1,SCLASS);
-    point->nom = calloc(100,sizeof(char));
-    strcpy(point->nom,"Point");
-    
-
-    PCLASS point2D = NEW(1,SCLASS);
-    point2D->nom = calloc(100,sizeof(char));
-    strcpy(point2D->nom,"Point2D");
-    
-    PVAR parametre = makeListVar("caca",point,FALSE,NULL);
-    point2D->param_constructeur = parametre;
-
-    PCLASS point3D = NEW(1,SCLASS);
-    point3D->nom = calloc(100,sizeof(char));
-    strcpy(point3D->nom,"Point3D");
-
-    PCLASS point4D = NEW(1,SCLASS);
-    point4D->nom = calloc(100,sizeof(char));
-    strcpy(point4D->nom,"Point4D");
-    
-
-    PVAR p = NEW(1,SVAR);
-    p->nom = calloc(100,sizeof(char));
-    strcpy(p->nom,"b");
-    p->type = point2D;
-    /*p->categorie = CATEGORIE_STATIC;*/
-
-/*
-    PVAR p1 = NEW(1,SVAR);
-    p1->nom = calloc(100,sizeof(char));
-    strcpy(p1->nom,"c");
-    p1->type = point3D;
-
-    PVAR p2 = NEW(1,SVAR);
-    p2->nom = calloc(100,sizeof(char));
-    strcpy(p2->nom,"d");
-    p2->type = point4D;
-    
-    /*PVAR p4 = NEW(1,SVAR);
-    p4->nom = calloc(100,sizeof(char));
-    strcpy(p4->nom,"z");
-    p4->type = point;
-    */
- /*   point->liste_champs = p;
-    point2D->liste_champs =p1; 
-    point3D->liste_champs=p2;
-
-    listeDeClass = point;
-    listeDeClass->suivant =point2D;
-    listeDeClass->suivant->suivant = point3D;
-
-    TreeP ourien = makeLeafStr(IDENTIFICATEUR,"a");
-    
-    TreeP selection = makeTree(SELECTION, 2,ourien,makeLeafStr(IDENTIFICATEUR,"b"));
-    TreeP selection1 = makeTree(SELECTION, 2,selection,makeLeafStr(IDENTIFICATEUR,"c"));
-    TreeP selection2 = makeTree(SELECTION, 2,selection1,makeLeafStr(IDENTIFICATEUR,"d"));
-    
-    
-    TreeP lArg = makeLeafStr(IDENTIFICATEUR,"a");
-
-    TreeP instanciation = makeTree(INSTANCIATION,2,makeLeafStr(IDENTIFICATEURCLASS,"Point2D"),lArg);
-    
-    PMETH f = NEW(1,SMETH);
-    f->nom = calloc(100,sizeof(char));
-    strcpy(f->nom,"f");
-    f->home = point4D;
-    
-    PVAR paramsMethode = makeListVar("p",Integer,0,NIL(Tree));
-    /*paramsMethode->suivant = makeListVar("toto",point,0,NIL(Tree));*/
-
-    /*
-     
-ListParamOpt : LParam       {$$=$1;}
-              |    {$$=NIL(SVAR);}
-              ;
-
-LParam : Param        {$$=$1 ;}
-        | Param','LParam    {$1->suivant=$3; $$=$1;}
-        ;
-
-Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));}
-          ; 
-     */
-
-    /*f->params = paramsMethode;
-
-    PVAR tmpP = f->params;
-
- 
-
-    f->typeRetour = point;
-    f->isStatic = FALSE;
-    f->isRedef = FALSE;
-    f->corps = makeTree(CONTENUBLOC,3,NULL,NULL,NULL);
-
-    point4D->liste_methodes = f;
-
-    TreeP argumentAppel = lesdeuxexpression;
-
-    /*
-    LArg : expr           {$$ = $1;}
-     | LArg','expr              {$$=makeTree(LISTEARG, 2, $1,$3);}
-     ;
-     */
-
-   /* TreeP envoiMessage = makeTree(ENVOIMESSAGE, 3,selection2,makeLeafStr(IDENTIFICATEUR,"f"),argumentAppel);
-
-    TreeP selectionBis = makeTree(SELECTION, 2,envoiMessage,makeLeafStr(IDENTIFICATEUR,"b"));
-
-    /*
-     envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'    
-        { $$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | envoiMessage '.' ID'('ListOptArg ')' %prec '.'    
-        { $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-              | OuRien '.' ID '(' ListOptArg ')'  %prec '.'   
-        { $$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-             ;
-
-     */
-
-/*
-    PVAR listDeclVar = makeListVar("a",point,FALSE,NULL);
-    listDeclVar->suivant = makeListVar("a",point,FALSE,NULL);
-
-    /*
-      * Liste d'instructions obligatoires 
-      */
-    /*LInstruction : Instruction LInstructionOpt  {$$=makeTree(LIST_INSTRUCTION, 2, $1, $2);}
-                  ;*/
-
-  /*  TreeP instruction = makeTree(LIST_INSTRUCTION, 2, instanciation,NULL);
-    TreeP contenu = makeTree(CONTENUBLOC,3,listDeclVar,instruction,NULL);
-    resultat = getType(contenu,NULL,NULL,NULL,listDeclVar);
-   
-
-    if(resultat!=NULL)
-    {
-      printf("Type %s\n",resultat->nom);
-    }
-     else
-     {
-      printf("Erreur de type 2\n");
-     }
-
-    afficheListeErreur(listeErreur);
-*/
-  int fi;
-  int i, res;
-  if (argc == 1) {
-    fprintf(stderr, "Syntax: tp -e -v program.txt\n");
-    exit(USAGE_ERROR);
-  }
-  for(i = 1; i < argc; i++) {
-    if (argv[i][0] == '-') {
-      switch (argv[i][1]) {
-      case 'v': case 'V':
-  verbose = TRUE; continue;
-      case 'e': case 'E':
-  noEval = TRUE; continue;
-      case '?': case 'h': case 'H':
-  fprintf(stderr, "Syntax: tp -e -v program.txt\n");
-  exit(USAGE_ERROR);
-      default:
-  fprintf(stderr, "Error: Unknown Option: %c\n", argv[i][1]);
-  exit(USAGE_ERROR);
-      }
-    } else break;
-  }
-
-  if (i == argc) {
-    fprintf(stderr, "Error: Program file is missing\n");
-    exit(USAGE_ERROR);
-  }
+	if (i == argc) {
+ 		fprintf(stderr, "Error: Program file is missing\n");
+		exit(USAGE_ERROR);
+	}
 
 	if ((fi = open(argv[i++], O_RDONLY)) == -1) {
 		fprintf(stderr, "Error: Cannot open %s\n", argv[i-1]);
@@ -333,9 +129,8 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
     		printf("Error in file. Kind of error: %d\n", res2); 
     		return res2;
   	}
-
-  printf("FIN COMPILATION\n");
-  return 0;
+  	printf("FIN COMPILATION\n");
+  	return 0;
 }
 
 
@@ -420,15 +215,14 @@ TreeP makeLeafMeth(short op, PMETH methode){
   return(tree);
 }
 
-/**/
+/* Permet de creer une classe qui contient uniquement un nom */
 PCLASS makeDefClasse(char *nom){
 	PCLASS res = NEW(1, SCLASS);
 	res->nom=nom;
 	return res;
 }
 
-/** construit une structure classe (pouvant etre une liste de classe) */
-
+/** construit une structure classe (pouvant etre une liste de classe) apres l'appel de makeDefClasse */
 PCLASS makeClasseApresDef(PCLASS res,PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend){
 	res->param_constructeur=param_constructeur;
 	res->corps_constructeur=corps_constructeur;
@@ -439,6 +233,8 @@ PCLASS makeClasseApresDef(PCLASS res,PVAR param_constructeur,TreeP corps_constru
 	/* res->suivant=NULL;*/	/* verifier si ça ne pose pas de pb */
 	return res;
 }
+
+/* Construit entierement une classe (sans avoir a appeler makeDefClasse et/ou makeClasseApresDef */
 PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PMETH liste_methodes,PVAR liste_champs, PCLASS classe_mere, int isExtend){
 	PCLASS res = NEW(1, SCLASS);
 	res->nom=nom;
@@ -453,6 +249,7 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 }
 
 /* Renvoi la classe avec un nom donnée */
+/* TODO Creer une copie ? */
 PCLASS getClasse(PCLASS listeClass,char *nom){
 	PCLASS parcour=listeClass;
 	while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
@@ -474,19 +271,18 @@ bool methodeDansClasse(PCLASS classe, PMETH methode){
 	if(methode == NULL)	return FALSE;
 
 	while(tmp_liste_methodes_classe != NULL){
-
 		/* si 2 methodes ont le meme noms, les memes classes de retour (meme noms) et memes param ==> meme methode */
 		if(strcmp(tmp_liste_methodes_classe->nom, tmp_liste_methode->nom)==0 && strcmp(tmp_liste_methodes_classe->typeRetour->nom, tmp_liste_methode->typeRetour->nom)==0 && memeVar(tmp_liste_methodes_classe->params, tmp_liste_methode->params)==TRUE ){
-			/* je n'ai pas mis isRedef = 1 si il était = a 0 */
+			/* FIXME je n'ai pas mis isRedef = 1 si il était = a 0 */
 			return TRUE;
 		}
 		tmp_liste_methodes_classe = tmp_liste_methodes_classe->suivant;
 	}
-	printf("La methode -%s- n'est pas dans la classe -%s-\n", methode->nom, classe->nom);
+
 	return FALSE;
 }
 
-/* TODO */
+/* Renvoi vrai si var1 = var2 */
 bool memeVar(PVAR var1, PVAR var2){
 	if(var1 == NIL(SVAR)){
 		if(var2 == NIL(SVAR))	return TRUE;
@@ -524,7 +320,6 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 		res->isRedef = 0;
 	}
 	return res;
-
 }
 
 /* Creer une var pouvant etre un parametre, un champ, .. */
@@ -1025,21 +820,6 @@ int evalMain(TreeP tree, VarDeclP lvar) {
   }
   return errorCode;
 }
-
-
-/*expr : PLUS expr %prec unaire   { $$=makeTree(PLUSUNAIRE, 1, $2); }
-       | MINUS expr %prec unaire  { $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   { $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr     { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      { $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    { $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante      { $$=$1; }
-       | instanciation      { $$=$1; }
-       | envoiMessage     { $$=$1; }
-       | OuRien       { $$=$1; }
-       ;*/
 
 PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
@@ -2064,7 +1844,7 @@ void printTree(TreeP tree){
 /* if (! verbose ) return;*/
 printf("Etiquette %d\n",tree->op);
  switch (tree->op) {
-  case LISTCLASS:pprintListClasse(tree->u.classe); break;
+  case LISTCLASS:printClasse(tree->u.classe); break;
   default:
     fprintf(stderr, "Erreur! pprint : etiquette d'operator inconnue: %d\n", 
       tree->op);

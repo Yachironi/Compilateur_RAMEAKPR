@@ -10,6 +10,8 @@ extern TreeP getChild(TreeP tree, int rank);
 extern bool verbose;
 extern bool noEval;
 
+/** PARTIE NON UTILISEE **/
+
 /* Impression : )  de la partie declarative du programme */
 void pprintVar(VarDeclP decl, TreeP tree) {
   if (! verbose) return;
@@ -88,7 +90,9 @@ void pprintMain(TreeP tree) {
   fflush(NULL);
 }
 
-/** methodes rajoutees par julien **/
+/** Fin de la partie non utilisee **/
+
+/** methodes rajoutees **/
 
 /** permet d'afficher un arbre à n fils **/
 void pprintTreeMain(TreeP tree) {
@@ -181,110 +185,7 @@ void pprintTreeMain(TreeP tree) {
 	}
 	else{
 		printf("-----------------Probleme 2\n");
-	
-		/*
-		if(tree->op==RETURN_VOID || tree->op==IDENTIFICATEUR || tree->op==IDENTIFICATEURCLASS || tree->op==CSTSTRING){
-			printf("tree->u.str = %s\n", tree->u.str);
-		}
-		else if(tree->op==CSTENTIER){
-			printf("tree->u.val = %d\n", tree->u.val);
-		}
-		else if(tree->op==LISTEVAR){ 
-			pprintListVAR(tree->u.var);
-		}
-		else if(tree->op==LISTCLASS){ 
-			pprintListClasse(tree->u.classe);
-		}
-		else if(tree->op==LISTEMETHODE){
-			pprintListMethode(tree->u.methode);
-		}
-		else{
-			printf("print.c -> dans pprintTree : rien\n");
-		}
-		*/
 	}
-}
-
-/** affiche la liste des methodes **/
-void pprintListMethode(PMETH meth){
-	pprintMethode(meth);
-	printf("->");
-	if(meth->suivant != NIL(SMETH)){
-		pprintListMethode(meth->suivant);
-	}
-	else{
-		printf("suivant=NIL\n");
-	}
-}
-
-/** affiche une methode **/
-void pprintMethode(PMETH meth){
-	printf("methode=(nom=%s, isStatic=%d, isRedef=%d, corps=", meth->nom, meth->isStatic, meth->isRedef);
-	pprintTreeMain(meth->corps);
-	printf(", typeRetour=(");
-	printClasse(meth->typeRetour);
-	printf("), params=");
-	pprintVAR(meth->params);
-	printf(", home=(");
-	printClasse(meth->home);
-	printf(")");
-	
-}
-
-/** affiche une liste de classe **/
-void pprintListClasse(PCLASS classe){
-	pprintClasse(classe);
-	printf("->");
-	if(classe->suivant != NIL(SCLASS)){
-		pprintListClasse(classe->suivant);
-	}
-	else{
-		printf("suivant=NIL\n");
-	}
-}
-
-/** affiche une classe **/
-void pprintClasse(PCLASS classe){
-	printf("dans pprintClasse\n");
-	printf("classe=(nom=%s, param_constructeur=", classe->nom);
-	/*
-	pprintVAR(classe->param_constructeur);
-	*/
-	printf(", corps_constructeur=");
-	pprintTreeMain(classe->corps_constructeur);
-	printf(", liste_methodes=");
-	/*
-	pprintListMethode(classe->liste_methodes);
-	*/
-	printf(", liste_champs=");
-	/*
-	pprintListVAR(classe->liste_champs);
-	*/
-	printf(", classe_mere=");
-	pprintClasse(classe->classe_mere);
-	printf(", isExtend=%d)", classe->isExtend);
-}
-
-/** affiche une liste de var (param, ...) **/
-void pprintListVAR(PVAR var){
-	pprintVAR(var);
-	printf("->");
-	if(var->suivant != NIL(SVAR)){
-		pprintListVAR(var->suivant);
-	}
-	else{
-		printf("suivant=NIL\n");
-	}
-
-}
-
-/** affiche un var (param, ...) **/
-void pprintVAR(PVAR var){
-	printf("VAR=(nom=%s, type=", var->nom);
-	pprintClasse(var->type);
-	printf(", categorie=%d, init=", var->categorie);
-	pprintTreeMain(var->init);
-	printf(")");
 }
 
 void printClasse(PCLASS classe){
@@ -351,10 +252,6 @@ void printMethode(PMETH methode){
 		printf("\n");
 	}
 }
-
-  PCLASS type;
-  int categorie;	/* si categorie = 1 ==> static, si categorie = 0 ==> non static */
-  TreeP init;		/* initialisation de la variable */
 
 void printVar(PVAR var){
 	PVAR tmp=var;

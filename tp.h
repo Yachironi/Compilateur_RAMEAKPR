@@ -97,11 +97,12 @@ typedef struct _Tree {
     PMETH methode;        	/* valeur de la feuille si op = METHODE */
     struct _Tree **children; 	/* tableau des sous-arbres */
   } u;
-
-  struct _Tree *suivant; /*Utilise pour les check et uniquement les checks*/
+  /*Utilise pour les check et uniquement les checks*/
+  struct _Tree *suivant;
   int isEnvoiMessage;
 } Tree, *TreeP;
 
+/** PAS UTILISE */
 /* la structure ci-dessous permet de memoriser des listes variable/valeur */
 typedef struct _Decl
 { char *name;
@@ -126,11 +127,6 @@ struct _Class{
 
 PCLASS listeDeClass; 	/* Liste de toutes les classe declarees dans le programme */
 
-/**
-  J'ai noté qqch, mais me souviens plus trop de ce que ça voulait dire 
-  --> "représentation des arguments des constructeurs de la super classe => type : ??"
-**/
-
 /* Structure d'une méthode */
 struct _Method{
   char *nom;
@@ -150,7 +146,6 @@ struct _Method{
   int categorie;	/* si categorie = 1 ==> static, si categorie = 0 ==> non static */
   TreeP init;		/* initialisation de la variable */
   PVAR suivant;
-  /* ... : j'ai noté ça les 3 points, vous l'avez aussi? */
 };
 
 /*
@@ -172,9 +167,6 @@ typedef struct _Erreur
 } Erreur, *ErreurP;
 
 ErreurP listeErreur;
-
-/**/
-
 
 /* Type pour la valeur de retour de Flex et les actions de Bison
  * le premier champ est necessaire pour flex
@@ -224,12 +216,6 @@ void pprintValueVar(VarDeclP decl);
 void pprint(TreeP tree);
 void pprintMain(TreeP tree);
 void pprintTreeMain(TreeP tree);
-void pprintListMethode(PMETH meth);
-void pprintMethode(PMETH meth);
-void pprintListClasse(PCLASS classe);
-void pprintClasse(PCLASS classe);
-void pprintListVAR(PVAR var);
-void pprintVAR(PVAR var);
 void printVar(PVAR var);
 void printClasse(PCLASS classe);
 void printMethode(PMETH methode);
@@ -242,7 +228,6 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
 bool methodeDansClasse(PCLASS classe, PMETH methode);
-bool memeTreeP(TreeP tree1, TreeP tree2);
 bool memeVar(PVAR var1, PVAR var2);
 PCLASS getClasseBis(PCLASS listeClass,char *nom);
 
@@ -260,8 +245,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
 bool checkMethodeStatic(PMETH methode);
 bool checkMethode(PMETH methode);
 
-
-void printTree(TreeP tree); /* Methode pour imprimer toute l'arbre */
+/** AUTRE **/
 void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
