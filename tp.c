@@ -755,7 +755,7 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
      * if(method.static) checkListMethodeStatic
      */
      /*bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
-     bool bloc = checkBloc(methode->corps,abre,courant,methode,listeDecl);
+     bool bloc = checkBloc(methode->corps,arbre,courant,methode,listeDecl);
      return (bloc&&typeRetour&&statique&&redef&&pvar);
 }
 
