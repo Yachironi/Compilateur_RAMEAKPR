@@ -462,10 +462,9 @@ bool checkProgramme(TreeP prog){
   }
  printf("Entree 2\n");
   /* FIXME : transformer getChild(bloc,0) en PVAR */
+printf("Arbre ----------------------------: %d\n", bloc->op);
+
 bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
-  
-
-
  printf("Entree 3\n");
   if(!checkLC)
   {
@@ -482,12 +481,13 @@ bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
 }
 
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl){
-  printf("a.a.a.1\n");
   if(arbre == NIL(Tree) || arbre==NULL)
   {
-    printf("checkblock return 1\n");
+    printf("C'EST LA FIN DES HARICOTS");
+    printf("le dernier c'est : %d\n\n\n",ancien->op);
     return TRUE;    /* arriver a la fin des instructions */
   }
+  printf("--------------------%d\n", arbre->op);
   printf("a.a.a.3\n");
   if(listeDecl == NULL && getChild(arbre,1)!=NULL)
   {
@@ -505,18 +505,21 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   }
   else
   {
-    printf("a.a.a.7\n");
-    if(getChild(arbre,1)!=NULL)
+    printf("je suis ici");
+    if(getChild(arbre,1)!=NULL)   /* Fixme : A verifier les if */
     {
-      printf("a.a.a.8\n");
+    printf("getChild arbre 1 n'est pas null");
      TreeP lInst = getChild(arbre,1);
      TreeP instruction = getChild(lInst,0);
+
+
      PCLASS type = NULL;
      PCLASS type2 = NULL;
      bool instruction1 =FALSE;
      bool instruction2 =FALSE;
      char* message = NEW(SIZE_ERROR,char);
      bool resultat = FALSE;
+     printf("ETIBHDVJAZHVBFJHZEBF :%d\n",instruction->op);
      switch(instruction->op)
      {
         case EXPRESSIONRETURN :
@@ -541,7 +544,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
             printf("checkblock return 3.1\n");
             
             resultat = (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
-            resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+            resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
 
             if(!resultat)
             {
@@ -577,7 +580,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
             }
            
             resultat = (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
-            resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+            resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
 
             if(!resultat)
             {
@@ -602,9 +605,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
             instruction2 = checkBloc(getChild(instruction,2), instruction, courant,methode,listeDecl);
             printf("checkblock return 1\n");
             resultat = instruction1 && instruction2;
-            
-            
-            resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+            resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
             if(!resultat)
             {
               sprintf(message,"Instruction : erreur de if then else");
@@ -614,10 +615,10 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         break;
 
         case RETURN_VOID : 
+
         printf("checkblock return 5.5\n");
           resultat = equalsType(getClasseBis(listeDeClass,"Void"),methode->typeRetour);
-
-          resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+          resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
 
           if(!resultat)
           {
@@ -641,6 +642,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         case ENVOIMESSAGE :
         case SELECTION :
         case IDENTIFICATEUR :
+          printf("je suis la dans ma petite expression\n");
           type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
           if(type==NULL)
           {
@@ -651,7 +653,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
           }
 
           resultat = (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
-          resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+          resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
           if(!resultat)
           {
             sprintf(message,"Instruction : erreur d'instruction %d",instruction->op);
@@ -661,9 +663,9 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         break; 
 
         case CONTENUBLOC :
-        printf("checkblock return 7\n");
+          printf("checkblock return 7\n");
           resultat = checkBloc(getChild(instruction,0), instruction, courant,methode,listeDecl);
-          resultat = checkBloc(getChild(lInst,1), instruction, courant,methode,listeDecl) && resultat;
+          resultat = checkBloc(lInst, instruction, courant,methode,listeDecl) && resultat;
 
           if(!resultat)
           {
@@ -1125,7 +1127,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     return NULL;
   }
   PCLASS tmpDebug = NULL;
-   PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
+  PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
   printf("1\n");
   printf("arbre NIL : ? %d\n",arbre==NULL?TRUE:FALSE );
   printf("Etiquette %d\n",arbre->op );
@@ -1171,10 +1173,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
     type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
     type2 = getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
-   printf("type = NULL ? %s type2 = NULL ? %s\n",type->nom,type2->nom );
+    printf("type = NULL ? %s type2 = NULL ? %s\n",type->nom,type2->nom );
     if(equalsType(type,type2)){
-     printf("EST TU ICI ?\n");
-      return type;
+    printf("EST TU ICI ?\n");
+    return type;
     }
     else
     {
@@ -1317,7 +1319,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case LIST_INSTRUCTION:
-        return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
+        return getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
       break;
 
     case INSTANCIATION : 
