@@ -320,8 +320,8 @@ StaticOpt : STATIC 	{$$=1;}
           ;
 
 /* Affectation optionnelle d'une expression */
-AffectExprOpt : AFFECT expr 	{$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
-              | 		{$$=NIL(Tree);}
+AffectExprOpt : AFFECT expr    {$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
+              | {$$=NIL(Tree);}
               ;
 
 /* Declaration d'une Methode :
@@ -363,6 +363,7 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(T
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 {
     $$=getClasse(listeDeClass, $2);
+    printf("le nom de la classe est : %s",$$->nom);
     char* message = NEW(SIZE_ERROR,char);
     if($$ == NULL)
     {
@@ -372,36 +373,37 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
     }
     else
     {
-      printf("Gestion de la classe %s \n",classActuel->nom);
-      char * nomC = calloc(100,sizeof(char));
-      sprintf(nomC,"constructeur %s",$$->nom);   
-      
-      printf("NOMC ======= %s \n ",nomC);
-      PVAR tmp = $$->param_constructeur;
-      printf("a\n");
-      while(tmp!=NULL)
-      {
-        printf("zzzz\n");
-        printf("--------------------- %s\n ",tmp->nom);
-        tmp = tmp->suivant;
-      }
-      printf("caca1\n");
+      classActuel->appel_constructeur_mere = $4;
+      /*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
+    /* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
 
-      PMETH methodeFakeConstructeur = NEW(1,SMETH);
-      methodeFakeConstructeur->nom = calloc(100,sizeof(char));
-      sprintf(methodeFakeConstructeur->nom,"constructeur %s",classActuel->nom);
-      methodeFakeConstructeur->params = classActuel->param_constructeur;
-      printf(RED"Debug DEBUT \n");
-      bool constCorrecte = compareParametreMethode($$->param_constructeur,$4,classActuel,methodeFakeConstructeur,NULL,nomC);
-      printf("Debug FIN\n");
-      /*exit(0);*/
-      
+    /* A REMETTRE appelConstructureEstCorrecte($4,$$);*/
 
-      if(!constCorrecte)
-      {
-        sprintf(message,"Erreur d'appel constructeur : %s mal appelee",classActuel->nom);
-        pushErreur(message,classActuel,NULL,NULL);
-      }    
+    /* on ajoute a la classe mere les param passees dans ListOptArg */
+    /* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
+      et yc de Point ont les valeurs respectives xc et yc **/
+    
+  /** C'est de l'eval : attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
+  /*  COMPLETEMENT FAUX CAR L'ARBRE N'EST PAS DANS LE BON SENS
+    TreeP listOptArg = $4;
+    PVAR paramConstructeur = $$->param_constructeur;
+    printf("while\n");
+    while(listOptArg->u.children[1]!=NIL(Tree)){
+      printf("1\n");
+      paramConstructeur->init=listOptArg->u.children[0];
+      printf("2\n");
+      listOptArg = listOptArg->u.children[1];
+      printf("3\n");
+      paramConstructeur = paramConstructeur->suivant;
+      printf("4\n");
+      printf("nb de  children = %d\n", listOptArg->nbChildren);
+    }
+    printf("if\n");
+    if(listOptArg->u.children[0]!=NIL(Tree)){
+      paramConstructeur->init=listOptArg->u.children[0];
+    }
+    printf("-----passer-----\n");
+  */   
     }
 } /*$$=makeTree(EXTENTION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2),$4);}*/
 

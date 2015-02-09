@@ -122,6 +122,8 @@ struct _Class{
   PCLASS classe_mere;       	/* classe mère éventuelle de la classe */
   int isExtend;             	/* 1 si la classe est une classe fille, 0 sinon */
   PCLASS suivant;		/* suivant permettant de faire une liste */
+
+  TreeP appel_constructeur_mere; /*uniquement pour les checks*/
 };
 
 PCLASS listeDeClass; 	/* Liste de toutes les classe declarees dans le programme */
@@ -216,7 +218,7 @@ TreeP makeTree(short op, int nbChildren, ...);
 /* evaluateur d'expressions */
 int evalMain(TreeP tree, VarDeclP lvar);
 VarDeclP evalDecls (TreeP tree);
-TreeP getChild(TreeP tree, int rank);;
+TreeP getChild(TreeP tree, int rank);
 
 /* ecriture formatee */
 void pprintVar(VarDeclP decl, TreeP tree);
