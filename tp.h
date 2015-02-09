@@ -248,10 +248,13 @@ bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 
-/** AUTRE **/
+/** Methode eval **/
 void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
+int evalExpr(TreeP tree);	/* a modifier tres probablement */
+
+
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
 bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);

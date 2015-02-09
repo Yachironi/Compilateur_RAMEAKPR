@@ -1010,55 +1010,126 @@ VarDeclP evalDecls (TreeP tree) {
  * Attention a n'evaluer que ce qui doit l'etre et au bon moment
  * selon la semantique de l'operateur (cas du IF, etc.)
  */
+
+int evalExpr(TreeP tree){
+	if(tree == NIL(Tree))	return 0;
+/*
+
+expr : PLUS expr %prec unaire   	{ $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | MINUS expr %prec unaire  	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr   		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr    	 	{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr    		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr      		{ $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr      		{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | constante      		{ $$=$1; }
+       | instanciation      		{ $$=$1; }
+       | envoiMessage     		{ $$=$1; }
+       | OuRien       			{ $$=$1; }
+
+*/
+
+/*
+
+// PROBLEME ICI : evalExpr renvoie parfois des int float ou autre, et des fois des char*
+	switch (tree->op) {
+		case PLUSUNAIRE:
+			return evalExpr(tree->u.children[0]);
+		case MINUSUNAIRE:
+			return 0-evalExpr(tree->u.children[0]);
+		case CONCATENATION:
+			char *chaine = calloc(sizeof(char));
+			strcat(chaine, evalExpr(tree->u.children[0]);
+			return strcat(chaine, evalExpr(tree->u.children[1]);
+		case PLUSBINAIRE;
+			return (evalExpr(tree->u.children[0]) + evalExpr(tree->u.children[1]));
+		case MINUSBINAIRE;
+			return (evalExpr(tree->u.children[0]) - evalExpr(tree->u.children[1]));
+		case DIVISION:
+			return (evalExpr(tree->u.children[0]) / evalExpr(tree->u.children[1]));
+		case MULTIPLICATION:
+			return (evalExpr(tree->u.children[0]) * evalExpr(tree->u.children[1]));
+		case CSTE:
+			return tree->u.val;
+		case CSTS:
+			return tree->u.str;
+
+		// Comment faire pour RELOP?
+		case EQ:
+			return (evalExpr(tree->u.children[0]) == evalExpr(tree->u.children[1]));
+		case NE:
+			return (evalExpr(tree->u.children[0]) != evalExpr(tree->u.children[1]));
+		case GT:
+			return (evalExpr(tree->u.children[0]) > evalExpr(tree->u.children[1]));
+		case GE:
+			return (evalExpr(tree->u.children[0]) >= evalExpr(tree->u.children[1]));
+		case LT:
+			return (evalExpr(tree->u.children[0]) < evalExpr(tree->u.children[1]));
+		case LE:
+			return (evalExpr(tree->u.children[0]) <= evalExpr(tree->u.children[1]));
+
+		// Faire eval de instanciation, envoiMessage et OuRien
+
+		default: 
+			fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
+			exit(UNEXPECTED);
+	}	
+	*/
+	return 0;
+}
+
+
 int eval(TreeP tree, VarDeclP decls) {
-  if (tree == NIL(Tree)) { exit(UNEXPECTED); }
-  switch (tree->op) {
-  case ID:
-    return evalVar(tree, decls);
-  /*case CST: JULIEN FIXME
-    return(tree->u.val);*/
-  case EQ:
-    return (eval(getChild(tree, 0), decls) == eval(getChild(tree, 1), decls));
-  case NE:
-    return (eval(getChild(tree, 0), decls) != eval(getChild(tree, 1), decls));
+	if (tree == NIL(Tree)) { exit(UNEXPECTED); }
+	switch (tree->op) {
+		case ID:
+			return evalVar(tree, decls);
+		case CSTE:
+			return tree->u.val;
+		case CSTS:
+			return tree->u.str;
 
-  /** Distinguer les opérateurs unaires et binaires **/
-  case PLUS:
-  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
-    return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
-  case MINUS:
-  /* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
-    return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
-  /** **/
+		case EQ:
+			return (eval(getChild(tree, 0), decls) == eval(getChild(tree, 1), decls));
+		case NE:
+			return (eval(getChild(tree, 0), decls) != eval(getChild(tree, 1), decls));
 
-  case MUL:
-    return (eval(getChild(tree, 0), decls) * eval(getChild(tree, 1), decls));
-  case DIV:
-    if(eval(getChild(tree, 1), decls)!=0)
-    {
-      return (eval(getChild(tree, 0), decls) / eval(getChild(tree, 1), decls));
-    }
-    else
-    {
-      return EVAL_ERROR;
-    }
-  case IF:
-    return evalIf(tree, decls);
-  default: 
-    fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
-    exit(UNEXPECTED);
-  }
+		/** Distinguer les opérateurs unaires et binaires **/
+		case PLUS:
+			/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+			return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
+		case MINUS:
+			/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
+			return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
+
+		case MUL:
+			return (eval(getChild(tree, 0), decls) * eval(getChild(tree, 1), decls));
+		case DIV:
+			if(eval(getChild(tree, 1), decls)!=0){
+				return (eval(getChild(tree, 0), decls) / eval(getChild(tree, 1), decls));
+			}
+			else{
+				return EVAL_ERROR;
+			}
+		case IF:
+			return evalIf(tree, decls);
+		default: 
+			fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
+			exit(UNEXPECTED);
+	}
 }
 
 int evalMain(TreeP tree, VarDeclP lvar) {
-  int res;
-  if (noEval) {
-    fprintf(stderr, "\nSkipping evaluation step.\n");
-  } else {
-      res = eval(tree, lvar);
-     printf("\n/*Result: %d*/\n", res);
-  }
-  return errorCode;
+	int res;
+  	if (noEval) {
+		fprintf(stderr, "\nSkipping evaluation step.\n");
+	}
+	else {
+		res = eval(tree, lvar);
+		printf("\n/*Result: %d*/\n", res);
+	}
+	return errorCode;
 }
 
 PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
