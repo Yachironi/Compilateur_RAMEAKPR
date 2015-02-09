@@ -245,8 +245,7 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
 bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
-bool checkMethodeStatic(PMETH methode);
-bool checkMethode(PMETH methode);
+bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 
 /** AUTRE **/
 void evalProgramme(TreeP programme);
@@ -279,7 +278,7 @@ bool checkDoublon(char** variable,int n);
   * A voire
   */
 bool contientClasseInst(PVAR classe, TreeP droite);
-bool checkListOptArg(PVAR var);
+bool checkListOptArg(PVAR var, PMETH methode);
 bool existeMethodeOverride(PCLASS home,PMETH methode); /* JULIEN ? */
 
 

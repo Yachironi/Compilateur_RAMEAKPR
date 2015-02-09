@@ -437,6 +437,117 @@ bool checkProgramme(TreeP prog){
 }
 
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl){
+  if(arbre == NULL)
+  {
+    return TRUE;    /* arriver a la fin des instructions */
+  }
+  if(listeDecl == NULL)
+  {
+    if(getChild(arbre,1)==NULL)
+    {
+      if(getChild(arbre,2)==NULL)
+      {
+        return TRUE;
+      }
+    }
+  }
+  else
+  {
+    if(getChild(arbre,1)!=NULL)
+    {
+     TreeP lInst = getChild(arbre,1);
+     TreeP instruction = getChild(lInst,0);
+     PCLASS type = NULL;
+     PCLASS type2 = NULL;
+     bool instruction1 =FALSE;
+     bool instruction2 =FALSE;
+     char* message = NEW(SIZE_ERROR,char);
+     
+     switch(instruction->op)
+     {
+        case EXPRESSIONRETURN :
+          if(methode == NULL)
+          {
+            return FALSE;
+          }
+          else
+          {
+            type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
+            if(!equalsType(type,methode->typeRetour))
+            {
+              sprintf(message,"Erreur de return : %s ",methode->nom);
+              pushErreur(message,courant,methode,listeDecl);
+              return FALSE;
+            }
+            return (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
+          }
+        break;
+
+        case ETIQUETTE_AFFECT : 
+            type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
+            type2 = getType(getChild(instruction,1),instruction,courant,methode,listeDecl);
+            if(!equalsType(type,type2))
+            {
+              sprintf(message,"Instruction : affectation incorrecte entre deux types differents");
+              pushErreur(message,courant,methode,listeDecl);
+              return FALSE;
+            }
+            return (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
+        break; 
+
+        case IFTHENELSE :
+            type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
+            if(!equalsType(type,getClasseBis(listeDeClass,"Integer")))
+            {
+              sprintf(message,"Instruction : la condition dans le if n'est pas un Integer");
+              pushErreur(message,courant,methode,listeDecl);
+              return FALSE;
+            }
+            instruction1 = checkBloc(getChild(instruction,1), instruction, courant,methode,listeDecl);
+            instruction2 = checkBloc(getChild(instruction,2), instruction, courant,methode,listeDecl);
+            return instruction1 && instruction2;
+        break;
+
+        case RETURN_VOID : 
+          return equalsType(getClasseBis(listeDeClass,"Void"),methode->typeRetour);
+        break;
+
+        case PLUSUNAIRE :
+        case MINUSUNAIRE :
+        case CONCATENATION :
+        case PLUSBINAIRE :
+        case MINUSBINAIRE : 
+        case DIVISION : 
+        case MULTIPLICATION :
+        case OPCOMPARATEUR : 
+        case CSTSTRING :
+        case CSTENTIER : 
+        case INSTANCIATION :
+        case ENVOIMESSAGE :
+        case SELECTION :
+        case IDENTIFICATEUR :
+          type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
+          if(type==NULL)
+          {
+            sprintf(message,"Instruction incorrecte");
+            pushErreur(message,courant,methode,listeDecl);
+            return FALSE;
+          }
+          return (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
+        break; 
+
+        case CONTENUBLOC :
+          checkBloc(getChild(instruction,0), instruction, courant,methode,listeDecl);
+        break;
+        
+
+        default : 
+        printf("L'etiquette : %d n'est pas pris en compte ", instruction->op);
+        return FALSE;
+
+     }
+    }
+  }
   return TRUE;
 }
 
@@ -619,7 +730,8 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
   while(tmp!=NULL)
   {
     /* /!!!\ Ici il s'arete des qu'une methode est fausse*/
-    if(!checkMethode(tmp))
+    /*bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
+    if(!checkMethode(arbre,ancien,courant,tmp,listeDecl))
     {
       /* Pas besoin du message = checkMethode en genere deja un
       char* message = NEW(SIZE_ERROR,char);
@@ -635,7 +747,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
 }
 
 
-bool checkMethode(PMETH methode)
+bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
     if(methode->typeRetour==NULL)
     {
@@ -650,22 +762,12 @@ bool checkMethode(PMETH methode)
 
     /*FIXME bool corps = checkBloc(methode->corps);*/
     /* FIXME : concat des messafes???*/
-    bool corps = TRUE;
     bool typeRetour = (methode->typeRetour!=NULL);
-    bool pvar = checkListOptArg(methode->params);
+    bool pvar = checkListOptArg(methode->params,methode);
 
     if(methode->isStatic)
     {
       redef = TRUE;
-      statique = checkMethodeStatic(methode);
-
-      if(!statique)
-      {
-          char* message = NEW(SIZE_ERROR,char);
-          sprintf(message,"Erreur dans la methode statique %s",methode->nom);
-          pushErreur(message,classActuel,methode,NULL);
-          return FALSE;
-      }
     }
     else
     {
@@ -673,12 +775,13 @@ bool checkMethode(PMETH methode)
       if(methode->isRedef)
       {
         /* FIXME : existeMethodeOverride */
-        redef = FALSE;
+        /*int methodeDansClasse(PCLASS classe, PMETH methode){*/
+        redef = methodeDansClasse(methode->home->classe_mere,methode);
 
         if(!redef)
         {
           char* message = NEW(SIZE_ERROR,char);
-          sprintf(message,"Erreur la methode %s de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          sprintf(message,"Erreur dans la methode override %s de la classe %s",methode->nom,methode->home->classe_mere->nom);
           pushErreur(message,classActuel,methode,NULL);
           return FALSE;
         }
@@ -695,23 +798,9 @@ bool checkMethode(PMETH methode)
      * Verifier le corps de la methode
      * if(method.static) checkListMethodeStatic
      */
-     return (typeRetour&&corps&&statique&&redef&&pvar);
-}
-
-/* 
- * Verifie qu'une methode statique est bien formee et qu'elle n'utilise pas des attribut
- * de classe (meme principe que le java)
- * On ne peut pas faire this-> qq chose ou this.
- */ 
-bool checkMethodeStatic(PMETH methode)
-{
-  /*
-   * Si la classe Point a un attribut x,y
-   * Si dans la methode il fait x = 1; -> erreur
-   * Verifier qu'elle n'utilise j'amais this ni super
-   */
-   return FALSE;   
-
+     /*bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)*/
+     bool bloc = checkBloc(methode->corps,arbre,courant,methode,listeDecl);
+     return (bloc&&typeRetour&&statique&&redef&&pvar);
 }
 
 bool checkCorp(PMETH methode)
@@ -720,10 +809,23 @@ bool checkCorp(PMETH methode)
   return FALSE;   
 }
 
-bool checkListOptArg(PVAR var)
+bool checkListOptArg(PVAR var, PMETH methode)
 {
-  /*FIXME : verifier que deux var n'ont pas meme parametre ou que le type retour = NULL*/
-    return FALSE;   
+    PVAR tmp = var;
+
+    while(tmp!=NULL)
+    {
+      if(tmp->type==NULL)
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Verifier les argument de la methode %s",methode->nom);
+        pushErreur(message,methode->home,methode,NULL);
+        return FALSE;
+      }
+      tmp = tmp->suivant;
+    }
+
+    return TRUE;   
 }
 
 /* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
