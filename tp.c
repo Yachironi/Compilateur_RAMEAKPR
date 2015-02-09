@@ -477,6 +477,7 @@ bool checkProgramme(TreeP prog){
 }
 
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl){
+  
   if(arbre == NULL)
   {
     return TRUE;    /* arriver a la fin des instructions */
@@ -497,15 +498,20 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     {
      TreeP lInst = getChild(arbre,1);
      TreeP instruction = getChild(lInst,0);
+     printf("mon etiquette est :::: =======<<<<<>>>>> lInst %d\n", lInst->op);
+
+
      PCLASS type = NULL;
      PCLASS type2 = NULL;
      bool instruction1 =FALSE;
      bool instruction2 =FALSE;
+     bool resultat = FALSE;
      char* message = NEW(SIZE_ERROR,char);
-     
+     printf(" ETIQUEEERTTTEEE----------------------------%d\n", instruction->op);
      switch(instruction->op)
      {
         case EXPRESSIONRETURN :
+          printf("------------------je suis dans une EXPRESSION RETURN");
           if(methode == NULL)
           {
             return FALSE;
@@ -519,11 +525,13 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
               pushErreur(message,courant,methode,listeDecl);
               return FALSE;
             }
-            return (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
+            resultat = (getType(getChild(instruction,1),instruction,courant,methode,listeDecl)!=NULL);
+            return checkBloc(lInst, instuction, courant, methode, listeDecl) && resultat;
           }
         break;
 
         case ETIQUETTE_AFFECT : 
+        printf("------------------je suis dans une ETIQUETTE_AFFECT");
             type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
             type2 = getType(getChild(instruction,1),instruction,courant,methode,listeDecl);
             if(!equalsType(type,type2))
@@ -536,6 +544,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         break; 
 
         case IFTHENELSE :
+        printf("------------------je suis dans une IFTHENELSE");
             type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
             if(!equalsType(type,getClasseBis(listeDeClass,"Integer")))
             {
@@ -549,6 +558,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         break;
 
         case RETURN_VOID : 
+          printf("------------------je suis dans une RETURN_VOID");
           return equalsType(getClasseBis(listeDeClass,"Void"),methode->typeRetour);
         break;
 
@@ -566,6 +576,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         case ENVOIMESSAGE :
         case SELECTION :
         case IDENTIFICATEUR :
+        printf("------------------je suis dans une EXPR");
           type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
           if(type==NULL)
           {
@@ -577,7 +588,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
         break; 
 
         case CONTENUBLOC :
-          checkBloc(getChild(instruction,0), instruction, courant,methode,listeDecl);
+          checkBloc(getChild(instruction,1), instruction, courant,methode,listeDecl);
         break;
         
 
@@ -1030,7 +1041,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     return NULL;
   }
   PCLASS tmpDebug = NULL;
-   PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
+  PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
   printf("1\n");
   printf("arbre NIL : ? %d\n",arbre==NULL?TRUE:FALSE );
   printf("Etiquette %d\n",arbre->op );
@@ -1076,10 +1087,10 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
     type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
     type2 = getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
-   printf("type = NULL ? %s type2 = NULL ? %s\n",type->nom,type2->nom );
+    printf("type = NULL ? %s type2 = NULL ? %s\n",type->nom,type2->nom );
     if(equalsType(type,type2)){
-     printf("EST TU ICI ?\n");
-      return type;
+    printf("EST TU ICI ?\n");
+    return type;
     }
     else
     {
@@ -1222,7 +1233,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case LIST_INSTRUCTION:
-        return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
+        return getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
       break;
 
     case INSTANCIATION : 
