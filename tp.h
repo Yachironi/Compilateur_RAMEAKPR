@@ -229,6 +229,7 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home);
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init);
 PCLASS getClasse(PCLASS listeClass,char *nom);
+bool estDansListClasse(PCLASS listeClasse, char *nom);
 bool methodeDansClasse(PCLASS classe, PMETH methode);
 bool memeVar(PVAR var1, PVAR var2);
 PCLASS getClasseBis(PCLASS listeClass,char *nom);

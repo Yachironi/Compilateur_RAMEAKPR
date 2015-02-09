@@ -118,7 +118,7 @@ YieldOpt : YIELD expr     	{$$=makeTree(ETIQUETTE_YIELD, 1, $2);}
 
 ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt 
             {
-		$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6);
+		$$=makeListVar($3,getClasseBis(listeDeClass,$5),$2,$6);
             	$$->suivant=$8;
             }
             ;
@@ -176,7 +176,7 @@ BlocOpt : Bloc 		   	{$$=$1;}
 DefClass : CLASS IDCLASS 
 {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
-	if(getClasse(listeDeClass, $2) != NULL){
+	if(estDansListClasse(listeDeClass, $2) == TRUE){
 		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
 		sprintf(message,"Erreur la classe %s est deja declare",$2);
@@ -322,7 +322,7 @@ ContenuClassOpt : LDeclChampsOpt LDeclMethodeOpt  {$$=makeTree(CONTENUCLASS,2,ma
  * var [static] nom : type [:= expression]; 
  */
 LDeclChampsOpt : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt  
-       			{$$=makeListVar($3,getClasse(listeDeClass,$5),$2,$6); $$->suivant=$8;}
+       			{$$=makeListVar($3,getClasseBis(listeDeClass,$5),$2,$6); $$->suivant=$8;}
               |     	{$$=NIL(SVAR);}
               ;
 
@@ -342,7 +342,7 @@ AffectExprOpt : AFFECT expr    	{$$=makeTree(ETIQUETTE_AFFECT, 1, $2);}
  */
 
 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr 
-      {$$=makeMethode($3,$2,$9,getClasse(listeDeClass,$8),$5,classActuel);}
+      {$$=makeMethode($3,$2,$9,getClasseBis(listeDeClass,$8),$5,classActuel);}
   ;
 
 /* Liste de methode */
@@ -369,13 +369,13 @@ LParam : Param        		{$$=$1;}
         | Param','LParam    	{$1->suivant=$3; $$=$1;}
         ;
 
-Param : ID':' IDCLASS     {$$= makeListVar($1,getClasse(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
+Param : ID':' IDCLASS     {$$= makeListVar($1,getClasseBis(listeDeClass,$3),0,NIL(Tree));} /* 0 = var non static */
           ;   
           
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 {
 
-	$$=getClasse(listeDeClass, $2);
+	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
 	printf("le nom de la classe est : %s",$$->nom);
 	char* message = NEW(SIZE_ERROR,char);
 	if($$ == NULL){
@@ -384,7 +384,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		pushErreur(message,classActuel,NULL,NULL);
 	}
 	else{
-    classActuel->appel_constructeur_mere = $4;
+		classActuel->appel_constructeur_mere = $4;
 		
 		/* TODO */
 		/*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
@@ -421,8 +421,8 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 	}
 } 
                | /* epsilon */        {$$=NIL(SCLASS);}
->>>>>>> fe74088c5e25edcda23e31c4716114112febe606
                ;
+
 ListOptArg :        {$$=NIL(Tree);}
      | LArg         {$$=$1;}
            ;
