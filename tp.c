@@ -1142,21 +1142,6 @@ EvalP makeEvalTree(TreeP tree){
  * selon la semantique de l'operateur (cas du IF, etc.)
  */
 
-/*
-
-expr : PLUS expr %prec unaire   	{ $$=makeTree(PLUSUNAIRE, 1, $2); }
-       | MINUS expr %prec unaire  	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr    	 	{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      		{ $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      		{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr OPCOMPARATEUR expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante      		{ $$=$1; }
-       | instanciation      		{ $$=$1; }
-       | envoiMessage     		{ $$=$1; }
-       | OuRien       			{ $$=$1; }
-=======
 /** Renvoie la longueur d'une chaine **/
 int sizeString(char *str){
 	int size=0;
@@ -1200,20 +1185,30 @@ EvalP evalExpr(TreeP tree){
 		case CSTSTRING:
 			return makeEvalStr(tree->u.children[0]->u.str);
 
-		/** TODO  Comment faire pour RELOP? --> OPCOMPARATEUR + SI ON LAISSE COMME SA REDEFINIR LES ETIQUETTES SUIVANTES **/
-		case EQ:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val == evalExpr(tree->u.children[1])->u.val);
-		case NE:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val != evalExpr(tree->u.children[1])->u.val);
-		case GT:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val > evalExpr(tree->u.children[1])->u.val);
-		case GE:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val >= evalExpr(tree->u.children[1])->u.val);
-		case LT:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val < evalExpr(tree->u.children[1])->u.val);
-		case LE:
-			return makeEvalInt(evalExpr(tree->u.children[0])->u.val <= evalExpr(tree->u.children[1])->u.val);
-
+		case OPCOMPARATEUR:
+			if(tree->u.children[2]->op == EQ){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val == evalExpr(tree->u.children[1])->u.val);
+			}
+			else if(tree->u.children[2]->op == NE){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val != evalExpr(tree->u.children[1])->u.val);
+			}
+			else if(tree->u.children[2]->op == GT){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val > evalExpr(tree->u.children[1])->u.val);
+			}
+			else if(tree->u.children[2]->op == GE){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val >= evalExpr(tree->u.children[1])->u.val);
+			}
+			else if(tree->u.children[2]->op == LT){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val < evalExpr(tree->u.children[1])->u.val);
+			}
+			else if(tree->u.children[2]->op == LE){
+				return makeEvalInt(evalExpr(tree->u.children[0])->u.val <= evalExpr(tree->u.children[1])->u.val);
+			}
+			else{
+				/* Probleme */
+				return NIL(Eval);	/* FIXME a changer */
+			}
+	
 		case INSTANCIATION:
 			return evalInstanciation(tree);
 
