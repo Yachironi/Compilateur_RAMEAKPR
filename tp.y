@@ -403,7 +403,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
 			et yc de Point ont les valeurs respectives xc et yc **/
 		
-	/** C'est de l'eval : attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
+	/** C'est de l'eval : FIXME attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
 	/*	COMPLETEMENT FAUX CAR L'ARBRE N'EST PAS DANS LE BON SENS
 		TreeP listOptArg = $4;
 		PVAR paramConstructeur = $$->param_constructeur;

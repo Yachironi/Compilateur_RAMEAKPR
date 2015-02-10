@@ -1012,6 +1012,63 @@ VarDeclP evalDecls (TreeP tree) {
 }
 
 
+/* Methode permettant de créer un type EvalP de type char* */
+EvalP makeEvalStr(char *str){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_STR;
+	strcpy(eval->u.str, str);
+
+	eval->u.str = strdup(str);
+
+	return eval;
+}
+
+/* Methode permettant de créer un type EvalP de type int */
+EvalP makeEvalInt(int val){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_INT;
+	eval->u.val=val;
+	return eval;
+}
+
+/* Methode permettant de créer un type EvalP de type PVAR */
+EvalP makeEvalVar(PVAR var){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_PVAR;
+	/* FIXME : Pointeur ou nouvelle instance ? */
+	eval->u.var = makeListVar(var->nom, var->type, var->categorie, var->init);
+	return eval;
+}
+
+/* Methode permettant de créer un type EvalP de type PCLASS */
+EvalP makeEvalClasse(PCLASS classe){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_PCLASS;
+	/* FIXME : Pointeur ou nouvelle instance ? */
+	eval->u.classe = makeClasse(classe->nom, classe->param_constructeur, classe->corps_constructeur, classe->liste_methodes, classe->liste_champs, classe->classe_mere, classe->isExtend);
+	return eval;
+}
+
+/* Methode permettant de créer un type EvalP de type PMETH */
+EvalP makeEvalMethode(PMETH methode){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_PMETH;
+	/* FIXME : Pointeur ou nouvelle instance ? */
+	eval->u.methode = makeMethode(methode->nom, 0, methode->corps, methode->typeRetour, methode->params, methode->home);
+	eval->u.methode->isStatic = methode->isStatic;
+	eval->u.methode->isRedef = methode->isRedef;
+	return eval;
+}
+
+/* Methode permettant de créer un type EvalP de type TreeP */
+EvalP makeEvalTree(TreeP tree){
+	EvalP eval = NEW(1, Eval);
+	eval->type = EVAL_TREEP;
+	eval->u.tree = tree;	/* FIXME : Pointeur ou nouvelle instance ? */
+	return eval;
+}
+
+
 /* Evaluation par parcours recursif de l'arbre representant une expression. 
  * Les valeurs des identificateurs situes aux feuilles de l'arbre sont a
  * rechercher dans la liste decls
@@ -1019,75 +1076,125 @@ VarDeclP evalDecls (TreeP tree) {
  * selon la semantique de l'operateur (cas du IF, etc.)
  */
 
-int evalExpr(TreeP tree){
-	if(tree == NIL(Tree))	return 0;
-/*
+/** Renvoie la longueur d'une chaine **/
+int sizeString(char *str){
+	int size=0;
+	while(str[size] != '\0'){
+		size++;
+	}
+	return size;
+}
 
-expr : PLUS expr %prec unaire   	{ $$=makeTree(PLUSUNAIRE, 1, $2); }
-       | MINUS expr %prec unaire  	{ $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr   		{ $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr    	 	{ $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr    		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr      		{ $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr      		{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
-       | constante      		{ $$=$1; }
-       | instanciation      		{ $$=$1; }
-       | envoiMessage     		{ $$=$1; }
-       | OuRien       			{ $$=$1; }
+/** TODO FIXME : Question : besoin d'une PVAR qui est "l'environnement" ????? Faire passer dans les methodes ou en var globale?? **/
 
-*/
-
-/*
-
-// PROBLEME ICI : evalExpr renvoie parfois des int float ou autre, et des fois des char*
+/** Methode eval d'une expression **/
+EvalP evalExpr(TreeP tree){
+	if(tree == NIL(Tree))	return NIL(Eval);
+	char* chaine;
+	int sizeConcat;
 	switch (tree->op) {
 		case PLUSUNAIRE:
 			return evalExpr(tree->u.children[0]);
 		case MINUSUNAIRE:
-			return 0-evalExpr(tree->u.children[0]);
+			return makeEvalInt(0-evalExpr(tree->u.children[0])->u.val);
 		case CONCATENATION:
-			char *chaine = calloc(sizeof(char));
-			strcat(chaine, evalExpr(tree->u.children[0]);
-			return strcat(chaine, evalExpr(tree->u.children[1]);
-		case PLUSBINAIRE;
-			return (evalExpr(tree->u.children[0]) + evalExpr(tree->u.children[1]));
-		case MINUSBINAIRE;
-			return (evalExpr(tree->u.children[0]) - evalExpr(tree->u.children[1]));
+			sizeConcat=(sizeString(evalExpr(tree->u.children[0])->u.str)+sizeString(evalExpr(tree->u.children[1])->u.str));
+			chaine = calloc(sizeConcat, sizeof(char));
+			chaine = strdup(evalExpr(tree->u.children[0])->u.str);
+			strcat(chaine, evalExpr(tree->u.children[1])->u.str);
+			return makeEvalStr(chaine);
+		case PLUSBINAIRE:
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val + evalExpr(tree->u.children[1])->u.val);
+		case MINUSBINAIRE:
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val - evalExpr(tree->u.children[1])->u.val);
 		case DIVISION:
-			return (evalExpr(tree->u.children[0]) / evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val / evalExpr(tree->u.children[1])->u.val);
 		case MULTIPLICATION:
-			return (evalExpr(tree->u.children[0]) * evalExpr(tree->u.children[1]));
-		case CSTE:
-			return tree->u.val;
-		case CSTS:
-			return tree->u.str;
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val * evalExpr(tree->u.children[1])->u.val);
+		case CSTENTIER:
+			return makeEvalInt(tree->u.children[0]->u.val);
 
-		// Comment faire pour RELOP?
+		case IDENTIFICATEUR:
+		case CSTSTRING:
+			return makeEvalStr(tree->u.children[0]->u.str);
+
+		/** TODO  Comment faire pour RELOP? --> OPCOMPARATEUR + SI ON LAISSE COMME SA REDEFINIR LES ETIQUETTES SUIVANTES **/
 		case EQ:
-			return (evalExpr(tree->u.children[0]) == evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val == evalExpr(tree->u.children[1])->u.val);
 		case NE:
-			return (evalExpr(tree->u.children[0]) != evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val != evalExpr(tree->u.children[1])->u.val);
 		case GT:
-			return (evalExpr(tree->u.children[0]) > evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val > evalExpr(tree->u.children[1])->u.val);
 		case GE:
-			return (evalExpr(tree->u.children[0]) >= evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val >= evalExpr(tree->u.children[1])->u.val);
 		case LT:
-			return (evalExpr(tree->u.children[0]) < evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val < evalExpr(tree->u.children[1])->u.val);
 		case LE:
-			return (evalExpr(tree->u.children[0]) <= evalExpr(tree->u.children[1]));
+			return makeEvalInt(evalExpr(tree->u.children[0])->u.val <= evalExpr(tree->u.children[1])->u.val);
 
-		// Faire eval de instanciation, envoiMessage et OuRien
+		case INSTANCIATION:
+			return evalInstanciation(tree);
+
+		case ENVOIMESSAGE:
+			return evalEnvoiMessage(tree);
+
+		case SELECTION :
+			return evalSelection(tree); 
 
 		default: 
 			fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
 			exit(UNEXPECTED);
 	}	
+
+	return NIL(Eval);
+}
+
+EvalP evalInstanciation(TreeP tree){
+	return NIL(Eval);
+	/*
+	tree->u.children[0] = IDCLASS
+	tree->u.children[1] = ListOptArg
 	*/
-	return 0;
+
+}
+
+EvalP evalEnvoiMessage(TreeP tree){
+	return NIL(Eval);
+	/*
+	tree->u.children[0];
+	tree->u.children[1];
+	tree->u.children[2];
+	*/
+}
+
+EvalP evalSelection(TreeP tree){
+	return NIL(Eval);
+	/*
+	// IDCLASS'.'ID
+	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
+
+	}	
+	// envoiMessage'.'ID
+	else if(tree->u.children[0]->op == ENVOIMESSAGE){
+
+	}
+	// OuRien '.' ID : OuRien = expr ou Cible (=ID ou selection)
+	else if(tree->u.children[0]->op == IDENTIFICATEUR){
+		// ID '.' ID
+	}
+	else if(tree->u.children[0]->op == SELECTION){
+		// selection '.' ID
+	}
+	else{
+		// normalement c'est expr '.' ID	
+	}
+	
+	*/
 }
 
 
+
+/** A NE PAS CONSIDERER : C'EST LE EVAL DU TP **/
 int eval(TreeP tree, VarDeclP decls) {
 	if (tree == NIL(Tree)) { exit(UNEXPECTED); }
 	switch (tree->op) {
@@ -1139,6 +1246,11 @@ int evalMain(TreeP tree, VarDeclP lvar) {
 	}
 	return errorCode;
 }
+/** FIN DE CE QUI N'EST PAS A CONSIDERER **/
+
+
+
+
 
 PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
@@ -1168,7 +1280,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
   switch(arbre->op){
     case MINUSUNAIRE:
-    case PLUSUNAIRE :
+    case PLUSUNAIRE:
       type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
       
       if(type!=NULL && strcmp(type->nom,"Integer")!=0)
