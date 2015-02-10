@@ -508,8 +508,8 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     if(getChild(arbre,1)!=NULL)   /* Fixme : A verifier les if */
     {
     printf("getChild arbre 1 n'est pas null");
-     TreeP lInst = getChild(arbre,1);
-     TreeP instruction = getChild(lInst,0);
+    TreeP lInst = getChild(arbre,1);
+    TreeP instruction = getChild(lInst,0);
 
 
      PCLASS type = NULL;
