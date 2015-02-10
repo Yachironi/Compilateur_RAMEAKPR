@@ -2262,7 +2262,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
     {
      printf("XYZXYZ 2\n");
       SCLASS tmp = *liste;
-      PCLASS getTypeRetour = getType(appelMethode,appelMethode, courant, methode, listeDecl);
+      PCLASS getTypeRetour = getType(appelMethode,NULL, courant, methode, listeDecl);
       /*printf("3 ?????? \n");
      printf("getTypeRetour : %s\n",getTypeRetour->nom);*/
 
