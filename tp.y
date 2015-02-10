@@ -11,9 +11,9 @@
  * Bison ecrase le contenu de tp_y.h a partir de la description de la ligne
  * suivante. C'est donc cette ligne qu'il faut adapter si besoin, pas tp_y.h !
  */
-%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS YIELD IF THEN ELSE NEWO PLUS MINUS RELOP AFFECT MUL DIV CONCAT
+%token CLASS VAR EXTENDS IS DEF OVERRIDE RETURNS YIELD IF THEN ELSE NEWO PLUS MINUS AFFECT MUL DIV CONCAT
 %token <S> ID CSTS IDCLASS RETURN STATIC
-%token <I> CSTE
+%token <I> CSTE RELOP
 
 /* indications de precedence d'associativite. Les operateurs sur une meme
  * ligne (separes par un espace) ont la meme priorite. Les ligns sont donnees
@@ -403,7 +403,7 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
 			et yc de Point ont les valeurs respectives xc et yc **/
 		
-	/** C'est de l'eval : attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
+	/** C'est de l'eval : FIXME attente d'une fonction qui me rend le TreeP dans le bon ordre --> Amin et Gishan s'en occupe **/
 	/*	COMPLETEMENT FAUX CAR L'ARBRE N'EST PAS DANS LE BON SENS
 		TreeP listOptArg = $4;
 		PVAR paramConstructeur = $$->param_constructeur;
@@ -447,7 +447,7 @@ expr : PLUS expr %prec unaire   	{ $$=makeTree(PLUSUNAIRE, 1, $2); }
        | expr MINUS expr    		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
        | expr DIV expr      		{ $$=makeTree(DIVISION, 2, $1, $3); }
        | expr MUL expr      		{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | expr RELOP expr    		{ $$=makeTree(OPCOMPARATEUR, 3 , $1, $3, makeLeafInt(OPERATEUR,$2));}
        | constante      		{ $$=$1; }
        | instanciation      		{ $$=$1; }
        | envoiMessage     		{ $$=$1; }
@@ -472,7 +472,7 @@ selection : IDCLASS'.'ID  %prec '.'       {$$=makeTree(SELECTION, 2, makeLeafStr
  * regle qui defini soit une constante entiere, soit une constante d type string
  */
 constante : CSTS		{$$ = makeLeafStr(CSTSTRING,$1); }
-    	  | CSTE  		{$$ = makeLeafInt(CSTENTIER,$1); }
+    	  | CSTE  		{$$ = makeLeafInt(CSTENTIER,$1);}
           ;
 
 instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2), $4); }

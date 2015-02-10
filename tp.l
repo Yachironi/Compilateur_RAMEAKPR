@@ -32,7 +32,6 @@ Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
 #include "tp_y.h"
 #include <string.h> /* pour strdup */
 
-extern char *strdup(const char *s);
 extern void setError(int code);
 
 extern YYSTYPE yylval;
@@ -116,12 +115,12 @@ void lexError(char c) {
 "-"             { return(MINUS); }
 "*"             { return(MUL); }
 "/"             { return(DIV); }
-"="             { yylval.C = EQ; return(RELOP); } /*ici on stock l'opérateur VU et on le donne à Bison*/
-"<>"            { yylval.C = NE; return(RELOP); }
-"<"             { yylval.C = LT; return(RELOP); }
-"<="            { yylval.C = LE; return(RELOP); }
-">"             { yylval.C = GT; return(RELOP); }
-">="            { yylval.C = GE; return(RELOP); }
+"="             { yylval.I = EQ; return(RELOP); } /*ici on stock l'opérateur VU et on le donne à Bison*/
+"<>"            { yylval.I = NE; return(RELOP); }
+"<"             { yylval.I = LT; return(RELOP); }
+"<="            { yylval.I = LE; return(RELOP); }
+">"             { yylval.I = GT; return(RELOP); }
+">="            { yylval.I = GE; return(RELOP); }
 {Symbol}        { yylval.C = yytext[0]; return(yytext[0]); }
 ":="            { return AFFECT; }
 "&"		{ return(CONCAT);}	
