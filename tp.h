@@ -192,6 +192,11 @@ typedef struct _Eval{
   	} u;
 } Eval, *EvalP;
 
+typedef struct _ListEval{
+	EvalP eval;
+	struct _ListEval *suivant;
+}LEval, *LEvalP;
+
 EvalP makeEvalStr(char *str);
 EvalP makeEvalInt(int val);
 EvalP makeEvalVar(PVAR var);
@@ -287,6 +292,7 @@ EvalP evalExpr(TreeP tree);	/* a modifier tres probablement */
 EvalP evalSelection(TreeP tree);
 EvalP evalEnvoiMessage(TreeP tree);
 EvalP evalInstanciation(TreeP tree);
+LEvalP evalListArg(TreeP tree);
 int sizeString(char *str);
 
 

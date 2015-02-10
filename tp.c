@@ -1080,10 +1080,8 @@ VarDeclP evalDecls (TreeP tree) {
 EvalP makeEvalStr(char *str){
 	EvalP eval = NEW(1, Eval);
 	eval->type = EVAL_STR;
-	strcpy(eval->u.str, str);
-
-	eval->u.str = strdup(str);
-
+	eval->u.str = str;
+	/*eval->u.str = strdup(str);*/
 	return eval;
 }
 
@@ -1100,7 +1098,8 @@ EvalP makeEvalVar(PVAR var){
 	EvalP eval = NEW(1, Eval);
 	eval->type = EVAL_PVAR;
 	/* FIXME : Pointeur ou nouvelle instance ? */
-	eval->u.var = makeListVar(var->nom, var->type, var->categorie, var->init);
+	/*eval->u.var = makeListVar(var->nom, var->type, var->categorie, var->init);*/
+	eval->u.var = var;
 	return eval;
 }
 
@@ -1109,7 +1108,8 @@ EvalP makeEvalClasse(PCLASS classe){
 	EvalP eval = NEW(1, Eval);
 	eval->type = EVAL_PCLASS;
 	/* FIXME : Pointeur ou nouvelle instance ? */
-	eval->u.classe = makeClasse(classe->nom, classe->param_constructeur, classe->corps_constructeur, classe->liste_methodes, classe->liste_champs, classe->classe_mere, classe->isExtend);
+	/*eval->u.classe = makeClasse(classe->nom, classe->param_constructeur, classe->corps_constructeur, classe->liste_methodes, classe->liste_champs, classe->classe_mere, classe->isExtend);*/
+	eval->u.classe = classe;
 	return eval;
 }
 
@@ -1117,10 +1117,12 @@ EvalP makeEvalClasse(PCLASS classe){
 EvalP makeEvalMethode(PMETH methode){
 	EvalP eval = NEW(1, Eval);
 	eval->type = EVAL_PMETH;
-	/* FIXME : Pointeur ou nouvelle instance ? */
+	/* FIXME : Pointeur ou nouvelle instance ? 
 	eval->u.methode = makeMethode(methode->nom, 0, methode->corps, methode->typeRetour, methode->params, methode->home);
 	eval->u.methode->isStatic = methode->isStatic;
 	eval->u.methode->isRedef = methode->isRedef;
+	*/
+	eval->u.methode = methode;
 	return eval;
 }
 
@@ -1213,13 +1215,63 @@ EvalP evalExpr(TreeP tree){
 	return NIL(Eval);
 }
 
-EvalP evalInstanciation(TreeP tree){
-	return NIL(Eval);
-	/*
-	tree->u.children[0] = IDCLASS
-	tree->u.children[1] = ListOptArg
-	*/
+/*
+instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2), $4); }
+*/
 
+/** Exemple d'instanciation : new Point(xc, yc) **/
+EvalP evalInstanciation(TreeP tree){
+	if(tree == NIL(Tree))	return NIL(Eval);
+	/* Remarque : le nom de l'instance est pour l'instant à NULL et on lui affectera plus tard dans la regle + categorie = 0 par defaut*/
+
+	LEvalP listArg = evalListArg(tree->u.children[1]);
+	/**
+		TODO : A l'aide de evalListArg, appeler le constructeur de la classe IDCLASS
+			==> param_constructeur = la liste renvoyé par evalListArg
+			==> appel du corps
+	**/	
+
+
+	PVAR var = makeListVar(NULL, getClasseBis(listeDeClass, tree->u.children[0]->u.str), 0, NIL(Tree) /* TODO A MODIFIER */);
+	return makeEvalVar(var);
+}
+
+/** FIXME Renvoie une liste d'évaluation -> la liste est dans l'ordre **/
+LEvalP evalListArg(TreeP tree){
+	if(tree == NIL(Tree))	return NIL(LEval);	/* ou makeEvalTree(NIL(Tree)); */
+
+	/* Le but : récupérer les expr dans l'ordre et faire appel au constructeur de la classe IDCLASS */
+
+	LEvalP listEval;
+	/* On a une liste de type LArg, expr*/
+	if(tree->op == LISTEARG){
+		/* TODO Regarder les evalExpr + demander a Amin & Gishan comment avoir la PVAR d'un ID (exemple : xc -> comment avoir son type et sa valeur */
+		LEvalP listEvalPrec = NULL;
+		listEval->eval = evalExpr(tree->u.children[1]);
+		listEval->suivant = NULL;
+		TreeP tmp = tree;
+		tmp = tmp->u.children[0];
+		while(tmp != NIL(Tree) && tmp->op == LISTEARG){
+			listEvalPrec->eval = evalExpr(tree->u.children[1]);
+			listEvalPrec->suivant = listEval;
+			listEval = listEvalPrec;	/* TODO a verifier */
+			tmp = tmp->u.children[0];
+		}
+		/* Dans cette condition, on tombe sur une expr (la derniere) */
+		if(tmp != NIL(Tree)){
+			listEvalPrec->eval = evalExpr(tree->u.children[1]);
+			listEvalPrec->suivant = listEval;
+		}
+		/* Ici, listEvalPrec ne devrait pas etre null -> elle represente la liste des arguments dans l'ordre */
+		return listEvalPrec;
+	
+	}
+	/* on a pas une liste mais une expression */
+	else{
+		listEval->eval = evalExpr(tree);
+		listEval->suivant = NULL;
+		return listEval;
+	}
 }
 
 EvalP evalEnvoiMessage(TreeP tree){
@@ -1259,6 +1311,7 @@ EvalP evalSelection(TreeP tree){
 
 
 /** A NE PAS CONSIDERER : C'EST LE EVAL DU TP **/
+/*
 int eval(TreeP tree, VarDeclP decls) {
 	if (tree == NIL(Tree)) { exit(UNEXPECTED); }
 	switch (tree->op) {
@@ -1274,12 +1327,9 @@ int eval(TreeP tree, VarDeclP decls) {
 		case NE:
 			return (eval(getChild(tree, 0), decls) != eval(getChild(tree, 1), decls));
 
-		/** Distinguer les opérateurs unaires et binaires **/
 		case PLUS:
-			/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
 			return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
 		case MINUS:
-			/* si eval(getChild(tree, 0), decls) == NULL alors unaire?*/
 			return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
 
 		case MUL:
@@ -1305,11 +1355,13 @@ int evalMain(TreeP tree, VarDeclP lvar) {
 		fprintf(stderr, "\nSkipping evaluation step.\n");
 	}
 	else {
-		res = eval(tree, lvar);
-		printf("\n/*Result: %d*/\n", res);
+		res = eval(tree, lvar); 
+		printf("\n/-Result: %d-/\n", res);
 	}
 	return errorCode;
 }
+*/
+
 /** FIN DE CE QUI N'EST PAS A CONSIDERER **/
 
 
