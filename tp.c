@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
     printf("%s \n",parcourir->nom);
     parcourir = parcourir->suivant;
   }
- 	exit(0);
+ 	/*exit(0);*/
 
 	printf("tp.c -> res=%d\n", res);
 	if (programme == NULL) {
@@ -1094,7 +1094,7 @@ expr : PLUS expr %prec unaire   	{ $$=makeTree(PLUSUNAIRE, 1, $2); }
        | expr MINUS expr    		{ $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
        | expr DIV expr      		{ $$=makeTree(DIVISION, 2, $1, $3); }
        | expr MUL expr      		{ $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
+       | expr OPCOMPARATEUR expr    		{ $$=makeTree(OPCOMPARATEUR, 2, $1, $3); }
        | constante      		{ $$=$1; }
        | instanciation      		{ $$=$1; }
        | envoiMessage     		{ $$=$1; }
@@ -1293,7 +1293,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     break;
 
     case OPCOMPARATEUR :
-    type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
+   type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
     type2 = getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
     
     if(equalsType(type,type2) && strcmp(type->nom,"Integer")==0){
