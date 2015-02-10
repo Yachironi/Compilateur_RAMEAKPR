@@ -522,7 +522,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   if(arbre == NIL(Tree) || arbre==NULL)
   {
     printf("C'EST LA FIN DES HARICOTS\n");
-    printf("le dernier c'est : %d\n\n\n",ancien->op);
+    
     return TRUE;    /* arriver a la fin des instructions */
   }
   printf("--------------------%d\n", arbre->op);
@@ -786,10 +786,17 @@ bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR l
    * Si c'est le cas -> renvoye faux directement => et ajouter une erreur du style
    * "Corrigez la classe Mere %s avant",class->classe_mere->nom (utilisez sprintf)
    */
- printf("Entree 6\n");
+  printf("Entree 6\n");
   if(courant->isExtend)
   {
-    heritage = checkHeritage(courant);
+    if(courant->classe_mere==NULL)
+    {
+      heritage = FALSE;
+    }
+    else
+    {
+      heritage = checkHeritage(courant);
+    }
   }
   else
   {
@@ -1409,12 +1416,6 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
     case SELECTION : 
 
-      if(ancien!=NULL && (ancien->op == SELECTION || ancien->op == ENVOIMESSAGE))
-      {
-        return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
-      }
-      else
-      {
        printf("0\n");
         liste = transFormSelectOuEnvoi(arbre,liste);
        printf("1\n");             
@@ -1422,20 +1423,11 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
        printf("3----\n");
         return estCoherentEnvoi(liste, courant, methode,listeDecl);
        printf("4 a\n");
-      }
      printf("Apres .....\n");
     break;
 
     case ENVOIMESSAGE : 
         printf("HELLO 1\n");
-        if(ancien!=NULL &&(ancien->op == SELECTION || ancien->op == ENVOIMESSAGE))
-        {
-          printf("HELLO 2\n");
-          return getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
-          printf("HELLO 3\n");
-        }
-        else
-        {
           printf("HELLO 4\n");
           liste = transFormSelectOuEnvoi(arbre,liste);
           printf("HELLO 5\n");
@@ -1448,26 +1440,15 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
           }
           printf("APRES LISTE =:\n");
           return estCoherentEnvoi(liste, courant, methode,listeDecl);
-        } 
         printf("HELLO 6\n");
       break;
 
     case CSTENTIER:
-        if(integer->nom==NULL)
-        {
-        integer->nom = calloc(100,sizeof(char));
-        strcpy(integer->nom,"Integer");
-        }
-        return integer;
+        return getClasseBis(listeDeClass,"Integer");
       break;
     
     case CSTSTRING:
-        if(string->nom==NULL)
-        {
-        string->nom = calloc(100,sizeof(char));
-        strcpy(string->nom,"String");
-        }
-        return string;
+        return getClasseBis(listeDeClass,"String");
       break;
 
     case IDENTIFICATEUR:
@@ -1597,7 +1578,7 @@ printf("estCoherentEnvoi1\n");
         {
            printf("1.1.1\n");
             char* message = NEW(SIZE_ERROR,char);
-            sprintf(message,"%s inconnu ",tmp->elem->u.str);
+            sprintf(message,"%d inconnu ",tmp->elem->op);
             pushErreur(message,classe,methode,NULL);
             return NULL;
         }
