@@ -80,7 +80,7 @@ class Couleur(cinit: Integer)
     else if cinit = 0 then coul := 0; else { coul := 2; }
   }
 is {
-  var coul: Integer; 	/* initialise dans le constructeur */
+  var coul: Integer;   /* initialise dans le constructeur */
 
   def static blanc() returns Couleur := new Couleur(0)
 
@@ -192,5 +192,5 @@ class Test() is {
   var t : Test := new Test(); /* pour palier l'absence de methode statique... */
 is
   p2.move(p1.getx(), p1.gety());
- "\nDone !".println();
+  
 }
