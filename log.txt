@@ -1,0 +1,1136 @@
+tp.c -> avant res
+le nom de la classe est : Point--------------------------------------------------------------
+Entree 1
+Entree 2
+Arbre ----------------------------: 34
+--------------------34
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :20
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 move
+BOUM BOUM 2 p2
+BOUM BOUM 3 move
+elem ===== p2
+elem ===== move
+HELLO 5
+LISTE =: p2 
+LISTE =: move 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Point
+1.2
+3.6
+25-25-25
+Appartient : Point	move
+1_1_1_1_1
+avant-----q-s-qs--s-q Point -> 
+NOMMETH move
+Je compare methode : move et filles move
+Allez isVerif  : ? move 
+a.1
+a.3
+a.4
+a.6
+ETIQUETE   ----------- op : 40
+LISTE EST NULL 
+ABCABC
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 gety
+BOUM BOUM 2 p2
+BOUM BOUM 3 gety
+elem ===== p2
+elem ===== gety
+HELLO 5
+LISTE =: p2 
+LISTE =: gety 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Point
+1.2
+3.6
+25-25-25
+Appartient : Point	gety
+1_1_1_1_1
+avant-----q-s-qs--s-q Point -> 
+NOMMETH move
+Je compare methode : move et filles gety
+NOMMETH gety
+Je compare methode : gety et filles gety
+Allez isVerif  : ? gety 
+a.1
+a.3
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+AVANT 123 VIVA MASSY ---- ------- ------ 
+123 VIVA MASSY ---- ------- ------ move 
+123 VIVA MASSY ---- ------- ------ gety 
+123 VIVA MASSY ---- ------- ------ getx 
+123 VIVA MASSY ---- ------- ------ print 
+APRES 123 VIVA MASSY ---- ------- ------ 
+apres 25-25-25 GET TYPE RETOUR LISTE NULL= Integer
+ETIQUETE   ----------- op : 20
+XYZXYZ 2
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 2
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+LISTE GET TYPE = Point
+LISTE GET TYPE = Point
+Classe courante Point 
+CLASSSSE APP Point
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Point
+AppelMethode : Integer
+AppelMethode contient : 2
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 2 element
+return 4
+a.5
+Fin isVerif 0 
+apres 25-25-25 checkblock check false 5
+GETTYPE A FAIL !!!
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :20
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 getx
+BOUM BOUM 2 p1
+BOUM BOUM 3 getx
+elem ===== p1
+elem ===== getx
+HELLO 5
+LISTE =: p1 
+LISTE =: getx 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Point
+1.2
+3.6
+25-25-25
+Appartient : Point	getx
+1_1_1_1_1
+avant-----q-s-qs--s-q Point -> 
+NOMMETH move
+Je compare methode : move et filles getx
+NOMMETH gety
+Je compare methode : gety et filles getx
+NOMMETH getx
+Je compare methode : getx et filles getx
+Allez isVerif  : ? getx 
+a.1
+a.3
+a.1
+a.3
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+AVANT 123 VIVA MASSY ---- ------- ------ 
+123 VIVA MASSY ---- ------- ------ move 
+123 VIVA MASSY ---- ------- ------ gety 
+123 VIVA MASSY ---- ------- ------ getx 
+123 VIVA MASSY ---- ------- ------ print 
+APRES 123 VIVA MASSY ---- ------- ------ 
+apres 25-25-25 --------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :11
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 11
+2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :37
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :37
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+CACACACACACA 1
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas nullETIBHDVJAZHVBFJHZEBF :20
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 blanc
+BOUM BOUM 2 Couleur
+BOUM BOUM 3 blanc
+elem ===== Couleur
+elem ===== blanc
+HELLO 5
+LISTE =: Couleur 
+LISTE =: blanc 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+2.1
+2.2
+3.6
+25-25-25
+Appartient : Couleur	blanc
+1_1_1_1_1
+avant-----q-s-qs--s-q Couleur -> 
+NOMMETH blanc
+Je compare methode : blanc et filles blanc
+Allez isVerif  : ? blanc 
+a.1
+a.2
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+Fin isVerif 1 
+AVANT 123 VIVA MASSY ---- ------- ------ 
+123 VIVA MASSY ---- ------- ------ move 
+123 VIVA MASSY ---- ------- ------ gety 
+123 VIVA MASSY ---- ------- ------ getx 
+123 VIVA MASSY ---- ------- ------ print 
+APRES 123 VIVA MASSY ---- ------- ------ 
+apres 25-25-25 --------------------42
+a.a.a.3
+je suis ici autre 
+LE BLOC A REUSSI
+LE BLOC A REUSSI
+LE BLOC A REUSSI
+LE BLOC A REUSSI
+Entree 3
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : toString 
+Je check la methode toString
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+le dernier c'est : 34
+
+
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : println 
+Je check la methode println
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+le dernier c'est : 34
+
+
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : print 
+Je check la methode print
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+le dernier c'est : 34
+
+
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+1
+arbre NIL : ? 0
+Etiquette 10
+2
+1
+arbre NIL : ? 0
+Etiquette 23
+2
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 toString
+BOUM BOUM 2 cpt
+BOUM BOUM 3 toString
+elem ===== cpt
+elem ===== toString
+HELLO 5
+LISTE =: cpt 
+LISTE =: toString 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Integer
+1.2
+3.6
+25-25-25
+Appartient : Integer	toString
+1_1_1_1_1
+avant-----q-s-qs--s-q Integer -> 
+NOMMETH toString
+Je compare methode : toString et filles toString
+Allez isVerif  : ? toString 
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+AVANT 123 VIVA MASSY ---- ------- ------ 
+123 VIVA MASSY ---- ------- ------ move 
+123 VIVA MASSY ---- ------- ------ gety 
+123 VIVA MASSY ---- ------- ------ getx 
+123 VIVA MASSY ---- ------- ------ print 
+APRES 123 VIVA MASSY ---- ------- ------ 
+apres 25-25-25 Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : move 
+Je check la methode move
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : gety 
+Je check la methode gety
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : getx 
+Je check la methode getx
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : print 
+Je check la methode print
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : blanc 
+Je check la methode blanc
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : noir 
+Je check la methode noir
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : gris 
+Je check la methode gris
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : name 
+Je check la methode name
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : estGris 
+Je check la methode estGris
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+1
+arbre NIL : ? 0
+Etiquette 10
+2
+1
+arbre NIL : ? 0
+Etiquette 23
+2
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+BOUM BOUM 1 toString
+BOUM BOUM 2 cpt
+BOUM BOUM 3 toString
+elem ===== cpt
+elem ===== toString
+HELLO 5
+LISTE =: cpt 
+LISTE =: toString 
+APRES LISTE =:
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Integer
+1.2
+3.6
+25-25-25
+Appartient : Integer	toString
+1_1_1_1_1
+avant-----q-s-qs--s-q Integer -> 
+NOMMETH toString
+Je compare methode : toString et filles toString
+Allez isVerif  : ? toString 
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+AVANT 123 VIVA MASSY ---- ------- ------ 
+123 VIVA MASSY ---- ------- ------ move 
+123 VIVA MASSY ---- ------- ------ gety 
+123 VIVA MASSY ---- ------- ------ getx 
+123 VIVA MASSY ---- ------- ------ print 
+APRES 123 VIVA MASSY ---- ------- ------ 
+apres 25-25-25 Entree 8
+Gestion de la classe PointColore 
+
+
+
+
+
+
+
+
+_______DEBUT__________
+
+
+
+
+
+
+
+Classe courante : PointColore : sa classe mere Point
+[30mVALEURRRRRRR = xc 
+[30mVALEURRRRRRR = yc 
+a.6
+ETIQUETE   ----------- op : 40
+LISTE EST NULL 
+ABCABC
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.2
+cacaca
+cacaca
+cacaca
+1.1.3
+1.1.3
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+GET TYPE RETOUR LISTE NULL= Integer
+ETIQUETE   ----------- op : 7
+XYZXYZ 2
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.2
+cacaca
+cacaca
+cacaca
+1.1.3
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+ : : : : cpt
+ : : : : x
+ : : : : y
+ : : : : name
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+LISTE GET TYPE = Integer
+LISTE GET TYPE = Integer
+Classe courante PointColore 
+CLASSSSE APP Integer
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Integer
+AppelMethode : Integer
+AppelMethode contient : 2
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 2 element
+BYE BYE
+TRUUUUUUUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+
+
+
+
+
+
+
+________FIN_________
+
+
+
+
+
+
+
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : couleur 
+Je check la methode couleur
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : colore 
+Je check la methode colore
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : setCouleur 
+Je check la methode setCouleur
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : estGris 
+Je check la methode estGris
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : print 
+Je check la methode print
+1
+2
+3
+3.1
+3.2
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : getx 
+Je check la methode getx
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : gety 
+Je check la methode gety
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------37
+a.a.a.3
+je suis ici autre 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : move 
+Je check la methode move
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+a.a.a.4
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+--------------------------------------------------------------
+FIN de la COMPILATION
+Il y a des probleme dans le code !
+[31mErreur 1 : Instruction : erreur d'instruction 20
+[30m[30m[31mErreur 2 : Instruction incorrecte
+[30m[30m[31mErreur 3 : Erreur la methode move n'appartient pas a Point
+[30m[30m[31mErreur 4 : Erreur la methode move est mal appele ou n'existe pas
+[30m[30m[31mErreur 5 : La methode de classe move est mal appelee
+[30m[30m
+
+
+
+
+
+
+
+move 
+gety 
+getx 
+print 
