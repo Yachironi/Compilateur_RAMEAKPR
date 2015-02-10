@@ -32,7 +32,6 @@ Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
 #include "tp_y.h"
 #include <string.h> /* pour strdup */
 
-extern char *strdup(const char *s);
 extern void setError(int code);
 
 extern YYSTYPE yylval;
