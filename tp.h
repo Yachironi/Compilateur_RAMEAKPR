@@ -288,8 +288,8 @@ void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
 
-/** Julien */
-EvalP evalExpr(TreeP tree);	/* a modifier tres probablement */
+/** Peut etre modifier et introduire un environnement => PVAR */
+EvalP evalExpr(TreeP tree);
 EvalP evalSelection(TreeP tree);
 EvalP evalEnvoiMessage(TreeP tree);
 EvalP evalInstanciation(TreeP tree);
