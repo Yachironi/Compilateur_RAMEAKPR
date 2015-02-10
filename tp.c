@@ -464,7 +464,6 @@ bool checkProgramme(TreeP prog){
 printf("Arbre ----------------------------: %d\n", bloc->op);
 
 bool blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
-  exit(0);
  printf("Entree 3\n");
   if(!checkLC)
   {
@@ -805,11 +804,14 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
    /*FIXME ajouter appel de checkBlock sur le bloc du constructeur*/
    printf("\n\n\n\n\n\n\n\n________FIN_________\n\n\n\n\n\n\n\n");
   }
+  
   printf("Aucune methode avant\n");
+  
   if(courant->liste_methodes==NULL)
   {
     return TRUE;
   }
+
   printf("AUcune methode apres\n");
   SMETH copie = *courant->liste_methodes;
   PMETH tmp = NEW(1,SMETH);
@@ -1478,7 +1480,6 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
     pushErreur(message,mere,methode,NULL);
     return NULL;
   }
-
   if(isEnvoiMessage)
   {
    printf("1_1_1_1_1\n");
