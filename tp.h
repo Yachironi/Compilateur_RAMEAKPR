@@ -64,6 +64,7 @@ extern char *strdup(const char *s);
 #define LISTEPARAM 41
 #define LIST_INSTRUCTION 42
 #define LISTEVAR 43
+#define OPERATEUR 44
 
 #define MSG_VOID "void"
 

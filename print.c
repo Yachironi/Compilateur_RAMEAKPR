@@ -112,7 +112,8 @@ void pprintTreeMain(TreeP tree) {
 		case MINUSBINAIRE:   	printf("op=MINUSBINAIRE"); break;
 		case DIVISION:    	printf("op=DIVISION"); break;
 		case MULTIPLICATION:    printf("op=MULTIPLICATION"); break;
-		case OPCOMPARATEUR:   	printf("op=OPCOMPARATEUR"); break;
+		case OPCOMPARATEUR:     printf("op=OPCOMPARATEUR"); break;
+		case OPERATEUR:     printf("op=OPERATEUR"); break;
 		case SELECTION:    	printf("op=SELECTION"); break;
 		case CONSTANTE:    	printf("op=CONSTANTE"); break;
 		case EXPRESSION:  	printf("op=EXPRESSION"); break;
@@ -144,7 +145,20 @@ void pprintTreeMain(TreeP tree) {
 		default: break;
 	}
 	printf(")\n");
-	if(tree->op==RETURN_VOID || tree->op==IDENTIFICATEUR || tree->op==IDENTIFICATEURCLASS || tree->op==CSTSTRING){
+	if(tree->op==OPERATEUR){
+		printf("=============================================\n");
+		/* printf("OPERATEUR = %d \n", tree->u.val);*/
+		switch(tree->u.val){
+				case EQ : printf("OPERATEUR : <>\n");break;
+				case NE : printf("OPERATEUR : <>\n");break;
+				case LT : printf("OPERATEUR : <\n");break;
+				case LE : printf("OPERATEUR : <=\n");break;
+				case GT : printf("OPERATEUR : >\n");break;
+				case GE : printf("OPERATEUR : >=\n");break;
+				}
+		printf("=============================================\n");
+	}
+	else if(tree->op==RETURN_VOID || tree->op==IDENTIFICATEUR || tree->op==IDENTIFICATEURCLASS || tree->op==CSTSTRING){
 		printf("=============================================\n");
 		printf("---tree->u.str = %s\n", tree->u.str);
 		printf("=============================================\n");
