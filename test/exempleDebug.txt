@@ -82,7 +82,7 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
   var o : PointColore := new PointColore(0, 0, new Couleur(0));
   var coul1 : Couleur := new Couleur(1);
 is
-  p2.move(p1.x,p2.y);
+  p2.move(p1.x,p2.y).z;
   p1.getx();
   1+2;
   p1 := p2;

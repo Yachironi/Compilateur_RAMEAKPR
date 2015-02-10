@@ -6,6 +6,7 @@
 #include "tp.h"
 #include "tp_y.h"
 
+bool dansCheckBlocMain = FALSE;
 /*
  * FIXME : ajouter une methode makeErreur(...)
  */
@@ -125,6 +126,11 @@ int main(int argc, char **argv) {
 
 	printf("tp.c -> avant res\n");
 	res = yyparse();
+  if(res==1)
+  {
+    printf("Aucune verification a faire car syntax error\n");
+    exit(0);
+  }
   	printf("--------------------------------------------------------------\n");
   	bool checkProg = checkProgramme(programme);
   	printf("--------------------------------------------------------------\n");
