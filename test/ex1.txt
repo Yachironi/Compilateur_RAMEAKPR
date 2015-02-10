@@ -80,7 +80,7 @@ class Couleur(cinit: Integer)
     else if cinit = 0 then coul := 0; else { coul := 2; }
   }
 is {
-  var coul: Integer; 	/* initialise dans le constructeur */
+  var coul: Integer;   /* initialise dans le constructeur */
 
   def static blanc() returns Couleur := new Couleur(0)
 
@@ -192,31 +192,6 @@ class Test() is {
   var t : Test := new Test(); /* pour palier l'absence de methode statique... */
 is
   p2.move(p1.getx(), p1.gety());
-  o.setName("origine");
-  p2.move(p1.getx()-2*5-3, p1.gety());
-  o.print();
-  p2.print();
-  o.clone().print();
-  o.clone().move(54, 36).print();
-  /* Ne compilerait pas car clone() renvoie statiquement un Point */
-  /* o := o.clone(); */
-  p1 := p1.clone().move(+2, -3); 
-  p1.print();
-  o.clone().print();
-
-  "test(Point, PointColore, PointNoir)".println();
-  t.test(p1, o, pn);
-  "test(PointNoir, PointNoir, PointNoir)".println();
-  t.test(pn, pn, pn);
-  p1 := pn;
-  t.test2(o);
-  t.test2(pn);
-  o := pn;
-
-  "test(PointNoir, PointNoir, PointNoir)".println();
-  t.test(p1, o, pn);
-  t.test2(o);
-  t.test2(pn);
-
- "\nDone !".println();
+  
 }
+
