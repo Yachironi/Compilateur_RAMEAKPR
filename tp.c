@@ -1353,49 +1353,109 @@ EvalP evalInstanciation(TreeP tree){
 
 /** FIXME Renvoie une liste d'évaluation -> la liste est dans l'ordre **/
 LEvalP evalListArg(TreeP tree){
-  if(tree == NIL(Tree)) return NIL(LEval);  /* ou makeEvalTree(NIL(Tree)); */
 
-  /* Le but : récupérer les expr dans l'ordre et faire appel au constructeur de la classe IDCLASS */
-
-  LEvalP listEval;
-  /* On a une liste de type LArg, expr*/
-  if(tree->op == LISTEARG){
-    /* TODO Regarder les evalExpr + demander a Amin & Gishan comment avoir la PVAR d'un ID (exemple : xc -> comment avoir son type et sa valeur */
-    LEvalP listEvalPrec = NULL;
-    listEval->eval = evalExpr(tree->u.children[1]);
-    listEval->suivant = NULL;
-    TreeP tmp = tree;
-    tmp = tmp->u.children[0];
-    while(tmp != NIL(Tree) && tmp->op == LISTEARG){
-      listEvalPrec->eval = evalExpr(tree->u.children[1]);
-      listEvalPrec->suivant = listEval;
-      listEval = listEvalPrec;  /* TODO a verifier */
-      tmp = tmp->u.children[0];
-    }
-    /* Dans cette condition, on tombe sur une expr (la derniere) */
-    if(tmp != NIL(Tree)){
-      listEvalPrec->eval = evalExpr(tree->u.children[1]);
-      listEvalPrec->suivant = listEval;
-    }
-    /* Ici, listEvalPrec ne devrait pas etre null -> elle represente la liste des arguments dans l'ordre */
-    return listEvalPrec;
-  
-  }
-  /* on a pas une liste mais une expression */
-  else{
-    listEval->eval = evalExpr(tree);
-    listEval->suivant = NULL;
-    return listEval;
-  }
-}
-
-EvalP evalEnvoiMessage(TreeP tree){
-  return NIL(Eval);
   /*
   tree->u.children[0];
   tree->u.children[1];
   tree->u.children[2];
   */
+	if(tree == NIL(Tree))	return NIL(LEval);	/* ou makeEvalTree(NIL(Tree)); */
+
+	/* Le but : récupérer les expr dans l'ordre et faire appel au constructeur de la classe IDCLASS */
+
+	LEvalP listEval;
+	/* On a une liste de type LArg, expr*/
+	if(tree->op == LISTEARG){
+		/* TODO Regarder les evalExpr + demander a Amin & Gishan comment avoir la PVAR d'un ID
+			 (exemple : xc -> comment avoir son type et sa valeur)
+		--> Reponse : faire un getVar et chercher dans 1) param methode, 2) listDecl, 3) attribut de la classe 
+		--> Commentaire de Julien : introduire un PVAR environnement pour régler ce pb?
+
+		*/
+		LEvalP listEvalPrec = NULL;
+		listEval->eval = evalExpr(tree->u.children[1]);
+		listEval->suivant = NULL;
+		TreeP tmp = tree;
+		tmp = tmp->u.children[0];
+		while(tmp != NIL(Tree) && tmp->op == LISTEARG){
+			listEvalPrec->eval = evalExpr(tree->u.children[1]);
+			listEvalPrec->suivant = listEval;
+			listEval = listEvalPrec;	/* TODO a verifier */
+			tmp = tmp->u.children[0];
+		}
+		/* Dans cette condition, on tombe sur une expr (la derniere) */
+		if(tmp != NIL(Tree)){
+			listEvalPrec->eval = evalExpr(tree->u.children[1]);
+			listEvalPrec->suivant = listEval;
+		}
+		/* Ici, listEvalPrec ne devrait pas etre null -> elle represente la liste des arguments dans l'ordre */
+		return listEvalPrec;
+	
+	}
+	/* on a pas une liste mais une expression */
+	else{
+		listEval->eval = evalExpr(tree);
+		listEval->suivant = NULL;
+		return listEval;
+	}
+}
+
+EvalP evalEnvoiMessage(TreeP tree){
+	if(tree == NIL(Tree))	return NIL(Eval);
+
+	/*
+	tree->u.children[0] si IDCLASS => methode de la classe IDCLASS
+	tree->u.children[1] ==> methode (ID)
+	tree->u.children[2] ==> liste des arguments (parametres) de la methode
+	*/
+
+	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
+	/*
+		envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'    
+		{$$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+
+	}
+	else if(tree->u.children[0]->op == ENVOIMESSAGE){
+
+	/*
+		envoiMessage '.' ID'('ListOptArg ')' %prec '.'    
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+
+	}else if(tree->u.children[0]->op == CSTSTRING){
+	/*
+		constante '.' ID '(' ListOptArg ')' %prec '.'
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+	}
+	else if(tree->u.children[0]->op == CSTENTIER){
+	/*
+		constante '.' ID '(' ListOptArg ')' %prec '.'
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+
+	}
+	else if(tree->u.children[0]->op == IDENTIFICATEUR){
+	/*
+		ID '.' ID '(' ListOptArg ')'  
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+
+	}
+	else if(tree->u.children[0]->op == SELECTION){
+	/*
+		selection '.' ID '(' ListOptArg ')'   
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/
+	}
+	else{
+	/*
+		expr '.' ID '(' ListOptArg ')'    
+		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
+	*/	
+	}
+	return NIL(Eval); /* A ENLEVER */
 }
 
 EvalP evalSelection(TreeP tree){
