@@ -4,6 +4,7 @@
  */
 class Point(xc: Integer, yc: Integer)
       { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+
 is 
 {
   var static cpt : Integer := 1; /* initialisee au lancement du programme */
@@ -191,7 +192,8 @@ class Test() is {
   var dp : DefaultPoint := new DefaultPoint();
   var t : Test := new Test(); /* pour palier l'absence de methode statique... */
 is
-  p2.move(p1.getx(), p1.gety());
+  p1.x;
+  p2.move(p1.getx()*5+7+p2.gety(), p1.gety());
   o.setName("origine");
   p2.move(p1.getx()-2*5-3, p1.gety());
   o.print();

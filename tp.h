@@ -324,8 +324,10 @@ LTreeP transformeParam(TreeP arbre, LTreeP liste);
 void afficheListeErreur(ErreurP listeE);
 bool verifAttributClasse(PCLASS classe);
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkProgramme(TreeP prog);
 bool checkDoublon(char** variable,int n);
+bool checkListDeclaration(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
  /*
   * A voire
   */
