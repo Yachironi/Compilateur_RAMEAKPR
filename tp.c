@@ -1334,14 +1334,9 @@ EvalP evalContenuBloc(TreeP bloc){
 	return NIL(Eval);
 }
 
-/* TODO */
-void evalListInstruction(TreeP Linstruction, PVAR environnement){
-
-}
-
 /* Evalue toutes les variables déclarées */
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
-  /** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
+  	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
 	if(listDeclVar == NIL(SVAR))	return;
 	PVAR tmp = listDeclVar;
 	EvalP eval = evalExpr(tmp->init->u.children[0], environnement);
@@ -1375,6 +1370,11 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 	evalListDeclVar(tmp->suivant, environnement);
 }
 
+/* TODO */
+void evalListInstruction(TreeP Linstruction, PVAR environnement){
+
+}
+
 
 /** Renvoie la longueur d'une chaine **/
 int sizeString(char *str){
@@ -1385,8 +1385,19 @@ int sizeString(char *str){
   return size;
 }
 
-
-/** TODO FIXME : Question : besoin d'une PVAR qui est "l'environnement" ????? Faire passer dans les methodes ou en var globale?? **/
+int getVal(EvalP eval){
+	switch(eval->type){
+		case EVAL_INT:
+			return eval->u.val;
+		case EVAL_PVAR:
+			if(eval->u.var->init->op == EVALUE_INT){
+				return eval->u.var->init->u.children[0]->u.val;
+			}
+		default:
+			printf("Probleme\n");
+			exit(0);			
+	}
+}
 
 /** Methode eval d'une expression **/
 EvalP evalExpr(TreeP tree, PVAR environnement){
@@ -1394,6 +1405,7 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 	char* chaine;
 	int sizeConcat;
 	PVAR var;
+	int val1, val2;
 	switch (tree->op) {
 		case PLUSUNAIRE:
 			return evalExpr(tree->u.children[0], environnement);
@@ -1406,13 +1418,21 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			strcat(chaine, evalExpr(tree->u.children[1], environnement)->u.str);
 			return makeEvalStr(chaine);
 		case PLUSBINAIRE:
-			return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val + evalExpr(tree->u.children[1], environnement)->u.val);
+			val1=getVal(evalExpr(tree->u.children[0], environnement));
+			val2=getVal(evalExpr(tree->u.children[1], environnement));
+			return makeEvalInt(val1 + val2);
 		case MINUSBINAIRE:
-			return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val - evalExpr(tree->u.children[1], environnement)->u.val);
+			val1=getVal(evalExpr(tree->u.children[0], environnement));
+			val2=getVal(evalExpr(tree->u.children[1], environnement));
+			return makeEvalInt(val1 - val2);
 		case DIVISION:
-			return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val / evalExpr(tree->u.children[1], environnement)->u.val);
+			val1=getVal(evalExpr(tree->u.children[0], environnement));
+			val2=getVal(evalExpr(tree->u.children[1], environnement));
+			return makeEvalInt(val1 / val2);
 		case MULTIPLICATION:
-			return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val * evalExpr(tree->u.children[1], environnement)->u.val);
+			val1=getVal(evalExpr(tree->u.children[0], environnement));
+			val2=getVal(evalExpr(tree->u.children[1], environnement));
+			return makeEvalInt(val1 * val2);
 		case CSTENTIER:
 			return makeEvalInt(tree->u.children[0]->u.val);
 		case CSTSTRING:
@@ -1420,22 +1440,34 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 
 		case OPCOMPARATEUR:
 			if(tree->u.children[2]->op == EQ){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val == evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 == val2);
 			}
 			else if(tree->u.children[2]->op == NE){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val != evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 != val2);
 			}
 			else if(tree->u.children[2]->op == GT){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val > evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 > val2);
 			}
 			else if(tree->u.children[2]->op == GE){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val >= evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 >= val2);
 			}
 			else if(tree->u.children[2]->op == LT){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val < evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 < val2);
 			}
 			else if(tree->u.children[2]->op == LE){
-				return makeEvalInt(evalExpr(tree->u.children[0], environnement)->u.val <= evalExpr(tree->u.children[1], environnement)->u.val);
+				val1=getVal(evalExpr(tree->u.children[0], environnement));
+				val2=getVal(evalExpr(tree->u.children[1], environnement));
+				return makeEvalInt(val1 <= val2);
 			}
 			else{
 				/* Probleme */
@@ -1461,7 +1493,7 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			exit(UNEXPECTED);
 	} 
 
-  return NIL(Eval);
+	return NIL(Eval);
 }
 
 /*
@@ -1481,6 +1513,11 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 	**/	
 	/* Attribuer a PVAR la liste evalListArg */
 	/* Parcourir le TreeP corps_constructeur et l'évaluer -> il y aura des affectation, etc */
+	int nbArg=0;
+	LEvalP tmp = listArg;
+	while(tmp != NIL(LEval)){
+
+	}
 	PVAR var = makeListVar(NULL, getClasseBis(listeDeClass, tree->u.children[0]->u.str), 0, NIL(Tree) /* TODO A MODIFIER */);
 	return makeEvalVar(var);
 }
