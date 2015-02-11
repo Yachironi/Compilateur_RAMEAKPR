@@ -217,7 +217,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
        		if($5==NIL(SCLASS) || $5==NULL){
           		isExtend=0;
         	}
-		/** cas ou une classe herite pas d'une classe mere **/
+		/** cas ou une classe herite d'une classe mere **/
 		else{
           		isExtend=1;
        		 }
@@ -227,7 +227,8 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 		/*      Pour nous simplifier la tache, on copie les attributs et methodes 
 		 *	de la classe mere dans les attributs et methodes de la classe fille 
 		 */
-		if(isExtend == 1){ 
+		if(isExtend == 1){ 	
+			/* Si une classe n'a pas de construc
 			/* Ajout des attributs ($5=classe mere)*/ 
 			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
 				/* cas ou la classe fille a des attributs -> faut ceux de la mere ajouter a la fin */
