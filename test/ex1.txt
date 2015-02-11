@@ -3,12 +3,12 @@
  * syntaxiques ont ete verifies automatiquement.
  */
 class Point(xc: Integer, yc: Integer)
-      { x := xc; y := yc; cpt := cpt+1;}  /* Corps du constructeur */
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
 is 
 {
-  var static cpt : Integer := 1 <> 2; /* initialisee au lancement du programme */
-  var x: Integer := 4 < 5;
-  var y: Integer:= 4 >= 5;
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
   var name: String := "x" & cpt.toString();
 
   def setName(s: String) returns Void { name := s; } /* bloc procedural */

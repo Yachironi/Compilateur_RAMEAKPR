@@ -243,11 +243,13 @@ void printMethode(PMETH methode){
 		printf("---------------\n");
 		printf("- methode=%s\n", tmp->nom);
 		printf("isStatic = %d\nisRedef = %d\n", tmp->isStatic, tmp->isRedef);
-		/*
+		
+		printf(" ========  corpMethode ========= \n");
+		printf("nom = %s\n",tmp->nom);
 		if(tmp->corps != NULL){
 			pprintTreeMain(tmp->corps);
 		}
-		*/
+		printf(" ======== FIN corpMethode ========= \n");
 		if(tmp->typeRetour != NULL){
 			printf("typeRetour = %s\n", tmp->typeRetour->nom);
 			/* FONCTIONNE AUSSI : printClasse(tmp->typeRetour); */

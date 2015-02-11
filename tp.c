@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
     printf("Aucune verification a faire car syntax error\n");
     exit(0);
   }
-  	printf("--------------------------------------------------------------\n");
+  	/*printf("--------------------------------------------------------------\n");
   	bool checkProg = checkProgramme(programme);
   	printf("--------------------------------------------------------------\n");
   	printf("FIN de la COMPILATION\n");
@@ -140,8 +140,8 @@ int main(int argc, char **argv) {
         afficheListeErreur(listeErreur);
   	}
   	else{
-    		/*Faire eval ici*/
-  	}
+    		//Faire eval ici
+  	}*/
   printf("\n\n\n\n\n\n\n\n");
   PCLASS pointTmp = getClasseBis(listeDeClass,"Point");
   PMETH parcourir = pointTmp->liste_methodes; 
@@ -326,6 +326,22 @@ PCLASS getClasseBis(PCLASS listeClass,char *nom)
   classeFin->suivant = NULL;
   return classeFin;
 }
+
+/* Renvoie l'attribut d'une classe */
+/*PVAR getVAR(PCLASS classe, char* nomVar){
+if(classe==NULL || nomVar==NULL){
+	return NULL;
+	}
+PVAR parc = classe->liste_champs;
+while((strcmp(parc->nom,nomVar)!=0)&&(parc->suivant!=NULL)){
+	parc=parc->suivant;
+	}
+if(strcmp(parc->nom,nomVar)==0){
+	return parc;
+	} else {
+return NULL;
+	}
+}*/
 
 /** Renvoie un pointeur de la methode recherchee */	
 PMETH getMethode(PCLASS classe, PMETH methode){
@@ -1420,12 +1436,17 @@ EvalP evalEnvoiMessage(TreeP tree){
 EvalP evalSelection(TreeP tree){
 	return NIL(Eval);
 	/*
-	// IDCLASS'.'ID
+	// IDCLASS'.'ID 
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
-
+		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->u.str);
+		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
+		return makeEvalVar(varTMP);
 	}	
 	// envoiMessage'.'ID
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
+		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->nom);  //envoiMessage renvoi un PVAR
+		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
+		return makeEvalVar(varTMP);
 
 	}
 	// OuRien '.' ID : OuRien = expr ou Cible (=ID ou selection)
@@ -2319,7 +2340,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   }
   if((appelMethode==NULL && declaration!=NULL)||(appelMethode!=NULL && declaration==NULL))
   {
-   printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+   printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");	
    char *message = calloc(SIZE_ERROR,sizeof(char));sprintf(message,"Erreur init 26");
     return FALSE;
   }
