@@ -557,6 +557,11 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   {
     
     PCLASS type = getType(getChild(arbre,0),NULL,courant,methode,listeDecl);
+    /*PCLASS type2 = getType(getChild(arbre,1),NULL,courant,methode,listeDecl);*/
+    if(type != NULL)
+    {
+      printf("le type pour l'affect de la methode est :%s\n", type->nom);
+    }
     return type!=NULL;
   }
 }
@@ -1005,7 +1010,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
   {
     return TRUE;
   }
-  printf("AUcune methode apres\n");
+  printf("Aucune methode apres\n");
   SMETH copie = *courant->liste_methodes;
   PMETH tmp = NEW(1,SMETH);
   *tmp = copie;
@@ -1042,7 +1047,7 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
     }
     bool statique = FALSE;
     bool redef = FALSE;
-   printf("Je check la methode %s\n",methode->nom);
+    printf("Je check la methode %s\n",methode->nom);
 
     /*FIXME bool corps = checkBloc(methode->corps);*/
     /* FIXME : concat des messafes???*/
@@ -1798,38 +1803,37 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl){
 
 printf("estCoherentEnvoi1\n");
-    LTreeP tmp = liste;
-    PCLASS init = NULL;
-   printf("rentrer\n");
+  LTreeP tmp = liste;
+  PCLASS init = NULL;
+  printf("rentrer\n");
 
-    bool isStatic = FALSE;
-    bool agerer = FALSE;
+  bool isStatic = FALSE;
+  bool agerer = FALSE;
 
-    char* message = NEW(SIZE_ERROR,char);
-    if(liste==NULL || tmp->elem==NULL)
+  char* message = NEW(SIZE_ERROR,char);
+  if(liste==NULL || tmp->elem==NULL)
+  {      
+    if(methode!=NULL && classe!=NULL)
     {
-        
-        if(methode!=NULL && classe!=NULL)
-        {
-            sprintf(message,"Erreur la methode %s est mal forme - Classe : %s",methode->nom,classe->nom);
-        }
-        else
-        {
-            sprintf(message,"Erreur envoi de message");
-        }
-        pushErreur(message,classe,methode,NULL);
-        return NULL;
+      sprintf(message,"Erreur la methode %s est mal forme - Classe : %s",methode->nom,classe->nom);
     }
-   printf("--2--- %d ===== %s\n",tmp->elem->op, tmp->elem->u.str);
+    else
+    {
+      sprintf(message,"Erreur envoi de message");
+    }
+      pushErreur(message,classe,methode,NULL);
+      return NULL;
+    }
+    printf("--2--- %d ===== %s\n",tmp->elem->op, tmp->elem->u.str);
     if(tmp->elem->op == IDENTIFICATEUR)
     {
-       printf("1.1\n");
+      printf("1.1\n");
 
-        if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
-        {
-         printf("1.super\n");
-          if(methode!=NULL && methode->isStatic)
-          {
+      if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
+      {
+       printf("1.super\n");          
+       if(methode!=NULL && methode->isStatic)
+       {
             sprintf(message,"Erreur super present dans une methode statique");
             pushErreur(message,classe,methode,NULL);
             return NULL;
@@ -1897,19 +1901,19 @@ printf("estCoherentEnvoi1\n");
     }
     else if(tmp->elem->op == INSTANCIATION)
     {
-       printf("3.1\n");
-        char * nomClass = getChild(tmp->elem,0)->u.str;
-       printf("3.2\n");
-        PCLASS tmp = getClasseBis(listeDeClass,nomClass);
-       printf("3.3\n");
-        if(tmp == NULL)
-        {
-           printf("3.4\n");
-            char* message = NEW(SIZE_ERROR,char);
-            sprintf(message,"La classe %s n'est pas declare ",nomClass);
-            pushErreur(message,classe,methode,NULL);
-            return NULL;
-        }
+      printf("3.1\n");
+      char * nomClass = getChild(tmp->elem,0)->u.str;
+      printf("3.2\n");
+      PCLASS tmp = getClasseBis(listeDeClass,nomClass);
+      printf("3.3\n");
+      if(tmp == NULL)
+      {
+        printf("3.4\n");
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"La classe %s n'est pas declare ",nomClass);
+        pushErreur(message,classe,methode,NULL);
+        return NULL;
+      }
         init = tmp;
     }
     else if(tmp->elem->op == CSTSTRING)
@@ -1922,7 +1926,7 @@ printf("estCoherentEnvoi1\n");
     }
     
     short etiquette = tmp->elem->op;
-   printf("3.6\n");
+    printf("3.6\n");
     PCLASS tempoAffiche;
     while(tmp!=NULL)
     {
@@ -2254,7 +2258,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
       return FALSE;
     }
 
-    PVAR listeClasse = classe->liste_champs;
+   PVAR listeClasse = classe->liste_champs;
    printf("1.1.8\n");
     while(listeClasse!=NULL)
     {
