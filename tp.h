@@ -189,6 +189,7 @@ ErreurP listeErreur;
 
 typedef struct _Eval{
 	int type;
+	char* nom;
 	union {
 		char *str;	/* type = 0 -> EVAL_STR */
 		int val;      	/* type = 1 -> EVAL_INT */
