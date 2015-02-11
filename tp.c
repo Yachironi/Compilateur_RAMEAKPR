@@ -161,8 +161,10 @@ int main(int argc, char **argv) {
   else{
     printf("tp.c -> Programme n'est pas NULL\n");
     printf("=======================\n");
-    printf("tp.c -> Affichage de l'arbre : \n");
-    pprintTreeMain(programme);
+    /* Fonction de teste des evalExpr*/
+    /*testEval();*/
+    /*printf("tp.c -> Affichage de l'arbre : \n");
+    pprintTreeMain(programme);*/
     printf("=======================\n");
     
   }
@@ -293,7 +295,8 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 }
 
 PVAR getVar(PVAR var, char* nom){
-	PVAR tmp = var;
+  PVAR tmp = var;
+
 	while(tmp != NULL){
 		if(strcmp(tmp->nom, nom)==0){
 			return makeListVar(tmp->nom, tmp->type, tmp->categorie, tmp->init);
@@ -1393,6 +1396,8 @@ int getVal(EvalP eval){
 			if(eval->u.var->init->op == EVALUE_INT){
 				return eval->u.var->init->u.children[0]->u.val;
 			}
+    case EVAL_STR:
+      return eval->u.str; 
 		default:
 			printf("Probleme\n");
 			exit(0);			
@@ -1401,6 +1406,7 @@ int getVal(EvalP eval){
 
 /** Methode eval d'une expression **/
 EvalP evalExpr(TreeP tree, PVAR environnement){
+  /*printf(" ======> (ICI) <=====\n");*/
 	if(tree == NIL(Tree))	return NIL(Eval);
 	char* chaine;
 	int sizeConcat;
@@ -1412,8 +1418,10 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 		case MINUSUNAIRE:
 			return makeEvalInt(0-evalExpr(tree->u.children[0], environnement)->u.val);
 		case CONCATENATION:
-			sizeConcat=(sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
-			chaine = calloc(sizeConcat, sizeof(char));
+			sizeConcat=(
+        sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+
+        sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
+    	chaine = calloc(sizeConcat, sizeof(char)); 
 			chaine = strdup(evalExpr(tree->u.children[0], environnement)->u.str);
 			strcat(chaine, evalExpr(tree->u.children[1], environnement)->u.str);
 			return makeEvalStr(chaine);
@@ -1434,37 +1442,38 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			val2=getVal(evalExpr(tree->u.children[1], environnement));
 			return makeEvalInt(val1 * val2);
 		case CSTENTIER:
-			return makeEvalInt(tree->u.children[0]->u.val);
+			return makeEvalInt(tree->u.val);
 		case CSTSTRING:
-			return makeEvalStr(tree->u.children[0]->u.str);
+			return makeEvalStr(tree->u.str);
 
 		case OPCOMPARATEUR:
-			if(tree->u.children[2]->op == EQ){
+			if(tree->u.children[2]->u.val == EQ){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 == val2);
 			}
-			else if(tree->u.children[2]->op == NE){
+			else if(tree->u.children[2]->u.val == NE){
+
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 != val2);
 			}
-			else if(tree->u.children[2]->op == GT){
+			else if(tree->u.children[2]->u.val == GT){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 > val2);
 			}
-			else if(tree->u.children[2]->op == GE){
+			else if(tree->u.children[2]->u.val == GE){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 >= val2);
 			}
-			else if(tree->u.children[2]->op == LT){
+			else if(tree->u.children[2]->u.val == LT){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 < val2);
 			}
-			else if(tree->u.children[2]->op == LE){
+			else if(tree->u.children[2]->u.val == LE){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 <= val2);
@@ -1475,7 +1484,10 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			}
 	
 		case IDENTIFICATEUR:
-			var = getVar(environnement, tree->u.children[0]->u.str);
+    printf("YOUPPI on est dans ce cas \n");
+    printf("=======> Children STR = %s \n",tree->u.str);
+			var = getVar(environnement, tree->u.str);
+      printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
 			return makeEvalVar(var);
 
@@ -2986,3 +2998,76 @@ bool verifAttributClasse(PCLASS classe)
 }
 
 /* FIXME : equalsAffectation : verifie si Point = Point2D correcte (OUI) et inversemment */
+
+void testEval(){
+  /*
+  expr : PLUS expr %prec unaire     { $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | MINUS expr %prec unaire    { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr       { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr       { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr        { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr          { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr          { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr        { $$=makeTree(OPCOMPARATEUR, 3 , $1, $3, makeLeafInt(OPERATEUR,$2));}
+       | constante          { $$=$1; }
+       | instanciation          { $$=$1; }
+       | envoiMessage         { $$=$1; }
+       | OuRien             { $$=$1; }
+       ;
+  */
+
+/*
+ * Creation d'arbres bidule de teste Exemple :  x:= a + b
+ */
+ int a=8,b=6;
+TreeP treeTestPLUS = makeTree(PLUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestMINUS = makeTree(MINUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestDIV = makeTree(DIVISION, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestMUL = makeTree(MULTIPLICATION, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestNE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,NE));
+TreeP treeTestEQ = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,EQ));
+TreeP treeTestGT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GT));
+TreeP treeTestGE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GE));
+TreeP treeTestLT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LT));
+TreeP treeTestLE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LE));
+/*  a-b+44 */
+TreeP treeTestPLUSImbrique = makeTree(PLUSBINAIRE, 2,  treeTestMINUS, makeLeafInt(CSTENTIER,44));
+/*
+ * Creation d'arbres bidule de teste Exemple :  x:= "yas"&"ser";
+ */
+char* ch1="yas"; char* ch2="ser"; char* ch3=" RABI";
+TreeP treeTestCONCATENATION = makeTree(CONCATENATION, 2,  makeLeafStr(CSTSTRING,ch1), makeLeafStr(CSTSTRING,ch2)); 
+TreeP treeTestCONCATENATIONImbrique = makeTree(CONCATENATION, 2, treeTestCONCATENATION, makeLeafStr(CSTSTRING,ch3)); 
+/* Creation d'arbre avec envirenoment pour les identificateurs */
+
+
+printf("============= DEB Eval TEST =============\n");
+pprintTreeMain(treeTestCONCATENATION);
+printf("Resultat treeTestPLUS = %d\n", getVal(evalExpr(treeTestPLUS,NULL)));
+printf("Resultat treeTestMINUS = %d\n", getVal(evalExpr(treeTestMINUS,NULL)));
+printf("Resultat treeTestDIV = %d\n", getVal(evalExpr(treeTestDIV,NULL)));
+printf("Resultat treeTestMUL = %d\n", getVal(evalExpr(treeTestMUL,NULL)));
+printf("Resultat treeTestNE = %d\n", getVal(evalExpr(treeTestNE,NULL)));
+printf("Resultat treeTestEQ = %d\n", getVal(evalExpr(treeTestEQ,NULL)));
+printf("Resultat treeTestGT = %d\n", getVal(evalExpr(treeTestGT,NULL)));
+printf("Resultat treeTestGE = %d\n", getVal(evalExpr(treeTestGE,NULL)));
+printf("Resultat treeTestLT = %d\n", getVal(evalExpr(treeTestLT,NULL)));
+printf("Resultat treeTestLE = %d\n", getVal(evalExpr(treeTestLE,NULL)));
+printf("Resultat treeTestCONCATENATION = %s\n", getVal(evalExpr(treeTestCONCATENATION,NULL)));
+printf("Resultat treeTestPLUSImbrique = %d\n", getVal(evalExpr(treeTestPLUSImbrique,NULL)));
+printf("Resultat treeTestCONCATENATIONImbrique = %s\n", getVal(evalExpr(treeTestCONCATENATIONImbrique,NULL)));
+
+printf("============= FIN Eval TEST =============\n");
+
+/*EvalP res;
+    if(tree->nbChildren==1) {res = evalExpr(tree->u.children[0],NULL);}
+    else {
+    printf("===========================================> Nbchildren est = %d \n",tree->nbChildren); 
+    res = evalExpr(tree->u.children[1],NULL);
+    printf("===========================================> Nbchildren est = %d \n",tree->nbChildren); 
+      }
+    printf("Valeur EXPR = %d\n", res->u.val);
+    */
+
+
+}

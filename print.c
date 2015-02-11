@@ -135,11 +135,7 @@ void pprintTreeMain(TreeP tree) {
 		case CONTENUBLOC:    	printf("op=CONTENUBLOC"); break;
 		case ETIQUETTE_IS:  	printf("op=ETIQUETTE_IS"); break;
 		case ETIQUETTE_YIELD: 	printf("op=ETIQUETTE_YIELD"); break;
-		case ETIQUETTE_AFFECT:  {printf("op=ETIQUETTE_AFFECT"); 	
-		if(tree->u.children[1]==NIL(Tree)) printf(" children est null \n");
-		EvalP res = evalExpr(tree->u.children[1],NULL); 
-		printf("Valeur EXPR = %d\n", res->u.val);
-		} break;
+		case ETIQUETTE_AFFECT:  printf("op=ETIQUETTE_AFFECT"); break;
 		case IFTHENELSE:    	printf("op=IFTHENELSE"); break;
 		case CONTENUCLASS:  	printf("op=CONTENUCLASS"); break;
 		case LISTEARG:   	printf("op=LISTEARG"); break;
