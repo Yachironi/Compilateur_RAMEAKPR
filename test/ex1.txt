@@ -6,9 +6,9 @@ class Point(xc: Integer, yc: Integer)
       { x := xc; y := yc; cpt := cpt+1;}  /* Corps du constructeur */
 is 
 {
-  var static cpt : Integer := 1; /* initialisee au lancement du programme */
-  var x: Integer;
-  var y: Integer;
+  var static cpt : Integer := 1 <> 2; /* initialisee au lancement du programme */
+  var x: Integer := 4 < 5;
+  var y: Integer:= 4 >= 5;
   var name: String := "x" & cpt.toString();
 
   def setName(s: String) returns Void { name := s; } /* bloc procedural */
@@ -40,158 +40,7 @@ is
       ( "= (" & x.toString() & ", " & y.toString() & ")" ).println();
   }
 
-  def verboseMove (dx: Integer, dy: Integer) returns Void {
-      this.move(dx, dy);       /* le this est obligatoire */
-      this.print();
-  }
-
-  def clone() returns Point {
-      var res : Point := new Point(x, y);
-      is
-      res.setName(this.name & "-bis");
-      yield res
-  }
-
-  /* utilise un bloc fonctionnel */
-  def egal(p: Point) returns Integer { 
-   /* ils sont egaux s'ils ont memes coordonnees */
-       var b1 : Integer := p.x - x;
-       var b2 : Integer := p.y - y;
-    is if b1 then return 0; else return b2 = 0;
-       yield -1 /* necessaire meme si inaccessible ! */
-  }
-
-  def egal2(p: Point) returns Integer {
-       var b1 : Integer := p.x - x;
-       var b2: Integer := 5;
-       var result : Integer;
-    is if b1 then result := 0;
-       else {var b2: Integer := p.y - y; /* masquage du b2 externe ! */
-             is result := b2 = 0;
-            }
-       yield result
-  }
 }
 
-
-class Couleur(cinit: Integer) 
-   /* 3 couleurs : couleur = 0, noir = 1, gris (ou autre chose !) = 2  */
-  { if cinit = 1 then coul := 1; 
-    else if cinit = 0 then coul := 0; else { coul := 2; }
-  }
-is {
-  var coul: Integer;   /* initialise dans le constructeur */
-
-  def static blanc() returns Couleur := new Couleur(0)
-
-  def static noir() returns Couleur := new Couleur(1)
-
-  def static gris() returns Couleur := new Couleur(2)
-
-  def name() returns String {
-      var dummy : String;
-      is
-      if coul = 0 then return "Blanc";
-      else {  
-             if coul = 1 then dummy := "Noir"; else dummy := "Gris";
-           }
-     yield dummy
-  }
-
-  /* Pas de Booleen, on utilise Integer */
-  def estGris() returns Integer := coul = 2
-
+{ 
 }
-
-
-class PointColore(xc: Integer, yc:Integer, c: Couleur)
-      extends Point(xc, yc) { coul := c; } is
-{  
-  var coul: Couleur;
-
-  def couleur() returns Couleur := coul 
-
-  def colore() returns Integer := coul.estGris() <> 0 
-
-  def setCouleur(c: Couleur) returns Void { coul := c; }
-
-  /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
-  def override clone() returns Point
-               := new PointColore(x, y, coul)
-
-  def estGris() returns Integer {
-      /* une trace pour verifier qu'on appelle bien la bonne */
-      "Inside PointColore::estGris".println();
-      yield coul.estGris()
-  }
-
-   def override print() returns Void {
-      "Inside PointColore::print".println();
-      super.print();
-      this.couleur().name().println();
-  }
-}
-
-
-class PointNoir(xc: Integer, yc:Integer)
-      extends PointColore(xc, yc, Couleur.noir())
-      /* pas de corps de constructeur pour cette classe */
-is {
-  def override estGris() returns Integer := 0 /* false, donc */
-  def override couleur() returns Couleur {
-      "Inside PointNoir:couleur".println();
-      yield super.couleur()
-  }
-}
-
-
-class DefaultPoint() /* Parentheses obligatoires */
-      extends PointColore(0, 0, Couleur.blanc())
-is {
-   def override estGris() returns Integer := 0
-   def override couleur() returns Couleur {
-      "Inside DefaultPoint::couleur".println();
-      yield super.couleur()
-  }
-}
-
-class Test() is {
- def test(p: Point, p2: PointColore, p3: PointNoir) returns Void {
-      var c: String; var c2: String; var c3: String;
-      is
-/*      "Test::test debut.".println();
-       p.print();
-      p2.print();
-      "Appel 1: ".println();
-*/
-      if p2.colore() <> 0 then c := "colore";  else c := "blanc";
-      "Appel 2: ".println();
-      if p3.colore() <> 0 then c2 := "colore"; else c2 := "blanc";
-      "Appel 3: ".println();
-      if p3.colore() <> 0 then c3 := "colore"; else c3 := "blanc";
-      "Resultats de test: ".println();
-      c.print(); " ".print();
-      c2.print(); " ".print();
-      c3.print();
-      "Test::test termine.".println();
-  }
-
-  def test2(p: PointColore) returns Void { 
-     "Test::test2 debut.".println();
-       p.couleur().name().print(); 
-      "Test::test2 termine.".println();
-  }
-}
-
-{ /* Bloc qui correspond au programme principal */ 
-  var p1: Point := new Point(1, 5);
-  var p2: Point := new Point(2, 3);
-  var o : PointColore := new PointColore(0, 0, new Couleur(0));
-  var pn : PointNoir := new PointNoir(+1, -1);
-  var dp : DefaultPoint := new DefaultPoint();
-  var t : Test := new Test(); /* pour palier l'absence de methode statique... */
-is
-  p2.move(p1.getx(), p1.gety());
-  
-}
-

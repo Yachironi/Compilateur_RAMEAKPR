@@ -1,0 +1,449 @@
+tp.c -> avant res
+le nom de la classe est : A--------------------------------------------------------------
+Entree 1
+Entree 2
+Arbre ----------------------------: 34
+--------------------34
+a.a.a.3
+caca
+lalalala
+je suis ici autre 
+getChild arbre 1 n'est pas null
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.5
+1.1.5.1
+1.1.5.2
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6
+1.1.6.1
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = A2
+1.2
+3.6
+25-25-25
+Appartient : A2	f
+1_1_1_1_1
+avant-----q-s-qs--s-q A2 -> 
+NOMMETH f
+Je compare methode : f et filles f
+Allez isVerif  : ? f 
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+apres 25-25-25 --------------------42
+a.a.a.3
+je suis ici autre 
+getChild est nul :o ----------------42
+LE BLOC A REUSSI
+Entree 3
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : toString 
+Je check la methode toString
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : println 
+Je check la methode println
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : print 
+Je check la methode print
+1
+2
+3
+4 
+METHODE NULL : 0
+C'EST LA FIN DES HARICOTS
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+Entree 8
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : f 
+Je check la methode f
+1
+2
+3
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+caca
+lalalala
+je suis ici autre 
+getChild arbre 1 n'est pas null
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+je suis à la fin
+arbre -> op 23
+h.2
+h.3 -> 0 
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.2
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : v
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+gros soucis
+1.1.6.2
+getTypeAttribut fin
+checkblock check false 5
+GETTYPE A FAIL !!!
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas null
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.2
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : v
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+1
+arbre NIL : ? 0
+Etiquette 24
+2
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild est nul :o ----------------42
+LE BLOC A REUSSI
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 8
+Gestion de la classe A2 
+
+
+
+
+
+
+
+
+_______DEBUT__________
+
+
+
+
+
+
+
+Classe courante : A2 : sa classe mere A
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+TRUUUUUUUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+
+
+
+
+
+
+
+________FIN_________
+
+
+
+
+
+
+
+Aucune methode avant
+AUcune methode apres
+************************ Je suis en train de check la methode : f 
+Je check la methode f
+1
+2
+3
+3.1
+3.2
+4 
+METHODE NULL : 0
+--------------------34
+a.a.a.3
+caca
+lalalala
+je suis ici autre 
+getChild arbre 1 n'est pas null
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+je suis à la fin
+arbre -> op 23
+h.2
+h.3 -> 0 
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.rien
+getTypeAttribut
+1.1.1
+1.1.2
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : v
+ : : : : v
+
+
+
+FIN LISTE DECL 
+
+
+getTypeAttribut fin
+checkblock check false 5
+GETTYPE A FAIL !!!
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas null
+je suis la dans ma petite expression
+1
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+h.1
+Je suis ici
+Debul
+estCoherentEnvoi1
+rentrer
+--2---
+1.1
+1.super
+INIT = A
+1.2
+3.6
+25-25-25
+Appartient : A	f
+1_1_1_1_1
+avant-----q-s-qs--s-q A -> 
+NOMMETH f
+Je compare methode : f et filles f
+Allez isVerif  : ? f 
+a.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+apres 25-25-25 --------------------42
+a.a.a.3
+je suis ici autre 
+getChild arbre 1 n'est pas null
+1
+arbre NIL : ? 0
+Etiquette 7
+2
+MALABAR AUSSI
+1.1.1
+1.1.2
+1.1.4
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : v
+ : : : : v
+
+
+
+FIN LISTE DECL 
+
+
+CACACACACACA 1
+1
+arbre NIL : ? 0
+Etiquette 23
+2
+checkblock return 4
+checkblock check false 3
+1
+arbre NIL : ? 0
+Etiquette 23
+2
+--------------------42
+a.a.a.3
+je suis ici autre 
+getChild est nul :o ----------------42
+LE BLOC A REUSSI
+LE BLOC A REUSSI
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
+5
+Entree 9
+Sortie 4
+--------------------------------------------------------------
+FIN de la COMPILATION
+Il y a des probleme dans le code !
+[31mErreur 1 : Erreur la methode f est mal construite
+[30m[30m[31mErreur 2 : Instruction : erreur d'instruction 20
+[30m[30m[31mErreur 3 : Instruction : affectation incorrecte entre deux types differents
+[30m[30m[31mErreur 4 : Erreur doublons dans les attribut de la classe A2
+[30m[30m[31mErreur 5 : Instruction incorrecte
+[30m[30m[31mErreur 6 : 7 inconnu ===>println
+[30m[30m[31mErreur 7 : Erreur doublons dans les attribut de la classe A2
+[30m[30m[31mErreur 8 : Erreur la methode f est mal construite
+[30m[30m[31mErreur 9 : Instruction : erreur d'instruction 20
+[30m[30m[31mErreur 10 : Instruction incorrecte
+[30m[30m[31mErreur 11 : 7 inconnu ===>println
+[30m[30m

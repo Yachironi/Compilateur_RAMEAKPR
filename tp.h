@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdio.h>
 
+extern char *strdup(const char *s);
+
 /* deux macros pratiques, utilisees dans les allocations */
 #define NEW(howmany, type) (type *) calloc((unsigned) howmany, sizeof(type))
 #define NIL(type) (type *) 0
@@ -62,8 +64,17 @@
 #define LISTEPARAM 41
 #define LIST_INSTRUCTION 42
 #define LISTEVAR 43
+#define OPERATEUR 44
 
 #define MSG_VOID "void"
+
+/* Valeur de l'integer type dans une structure Eval/EvalP */
+#define EVAL_STR 0
+#define EVAL_INT 1
+#define EVAL_PVAR 2
+#define EVAL_PCLASS 3
+#define EVAL_PMETH 4
+#define EVAL_TREEP 5
 
 /* Codes d'erreurs */
 #define NO_ERROR	0
@@ -170,6 +181,30 @@ typedef struct _Erreur
 
 ErreurP listeErreur;
 
+typedef struct _Eval{
+	int type;
+	union {
+		char *str;	/* type = 0 -> EVAL_STR */
+		int val;      	/* type = 1 -> EVAL_INT */
+		PVAR var;	/* type = 2 -> EVAL_VAR */
+	 	PCLASS classe;	/* type = 3 -> EVAL_PCLASS */
+		PMETH methode;  /* type = 4 -> EVAL_PMETH */
+		TreeP tree;	/* type = 5 -> EVAL_TREEP */
+  	} u;
+} Eval, *EvalP;
+
+typedef struct _ListEval{
+	EvalP eval;
+	struct _ListEval *suivant;
+}LEval, *LEvalP;
+
+EvalP makeEvalStr(char *str);
+EvalP makeEvalInt(int val);
+EvalP makeEvalVar(PVAR var);
+EvalP makeEvalClasse(PCLASS classe);
+EvalP makeEvalMethode(PMETH methode);
+EvalP makeEvalTree(TreeP tree);
+
 /* Type pour la valeur de retour de Flex et les actions de Bison
  * le premier champ est necessaire pour flex
  * les autres correspondent aux variantes utilisees dans les actions
@@ -252,7 +287,14 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
 void evalProgramme(TreeP programme);
 void evalContenuBloc(TreeP bloc);
 PVAR evalListDeclVar(TreeP listDeclVar);
-int evalExpr(TreeP tree);	/* a modifier tres probablement */
+
+/** Julien */
+EvalP evalExpr(TreeP tree);	/* a modifier tres probablement */
+EvalP evalSelection(TreeP tree);
+EvalP evalEnvoiMessage(TreeP tree);
+EvalP evalInstanciation(TreeP tree);
+LEvalP evalListArg(TreeP tree);
+int sizeString(char *str);
 
 
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
@@ -278,6 +320,7 @@ bool verifAttributClasse(PCLASS classe);
 bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkProgramme(TreeP prog);
 bool checkDoublon(char** variable,int n);
+bool checkListDeclaration(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
  /*
   * A voire
   */
