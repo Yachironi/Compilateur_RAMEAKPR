@@ -556,11 +556,8 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
   else if(arbre->op == ETIQUETTE_AFFECT)
   {
     
-    PCLASS type = getType(getChild(arbre,0),NULL,courant,methode,listeDecl)!=NULL;
-    printf("AFFECT : %s \n",arbre->op);
-    printf("type -> \n",type->nom);
-    exit(0);
-    return type;
+    PCLASS type = getType(getChild(arbre,0),NULL,courant,methode,listeDecl);
+    return type!=NULL;
   }
 }
 bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
