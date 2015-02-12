@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
     exit(0);
   }
 
-  	/*printf("--------------------------------------------------------------\n");
+  	printf("--------------------------------------------------------------\n");
   	bool checkProg = checkProgramme(programme);
   	printf("--------------------------------------------------------------\n");
   	printf("FIN de la COMPILATION\n");
@@ -142,16 +142,8 @@ int main(int argc, char **argv) {
   	}
   	else{
     		//Faire eval ici
-  	}*/
+  	}
 
-  printf("\n\n\n\n\n\n\n\n");
-  PCLASS pointTmp = getClasseBis(listeDeClass,"Point");
-  PMETH parcourir = pointTmp->liste_methodes; 
-  while(parcourir!=NULL)
-  {
-    printf("%s \n",parcourir->nom);
-    parcourir = parcourir->suivant;
-  }
   /*exit(0);*/
 
   printf("tp.c -> res=%d\n", res);
@@ -536,7 +528,7 @@ bool checkProgramme(TreeP prog){
   }
   if(bloc!=NULL)
   {
-    printf("Entree 2\n");
+    printf("Entree 2.0\n");
   /* FIXME : transformer getChild(bloc,0) en PVAR */
    printf("Arbre ----------------------------: %d et %s \n", bloc->op,getChild(bloc,0)!=NULL?"True":"False");
   }
