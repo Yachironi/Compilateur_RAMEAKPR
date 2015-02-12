@@ -2706,7 +2706,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
         }
         else
         {
-          printf("MON VERIF N'EST PAS BON--------------------------------------------\n");
+          printf("MON VERIF N'EST PAS BON-------------------------------------------\n");
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"Erreur la methode %s est mal appele ou n'existe pas",tmp->elem->u.str);
           pushErreur(message,mere,listMeth,NULL);
