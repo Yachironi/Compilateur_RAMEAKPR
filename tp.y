@@ -237,8 +237,33 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 					while(tmp_liste_champs->suivant != NULL){
 						tmp_liste_champs=tmp_liste_champs->suivant;
 					}
+					PVAR tmp_champs_mere = $5->liste_champs;
+					PVAR champs_a_ajoutee = NULL;
+					/* On parcours les champs de la mere */
+					while(tmp_champs_mere != NULL){
+
+						/* Si le champ de la mere n'est pas dans la fille -> on ajoute */
+						if(varEstDansListe(classActuel->liste_champs, tmp_champs_mere->nom)==FALSE){
+							if(champs_a_ajoutee == NULL){
+								champs_a_ajoutee = copyVar(tmp_champs_mere);
+							}
+							else{
+								SVAR copieVar = *champs_a_ajoutee;
+								champs_a_ajoutee = copyVar(tmp_champs_mere);
+								champs_a_ajoutee->suivant = NEW(1, SVAR);
+								*champs_a_ajoutee->suivant = copieVar;
+							}
+						}
+						tmp_champs_mere = tmp_champs_mere->suivant;
+					}
+
 					/* ajout des attributs (en fin de liste) */
-					tmp_liste_champs->suivant = $5->liste_champs;
+					if(champs_a_ajoutee!=NULL){
+						SVAR copieVarFinale = *champs_a_ajoutee;
+						PVAR tmp_champs_a_ajoutee = NEW(1,SVAR);	
+						*tmp_champs_a_ajoutee = copieVarFinale;
+						tmp_liste_champs->suivant = tmp_champs_a_ajoutee;
+					}
 				}
 				/* cas ou la classe fille n'a pas d'attributs -> on ajoute directement ceux de la mere */
 				else{
@@ -275,6 +300,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 								methClassActuel->isRedef = 1;
 							}
 						}
+						/* la methode de la mere n'est pas dans la classe fille */
 						else{
 							/* Condition pour que la classe mere puisse etre ajoutee dans la classe fille */
 							if(tmp_liste_methodes_classMere->isStatic == 0){
