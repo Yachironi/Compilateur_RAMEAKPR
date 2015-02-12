@@ -1,28 +1,25 @@
 class A() is {
   var p : Integer := 1;
   def f() returns A { "A::f()\n".println(); p := 2; }
-  def g() returns A { "A::g()\n".println(); p := 5; }
+  def static g() returns A { "A::g()\n".println(); p := 5; }
   def toString() returns String := p.toString()
   
 }
 
-class A2() extends A() is {
-  var v : String := "hello"; 	/* masque le champ v de la classe A */
-  def override f() returns A { 
-      "A2::f()\n".println();
-      ("babaloued" & v & "2.0").print();
-      this.v;
-      v := "Hello";
-   }
-  def override toString() returns String := super.toString() & v
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := name; cpt := cpt+1;} /* Corps du constructeur */
+is 
+{
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
 }
 
 { var monA : A := new A();
-  var monA2 : A2 := new A2();
   var name : String := "x";
   is
   (1+2+4).toString();
-  monA2.f(1).g().p;
   ("a" & name & "c").println(); 
   name.println();
 }
