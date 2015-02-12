@@ -45,7 +45,7 @@ is
       this.print();
   }
 
-  def clone() returns Point {
+  def clone1() returns Point {
       var res : Point := new Point(x, y);
       is
       res.setName(this.name & "-bis");
@@ -57,16 +57,16 @@ is
    /* ils sont egaux s'ils ont memes coordonnees */
        var b1 : Integer := p.x - x;
        var b2 : Integer := p.y - y;
-    is if b1 then return 0; else return b2 = 0;
+    is if b1 then b2 := b; else {b1 := 0;}
        yield -1 /* necessaire meme si inaccessible ! */
   }
 
   def egal2(p: Point) returns Integer {
-       var b1 : Integer := p.x - x;
+       var b4 : Integer := p.x - x;
        var b2: Integer := 5;
        var result : Integer;
-    is if b1 then result := 0;
-       else {var b2: Integer := p.y - y; /* masquage du b2 externe ! */
+    is if b4 then {result := 1;}
+       else {var bf: Integer; var b2: Integer := p.y - y; /* masquage du b2 externe ! */
              is result := b2 = 0;
             }
        yield result
@@ -76,24 +76,24 @@ is
 
 class Couleur(cinit: Integer) 
    /* 3 couleurs : couleur = 0, noir = 1, gris (ou autre chose !) = 2  */
-  { if cinit = 1 then coul := 1; 
-    else if cinit = 0 then coul := 0; else { coul := 2; }
+  { if cinit = 1 then {coul := 0;} 
+    else if cinit = 0 then {coul := 0;}  else { coul := 2; }
   }
 is {
   var coul: Integer;  /* initialise dans le constructeur */
 
-  def static blanc() returns Couleur := new Couleur(0)
+  def static blanc() returns Couleur := new Couleur(1)
 
-  def static noir() returns Couleur := new Couleur(1)
+  def static noir() returns Couleur := new Couleur(2)
 
   def static gris() returns Couleur := new Couleur(2)
 
   def name() returns String {
       var dummy : String;
       is
-      if coul = 0 then return "Blanc";
+      if coul = 0 then {return "Blanc";} 
       else {  
-             if coul = 1 then dummy := "Noir"; else dummy := "Gris";
+             if coul = 1 then {dummy := "Noir";} else {dummy := "Gris";}
            }
      yield dummy
   }
@@ -116,9 +116,10 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
   def setCouleur(c: Couleur) returns Void { coul := c; }
 
   /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
-  def override clone() returns Point
-               := new PointColore(x, y, coul)
-
+  def clone1() returns Point
+  {
+    new PointColore(x, y, coul);
+  }
   def estGris() returns Integer {
       /* une trace pour verifier qu'on appelle bien la bonne */
       "Inside PointColore::estGris".println();
@@ -164,16 +165,7 @@ class Test() is {
       p2.print();
       "Appel 1: ".println();
 */
-      if p2.colore() <> 0 then c := "colore";  else c := "blanc";
-      "Appel 2: ".println();
-      if p3.colore() <> 0 then c2 := "colore"; else c2 := "blanc";
-      "Appel 3: ".println();
-      if p3.colore() <> 0 then c3 := "colore"; else c3 := "blanc";
-      "Resultats de test: ".println();
-      c.print(); " ".print();
-      c2.print(); " ".print();
-      c3.print();
-      "Test::test termine.".println();
+     1+1; 
   }
 
   def test2(p: PointColore) returns Void { 
@@ -196,13 +188,7 @@ is
   p2.move(p1.getx()-2*5-3, p1.gety());
   o.print();
   p2.print();
-  o.clone().print();
-  o.clone().move(54, 36).print();
-  /* Ne compilerait pas car clone() renvoie statiquement un Point */
-  /* o := o.clone(); */
-  p1 := p1.clone().move(+2, -3); 
-  p1.print();
-  o.clone().print();
+  
 
   "test(Point, PointColore, PointNoir)".println();
   t.test(p1, o, pn);

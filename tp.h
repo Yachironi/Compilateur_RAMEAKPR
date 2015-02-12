@@ -338,6 +338,8 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
 bool checkProgramme(TreeP prog);
 bool checkDoublon(char** variable,int n);
 bool checkListDeclaration(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+PVAR fusionne(PVAR declarationPrecedente,PVAR declarationSousBloc);
+PVAR ajouterPVAR(PVAR nouvelle, PVAR liste);
  /*
   * A voire
   */

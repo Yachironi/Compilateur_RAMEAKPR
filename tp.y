@@ -408,7 +408,6 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 
 
 	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
-	printf("le nom de la classe est : %s",$$->nom);
 	char* message = NEW(SIZE_ERROR,char);
 	if($$ == NULL){
 		/* la classe n'existe pas: erreur */
