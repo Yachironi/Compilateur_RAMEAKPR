@@ -1473,13 +1473,15 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 			tmp->init = makeLeafInt(EVALUE_INT, eval->u.val);
 			break;
 
-	/** TODO : Attente de savoir ce que rend instanciation, envoiMessage et OuRien**/
+		/** TODO : Attente de savoir ce que rend instanciation, envoiMessage et OuRien**/
 		case EVAL_PVAR:
 			/* Normalement ça devrait être instanciation -> une PVAR est créé, il faut lui donner son nom */
 			printf("evalListDeclVar->PVAR\n");
 			/*tmp->init = makeLeafVar(EVALUE_PVAR, eval->u.var);*/
 			tmp->init = eval->u.var->init;
 			break;
+
+		/* Ne devrait pas etre utilisé */
 		case EVAL_PCLASS:
 			printf("evalListDeclVar->PCLASS\n");
 			tmp->init = makeLeafClass(EVALUE_PCLASS, eval->u.classe);
@@ -1803,10 +1805,9 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 		tmp_param = tmp_param->suivant;
 	}
 
-	/* TODO : Mettre a jour l'environnement ! --> peut etre fait automatiquement si param est dans environnement */
+	/* TODO : Mettre a jour l'environnement ! --> peut etre fait automatiquement si param est dans environnement sinon mettre param dans environnement */
 	
-	/* TODO : Appeler le constructeur selon les champs de la classe et les "nouveaux" param du constructeur */
-
+	/* TODO fait?: Appeler le constructeur selon les champs de la classe et les "nouveaux" param du constructeur */
 	PVAR var;
 	/* Constructeur vide */
 	if(classe->corps_constructeur == NIL(Tree)){
@@ -1882,45 +1883,194 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 
 	PMETH methode;	
 
-	/* IDCLASS '.' ID '(' ListOptArg ')' */
+	/* TODO : Pour appel d'une méthode, l'environnement est mis à jour mais apres avoir fini, l'environnement est remis
+		comme avant car les "changements" sont locales (a la méthode)
+	*/
+
+	/* IDCLASS '.' ID '(' ListOptArg ')'  -> METHODE STATIC */
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
 		methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
 		if(methode == NULL){
 			printf("Problème dans evalEnvoiMessage : méthode introuvable dans la classe \n");
-			exit(0);
+			return NIL(Eval);
 		}
-
 	}
 	/* envoiMessage '.' ID'('ListOptArg ')' */
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
 		/* faire appel a evalEnvoiMessage sur tree->u.children[0] */
-	
+		EvalP eval_precedent = evalEnvoiMessage(tree->u.children[0], environnement);
+		switch(eval_precedent->type){
+			case EVAL_STR:
+				methode = getMethodeBis(getClasse(listeDeClass, "String")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
+				/* TODO : Distinguer print et println */
+			case EVAL_INT:
+				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+			case EVAL_PVAR:
+				/* Récupération de la méthode du PVAR ID */
+				methode = getMethodeBis(eval_precedent->u.var->type->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
+					return NIL(Eval);
+				}
+			default:
+				printf("Dans evalEnvoiMessage : envoiMessage recursif -> pb sur l'étiquette\n");
+				return NIL(Eval);
+		}
+		
 	}
 	/* constante '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == CSTSTRING){
-
+		methode = getMethodeBis(getClasse(listeDeClass, "String")->liste_methodes, tree->u.children[1]->u.str);
+		if(methode == NULL){
+			printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
+			return NIL(Eval);
+		}
+		/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
+		/* TODO : Distinguer print et println */
 	}
 	/* constante '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == CSTENTIER){
-
+		methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
+		if(methode == NULL){
+			printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
+			return NIL(Eval);
+		}
+		/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
 	}
 	/* ID '.' ID '(' ListOptArg ')'  */
 	else if(tree->u.children[0]->op == IDENTIFICATEUR){
+		/* Recupération du PVAR ID (le 1er) */
+		PVAR var=getVar(environnement, tree->u.children[0]->u.str);
+		if(var == NULL){
+			printf("dans evalEnvoiMessage, le ID de la var = NULL\n");
+			return NIL(Eval);
+		}
+		/* Récupération de la méthode du PVAR ID */
+		methode = getMethodeBis(var->type->liste_methodes, tree->u.children[1]->u.str);
+		if(methode == NULL){
+			printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
+		}
 
 	}
 
-	/* selection '.' ID '(' ListOptArg ')' */
+	/* TODO selection '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == SELECTION){
-
+		EvalP eval_selection = evalSelection(tree->u.children[0], environnement);
+		switch(eval_selection->type){
+			case EVAL_STR:
+				methode = getMethodeBis(getClasse(listeDeClass, "String")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
+				/* TODO : Distinguer print et println */
+			case EVAL_INT:
+				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+			case EVAL_PVAR:
+				/* Récupération de la méthode du PVAR ID */
+				methode = getMethodeBis(eval_selection->u.var->type->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
+					return NIL(Eval);
+				}
+			default:
+				printf("Dans evalEnvoiMessage : selection -> pb sur l'étiquette\n");
+				return NIL(Eval);
+		}
 	}
-	/* expr '.' ID '(' ListOptArg ')' */
+	/* TODO expr '.' ID '(' ListOptArg ')' */
 	else{
-		
+		EvalP eval_expr = evalExpr(tree->u.children[0], environnement);
+		switch(eval_expr->type){
+			case EVAL_STR:
+				methode = getMethodeBis(getClasse(listeDeClass, "String")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
+				/* TODO : Distinguer print et println */
+			case EVAL_INT:
+				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
+					return NIL(Eval);
+				}
+				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+			case EVAL_PVAR:
+				/* Récupération de la méthode du PVAR ID */
+				methode = getMethodeBis(eval_expr->u.var->type->liste_methodes, tree->u.children[1]->u.str);
+				if(methode == NULL){
+					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
+					return NIL(Eval);
+				}
+			default:
+				printf("Dans evalEnvoiMessage : expr -> pb sur l'étiquette\n");
+				return NIL(Eval);
+		}
 	}
 
-	/* TODO : Faire l'eval maintenant avec ListOptArg : tree->u.children[2] ==> liste des arguments (parametres) de la methode */
+	if(methode->corps == NULL)	return NIL(Eval);
 
-	return NIL(Eval); /* A ENLEVER */
+	/* Evaluation de la liste des arguments avant l'appel de la méthode */
+	/* FIXME : peut etre qu'ici l'environnement n'est pas TOUT ! */
+	LEvalP evalArg = evalListArg(tree->u.children[2], environnement);
+
+	/* Attribution de leurs evaluations dans la liste des params de la methode */
+	LEvalP tmp_eval = evalArg;
+	PVAR tmp_param = methode->params;
+	while(tmp_eval != NIL(LEval) && tmp_param != NULL){		/* normalement nbEval = nbParam ! */
+		switch(tmp_eval->eval->type){
+			case EVAL_STR:
+				tmp_param->init = makeLeafStr(EVALUE_STR, tmp_eval->eval->u.str);
+			case EVAL_INT:
+				tmp_param->init = makeLeafInt(EVALUE_INT, tmp_eval->eval->u.val);
+			case EVAL_PVAR:
+				tmp_param->init = makeLeafVar(EVALUE_PVAR, tmp_eval->eval->u.var);
+
+			/* A ENLEVER NORMALEMENT CA NE DEVRAIT JAMAIS ARRIVE */
+			case EVAL_PCLASS:
+				tmp_param->init = makeLeafClass(EVALUE_PCLASS, tmp_eval->eval->u.classe);
+			case EVAL_PMETH:
+				tmp_param->init = makeLeafMeth(EVALUE_PMETH, tmp_eval->eval->u.methode);
+			case EVAL_TREEP:
+				printf("Dans evalInstanciation -> eval d'un arg est un tree\n");
+			default:
+				printf("Etiquette non reconnue dans evalInstanciation = %d\n", tmp_eval->eval->type);
+				exit(0);
+		}
+		tmp_eval = tmp_eval->suivant;
+		tmp_param = tmp_param->suivant;
+	}
+	
+	/* TODO ENVIRONNEMENT ? --> mettre tmp_param ????? */
+
+	/* Evaluation du corps de la méthode */
+	/* Cas ou le corps de la methode est un bloc */
+	if(methode->corps->op == CONTENUBLOC){
+		return evalContenuBloc(methode->corps, environnement);
+	}
+	/* Cas ou le corps de la mthode est une expression */
+	else{
+		/* On aura un AFFECT expr -> donc il faut allé au fils d'apres */
+		return evalExpr(methode->corps->u.children[0], environnement);
+	}	
 }
 
 EvalP evalSelection(TreeP tree, PVAR environnement){
