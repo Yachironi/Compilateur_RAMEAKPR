@@ -1513,7 +1513,7 @@ void updateEnvironnement(PVAR environnement, PVAR env2){
 /* Evaluation globale du programme */
 void evalProgramme(TreeP programme){
 	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
-	EvalP eval = evalContenuBloc(programme->u.children[1], NIL(SVAR));
+	/*EvalP eval = */ evalContenuBloc(programme->u.children[1], NIL(SVAR));
 }
 
 /* Evaluation d'un bloc */
@@ -1587,7 +1587,7 @@ EvalP evalInstruction(TreeP instruction, PVAR environnement){
 
 	TreeP tmp = instruction;
 	if(tmp == NULL || tmp == NIL(Tree))	return NIL(Eval);
-	EvalP eval;
+
 	if(tmp->op == CONTENUBLOC){
 		return evalContenuBloc(tmp, environnement);
 	}
@@ -1605,18 +1605,25 @@ EvalP evalInstruction(TreeP instruction, PVAR environnement){
 		switch(eval_affect->type){
 			case EVAL_INT:
 				cible->init = makeLeafInt(EVALUE_INT, eval_affect->u.val);
+				break;
 			case EVAL_STR:
 				cible->init = makeLeafStr(EVALUE_STR, eval_affect->u.str);
+				break;
 			case EVAL_PVAR:
 				cible->init = makeLeafVar(EVALUE_PVAR, eval_affect->u.var);
+				break;
 			case EVAL_PCLASS:
 				cible->init = makeLeafClass(EVALUE_PCLASS, eval_affect->u.classe);
+				break;
 			case EVAL_PMETH:
 				cible->init = makeLeafMeth(EVALUE_PMETH, eval_affect->u.methode);
+				break;
 			case EVAL_TREEP:
 				printf("Dans evalInstruction -> l'eval de l'affectation de l'expr = TreeP\n");
+				break;
 			default:
 				printf("Dans evalInstruction -> etiquette introuvable (affect)\n");
+				break;
 		} 
 		
 		/* Pas besoin de retourner qqch */
@@ -1633,7 +1640,7 @@ EvalP evalInstruction(TreeP instruction, PVAR environnement){
 	}
 	/* expression */
 	else{
-		eval = evalExpr(tmp, environnement);
+		/*EvalP eval = */evalExpr(tmp, environnement);
 		/* Pas besoin de retourner qqch */
 		return NIL(Eval);
 	}
@@ -1679,24 +1686,28 @@ int sizeString(char *str){
 }
 
 int getVal(EvalP eval){
-	switch(eval->type){
-		case EVAL_INT:
-			return eval->u.val;
-		case EVAL_PVAR:
-			if(eval->u.var->init->op == EVALUE_INT){
-				return eval->u.var->init->u.children[0]->u.val;
-			}
-		case EVAL_STR:
-		      	return eval->u.str; 
-		default:
-			printf("Probleme\n");
-			exit(0);			
+	if(eval->type == EVAL_INT){
+		return eval->u.val;
 	}
+	else if(eval->type == EVAL_PVAR){
+		if(eval->u.var->init->op == EVALUE_INT){
+			return eval->u.var->init->u.children[0]->u.val;
+		}
+	}
+	/* yasser -> faux normalement 
+	else if(eval->type == EVAL_STR){
+		return eval->u.str;
+	}
+*/	else{
+		printf("Probleme dans getVal\n");
+		exit(0);
+	}
+	return 0;
 }
 
 /** Methode eval d'une expression **/
 EvalP evalExpr(TreeP tree, PVAR environnement){
-  /*printf(" ======> (ICI) <=====\n");*/
+	/*printf(" ======> (ICI) <=====\n");*/
 	if(tree == NIL(Tree))	return NIL(Eval);
 	char* chaine;
 	int sizeConcat;
@@ -1779,7 +1790,12 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
       			printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
 			/*return makeEvalVar(var);*/
-			if(var->init->op == EVALUE_STR){
+			/* si l'id n'a pas d'affectation pour le moment */
+			if(var->init == NULL){
+				return NIL(Eval);
+			}
+			/* si l'id a deja ete evalue */
+			else if(var->init->op == EVALUE_STR){
 				return makeEvalStr(var->init->u.str);
 			}
 			else if(var->init->op == EVALUE_INT){
@@ -1797,9 +1813,12 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			else if(var->init->op == EVALUE_TREEP){
 				return makeEvalTree(var->init->u.children[0]);
 			}
+			/* l'id a une affectation qui n'a pas encore ete evalue */
 			else{
-				printf("Probleme dans evalExpr -> ID ==> sa valeur n'est pas evalué\n");
+				/*printf("Probleme dans evalExpr -> ID ==> sa valeur n'est pas evalué\n");
 				return NIL(Eval);
+				*/
+				return evalExpr(var->init, environnement);	/* on evalue l'affectation */
 			}
 		case INSTANCIATION:
 			return evalInstanciation(tree, environnement);
@@ -1810,9 +1829,11 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 		case SELECTION :
 			return evalSelection(tree, environnement); 
 
+		/*
 		default: 
 			fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
 			exit(UNEXPECTED);
+		*/
 	} 
 	printf("Dans EvalExpr -> aucune etiquette trouvé\n");
 	return NIL(Eval);
@@ -1858,25 +1879,30 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 	LEvalP listArg = evalListArg(tree->u.children[1], environnement);
 
 	/* Attribution des eval de la listOptArg a ces params */
-	int nbArg=0;
 	LEvalP tmp_eval = listArg;
 	PVAR tmp_param = param;
 	while(tmp_eval != NIL(LEval) && tmp_param != NULL){		/* normalement nbEval = nbParam ! */
 		switch(tmp_eval->eval->type){
 			case EVAL_STR:
 				tmp_param->init = makeLeafStr(EVALUE_STR, tmp_eval->eval->u.str);
+				break;
 			case EVAL_INT:
 				tmp_param->init = makeLeafInt(EVALUE_INT, tmp_eval->eval->u.val);
+				break;
 			case EVAL_PVAR:
 				tmp_param->init = makeLeafVar(EVALUE_PVAR, tmp_eval->eval->u.var);
+				break;
 
 			/* A ENLEVER NORMALEMENT CA NE DEVRAIT JAMAIS ARRIVE */
 			case EVAL_PCLASS:
 				tmp_param->init = makeLeafClass(EVALUE_PCLASS, tmp_eval->eval->u.classe);
+				break;
 			case EVAL_PMETH:
 				tmp_param->init = makeLeafMeth(EVALUE_PMETH, tmp_eval->eval->u.methode);
+				break;
 			case EVAL_TREEP:
 				printf("Dans evalInstanciation -> eval d'un arg est un tree\n");
+				break;
 			default:
 				printf("Etiquette non reconnue dans evalInstanciation = %d\n", tmp_eval->eval->type);
 				exit(0);
@@ -1902,12 +1928,16 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 		switch(eval_constructeur->type){
 			case EVAL_INT:
 				init = makeLeafInt(EVALUE_INT, eval_constructeur->u.val);
+				break;
 			case EVAL_STR:
 				init = makeLeafStr(EVALUE_STR, eval_constructeur->u.str);
+				break;
 			case EVAL_PVAR:
 				init = makeLeafVar(EVALUE_PVAR, eval_constructeur->u.var);
+				break;
 			default:
 				init = NIL(Tree);
+				break;
 		}
 		var = makeListVar(NULL, classe, 0, init);
 	}
@@ -1988,6 +2018,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 				}
 				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
 				/* TODO : Distinguer print et println */
+				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
 				if(methode == NULL){
@@ -1995,6 +2026,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					return NIL(Eval);
 				}
 				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */
 				methode = getMethodeBis(eval_precedent->u.var->type->liste_methodes, tree->u.children[1]->u.str);
@@ -2002,6 +2034,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
 					return NIL(Eval);
 				}
+				break;
 			default:
 				printf("Dans evalEnvoiMessage : envoiMessage recursif -> pb sur l'étiquette\n");
 				return NIL(Eval);
@@ -2055,6 +2088,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 				}
 				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
 				/* TODO : Distinguer print et println */
+				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
 				if(methode == NULL){
@@ -2062,6 +2096,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					return NIL(Eval);
 				}
 				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */
 				methode = getMethodeBis(eval_selection->u.var->type->liste_methodes, tree->u.children[1]->u.str);
@@ -2069,6 +2104,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
 					return NIL(Eval);
 				}
+				break;
 			default:
 				printf("Dans evalEnvoiMessage : selection -> pb sur l'étiquette\n");
 				return NIL(Eval);
@@ -2086,6 +2122,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 				}
 				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
 				/* TODO : Distinguer print et println */
+				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
 				if(methode == NULL){
@@ -2093,6 +2130,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					return NIL(Eval);
 				}
 				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */
 				methode = getMethodeBis(eval_expr->u.var->type->liste_methodes, tree->u.children[1]->u.str);
@@ -2100,6 +2138,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("dans evalEnvoiMessage, le ID de la methode de la var est NULL\n");
 					return NIL(Eval);
 				}
+				break;
 			default:
 				printf("Dans evalEnvoiMessage : expr -> pb sur l'étiquette\n");
 				return NIL(Eval);
@@ -2119,18 +2158,24 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 		switch(tmp_eval->eval->type){
 			case EVAL_STR:
 				tmp_param->init = makeLeafStr(EVALUE_STR, tmp_eval->eval->u.str);
+				break;
 			case EVAL_INT:
 				tmp_param->init = makeLeafInt(EVALUE_INT, tmp_eval->eval->u.val);
+				break;
 			case EVAL_PVAR:
 				tmp_param->init = makeLeafVar(EVALUE_PVAR, tmp_eval->eval->u.var);
+				break;
 
 			/* A ENLEVER NORMALEMENT CA NE DEVRAIT JAMAIS ARRIVE */
 			case EVAL_PCLASS:
 				tmp_param->init = makeLeafClass(EVALUE_PCLASS, tmp_eval->eval->u.classe);
+				break;
 			case EVAL_PMETH:
 				tmp_param->init = makeLeafMeth(EVALUE_PMETH, tmp_eval->eval->u.methode);
+				break;
 			case EVAL_TREEP:
 				printf("Dans evalInstanciation -> eval d'un arg est un tree\n");
+				break;
 			default:
 				printf("Etiquette non reconnue dans evalInstanciation = %d\n", tmp_eval->eval->type);
 				exit(0);
@@ -2153,38 +2198,135 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	}	
 }
 
+/* Renvoie un PVAR */
 EvalP evalSelection(TreeP tree, PVAR environnement){
-	return NIL(Eval);
-	/*
-	// IDCLASS'.'ID 
+	PCLASS classe;
+	PVAR var;
+
+	/* IDCLASS'.'ID */ 
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
-
-		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->u.str);
-		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
-		return makeEvalVar(varTMP);
+		classe = getClasse(listeDeClass, tree->u.children[0]->u.str);
+		if(classe == NULL){
+			printf("Dans evalSelection -> la classe est null (IDCLASS.ID)\n");
+			return NIL(Eval);
+		}
+		var=getVar(classe->liste_champs, tree->u.children[1]->u.str);
+		if(var == NULL){
+			printf("Dans evalSelection -> la var est null (IDCLASS.ID)\n");
+			return NIL(Eval);
+		}
 	}	
-	// envoiMessage'.'ID
+	/* TODO envoiMessage'.'ID */
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
-		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->nom);  //envoiMessage renvoi un PVAR
-		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
-		return makeEvalVar(varTMP);
+		EvalP eval_envoiMsg = evalEnvoiMessage(tree->u.children[0], environnement);
+		if(eval_envoiMsg == NIL(Eval)){
+			printf("Dans evalSelection -> l'eval de l'envoi de msg est null\n");
+			return NIL(Eval);
+		}
+		switch(eval_envoiMsg->type){
+			case EVALUE_INT:
+				classe = getClasse(listeDeClass, "Integer");
+				break;
+			case EVALUE_STR:
+				classe = getClasse(listeDeClass, "String");
+				break;
+			case EVALUE_PVAR:
+				classe = eval_envoiMsg->u.var->type;
+				break;
+			default:
+				printf("dans EvalSelection -> etiquette non reconnue pour envoiMessage.ID\n");
+				return NIL(Eval);
 
+		}
+		if(classe == NULL){
+			printf("Dans evalSelection -> la classe est null (envoiMessage.ID)\n");
+			return NIL(Eval);
+		}
+		var=getVar(classe->liste_champs, tree->u.children[1]->u.str);
+		if(var == NULL){
+			printf("Dans evalSelection -> la var est null (envoiMessage.ID)\n");
+			return NIL(Eval);
+		}
 	}
-	// OuRien '.' ID : OuRien = expr ou Cible (=ID ou selection)
+	/* ID '.' ID */
 	else if(tree->u.children[0]->op == IDENTIFICATEUR){
-		// ID '.' ID
+		PVAR var_id = getVar(environnement, tree->u.children[0]->u.str);
+		if(var_id == NULL){
+			printf("Dans evalSelection -> var_id = NULL (ID.ID)\n");
+			return NIL(Eval);
+		}
+		classe = var_id->type;
+		if(classe == NULL){
+			printf("Dans evalSelection -> la classe est null (ID.ID)\n");
+			return NIL(Eval);
+		}
+		var=getVar(classe->liste_champs, tree->u.children[1]->u.str);
+		if(var == NULL){
+			printf("Dans evalSelection -> la var est null (ID.ID)\n");
+			return NIL(Eval);
+		}
 	}
+	/* selection '.' ID */
 	else if(tree->u.children[0]->op == SELECTION){
-		// selection '.' ID
+		EvalP eval = evalSelection(tree->u.children[0], environnement);
+		if(eval == NIL(Eval)){
+			return NIL(Eval);
+		}
+		if(eval->type != EVAL_PVAR){
+			printf("Dans evalSelection -> l'eval de la selection n'est pas un PVAR\n");
+			return NIL(Eval);
+		}
+		PVAR var_selection = eval->u.var;
+		if(var_selection == NULL){
+			printf("Dans evalSelection -> la var de la selection est null\n");
+			return NIL(Eval);
+		}
+		classe = var_selection->type;
+		if(classe == NULL){
+			printf("Dans evalSelection -> la classe est null (selection.ID)\n");
+			return NIL(Eval);
+		}
+		var=getVar(classe->liste_champs, tree->u.children[1]->u.str);
+		if(var == NULL){
+			printf("Dans evalSelection -> la var est null (selection.ID)\n");
+			return NIL(Eval);
+		}
 	}
+	/* expr '.' ID */
 	else{
-		// normalement c'est expr '.' ID  
+		EvalP eval_expr = evalExpr(tree->u.children[0], environnement);
+		if(eval_expr == NIL(Eval)){
+			printf("Dans evalSelection -> l'eval de l'expr est null\n");
+			return NIL(Eval);
+		}
+		switch(eval_expr->type){
+			case EVALUE_INT:
+				classe = getClasse(listeDeClass, "Integer");
+				break;
+			case EVALUE_STR:
+				classe = getClasse(listeDeClass, "String");
+				break;
+			case EVALUE_PVAR:
+				classe = eval_expr->u.var->type;
+				break;
+			default:
+				printf("dans EvalSelection -> etiquette non reconnue pour expr.ID\n");
+				return NIL(Eval);
+
+		}
+
+		if(classe == NULL){
+			printf("Dans evalSelection -> la classe est null (expr.ID)\n");
+			return NIL(Eval);
+		}
+		var=getVar(classe->liste_champs, tree->u.children[1]->u.str);
+		if(var == NULL){
+			printf("Dans evalSelection -> la var est null (expr.ID)\n");
+			return NIL(Eval);
+		}
 	}
-  
-	*/
+	return makeEvalVar(var);
 }
-
-
 
 /** A NE PAS CONSIDERER : C'EST LE EVAL DU TP **/
 /*
