@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
     exit(0);
   }
 
-  	/*printf("--------------------------------------------------------------\n");
+  	printf("--------------------------------------------------------------\n");
   	bool checkProg = checkProgramme(programme);
   	printf("--------------------------------------------------------------\n");
   	printf("FIN de la COMPILATION\n");
@@ -142,16 +142,8 @@ int main(int argc, char **argv) {
   	}
   	else{
     		//Faire eval ici
-  	}*/
+  	}
 
-  printf("\n\n\n\n\n\n\n\n");
-  PCLASS pointTmp = getClasseBis(listeDeClass,"Point");
-  PMETH parcourir = pointTmp->liste_methodes; 
-  while(parcourir!=NULL)
-  {
-    printf("%s \n",parcourir->nom);
-    parcourir = parcourir->suivant;
-  }
   /*exit(0);*/
 
   printf("tp.c -> res=%d\n", res);
@@ -534,13 +526,35 @@ bool checkProgramme(TreeP prog){
     liste = NEW(1,SCLASS);
     *liste = tmp;
   }
+
+  dansCheckBlocMain = FALSE;
+
+  printf("Entree 3\n");
+  if(!checkLC)
+  {
+     while(liste!=NULL)
+     {
+     printf("Entree 4\n");
+     checkLC = checkClass(bloc,prog,liste, NULL, NULL) && checkLC;
+     printf("Sortie 4\n");
+      liste = liste->suivant;
+     }
+  }
+
+  /*FIXME 2.0 
+  if(!checkLC)
+  {
+    return FALSE;
+  }*/
+
   if(bloc!=NULL)
   {
-    printf("Entree 2\n");
+    printf("Entree 2.0\n");
   /* FIXME : transformer getChild(bloc,0) en PVAR */
    printf("Arbre ----------------------------: %d et %s \n", bloc->op,getChild(bloc,0)!=NULL?"True":"False");
   }
   bool blockMain = FALSE;
+  dansCheckBlocMain = TRUE;
   if(getChild(bloc,0)!=NULL)
   {
     blockMain = checkBloc(bloc,prog,NULL, NULL, getChild(bloc,0)->u.var);
@@ -554,18 +568,7 @@ bool checkProgramme(TreeP prog){
   {
     return blockMain;
   }
-
- printf("Entree 3\n");
-  if(!checkLC)
-  {
-     while(liste!=NULL)
-     {
-     printf("Entree 4\n");
-     checkLC = checkClass(bloc,prog,liste, NULL, NULL) && checkLC;
-     printf("Sortie 4\n");
-      liste = liste->suivant;
-     }
-  }
+  
   return blockMain && checkLC;
 
 }
@@ -601,6 +604,24 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       return FALSE;
     }
     res = checkListInstruction(getChild(arbre,1),ancien,courant,methode,listeDecl) & res;
+
+    if(methode!=NULL && getChild(arbre,2)!=NULL)
+    {
+      PCLASS yield = getType(getChild(getChild(arbre,2),0),getChild(arbre,2),courant,methode,listeDecl);
+      if(!equalsType(methode->typeRetour,yield))
+      {
+        if(methode->home!=NULL)
+        {
+          sprintf(message,"verifier le yield dans la methode %s de la classe %s ",methode->nom,methode->home->nom);
+        }
+        else
+        {
+          sprintf(message,"verifier le yield dans la methode %s ",methode->nom);
+        }
+        pushErreur(message,courant,methode,listeDecl);
+        res = FALSE;
+      }
+    }
     return res;
   }
   else if(arbre->op == ETIQUETTE_AFFECT)
@@ -659,7 +680,8 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
      TreeP ifInstruction2 = NULL;
      bool if1 = FALSE;
      bool if2 = FALSE;
-     
+     SVAR copieListDecl;
+     PVAR nouvellelisteDecl = NULL;
     
      switch(instruction->op)
      {
@@ -685,9 +707,9 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
             }
             resultat = type!=NULL;
   
-            if(!equalsType(type,methode->typeRetour))
+            if(!equalsType(methode->typeRetour,type))
             {
-              sprintf(message,"Erreur de return : %s type = %s et retour  ",methode->nom,methode->typeRetour->nom);
+              sprintf(message,"Erreur de return : %s type = %s et retour %s",methode->nom,methode->typeRetour->nom,type->nom);
               pushErreur(message,courant,methode,listeDecl);
               printf("checkblock check false 2\n");
               return FALSE;
@@ -719,7 +741,14 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
               }
               else
               {
-                sprintf(message,"Instruction : affectation incorrecte entre deux types differents");
+                if(type2!=NULL)
+                {
+                  sprintf(message,"Instruction : affectation incorrecte entre %s deux types differents %s ---- %d ",type2->nom, getChild(instruction,0)->u.str,getChild(instruction,1)->op);
+                }
+                else
+                {
+                  sprintf(message,"Instruction : affectation incorrecte entre deux types differents %s ---- %d ", getChild(instruction,0)->u.str,getChild(instruction,1)->op);
+                }
               }
               pushErreur(message,courant,methode,listeDecl);
               resultat = FALSE;
@@ -737,13 +766,21 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
         break; 
 
         case IFTHENELSE :
-            type = getType(getChild(instruction,0),instruction,courant,methode,listeDecl);
+            
+            if(listeDecl!=NULL)
+            {
+              copieListDecl = *listeDecl;
+              nouvellelisteDecl = NEW(1,SVAR);
+              *nouvellelisteDecl = copieListDecl;
+            }
+            /*nouvellelisteDecl = listDecl a ce stade la*/
+            type = getType(getChild(instruction,0),instruction,courant,methode,nouvellelisteDecl);
             printf("j'ai passer le getType \n");
 
             if(!equalsType(type,getClasseBis(listeDeClass,"Integer")))
             {
               sprintf(message,"Instruction : la condition dans le if n'est pas un Integer");
-              pushErreur(message,courant,methode,listeDecl);
+              pushErreur(message,courant,methode,nouvellelisteDecl);
               printf("checkListInstruction return 4\n");
               printf("checkListInstruction check false 4\n");
               return FALSE;
@@ -752,26 +789,34 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
             if(getChild(instruction,1)->op==CONTENUBLOC || getChild(instruction,1)->op==ETIQUETTE_AFFECT)
             {
               /* FIXME2.0 fusionner listDecl et celui du bloc si c'est un bloc */
-              resultat = checkBloc(getChild(instruction,1),NULL,courant,methode,listeDecl);
+              if(getChild(instruction,1)->op==CONTENUBLOC && getChild(getChild(instruction,1),0)!=NULL)
+              {
+                nouvellelisteDecl->suivant = getChild(getChild(instruction,1),0)->u.var;
+              }
+              resultat = checkBloc(getChild(instruction,1),NULL,courant,methode,nouvellelisteDecl);
             }
             else
             {
-              resultat = checkListInstruction(getChild(instruction,1),NULL,courant,methode,listeDecl);
+              resultat = checkListInstruction(getChild(instruction,1),NULL,courant,methode,nouvellelisteDecl);
             }
 
             if(getChild(instruction,2)->op==CONTENUBLOC || getChild(instruction,2)->op==ETIQUETTE_AFFECT)
             {
               /* FIXME2.0 fusionner listDecl et celui du bloc si c'est un bloc */
-              resultat = checkBloc(getChild(instruction,2),NULL,courant,methode,listeDecl) && resultat;
+              if(getChild(instruction,2)->op==CONTENUBLOC && getChild(getChild(instruction,2),0)!=NULL)
+              {
+                nouvellelisteDecl->suivant = getChild(getChild(instruction,2),0)->u.var;
+              }
+              resultat = checkBloc(getChild(instruction,2),NULL,courant,methode,nouvellelisteDecl) && resultat;
             }
             else
             {
-              resultat = checkListInstruction(getChild(instruction,2),NULL,courant,methode,listeDecl) && resultat;
+              resultat = checkListInstruction(getChild(instruction,2),NULL,courant,methode,nouvellelisteDecl) && resultat;
             }
             if(!resultat)
             {
               sprintf(message,"Instruction : erreur de if then else");
-              pushErreur(message,courant,methode,listeDecl);
+              pushErreur(message,courant,methode,nouvellelisteDecl);
             }
         break;
 
@@ -838,6 +883,31 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
 bool checkListDeclaration(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
 
+  PVAR tmp = listeDecl;
+
+  while(tmp!=NULL)
+  {
+    if(tmp->type==NULL)
+    {
+      char* message = NEW(SIZE_ERROR,char);
+      sprintf(message,"Erreur la classe de l'attribut %s n'existe pas",tmp->nom);
+      pushErreur(message,NULL,NULL,tmp);
+      return FALSE;
+    }
+
+    if(tmp->init!=NIL(Tree) || tmp->init!=NULL)
+    {
+      PCLASS type = getType(getChild(tmp->init,0),arbre,courant,methode,listeDecl);
+      if(type!=NULL && !equalsType(tmp->type,type))
+      {
+        char* message = NEW(SIZE_ERROR,char);
+        sprintf(message,"Erreur affectation d'un %s par un %s",tmp->type->nom,type->nom);
+        pushErreur(message,courant,methode,NULL);
+      }
+    }
+    tmp = tmp->suivant;
+  }
+
   return TRUE;
 }
 bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
@@ -883,6 +953,12 @@ bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR l
   }
  printf("Entree 7\n");
   bool attribut = checkListAttribut(arbre,ancien,courant,methode,listeDecl);
+
+  if(!attribut)
+  {
+    return FALSE;
+  }
+
  printf("Entree 8\n");
   bool methodeC = checkListMethode(arbre,ancien,courant,methode,listeDecl)/*TRUE*/;
  printf("Entree 9\n");
@@ -927,9 +1003,17 @@ bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee)
 bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
  printf("Entree 7.1\n");
-  if(!verifAttributClasse(courant))
+  if(courant!=NULL && !verifAttributClasse(courant))
   {
-    char *message = calloc(SIZE_ERROR,sizeof(char));sprintf(message,"Erreur init 24");
+    char *message = calloc(SIZE_ERROR,sizeof(char));
+    if(courant!=NULL)
+    {
+      sprintf(message,"Attributs duppliqué dans la classe %s ",courant->nom);
+    }
+    else
+    {
+      sprintf(message,"Attributs duppliqué");
+    }
     return FALSE;
   }
  printf("Entree 7.2\n");
@@ -951,7 +1035,7 @@ bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode,
     if(tmp->init!=NIL(Tree) || tmp->init!=NULL)
     {
       PCLASS type = getType(getChild(tmp->init,0),arbre,courant,methode,listeDecl);
-      if(type!=NULL && !equalsType(type,tmp->type))
+      if(type!=NULL && !equalsType(tmp->type,type))
       {
         char* message = NEW(SIZE_ERROR,char);
         sprintf(message,"Erreur affectation d'un %s par un %s",tmp->type->nom,type->nom);
@@ -1907,8 +1991,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     case OPCOMPARATEUR :
     type = getType(getChild(arbre,0),arbre,courant,methode,listeDecl);
     type2 = getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
-    
-    if(equalsType(type,type2) && strcmp(type->nom,"Integer")==0){
+    if(equalsType(type,type2) && (strcmp(type->nom,"Integer")==0 || strcmp(type->nom,"String")==0)){
       
       return type;
     }
@@ -1927,7 +2010,14 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       }
       else
       {
-        sprintf(message,"Erreur de type operation de comparaison");
+        if(type2!=NULL)
+        {
+          sprintf(message,"Erreur de type operation de comparaison %s ----- %s ",type2->nom,getChild(arbre,0)->u.str);
+        }
+        else
+        {
+          sprintf(message,"Erreur de type operation de comparaison");
+        }
       }
       pushErreur(message,classActuel,methode,NULL);
       return NULL;
@@ -1989,8 +2079,27 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       {
         return getClasseBis(listeDeClass,"Void");
       }
-      printf("MALABAR AUSSI\n");
+      if(strcmp(arbre->u.str,"this")==0)
+      {
+        if(courant!=NULL)
+        {
+          return getClasseBis(listeDeClass,courant->nom);
+        }
+        else
+        {
+          return NULL;
+        }
+      }
+      if(strcmp(arbre->u.str,"super")==0 && ancien!=NULL && ancien->op==ETIQUETTE_YIELD && ancien->op!=ENVOIMESSAGE && ancien!=SELECTION)
+      {
+        sprintf(message,"super n'est pas utilisable dans le yield ! %d ");
+        pushErreur(message,type,NULL,NULL);
+        return NULL;
+        
+      }
+      printf("je vais faire getTypeAttribut --------------------------------%s \n",arbre->u.str);
       tmpDebug = getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE,FALSE);
+      
       printf("CACACACACACA 1\n");
       return tmpDebug;
     break;
@@ -2121,7 +2230,15 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
           {
           printf("getTypeAttribut de %s \n",tmp->elem->u.str);
           /*ici true*/
-          init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE, FALSE);
+          if(dansCheckBlocMain)
+          {
+            init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE, FALSE);
+          }
+          else
+          {
+            init = getTypeAttribut(tmp->elem->u.str, classe, methode, listeDecl, FALSE, FALSE);
+          }
+          
 
           printf("getTypeAttribut fin\n");
           }
@@ -2258,7 +2375,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 
                 else
                 {
-                  sprintf(message,"Erreur la methode %s n'appartient pas a %s",tmp->elem->u.str,tempoAffiche->nom);
+                  sprintf(message,"Erreur la methode %s n'appartient pas a %s. Veuillez verifier la classe",tmp->elem->u.str,tempoAffiche->nom);
 
                 }
                 pushErreur(message,classe,methode,NULL);
@@ -2284,7 +2401,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
                   printf("je suis plutot la\n");
                   printf("%s ===> \n",tmp->elem->u.str);
                   printf("%s ===> \n",tempoAffiche->nom);
-                  sprintf(message,"Erreur la varibable  %s n'appartient pas a %s",tmp->elem->u.str,tempoAffiche->nom); 
+                  sprintf(message,"Erreur la varibable  %s n'appartient pas a %s. Veuillez verifier la classe",tmp->elem->u.str,tempoAffiche->nom); 
                 }
                        
                 pushErreur(message,classe,methode,NULL);
@@ -2395,7 +2512,14 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
   }
   else
   {
-     return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl,isStatic, agerer);    
+      if(dansCheckBlocMain)
+      {
+        return getTypeAttribut(tmp->elem->u.str, mere, methode, NULL,isStatic, agerer);  
+      }
+      else
+      {
+        return getTypeAttribut(tmp->elem->u.str, mere, methode, listeDecl,isStatic, agerer);  
+      }    
   }
 }
 
@@ -2920,7 +3044,7 @@ PCLASS transformerAppel(TreeP appelMethode,PCLASS liste, PCLASS courant, PMETH m
      printf("ABCABC 2\n");
       SCLASS tmp = *liste;
 
-     printf("Classe courante : %s\n",courant->nom);
+     
 
       /*printf("CONTENU = %s\n",getChild(appelMethode,1)->u.var);*/
       PCLASS getTypeRetour = getType(getChild(appelMethode,1),appelMethode, courant, methode, listeDecl);

@@ -6,21 +6,29 @@ class A() is {
   
 }
 
+class A9() is {
+}
 
 class A2() extends A() is {
-  var v : String := "hello"; /* masque le champ v de la classe A */
+  var monA : Integer;
+  var v : String := "hello"; /* masque le champ v de la classe A */
   def override f() returns A { 
-      super.k;
-      
+      this.g();
+      return new A2();
    }
+  
   def override toString() returns String := super.toString() & v
 }
+
+
 
 { var monA : A := new A();
   var monA2 : A2 := new A2();
   var name : String := "x";
   is
+  name = "";
   monA2.f().g().p;
-
+  monA2.f();
+  monA2.monA;
   name.println();
 }
