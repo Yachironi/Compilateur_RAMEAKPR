@@ -299,6 +299,7 @@ void evalProgramme(TreeP programme);
 EvalP evalContenuBloc(TreeP bloc, PVAR environnement);
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement);
 void evalListInstruction(TreeP Linstruction, PVAR environnement);
+EvalP evalInstruction(TreeP instruction, PVAR environnement);
 
 /** Peut etre modifier et introduire un environnement => PVAR */
 EvalP evalExpr(TreeP tree, PVAR environnement);
@@ -307,6 +308,8 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement);
 EvalP evalInstanciation(TreeP tree, PVAR environnement);
 LEvalP evalListArg(TreeP tree, PVAR environnement);
 int sizeString(char *str);
+
+EvalP evalIf(TreeP tree, PVAR environnement);
 
 void updateEnvironnement(PVAR environnement, PVAR env2);
 PVAR getVar(PVAR var, char* nom);
