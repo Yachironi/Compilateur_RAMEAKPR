@@ -116,7 +116,7 @@ void pprintTreeMain(TreeP tree) {
 		case OPERATEUR:     printf("op=OPERATEUR"); break;
 		case SELECTION:    	printf("op=SELECTION"); break;
 		case CONSTANTE:    	printf("op=CONSTANTE"); break;
-		case EXPRESSION:  	printf("op=EXPRESSION"); break;
+		case EXPRESSION:  	printf("op=EXPRESSION");  break;
 		case INSTANCIATION:   	printf("op=INSTANCIATION"); break;
 		case ENVOIMESSAGE:    	printf("op=ENVOIMESSAGE"); break;
 		case EXPRESSIONRETURN:    printf("op=EXPRESSIONRETURN"); break;
@@ -243,11 +243,13 @@ void printMethode(PMETH methode){
 		printf("---------------\n");
 		printf("- methode=%s\n", tmp->nom);
 		printf("isStatic = %d\nisRedef = %d\n", tmp->isStatic, tmp->isRedef);
-		/*
+		
+		printf(" ========  corpMethode ========= \n");
+		printf("nom = %s\n",tmp->nom);
 		if(tmp->corps != NULL){
 			pprintTreeMain(tmp->corps);
 		}
-		*/
+		printf(" ======== FIN corpMethode ========= \n");
 		if(tmp->typeRetour != NULL){
 			printf("typeRetour = %s\n", tmp->typeRetour->nom);
 			/* FONCTIONNE AUSSI : printClasse(tmp->typeRetour); */

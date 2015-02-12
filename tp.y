@@ -228,8 +228,8 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 		 *	de la classe mere dans les attributs et methodes de la classe fille 
 		 */
 		if(isExtend == 1){ 	
-			/* Si une classe n'a pas de construc
-			/* Ajout des attributs ($5=classe mere)*/ 
+			/* Si une classe n'a pas de constructeur
+			 Ajout des attributs ($5=classe mere)*/ 
 			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
 				/* cas ou la classe fille a des attributs -> faut ceux de la mere ajouter a la fin */
 				if(classActuel->liste_champs!=NULL){

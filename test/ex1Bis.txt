@@ -1,16 +1,17 @@
 class A() is {
-  var v : Integer := 1;
-  def f() returns A { "A::f()\n".println(); v := 2; }
-  def g() returns A { "A::g()\n".println(); v := 5; }
-  def toString() returns String := v.toString()
+  var p : Integer := 1;
+  def f() returns A { "A::f()\n".println(); p := 2; }
+  def g() returns A { "A::g()\n".println(); p := 5; }
+  def toString() returns String := p.toString()
+  
 }
-
 
 class A2() extends A() is {
   var v : String := "hello"; 	/* masque le champ v de la classe A */
   def override f() returns A { 
       "A2::f()\n".println();
-      super.f();
+      ("babaloued" & v & "2.0").print();
+      this.v;
       v := "Hello";
    }
   def override toString() returns String := super.toString() & v
@@ -18,6 +19,10 @@ class A2() extends A() is {
 
 { var monA : A := new A();
   var monA2 : A2 := new A2();
+  var name : String := "x";
   is
-  monA2.f(); 
+  (1+2+4).toString();
+  monA2.f(1).g().p;
+  ("a" & name & "c").println(); 
+  name.println();
 }
