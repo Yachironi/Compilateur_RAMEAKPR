@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
     printf("tp.c -> Programme n'est pas NULL\n");
     printf("=======================\n");
     /* Fonction de teste des evalExpr*/
-    /*testEval();*/
+    testEval();
     /*printf("tp.c -> Affichage de l'arbre : \n");
     pprintTreeMain(programme);*/
     printf("=======================\n");
