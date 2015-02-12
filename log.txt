@@ -1,5 +1,5 @@
 tp.c -> avant res
-le nom de la classe est : Pointle nom de la classe est : PointColorele nom de la classe est : PointColore--------------------------------------------------------------
+--------------------------------------------------------------
 Entree 1
 Entree 3
 Entree 4
@@ -151,18 +151,60 @@ Entree 6
 Entree 7
 Entree 7.1
 Entree 7.2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 24
 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 10
+Entree 8
+Aucune methode avant
+Aucune methode apres
+************************ Je suis en train de check la methode : f 
+Je check la methode f
+1
 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 23
-2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race f 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------34
+a.a.a.3
+caca
+lalalala
+getChild arbre 1 n'est pas null 0 
+EYIQUETTE 42 
+La 
+AVAnt 
+ETIQUETE du pere : 42 
+je suis la dans ma petite expression 20 
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 20
@@ -170,11 +212,364 @@ Etiquette 20
 HELLO 1
 HELLO 4
 arbre -> op 20
-h.1
-Je suis ici
+Debul 20 getChild(arbre,0) 23 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+je fais CSTSTRING
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :println 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q String -> 
+les listes ne sont pas null 
+NOMMETH println
+Je compare methode : println et filles println
+Allez isVerif  : ? println 
+l'etiquette transmis ici : 23
+la classe dans le gettYPEmETHODE EST :Stringa.1
+AIGHT
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.66
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+getChild arbre 1 n'est pas null 0 
+EYIQUETTE 42 
+La 
+AVAnt 
+ETIQUETE du pere : 42 
+CHIIIIIENNNNNNNNNN
+FIN DE l'HIStOIRE
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------p 
+ LA CLASSE EST : A
+1.1.1
+le nom de la methode est : f
+1.1.2
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : g 
+Je check la methode g
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race g 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------34
+a.a.a.3
+caca
+lalalala
+getChild arbre 1 n'est pas null 0 
+EYIQUETTE 42 
+La 
+AVAnt 
+ETIQUETE du pere : 42 
+je suis la dans ma petite expression 20 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+Debul 20 getChild(arbre,0) 23 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+je fais CSTSTRING
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :println 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q String -> 
+les listes ne sont pas null 
+NOMMETH println
+Je compare methode : println et filles println
+Allez isVerif  : ? println 
+l'etiquette transmis ici : 23
+la classe dans le gettYPEmETHODE EST :Stringa.1
+AIGHT
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.66
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+getChild arbre 1 n'est pas null 0 
+EYIQUETTE 42 
+La 
+AVAnt 
+ETIQUETE du pere : 42 
+CHIIIIIENNNNNNNNNN
+FIN DE l'HIStOIRE
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------p 
+ LA CLASSE EST : A
+1.1.1
+le nom de la methode est : g
+1.1.2
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+CACACACACACA 1
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+************************ Je suis en train de check la methode : toString 
+Je check la methode toString
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race toString 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fin de la street
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------37
+a.a.a.3
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
 Debul 20 getChild(arbre,0) 7 
 J'AI FINIS MA TRANSFORMOTION 
 JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+1.1
+1.rien
+getTypeAttribut de p 
+ LA CLASSE EST : A
+1.1.1
+le nom de la methode est : toString
+1.1.2
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Integer
+1.2
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :toString 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q Integer -> 
+les listes ne sont pas null 
+NOMMETH toString
+Je compare methode : toString et filles toString
+Allez isVerif  : ? toString 
+l'etiquette transmis ici : 7
+la classe dans le gettYPEmETHODE EST :Integera.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7
+Entree 7.1
+Entree 7.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 10
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 23
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+Debul 20 getChild(arbre,0) 7 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
 JE FAIS EST COHERENT ENVOIE  
 LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
 estCoherentEnvoi1
@@ -184,6 +579,7 @@ liste me casse les couilles mais c'est abuser
 1.1
 1.rien
 getTypeAttribut de cpt 
+ LA CLASSE EST : Point
 1.1.1
 1.1.6.1
 1.1.7
@@ -233,935 +629,137 @@ apres 25-25-25
 etiquette avant
 etiquette apres
 je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
 CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
    20Entree 8
 Aucune methode avant
-Aucune methode apres
-************************ Je suis en train de check la methode : setName 
-Je check la methode setName
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race setName 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Entree 9
+Sortie 4
+Entree 2.0
+Arbre ----------------------------: 34 et True 
  JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
 --------------------34
 a.a.a.3
 caca
 lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-CHIIIIIENNNNNNNNNN
-FIN DE l'HIStOIRE
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 19
 2
-je vais faire getTypeAttribut --------------------------------name 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 23
 2
-je vais faire getTypeAttribut --------------------------------s 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : move 
-Je check la methode move
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race move 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-CHIIIIIENNNNNNNNNN
-FIN DE l'HIStOIRE
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 19
 2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
+a.6
+ETIQUETE   ----------- op : 40
+LISTE EST NULL 
+ABCABC
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 11
 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dx 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-CHIIIIIENNNNNNNNNN
-FIN DE l'HIStOIRE
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 11
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 11
 2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 11
 2
-je vais faire getTypeAttribut --------------------------------dy 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 11
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
 type = NULL ? Integer type2 = NULL ? Integer
 EST TU ICI ?
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 24
 2
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : gety 
-Je check la methode gety
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race gety 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 16
+Etiquette 24
 2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.this
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : getx 
-Je check la methode getx
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race getx 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 24
 2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : getxBis 
-Je check la methode getxBis
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race getxBis 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 24
 2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : getxTer 
-Je check la methode getxTer
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race getxTer 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-m.expr
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+GET TYPE RETOUR LISTE NULL= Integer
+ETIQUETE   ----------- op : 24
+XYZXYZ 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 24
 2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-checkListInstruction return 3.1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : nothing 
-Je check la methode nothing
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race nothing 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : nothingBis 
-Je check la methode nothingBis
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race nothingBis 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-m.expr
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-checkListInstruction return 3.1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : nothingTer 
-Je check la methode nothingTer
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race nothingTer 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : print 
-Je check la methode print
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race print 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
+LISTE GET TYPE = Integer
+LISTE GET TYPE = Integer
+CLASSSSE APP Integer
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Integer
+AppelMethode : Integer
+AppelMethode contient : 2
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 2 element
+BYE BYE
 getChild arbre 1 n'est pas null 0 
 EYIQUETTE 42 
 La 
 AVAnt 
 ETIQUETE du pere : 42 
 je suis la dans ma petite expression 20 
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 20
@@ -1169,85 +767,58 @@ Etiquette 20
 HELLO 1
 HELLO 4
 arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 10 
-LE OP EST : 10======================liste est bizare ==========================
+Debul 20 getChild(arbre,0) 11 
+LE OP EST : 11======================liste est bizare ==========================
+///////////////////////////////DEBUT/////////////////////////////////////////
 JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
 estCoherentEnvoi1
 rentrer
  la valeur de bizarre est  1, 
 liste me casse les couilles mais c'est abuser
 L'element est un type bizareeeee ===============
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 10
+Etiquette 11
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 10
+Etiquette 11
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 23
+Etiquette 24
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 7
+Etiquette 24
 2
-je vais faire getTypeAttribut --------------------------------name 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   71 - 3
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+______________________________________________________________________________
+1 - 3
 arbre NIL : ? 0
-Etiquette 23
+Etiquette 24
 2
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   23Toi la tu me soul hein : String3.6
+type = NULL ? Integer type2 = NULL ? Integer
+EST TU ICI ?
+Toi la tu me soul hein : Integer3.6
 je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :print 
+J'AI UNE FONCTION CACA :toString 
 25-25-25
 PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
 ioooooooooooooooooo
 1_1_1_1_1
-avant-----q-s-qs--s-q String -> 
+avant-----q-s-qs--s-q Integer -> 
 les listes ne sont pas null 
-NOMMETH println
-Je compare methode : println et filles print
-NOMMETH print
-Je compare methode : print et filles print
-Allez isVerif  : ? print 
-l'etiquette transmis ici : 10
-la classe dans le gettYPEmETHODE EST :Stringa.1
+NOMMETH toString
+Je compare methode : toString et filles toString
+Allez isVerif  : ? toString 
+l'etiquette transmis ici : 11
+la classe dans le gettYPEmETHODE EST :Integera.1
 BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
 a.66
 VERIFICATION : 1
@@ -1256,13 +827,14 @@ apres 25-25-25
 etiquette avant
 etiquette apres
 je suis dans ma petite boucle while 
-je suis ici autre 
+///////////////////////////////FIN 9/////////////////////////////////////////
 getChild arbre 1 n'est pas null 0 
 EYIQUETTE 42 
 La 
 AVAnt 
 ETIQUETE du pere : 42 
 je suis la dans ma petite expression 20 
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 20
@@ -1270,192 +842,64 @@ Etiquette 20
 HELLO 1
 HELLO 4
 arbre -> op 20
-h.1
-Je suis ici
 Debul 20 getChild(arbre,0) 10 
 LE OP EST : 10======================liste est bizare ==========================
+///////////////////////////////DEBUT/////////////////////////////////////////
 JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
 estCoherentEnvoi1
 rentrer
  la valeur de bizarre est  1, 
 liste me casse les couilles mais c'est abuser
 L'element est un type bizareeeee ===============
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 10
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 10
 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 10
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 10
-2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 23
 2
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
-Etiquette 20
+Etiquette 7
 2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de x 
+je vais faire getTypeAttribut --------------------------------name 
 1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
+1.1.5
+1.1.5.1
+Avant Affichage
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° monA 
+Okay my nigga
+Avant Affichage
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° name 
+Okay my nigga
+Avant Affichage
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° point 
+Okay my nigga
+1.1.5.2
+Ji passe
+Ji passe pas fusion :
+1.1.5.3
+1.1.5.3.1
+1.1.5.4
+1.1.5.4
+1.1.5.5
+1.1.6 estDansListeDecl 1 
 1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
 lolololo
 1.1.6.2
-getTypeAttribut fin
-INIT = Integer
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :toString 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Integer -> 
-les listes ne sont pas null 
-NOMMETH toString
-Je compare methode : toString et filles toString
-Allez isVerif  : ? toString 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Integera.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
+CACACACACACA 1
 CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   201 - 3
-arbre NIL : ? 0
-Etiquette 23
-2
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   231 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de y 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Integer
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :toString 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Integer -> 
-les listes ne sont pas null 
-NOMMETH toString
-Je compare methode : toString et filles toString
-Allez isVerif  : ? toString 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Integera.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   201 - 3
+   7______________________________________________________________________________
+1 - 3
 arbre NIL : ? 0
 Etiquette 23
 2
@@ -1482,54 +926,14 @@ apres 25-25-25
 etiquette avant
 etiquette apres
 je suis dans ma petite boucle while 
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : verboseMove 
-Je check la methode verboseMove
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race verboseMove 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
+///////////////////////////////FIN 9/////////////////////////////////////////
 getChild arbre 1 n'est pas null 0 
 EYIQUETTE 42 
 La 
 AVAnt 
 ETIQUETE du pere : 42 
 je suis la dans ma petite expression 20 
+______________________________________________________________________________
 1 - 3
 arbre NIL : ? 0
 Etiquette 20
@@ -1537,1143 +941,33 @@ Etiquette 20
 HELLO 1
 HELLO 4
 arbre -> op 20
-h.1
-Je suis ici
 Debul 20 getChild(arbre,0) 7 
 J'AI FINIS MA TRANSFORMOTION 
 JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
 JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.this
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :move 
-25-25-25
-cake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Point -> 
-les listes ne sont pas null 
-NOMMETH setName
-Je compare methode : setName et filles move
-NOMMETH move
-Je compare methode : move et filles move
-Allez isVerif  : ? move 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Pointa.1
-a.3
-a.1
-a.3
-a.4
-a.6
-ETIQUETE   ----------- op : 40
-LISTE EST NULL 
-ABCABC
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dy 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-GET TYPE RETOUR LISTE NULL= Integer
-ETIQUETE   ----------- op : 7
-XYZXYZ 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dx 
-1.1.1
-1.1.2
-cacaca
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-LISTE GET TYPE = Integer
-LISTE GET TYPE = Integer
-Classe courante Point 
-CLASSSSE APP Integer
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode : Integer
-AppelMethode contient : 2
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 2 element
-BYE BYE
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.this
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :print 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Point -> 
-les listes ne sont pas null 
-NOMMETH setName
-Je compare methode : setName et filles print
-NOMMETH move
-Je compare methode : move et filles print
-NOMMETH gety
-Je compare methode : gety et filles print
-NOMMETH getx
-Je compare methode : getx et filles print
-NOMMETH getxBis
-Je compare methode : getxBis et filles print
-NOMMETH getxTer
-Je compare methode : getxTer et filles print
-NOMMETH nothing
-Je compare methode : nothing et filles print
-NOMMETH nothingBis
-Je compare methode : nothingBis et filles print
-NOMMETH nothingTer
-Je compare methode : nothingTer et filles print
-NOMMETH print
-Je compare methode : print et filles print
-Allez isVerif  : ? print 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Pointa.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : clone 
-Je check la methode clone
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race clone 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 19
-2
-a.6
-ETIQUETE   ----------- op : 40
-LISTE EST NULL 
-ABCABC
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° res 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-GET TYPE RETOUR LISTE NULL= Integer
-ETIQUETE   ----------- op : 7
-XYZXYZ 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° res 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-LISTE GET TYPE = Integer
-LISTE GET TYPE = Integer
-Classe courante Point 
-CLASSSSE APP Integer
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode : Integer
-AppelMethode contient : 2
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 2 element
-BYE BYE
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
 estCoherentEnvoi1
 rentrer
  la valeur de bizarre est  0, 
 liste me casse les couilles mais c'est abuser
 1.1
 1.rien
-getTypeAttribut de res 
+getTypeAttribut de name 
 1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
 1.1.5
 1.1.5.1
 Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° res 
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° monA 
+Okay my nigga
+Avant Affichage
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° name 
+Okay my nigga
+Avant Affichage
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° point 
 Okay my nigga
 1.1.5.2
 Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :setName 
-25-25-25
-cake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Point -> 
-les listes ne sont pas null 
-NOMMETH setName
-Je compare methode : setName et filles setName
-Allez isVerif  : ? setName 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Pointa.1
-a.3
-a.4
-a.6
-ETIQUETE   ----------- op : 10
-LISTE EST NULL 
-je suis ici 2 -- 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 10
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.this
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° res 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 23
-2
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   23Classe courante Point 
-CLASSSSE APP String
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : String
-AppelMethode contient : 1
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : String
-DeclarationOfficiel contient : 1 element
-BYE BYE
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------res 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° res 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : egal 
-Je check la methode egal
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race egal 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------b1 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-j'ai passer le getType 
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 21 
-La 
-AVAnt 
-ETIQUETE du pere : 21 
-je suis la dans ma petite expression 24 
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 21 
-La 
-AVAnt 
-ETIQUETE du pere : 21 
-je suis la dans ma petite expression 15 
-1 - 3
-arbre NIL : ? 0
-Etiquette 15
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------b2 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
+Ji passe pas fusion :
 1.1.5.3
 1.1.5.3.1
 1.1.5.4
@@ -2681,2752 +975,12 @@ Ji passe pas fusion : 0
 1.1.5.5
 1.1.6 estDansListeDecl 1 
 1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 9
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : egal2 
-Je check la methode egal2
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race egal2 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
 lolololo
 1.1.6.2
 getTypeAttribut fin
-INIT = Point
+INIT = String
 1.2
 3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------b1 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-j'ai passer le getType 
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------result 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-gros soucis
-1.1.6.2
-CACACACACACA 1
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc b1 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc b2 
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Point
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-26_26_26
-cake lol 
-ioooooooooooooooooo
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-type = NULL ? Integer type2 = NULL ? Integer
-EST TU ICI ?
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-YEEAHHHH ------------------------------------------------------------------------------------------------------b1
-YEEAHHHH ------------------------------------------------------------------------------------------------------b2
-YEEAHHHH ------------------------------------------------------------------------------------------------------result
-YEEAHHHH ------------------------------------------------------------------------------------------------------b2
-FIN DE l'HIStOIRE
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------result 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 15
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------b2 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 1 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : cpt
- : : : : x
- : : : : y
- : : : : name
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------result 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.2.1
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
-5
-Entree 9
-Sortie 4
-Entree 4
-Entree 5
-Entree 6
-Entree 7
-Entree 7.1
-Entree 7.2
-Entree 8
-Aucune methode avant
-Aucune methode apres
-************************ Je suis en train de check la methode : blanc 
-Je check la methode blanc
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race blanc 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 19
-2
-a.6
-ETIQUETE   ----------- op : 24
-LISTE EST NULL 
-je suis ici 2 -- 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-Classe courante Couleur 
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode contient : 1
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 1 element
-BYE BYE
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : noir 
-Je check la methode noir
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race noir 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 19
-2
-a.6
-ETIQUETE   ----------- op : 24
-LISTE EST NULL 
-je suis ici 2 -- 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-Classe courante Couleur 
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode contient : 1
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 1 element
-BYE BYE
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : gris 
-Je check la methode gris
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race gris 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 19
-2
-a.6
-ETIQUETE   ----------- op : 24
-LISTE EST NULL 
-je suis ici 2 -- 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-Classe courante Couleur 
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode contient : 1
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 1 element
-BYE BYE
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : name 
-Je check la methode name
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race name 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-1 - 3
-arbre NIL : ? 0
-Etiquette 15
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° dummy 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-j'ai passer le getType 
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 21 
-La 
-AVAnt 
-ETIQUETE du pere : 21 
-je suis la dans ma petite expression 23 
-1 - 3
-arbre NIL : ? 0
-Etiquette 23
-2
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-1 - 3
-arbre NIL : ? 0
-Etiquette 15
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° dummy 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.6 estDansListeDecl 0 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-j'ai passer le getType 
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dummy 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-gros soucis
-1.1.6.2
-CACACACACACA 1
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dummy 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-gros soucis
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------dummy 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° dummy 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.3
-1.1.5.3.1
-1.1.5.4
-1.1.5.5
-1.1.6 estDansListeDecl 1 
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
-5
-Entree 9
-Sortie 4
-Entree 4
-Entree 5
-Entree 6
-Entree 7
-Entree 7.1
-Entree 7.2
-1 - 3
-arbre NIL : ? 0
-Etiquette 10
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 23
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de cpt 
-1.1.1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Integer
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :toString 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Integer -> 
-les listes ne sont pas null 
-NOMMETH toString
-Je compare methode : toString et filles toString
-Allez isVerif  : ? toString 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Integera.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-   201 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-Entree 8
-Gestion de la classe PointColore 
-
-
-
-
-
-
-
-
-_______DEBUT__________
-
-
-
-
-
-
-
-Classe courante : PointColore : sa classe mere Point
-[30mVALEURRRRRRR = xc 
-[30mVALEURRRRRRR = yc 
-a.6
-ETIQUETE   ----------- op : 40
-LISTE EST NULL 
-ABCABC
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------yc 
-1.1.1
-1.1.2
-cacaca
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-GET TYPE RETOUR LISTE NULL= Integer
-ETIQUETE   ----------- op : 7
-XYZXYZ 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------xc 
-1.1.1
-1.1.2
-cacaca
-cacaca
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-LISTE GET TYPE = Integer
-LISTE GET TYPE = Integer
-Classe courante PointColore 
-CLASSSSE APP Integer
-CLASSSSE APP Integer
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode : Integer
-AppelMethode contient : 2
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-ParamOfficiel : Integer
-DeclarationOfficiel contient : 2 element
-BYE BYE
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-CHIIIIIENNNNNNNNNN
-FIN DE l'HIStOIRE
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-cacaca
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------c 
-1.1.1
-1.1.2
-cacaca
-cacaca
-cacaca
-1.1.3
-1.1.3
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-TRUUUUUUUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
-
-
-
-
-
-
-
-________FIN_________
-
-
-
-
-
-
-
-Aucune methode avant
-Aucune methode apres
-************************ Je suis en train de check la methode : couleur 
-Je check la methode couleur
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race couleur 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : colore 
-Je check la methode colore
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race colore 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 15
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Couleur
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :estGris 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Couleur -> 
-les listes ne sont pas null 
-NOMMETH blanc
-Je compare methode : blanc et filles estGris
-NOMMETH noir
-Je compare methode : noir et filles estGris
-NOMMETH gris
-Je compare methode : gris et filles estGris
-NOMMETH name
-Je compare methode : name et filles estGris
-NOMMETH estGris
-Je compare methode : estGris et filles estGris
-Allez isVerif  : ? estGris 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Couleura.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 24
-2
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : setCouleur 
-Je check la methode setCouleur
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race setCouleur 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-CHIIIIIENNNNNNNNNN
-FIN DE l'HIStOIRE
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------c 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : clone 
-Je check la methode clone
-1
-2
-3
-3.1
-3.2
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race clone 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------37
-a.a.a.3
-1 - 3
-arbre NIL : ? 0
-Etiquette 19
-2
-a.6
-ETIQUETE   ----------- op : 40
-LISTE EST NULL 
-ABCABC
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-GET TYPE RETOUR LISTE NULL= Couleur
-ETIQUETE   ----------- op : 40
-ABCABC 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------y 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-ETIQUETE   ----------- op : 7
-XYZXYZ 2
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-1.1.9
-1.1.9
-1.1.9
-lolololo
-1.1.6.2
-CACACACACACA 1
-LISTE GET TYPE = Integer
-LISTE GET TYPE = Integer
-LISTE GET TYPE = Integer
-Classe courante PointColore 
-CLASSSSE APP Integer
-CLASSSSE APP Integer
-CLASSSSE APP Couleur
-a.7
-..1.. 
-..2.. 
-..3.. 
-AppelMethode : Integer
-AppelMethode : Integer
-AppelMethode : Couleur
-AppelMethode contient : 3
-..4.. 
-..5.. 
-..6.. 
-ParamOfficiel : Integer
-ParamOfficiel : Integer
-ParamOfficiel : Couleur
-DeclarationOfficiel contient : 3 element
-BYE BYE
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : estGris 
-Je check la methode estGris
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race estGris 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 23 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-je fais CSTSTRING
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :println 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q String -> 
-les listes ne sont pas null 
-NOMMETH println
-Je compare methode : println et filles println
-Allez isVerif  : ? println 
-l'etiquette transmis ici : 23
-la classe dans le gettYPEmETHODE EST :Stringa.1
-AIGHT
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.66
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de coul 
-1.1.1
-1.1.2
-1.1.4 + estDansParamMeth 0
-1.1.6.1
-1.1.7
-
-
-
- DEBUT LISTE DECL 
-
-
- : : : : coul
- : : : : name
- : : : : y
- : : : : x
- : : : : cpt
-
-
-
-FIN LISTE DECL 
-
-
-1.1.8
-1.1.9
-lolololo
-1.1.6.2
-getTypeAttribut fin
-INIT = Couleur
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :estGris 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Couleur -> 
-les listes ne sont pas null 
-NOMMETH blanc
-Je compare methode : blanc et filles estGris
-NOMMETH noir
-Je compare methode : noir et filles estGris
-NOMMETH gris
-Je compare methode : gris et filles estGris
-NOMMETH name
-Je compare methode : name et filles estGris
-NOMMETH estGris
-Je compare methode : estGris et filles estGris
-Allez isVerif  : ? estGris 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Couleura.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : print 
-Je check la methode print
-1
-2
-3
-3.1
-3.2
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race print 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 23 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-je fais CSTSTRING
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :println 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q String -> 
-les listes ne sont pas null 
-NOMMETH println
-Je compare methode : println et filles println
-Allez isVerif  : ? println 
-l'etiquette transmis ici : 23
-la classe dans le gettYPEmETHODE EST :Stringa.1
-AIGHT
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.66
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.super
-INIT = Point
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :print 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Point -> 
-les listes ne sont pas null 
-NOMMETH setName
-Je compare methode : setName et filles print
-NOMMETH move
-Je compare methode : move et filles print
-NOMMETH gety
-Je compare methode : gety et filles print
-NOMMETH getx
-Je compare methode : getx et filles print
-NOMMETH getxBis
-Je compare methode : getxBis et filles print
-NOMMETH getxTer
-Je compare methode : getxTer et filles print
-NOMMETH nothing
-Je compare methode : nothing et filles print
-NOMMETH nothingBis
-Je compare methode : nothingBis et filles print
-NOMMETH nothingTer
-Je compare methode : nothingTer et filles print
-NOMMETH print
-Je compare methode : print et filles print
-Allez isVerif  : ? print 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Pointa.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-je suis ici autre 
-getChild arbre 1 n'est pas null 0 
-EYIQUETTE 42 
-La 
-AVAnt 
-ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
-1 - 3
-arbre NIL : ? 0
-Etiquette 20
-2
-HELLO 1
-HELLO 4
-arbre -> op 20
-h.1
-Je suis ici
-Debul 20 getChild(arbre,0) 20 
-arbre -> op 20
-h.2
-h.3 -> 3 
-h.4
-h.5
-h.6
-h.8
-Debul 20 getChild(arbre,0) 20 
-arbre -> op 20
-h.2
-h.3 -> 3 
-h.4
-h.5
-h.6
-h.8
-Debul 20 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.this
-INIT = PointColore
-1.2
-3.6
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :couleur 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q PointColore -> 
-les listes ne sont pas null 
-NOMMETH couleur
-Je compare methode : couleur et filles couleur
-Allez isVerif  : ? couleur 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :PointColorea.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
-je suis dans ma petite boucle while 
-J'AI UNE FONCTION CACA :name 
-25-25-25
-PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
-ioooooooooooooooooo
-1_1_1_1_1
-avant-----q-s-qs--s-q Couleur -> 
-les listes ne sont pas null 
-NOMMETH blanc
-Je compare methode : blanc et filles name
-NOMMETH noir
-Je compare methode : noir et filles name
-NOMMETH gris
-Je compare methode : gris et filles name
-NOMMETH name
-Je compare methode : name et filles name
-Allez isVerif  : ? name 
-l'etiquette transmis ici : 7
-la classe dans le gettYPEmETHODE EST :Couleura.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.1
-a.3
-a.4
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
-a.5
-Fin isVerif 1 
-apres 25-25-25 
-etiquette avant
-etiquette apres
 je suis dans ma petite boucle while 
 J'AI UNE FONCTION CACA :println 
 25-25-25
@@ -5449,118 +1003,13 @@ apres 25-25-25
 etiquette avant
 etiquette apres
 je suis dans ma petite boucle while 
-typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
-5
-************************ Je suis en train de check la methode : egal2 
-Je check la methode egal2
-1
-2
-3
-4 
-METHODE NULL : 0
-
-
-
-
-
-
-
-
-
-
-
-
-Ton race egal2 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fin de la street
- JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
---------------------34
-a.a.a.3
-caca
-lalalala
-1 - 3
-arbre NIL : ? 0
-Etiquette 12
-2
-1 - 3
-arbre NIL : ? 0
-Etiquette 16
-2
-0
-arbre -> op 16
-h.1
-Je suis ici
-Debul 16 getChild(arbre,0) 7 
-J'AI FINIS MA TRANSFORMOTION 
-JE RETOURNE MAS TRANSFORMATION 
-1 2
-2
-3----
-JE FAIS EST COHERENT ENVOIE  
-LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : PointColore
-estCoherentEnvoi1
-rentrer
- la valeur de bizarre est  0, 
-liste me casse les couilles mais c'est abuser
-1.1
-1.rien
-getTypeAttribut de p 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 1
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° result 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-1.1.5.2
-Ji passe
-Ji passe pas fusion : 0 
-1.1.5.2.1
-getTypeAttribut fin
-1.1.1
-p inconnu 
-1 - 3
-arbre NIL : ? 0
-Etiquette 7
-2
-je vais faire getTypeAttribut --------------------------------x 
-1.1.1
-1.1.2
-cacaca
-1.1.3
-1.1.4 + estDansParamMeth 0
-1.1.5
-1.1.5.1
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b1 
-Okay my nigga
-Avant Affichage
-°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° b2 
-Okay my nigga
-Avant Affichage
-°°�
+///////////////////////////////FIN 9/////////////////////////////////////////
+J4AI FINIS CHECK BLO ===================================================================
+--------------------------------------------------------------
+FIN de la COMPILATION
+Il y a des probleme dans le code !
+Aucune erreur : OK
+tp.c -> res=0
+tp.c -> Programme n'est pas NULL
+=======================
+=======================
