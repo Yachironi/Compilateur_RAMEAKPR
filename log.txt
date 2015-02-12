@@ -27,18 +27,6 @@ Erreur lexical
 Erreur lexical 
 Erreur lexical 
 Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
-Erreur lexical 
 --------------------------------------------------------------
 Entree 1
 Entree 2
@@ -64,6 +52,7 @@ HELLO 4
 arbre -> op 20
 h.1
 Je suis ici
+arbre->opp = 10
 Debul 20 getChild(arbre,0) 10 
 je suis Ã  la fin
 arbre -> op 10
@@ -86,18 +75,23 @@ Debul 10 getChild(arbre,0) 23
 JE FAIS U ESTCOHERENT ENVOI MAIS POURQUOI ? 
 estCoherentEnvoi1
 rentrer
+aaa
 --2--- 23 ===== "a" suivant : "b" suivantsuivant = "ajbdqhsfvdgsv"
+MA CLASSE : String ---------
 3.6
-26_26_26
+26_26_26 23 
 cake lol 
+ioooooooooooooooooo
 etiquette avant
 etiquette apres
-26_26_26
+26_26_26 23 
 cake lol 
+ioooooooooooooooooo
 etiquette avant
 etiquette apres
 25-25-25
 cake lol 
+ioooooooooooooooooo
 1_1_1_1_1
 avant-----q-s-qs--s-q String -> 
 NOMMETH println
@@ -105,12 +99,15 @@ Je compare methode : println et filles println
 Allez isVerif  : ? println 
 a.1
 AIGHT
-BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 a.66
-Fin isVerif 1 
+a.1
+AIGHT
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+a.66
+Fin isVerif 0 
 apres 25-25-25 
-etiquette avant
-etiquette apres
+checkblock check false 5
 J4AI FINIS CHECK BLO ===================================================================
 Entree 3
 Entree 4
@@ -279,6 +276,7 @@ HELLO 4
 arbre -> op 20
 h.1
 Je suis ici
+arbre->opp = 7
 Debul 20 getChild(arbre,0) 7 
 JE FAIS U ESTCOHERENT ENVOI MAIS POURQUOI ? 
 LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Test
@@ -316,6 +314,7 @@ INIT = Integer
 3.6
 25-25-25
 cake lol 
+ioooooooooooooooooo
 1_1_1_1_1
 avant-----q-s-qs--s-q Integer -> 
 NOMMETH toString
@@ -332,12 +331,12 @@ etiquette avant
 etiquette apres
 CONCATENATIONNNNNNNNNNNNNNNNNNNNNNNNNNNN
    20TYPE 1 : String et le nom est :"x"
-TYPE 2 : String et le nom est :pOPç
+TYPE 2 : String et le nom est :0O@»Ý
 Entree 8
 Aucune methode avant
 AUcune methode apres
-************************ Je suis en train de check la methode : print 
-Je check la methode print
+************************ Je suis en train de check la methode : printK 
+Je check la methode printK
 1
 2
 3
@@ -355,7 +354,7 @@ METHODE NULL : 0
 
 
 
-Ton race print 
+Ton race printK 
 
 
 
@@ -381,47 +380,58 @@ EYIQUETTE 42
 La 
 AVAnt 
 ETIQUETE du pere : 42 
-je suis la dans ma petite expression 20 
+je suis la dans ma petite expression 16 
 1 - 3
 arbre NIL : ? 0
-Etiquette 20
+Etiquette 16
 2
-HELLO 1
-HELLO 4
-arbre -> op 20
+0
+arbre -> op 16
 h.1
 Je suis ici
-Debul 20 getChild(arbre,0) 10 
-je suis Ã  la fin
-arbre -> op 10
-h.2
-h.3 -> 2 
-h.4
-h.5
-h.7
-h.8
-Debul 10 getChild(arbre,0) 10 
-je suis Ã  la fin
-arbre -> op 10
-h.2
-h.3 -> 2 
-h.4
-h.5
-h.7
-h.8
-Debul 10 getChild(arbre,0) 23 
+arbre->opp = 7
+Debul 16 getChild(arbre,0) 7 
+1 2
+2
+3----
 JE FAIS U ESTCOHERENT ENVOI MAIS POURQUOI ? 
 LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : Test
 estCoherentEnvoi1
 rentrer
---2--- 23 ===== "[" suivant : name suivantsuivant = "]"
+1.1
+1.this
+INIT = Test
+1.2
 3.6
-26_26_26
+26_26_26 7 
 cake lol 
+ioooooooooooooooooo
 1.1.1
 1.1.2
-1.1.4
+1.1.4 + estDansParamMeth 0
 1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : cpt
+ : : : : name
+ : : : : x
+ : : : : y
+
+
+
+FIN LISTE DECL 
+
+
+1.1.8
+1.1.9
+1.1.9
+1.1.9
+1.1.9
 gros soucis
 1.1.6.2
 checkblock check false 5
@@ -432,8 +442,13 @@ Sortie 4
 --------------------------------------------------------------
 FIN de la COMPILATION
 Il y a des probleme dans le code !
-[31mErreur 1 : Erreur la methode print est mal construite
-[30m[30m[31mErreur 2 : Instruction : erreur d'instruction 20
-[30m[30m[31mErreur 3 : Instruction incorrecte ÀSPç
-[30m[30m[31mErreur 4 : Erreur la varibable  name n'appartient pas a String
+[31mErreur 1 : Erreur la methode printK est mal construite
+[30m[30m[31mErreur 2 : Instruction : erreur d'instruction 16
+[30m[30m[31mErreur 3 : Instruction incorrecte ÐR@»Ý
+[30m[30m[31mErreur 4 : Erreur la varibable  t n'appartient pas a Test
+[30m[30m[31mErreur 5 : Instruction : erreur d'instruction 20
+[30m[30m[31mErreur 6 : Instruction incorrecte  W@»Ý
+[30m[30m[31mErreur 7 : Erreur la methode println n'appartient pas a String
+[30m[30m[31mErreur 8 : Erreur la methode println est mal appele ou n'existe pas
+[30m[30m[31mErreur 9 : La methode de classe ou statique println est mal appelee
 [30m[30m

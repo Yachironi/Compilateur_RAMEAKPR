@@ -1,21 +1,26 @@
-
-class Test()
-is{
-  var static cpt : Integer;
-  var name : String := "x" & cpt.toString(); 
-  var x : Integer;
-  var y : Integer;
-
-  def print() returns Void {
-      /* Exemples avec l'operateur & de concatenation de chaines */
-      ( "[" & name & "]" ).print();
-      ( "= (" & x.toString() & ", " & y.toString() & ")" ).println();
-  }
+class A() is {
+  var p : Integer := 1;
+  def f() returns A { "A::f()\n".println(); p := 2; }
+  def g() returns A { "A::g()\n".println(); p := 5; }
+  def toString() returns String := p.toString()
+  
 }
-{
-  var x : Integer;
-  var str : String;
-  is
-  ("a" & "b" & "ajbdqhsfvdgsv").println();
-  1+2;
+
+
+class A2() extends A() is {
+  var v : String := "hello"; /* masque le champ v de la classe A */
+  def override f() returns A { 
+      super.k;
+      
+   }
+  def override toString() returns String := super.toString() & v
+}
+
+{ var monA : A := new A();
+  var monA2 : A2 := new A2();
+  var name : String := "x";
+  is
+  monA2.f().g().p;
+
+  name.println();
 }

@@ -559,6 +559,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       return FALSE;
     }
     printf("lalalala\n");
+    /*FIXME2.0 a faire*/
     bool res = checkListDeclaration(getChild(arbre,0),ancien,courant,methode,listeDecl);
     if(res == FALSE)
     {
@@ -793,7 +794,7 @@ char* message = NEW(SIZE_ERROR,char);
             }
             pushErreur(message,courant,methode,listeDecl);
           }
-          return resultat;
+
         break; 
         
 
@@ -2053,6 +2054,7 @@ printf("estCoherentEnvoi1\n");
     else if(tmp->elem->op == CSTSTRING)
     {
        init = getClasseBis(listeDeClass,"String");
+       printf("MA CLASSE : %s ---------\n",init->nom );
     }
     else if(tmp->elem->op == CSTENTIER)
     {
@@ -2100,7 +2102,7 @@ printf("estCoherentEnvoi1\n");
         else if(tmp->elem->isEnvoiMessage==FALSE)
         { 
 
-            printf("26_26_26\n");
+            printf("26_26_26 %d \n",tmp->elem->op);
             init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette, isStatic,agerer);
             if(init == NULL)
             {
@@ -2134,9 +2136,10 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
     char* message = NEW(SIZE_ERROR,char);
     sprintf(message,"fonction tp.c appartient : Erreur Arbre");
     pushErreur(message,mere,methode,NULL);
+    printf("return B1\n");
     return NULL;
   }
-
+  printf("ioooooooooooooooooo\n");
   if(isEnvoiMessage)
   {
    printf("1_1_1_1_1\n");
@@ -2207,17 +2210,7 @@ PCLASS appartient(PCLASS mere, TreeP fille, bool isEnvoiMessage, PMETH methode, 
     pushErreur(message,mere,methode,NULL);
      printf("liste meth =\n");
     
-     PCLASS tmpPoint = getClasseBis(listeDeClass,"Point");
-          PMETH mesMethode = tmpPoint->liste_methodes;
-          printf("AVANT 123 VIVA ERREUR ---- ------- ------ %d \n",isVerifOk);
-          while(mesMethode!=NULL)
-          {
-            printf("123 VIVA ERREUR ---- ------- ------ %s \n",mesMethode->nom );
-            mesMethode = mesMethode->suivant;
-          }
-          printf("APRES 123 VIVA ERREUR ---- ------- ------ \n");
-    sprintf(message,"Erreur init 1");
-    pushErreur(message,NULL,NULL,NULL);
+    
     return NULL;
   }
   else
@@ -2296,7 +2289,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
 
     param = param->suivant;
     }
-   printf("1.1.4\n");
+   printf("1.1.4 + estDansParamMeth %d\n",estDansParamMeth);
   }
   
   if(listeDecl!=NULL)
@@ -2359,7 +2352,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
       }
       listDeclaration = listDeclaration->suivant;
     }
-   printf("1.1.6\n");
+   printf("1.1.6 estDansListeDecl %d \n",estDansListeDecl);
   }
 
   printf("1.1.6.1\n");
@@ -2772,6 +2765,9 @@ LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
    printf("Je suis ici\n");
     liste = NEW(1,struct _listeTree);  
     liste->elem = getChild(arbre,1);
+    if(arbre->nbChildren>0)
+      printf("arbre->opp = %d\n",getChild(arbre,0)->op);
+
     if(arbre->nbChildren == 3)
     {
         liste->elem->suivant = getChild(arbre,2);
