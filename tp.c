@@ -660,10 +660,7 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
     }
     return resultat;
   }
-  
-  
-    printf("je suis ici autre \n");
-  
+    
     printf("getChild arbre 1 n'est pas null %d \n",arbre==NULL);
     printf("EYIQUETTE %d \n",arbre->op);
     TreeP autreinstructions = getChild(arbre,1);
@@ -693,10 +690,11 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
      bool if2 = FALSE;
      SVAR copieListDecl;
      PVAR nouvellelisteDecl = NULL;
+     PVAR parcours = NULL;
+
     
      switch(instruction->op)
      {
-      
         case EXPRESSIONRETURN :
         printf("m.expr\n");
           if(methode == NULL)
@@ -777,16 +775,21 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
         break; 
 
         case IFTHENELSE :
-            
+            printf("JE SUIS DANS UN IF THEN ELSE :%d \n",instruction->op);
+            printf("FILS 1 : %d\n", getChild(instruction,1)->op);
+            printf("FILS 2 : %d\n", getChild(instruction,2)->op);
+            printf("PARCOURS DE LA LISTE DE DECLARATIO \n");
+
             if(listeDecl!=NULL)
             {
               copieListDecl = *listeDecl;
               nouvellelisteDecl = NEW(1,SVAR);
               *nouvellelisteDecl = copieListDecl;
             }
+
             /*nouvellelisteDecl = listDecl a ce stade la*/
             type = getType(getChild(instruction,0),instruction,courant,methode,nouvellelisteDecl);
-            printf("j'ai passer le getType \n");
+            printf("IFTHENELSE\n");
 
             if(!equalsType(type,getClasseBis(listeDeClass,"Integer")))
             {
@@ -796,27 +799,45 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
               printf("checkListInstruction check false 4\n");
               return FALSE;
             }
+            printf("IFTHENELSE 1.0 OK\n");
+            printf("OP EST : %d \n",getChild(instruction,1)->op);
+            
             
             if(getChild(instruction,1)->op==CONTENUBLOC || getChild(instruction,1)->op==ETIQUETTE_AFFECT)
             {
               /* FIXME2.0 fusionner listDecl et celui du bloc si c'est un bloc */
+              printf("je vais faire ma fusion \n");
               if(getChild(instruction,1)->op==CONTENUBLOC && getChild(getChild(instruction,1),0)!=NULL)
               {
-                nouvellelisteDecl->suivant = getChild(getChild(instruction,1),0)->u.var;
+                printf("J'ai des declarations de variable, et je vais les ajouter\n");               
+                /*nouvellelisteDecl->suivant = getChild(getChild(instruction,1),0)->u.var;*/
+                parcours = getChild(getChild(instruction,1),0)->u.var;
+
+
               }
-              resultat = checkBloc(getChild(instruction,1),NULL,courant,methode,nouvellelisteDecl);
+                resultat = checkBloc(getChild(instruction,1),NULL,courant,methode,nouvellelisteDecl);
             }
             else
             {
+              printf("je suis ici plutot \n");
               resultat = checkListInstruction(getChild(instruction,1),NULL,courant,methode,nouvellelisteDecl);
             }
-
+            printf("je vais maintenant aller regarder mon deuxieme fils\n");
+            printf("OP DE MON FILS 2 :%d\n", getChild(instruction,2)->op);
             if(getChild(instruction,2)->op==CONTENUBLOC || getChild(instruction,2)->op==ETIQUETTE_AFFECT)
             {
               /* FIXME2.0 fusionner listDecl et celui du bloc si c'est un bloc */
               if(getChild(instruction,2)->op==CONTENUBLOC && getChild(getChild(instruction,2),0)!=NULL)
               {
-                nouvellelisteDecl->suivant = getChild(getChild(instruction,2),0)->u.var;
+                printf("j'ai des variables a declare\n");
+                /*nouvellelisteDecl->suivant = getChild(getChild(instruction,2),0)->u.var;*/
+                while(parcours!= NULL)
+                {
+                  printf(" VALUE : %s", parcours->nom);
+                  parcours = parcours -> suivant;
+                }
+                printf("FIN DE MON PARCOUUUUUUURSSSSSSSSS\n");
+
               }
               resultat = checkBloc(getChild(instruction,2),NULL,courant,methode,nouvellelisteDecl) && resultat;
             }
@@ -2110,7 +2131,6 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       }
       printf("je vais faire getTypeAttribut --------------------------------%s \n",arbre->u.str);
       tmpDebug = getTypeAttribut(arbre->u.str, courant, methode, listeDecl,FALSE,FALSE);
-      
       printf("CACACACACACA 1\n");
       return tmpDebug;
     break;
@@ -2542,6 +2562,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   if(classe!=NULL)
   {
     classe = getClasseBis(listeDeClass,classe->nom);
+    printf(" LA CLASSE EST : %s\n", classe->nom);
   }
   if(nom!=NULL && nom[0]=='"')
   {
@@ -2551,7 +2572,8 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   {
     return getClasseBis(listeDeClass,"Integer");
   }
- printf("1.1.1\n");
+  
+  printf("1.1.1\n");
   bool estDansParamMeth = FALSE;
   bool estDansListeDecl =  FALSE;
   bool estDansAttributClasse = FALSE;
@@ -2559,6 +2581,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
   
   if(methode != NULL)
   {
+   printf("le nom de la methode est : %s\n",methode->nom);
    printf("1.1.2\n");
     
     PVAR paramParcours = methode->params;
@@ -2637,6 +2660,7 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
     printf("1.1.5.3\n");
     PVAR listDeclaration = listeDecl; 
     printf("1.1.5.3.1\n");
+    
     while(listDeclaration!=NULL)
     {
       printf("1.1.5.4\n");
@@ -3087,9 +3111,6 @@ LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
   
   printf("arbre -> op %d\n",arbre->op );
   if(liste==NULL){
-
-  printf("h.1\n");
-  printf("Je suis ici\n");
   liste = NEW(1,struct _listeTree);  
   liste->elem = getChild(arbre,1);
     if(arbre->nbChildren == 3)
