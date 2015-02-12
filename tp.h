@@ -340,6 +340,7 @@ bool checkDoublon(char** variable,int n);
 bool checkListDeclaration(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 PVAR fusionne(PVAR declarationPrecedente,PVAR declarationSousBloc);
 PVAR ajouterPVAR(PVAR nouvelle, PVAR liste);
+bool isHeritage(PCLASS gauche, PCLASS droite);
  /*
   * A voire
   */

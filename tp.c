@@ -124,7 +124,6 @@ int main(int argc, char **argv) {
    * c'est possible.
    */
 
-//printf("tp.c -> avant res\n");
   res = yyparse();
   if(res==1)
   {
@@ -494,32 +493,6 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 {
 
-  if(methode!=NULL)
-  {
-    PMETH methodeErreur = NEW(1,SMETH);
-    PMETH verifieDejaPresent = methode;
-    ErreurP copieErreur = listeErreur;
-    while(verifieDejaPresent!=NULL)
-    {
-      copieErreur = listeErreur;
-      while(copieErreur!=NULL)
-      {
-        *methodeErreur = copieErreur->methode;
-        
-        if(methodeErreur!=NULL && strcmp(methode->nom,methodeErreur->nom)==0)
-        {
-          return;
-        }
-        /*Message identique present*/
-        else if(copieErreur->message!=NULL && strcmp(copieErreur->message,message)==0)
-        {
-          return;
-        }
-        copieErreur = copieErreur->suivant;
-      }
-      verifieDejaPresent = verifieDejaPresent->suivant;
-    }
-  }
 
   ErreurP nouvelle = NEW(1,Erreur);
   nouvelle->message = NEW(SIZE_ERROR,char);
@@ -699,7 +672,6 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
   //printf("return 11\n");
     return resultat;
   }
-
     
   //printf("AVAnt \n");
   //printf("ETIQUETE du pere : %d \n",arbre->op );
@@ -714,15 +686,10 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
 
      PCLASS type = NULL;
      PCLASS type2 = NULL;
-     bool instruction1 =FALSE;
-     bool instruction2 =FALSE;
-     
+
      bool resultat = FALSE;
-     bool blocRetour = FALSE;
-     TreeP ifInstruction1 = NULL;
-     TreeP ifInstruction2 = NULL;
-     bool if1 = FALSE;
-     bool if2 = FALSE;
+  
+     
      SVAR copieListDecl;
      PVAR nouvellelisteDecl = NULL;
      PVAR parcourL =  NULL;
@@ -885,6 +852,7 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
             }
             else
             {
+              
               resultat = checkListInstruction(getChild(instruction,1),instruction,courant,methode,nouvellelisteDecl);
               
             }
@@ -931,6 +899,7 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
             }
             else
             {
+              
               resultat = checkListInstruction(getChild(instruction,2),instruction,courant,methode,nouvellelisteDecl) && resultat;
              
             }
@@ -971,14 +940,23 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
           type = getType(instruction,NULL,courant,methode,listeDecl);
           if(type==NULL)
           {
-            sprintf(message,"Instruction incorrecte %s",instruction->u.str);
-            pushErreur(message,courant,methode,listeDecl);
-          //printf("checkblock check false 5 %d\n",instruction->op);
             resultat = FALSE;
           }
           else
           {
-            resultat = TRUE;
+            if(arbre->op==EXPRESSIONRETURN && methode!=NULL)
+            {
+              resultat = equalsType(methode->typeRetour,type);
+              if(!resultat)
+              {
+
+              }
+            }
+            else
+            {
+              resultat = TRUE;
+            }
+            
           }
           if(!resultat)
           {
@@ -988,7 +966,7 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
             }
             else
             {
-              sprintf(message,"Instruction : erreur d'instruction %d",instruction->op);
+              sprintf(message,"Instruction : erreur d'instruction");
             }
             pushErreur(message,courant,methode,listeDecl);
           }
@@ -1296,9 +1274,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
 
     char * nomC = calloc(100,sizeof(char));
     sprintf(nomC,"constructeur %s",courant->classe_mere->nom);   
-        
-    PVAR tmp = courant->classe_mere->param_constructeur;
-    
+
     PMETH methodeFakeConstructeur = NEW(1,SMETH);
     methodeFakeConstructeur->corps = courant->corps_constructeur;
     methodeFakeConstructeur->nom = calloc(100,sizeof(char));
@@ -2906,7 +2882,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
                 if(tmp->elem == NULL)
                 {
                 //printf("je suis ici\n");
-                  sprintf(message,"Probleme envoie de message",tmp->elem->u.str,tempoAffiche->nom);
+                  sprintf(message,"Probleme envoie de message");
                 }
                 else if(tmp->elem != NULL && tempoAffiche != NULL)
                 {
@@ -3691,7 +3667,6 @@ LTreeP transFormSelectOuEnvoi(TreeP arbre, LTreeP liste)
       liste->suivant = NEW(1,listeTree);
       *liste->suivant = tmp;
     } 
-    LTreeP parcours = liste;
     return liste;
   }
  
