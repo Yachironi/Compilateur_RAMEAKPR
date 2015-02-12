@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
         afficheListeErreur(listeErreur);
   	}
   	else{
-    		//Faire eval ici
+    		/*Faire eval ici*/
   	}
 
   /*exit(0);*/
@@ -284,6 +284,17 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
   res->isExtend=isExtend;
   /* res->suivant=NULL;*/ /* verifier si ça ne pose pas de pb */
   return res;
+}
+
+bool varEstDansListe(PVAR listeVar, char *nom){
+	PVAR tmp = listeVar;
+	while(tmp!=NULL){
+		if(strcmp(tmp->nom, nom) == 0){
+			return TRUE;
+		}
+		tmp = tmp->suivant;
+	}
+	return FALSE;
 }
 
 PVAR getVar(PVAR var, char* nom){

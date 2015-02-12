@@ -280,7 +280,7 @@ PMETH getMethode(PCLASS classe, PMETH methode);
 int getVal(EvalP eval);
 PVAR copyVar(PVAR var);
 PMETH getMethodeBis(PMETH meth, char *nom);
-
+bool varEstDansListe(PVAR listeVar, char *nom);
 bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 
 /*
