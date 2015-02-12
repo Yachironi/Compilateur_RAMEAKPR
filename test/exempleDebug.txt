@@ -63,7 +63,7 @@ is
 
   def egal2(p: Point) returns Integer {
        var b1 : Integer := p.x - x;
-       var b3: Integer := 5;
+       var b2: Integer := 5;
        var result : Integer;
     is if b1 then result := 0;
        else {var b2: Integer := p.y - y; /* masquage du b2 externe ! */
