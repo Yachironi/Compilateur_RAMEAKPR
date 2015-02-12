@@ -96,7 +96,7 @@ is {
 
 
 class PointColore(xc: Integer, yc:Integer, c: Couleur)
-      extends Point(xc, yc) { coul := c; } is
+      extends Point(xc, "yc") { coul := c; } is
 {  
   var coul: Couleur;
 
