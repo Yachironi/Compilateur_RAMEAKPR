@@ -131,18 +131,19 @@ int main(int argc, char **argv) {
     printf("Aucune verification a faire car syntax error\n");
     exit(0);
   }
-    printf("--------------------------------------------------------------\n");
-    bool checkProg = checkProgramme(programme);
-    printf("--------------------------------------------------------------\n");
-    printf("FIN de la COMPILATION\n");
-    if(!checkProg){
-        printf("Il y a des probleme dans le code !\n");
+
+  	/*printf("--------------------------------------------------------------\n");
+  	bool checkProg = checkProgramme(programme);
+  	printf("--------------------------------------------------------------\n");
+  	printf("FIN de la COMPILATION\n");
+  	if(!checkProg){
+    		printf("Il y a des probleme dans le code !\n");
         afficheListeErreur(listeErreur);
-    }
-    else{
-        /*Faire eval ici*/
-    }
-    exit(0);
+  	}
+  	else{
+    		//Faire eval ici
+  	}*/
+
   printf("\n\n\n\n\n\n\n\n");
   PCLASS pointTmp = getClasseBis(listeDeClass,"Point");
   PMETH parcourir = pointTmp->liste_methodes; 
@@ -160,8 +161,10 @@ int main(int argc, char **argv) {
   else{
     printf("tp.c -> Programme n'est pas NULL\n");
     printf("=======================\n");
-    printf("tp.c -> Affichage de l'arbre : \n");
-    pprintTreeMain(programme);
+    /* Fonction de teste des evalExpr*/
+    /*testEval();*/
+    /*printf("tp.c -> Affichage de l'arbre : \n");
+    pprintTreeMain(programme);*/
     printf("=======================\n");
     
   }
@@ -292,7 +295,8 @@ PCLASS makeClasse(char *nom, PVAR param_constructeur,TreeP corps_constructeur,PM
 }
 
 PVAR getVar(PVAR var, char* nom){
-	PVAR tmp = var;
+  PVAR tmp = var;
+
 	while(tmp != NULL){
 		if(strcmp(tmp->nom, nom)==0){
 			return makeListVar(tmp->nom, tmp->type, tmp->categorie, tmp->init);
@@ -339,7 +343,36 @@ PCLASS getClasseBis(PCLASS listeClass,char *nom)
   return classeFin;
 }
 
-/** Renvoie un pointeur de la methode recherchee */ 
+PMETH getMethodeBis(PMETH meth, char *nom){
+	PMETH tmp = meth;
+	while(tmp != NULL){
+		if(strcmp(tmp->nom, nom)==0){
+			PMETH methode = makeMethode(tmp->nom, 0, tmp->corps, tmp->typeRetour, tmp->params, tmp->home);
+			methode->isRedef = tmp->isRedef;
+			methode->isStatic = tmp->isStatic;
+			return methode;
+		}
+	}
+	return NULL;
+}
+
+/* Renvoie l'attribut d'une classe */
+/*PVAR getVAR(PCLASS classe, char* nomVar){
+if(classe==NULL || nomVar==NULL){
+	return NULL;
+	}
+PVAR parc = classe->liste_champs;
+while((strcmp(parc->nom,nomVar)!=0)&&(parc->suivant!=NULL)){
+	parc=parc->suivant;
+	}
+if(strcmp(parc->nom,nomVar)==0){
+	return parc;
+	} else {
+return NULL;
+	}
+}*/
+
+/** Renvoie un pointeur de la methode recherchee */	
 PMETH getMethode(PCLASS classe, PMETH methode){
   if(classe==NULL || methode==NULL)
   {
@@ -1289,23 +1322,32 @@ EvalP makeEvalTree(TreeP tree){
  */
 
 /** Partie eval **/
-void evalProgramme(TreeP programme){
-	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
-	evalContenuBloc(programme->u.children[1]);
+
+/* Ajout de env2 a la fin de environnement */
+void updateEnvironnement(PVAR environnement, PVAR env2){
+	PVAR tmp_env = environnement;
+	while(tmp_env != NULL){
+		tmp_env = tmp_env->suivant;
+	}
+	tmp_env = env2;
 }
 
-EvalP evalContenuBloc(TreeP bloc){
-	PVAR environnement;
-	/* on est dans la regle : ContenuBloc : LInstructionOpt YieldOpt */
-	if(bloc->u.children[0] == NIL(Tree)){
-		environnement = NIL(SVAR);
-	}
+/* Evaluation globale du programme */
+void evalProgramme(TreeP programme){
+	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
+	EvalP eval = evalContenuBloc(programme->u.children[1], NIL(SVAR));
+}
+
+/* Evaluation d'un bloc */
+EvalP evalContenuBloc(TreeP bloc, PVAR environnement){
 
 	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
-	else{
+	if(bloc->u.children[0] != NIL(Tree)){
 		/* Evaluation de toutes les variables -> les "init" de ces variables sont mis à jour */
 		evalListDeclVar(bloc->u.children[0]->u.var, bloc->u.children[0]->u.var);
-		environnement = bloc->u.children[0]->u.var;
+
+		/* Mise a jour de l'environnement */
+		updateEnvironnement(environnement, bloc->u.children[0]->u.var);
 	}
 		
 	/* eval de LInstruction */
@@ -1378,6 +1420,8 @@ int getVal(EvalP eval){
 			if(eval->u.var->init->op == EVALUE_INT){
 				return eval->u.var->init->u.children[0]->u.val;
 			}
+    case EVAL_STR:
+      return eval->u.str; 
 		default:
 			printf("Probleme\n");
 			exit(0);			
@@ -1386,6 +1430,7 @@ int getVal(EvalP eval){
 
 /** Methode eval d'une expression **/
 EvalP evalExpr(TreeP tree, PVAR environnement){
+  /*printf(" ======> (ICI) <=====\n");*/
 	if(tree == NIL(Tree))	return NIL(Eval);
 	char* chaine;
 	int sizeConcat;
@@ -1397,8 +1442,10 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 		case MINUSUNAIRE:
 			return makeEvalInt(0-evalExpr(tree->u.children[0], environnement)->u.val);
 		case CONCATENATION:
-			sizeConcat=(sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
-			chaine = calloc(sizeConcat, sizeof(char));
+			sizeConcat=(
+        sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+
+        sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
+    	chaine = calloc(sizeConcat, sizeof(char)); 
 			chaine = strdup(evalExpr(tree->u.children[0], environnement)->u.str);
 			strcat(chaine, evalExpr(tree->u.children[1], environnement)->u.str);
 			return makeEvalStr(chaine);
@@ -1419,37 +1466,38 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			val2=getVal(evalExpr(tree->u.children[1], environnement));
 			return makeEvalInt(val1 * val2);
 		case CSTENTIER:
-			return makeEvalInt(tree->u.children[0]->u.val);
+			return makeEvalInt(tree->u.val);
 		case CSTSTRING:
-			return makeEvalStr(tree->u.children[0]->u.str);
+			return makeEvalStr(tree->u.str);
 
 		case OPCOMPARATEUR:
-			if(tree->u.children[2]->op == EQ){
+			if(tree->u.children[2]->u.val == EQ){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 == val2);
 			}
-			else if(tree->u.children[2]->op == NE){
+			else if(tree->u.children[2]->u.val == NE){
+
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 != val2);
 			}
-			else if(tree->u.children[2]->op == GT){
+			else if(tree->u.children[2]->u.val == GT){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 > val2);
 			}
-			else if(tree->u.children[2]->op == GE){
+			else if(tree->u.children[2]->u.val == GE){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 >= val2);
 			}
-			else if(tree->u.children[2]->op == LT){
+			else if(tree->u.children[2]->u.val == LT){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 < val2);
 			}
-			else if(tree->u.children[2]->op == LE){
+			else if(tree->u.children[2]->u.val == LE){
 				val1=getVal(evalExpr(tree->u.children[0], environnement));
 				val2=getVal(evalExpr(tree->u.children[1], environnement));
 				return makeEvalInt(val1 <= val2);
@@ -1460,7 +1508,10 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			}
 	
 		case IDENTIFICATEUR:
-			var = getVar(environnement, tree->u.children[0]->u.str);
+    printf("YOUPPI on est dans ce cas \n");
+    printf("=======> Children STR = %s \n",tree->u.str);
+			var = getVar(environnement, tree->u.str);
+      printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
 			return makeEvalVar(var);
 
@@ -1481,38 +1532,110 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 	return NIL(Eval);
 }
 
-/*
-instanciation : NEWO IDCLASS '(' ListOptArg ')' { $$=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,$2), $4); }
-*/
+PVAR copyVar(PVAR var){
+	if(var == NULL)	return NULL;
+	PVAR tmp_var = var;
+	PVAR copy = makeListVar(tmp_var->nom, tmp_var->type, tmp_var->categorie, tmp_var->init);
+	PVAR tmp_copy = copy;
+	tmp_var = tmp_var->suivant;
+	tmp_copy = tmp_copy->suivant;
+	while(tmp_var!=NULL){
+		tmp_copy = makeListVar(tmp_var->nom, tmp_var->type, tmp_var->categorie, tmp_var->init);
+		tmp_var = tmp_var->suivant;
+		tmp_copy = tmp_copy->suivant;
+	}
+	tmp_copy = NULL;
+	return copy;
+}
 
 /** Exemple d'instanciation : new Point(xc, yc) **/
 EvalP evalInstanciation(TreeP tree, PVAR environnement){
 	if(tree == NIL(Tree))	return NIL(Eval);
-	/* Remarque : le nom de l'instance est pour l'instant à NULL et on lui affectera plus tard dans la regle + categorie = 0 par defaut*/
 
-	LEvalP listArg = evalListArg(tree->u.children[1], environnement);
-	/**
-		TODO : A l'aide de evalListArg, appeler le constructeur de la classe IDCLASS
-			==> param_constructeur = la liste renvoyé par evalListArg
-			==> appel du corps
-	**/	
-	/* Attribuer a PVAR la liste evalListArg */
-	/* Parcourir le TreeP corps_constructeur et l'évaluer -> il y aura des affectation, etc */
-	int nbArg=0;
-	LEvalP tmp = listArg;
-	while(tmp != NIL(LEval)){
-
+	/* Recherche de la classe IDCLASS */
+	PCLASS classe = getClasse(listeDeClass, tree->u.children[0]->u.str);
+	if(classe == NULL){
+		printf("Probleme dans evalInstanciation : IDCLASS = NULL\n");
+		exit(0);
 	}
-	PVAR var = makeListVar(NULL, getClasseBis(listeDeClass, tree->u.children[0]->u.str), 0, NIL(Tree) /* TODO A MODIFIER */);
+
+	/* Evaluation des champs de la classe s'il y a besoin */
+	evalListDeclVar(classe->liste_champs, classe->liste_champs);
+	
+	/* TODO : ajouter dans environnement classe->liste_champs ? */
+	/* updateEnvironnement(environnement, classe->liste_champs); */
+
+	/* Création d'une copie des params du constructeur pour leur passer leurs valeurs */
+	PVAR param = copyVar(classe->param_constructeur);
+
+	/* Obtention de l'évaluation des params constructeur dans l'ordre */
+	LEvalP listArg = evalListArg(tree->u.children[1], environnement);
+
+	/* Attribution des eval de la listOptArg a ces params */
+	int nbArg=0;
+	LEvalP tmp_eval = listArg;
+	PVAR tmp_param = param;
+	while(tmp_eval != NIL(LEval) && tmp_param != NULL){		/* normalement nbEval = nbParam ! */
+		switch(tmp_eval->eval->type){
+			case EVAL_STR:
+				tmp_param->init = makeLeafStr(EVALUE_STR, tmp_eval->eval->u.str);
+			case EVAL_INT:
+				tmp_param->init = makeLeafInt(EVALUE_INT, tmp_eval->eval->u.val);
+			case EVAL_PVAR:
+				tmp_param->init = makeLeafVar(EVALUE_PVAR, tmp_eval->eval->u.var);
+
+			/* A ENLEVER NORMALEMENT CA NE DEVRAIT JAMAIS ARRIVE */
+			case EVAL_PCLASS:
+				tmp_param->init = makeLeafClass(EVALUE_PCLASS, tmp_eval->eval->u.classe);
+			case EVAL_PMETH:
+				tmp_param->init = makeLeafMeth(EVALUE_PMETH, tmp_eval->eval->u.methode);
+			case EVAL_TREEP:
+				printf("Dans evalInstanciation -> eval d'un arg est un tree\n");
+			default:
+				printf("Etiquette non reconnue dans evalInstanciation = %d\n", tmp_eval->eval->type);
+				exit(0);
+		}
+		tmp_eval = tmp_eval->suivant;
+		tmp_param = tmp_param->suivant;
+	}
+
+	/* TODO : Mettre a jour l'environnement ! --> peut etre fait automatiquement si param est dans environnement */
+	
+	/* TODO : Appeler le constructeur selon les champs de la classe et les "nouveaux" param du constructeur */
+	
+
+	/* Remarque : le nom de l'instance est pour l'instant à NULL et on lui affectera plus tard dans la regle + categorie = 0 par defaut*/
+	PVAR var;
+	/* Constructeur vide */
+	if(classe->corps_constructeur == NIL(Tree)){
+		/* Le contenu de l'instance = les variables de la classe qui ont été évalué précédemment */
+		var = makeListVar(NULL, classe, 0, makeLeafVar(EVALUE_PVAR, classe->liste_champs));
+	}
+	/* Constructeur non vide */
+	else{
+		/* appel de evalContenuBloc pour évaluer le constructeur de la classe */
+		EvalP eval_constructeur = evalContenuBloc(classe->corps_constructeur, environnement);
+		TreeP init;
+		switch(eval_constructeur->type){
+			case EVAL_INT:
+				init = makeLeafInt(EVALUE_INT, eval_constructeur->u.val);
+			case EVAL_STR:
+				init = makeLeafStr(EVALUE_STR, eval_constructeur->u.str);
+			case EVAL_PVAR:
+				init = makeLeafVar(EVALUE_PVAR, eval_constructeur->u.var);
+			default:
+				init = NIL(Tree);
+		}
+		var = makeListVar(NULL, classe, 0, init);
+	}
 	return makeEvalVar(var);
 }
 
 /** FIXME Renvoie une liste d'évaluation -> la liste est dans l'ordre **/
 LEvalP evalListArg(TreeP tree, PVAR environnement){
-	if(tree == NIL(Tree))	return NIL(LEval);	/* ou makeEvalTree(NIL(Tree)); */
+	if(tree == NIL(Tree))	return NIL(LEval);
 
 	/* Le but : récupérer les expr dans l'ordre et faire appel au constructeur de la classe IDCLASS */
-
 	LEvalP listEval;
 	/* On a une liste de type LArg, expr*/
 	if(tree->op == LISTEARG){
@@ -1520,7 +1643,7 @@ LEvalP evalListArg(TreeP tree, PVAR environnement){
 			 (exemple : xc -> comment avoir son type et sa valeur)
 		--> Reponse : faire un getVar et chercher dans 1) param methode, 2) listDecl, 3) attribut de la classe 
 		--> Commentaire de Julien : introduire un PVAR environnement pour régler ce pb?
-
+		  FIXME : verifier si c'est ok
 		*/
 		LEvalP listEvalPrec = NULL;
 		listEval->eval = evalExpr(tree->u.children[1], environnement);
@@ -1550,73 +1673,68 @@ LEvalP evalListArg(TreeP tree, PVAR environnement){
 	}
 }
 
+/* Correspond à l'appel d'une methode */
 EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	if(tree == NIL(Tree))	return NIL(Eval);
 
-	/*
-	tree->u.children[0] si IDCLASS => methode de la classe IDCLASS
-	tree->u.children[1] ==> methode (ID)
-	tree->u.children[2] ==> liste des arguments (parametres) de la methode
-	*/
+	PMETH methode;	
 
+	/* IDCLASS '.' ID '(' ListOptArg ')' */
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
-	/*
-		envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'    
-		{$$=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,$1),makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
+		methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
+		if(methode == NULL){
+			printf("Problème dans evalEnvoiMessage : méthode introuvable dans la classe \n");
+			exit(0);
+		}
 
 	}
+	/* envoiMessage '.' ID'('ListOptArg ')' */
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
-
-	/*
-		envoiMessage '.' ID'('ListOptArg ')' %prec '.'    
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
-
-	}else if(tree->u.children[0]->op == CSTSTRING){
-	/*
-		constante '.' ID '(' ListOptArg ')' %prec '.'
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
+		/* faire appel a evalEnvoiMessage sur tree->u.children[0] */
+	
 	}
+	/* constante '.' ID '(' ListOptArg ')' */
+	else if(tree->u.children[0]->op == CSTSTRING){
+
+	}
+	/* constante '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == CSTENTIER){
-	/*
-		constante '.' ID '(' ListOptArg ')' %prec '.'
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
 
 	}
+	/* ID '.' ID '(' ListOptArg ')'  */
 	else if(tree->u.children[0]->op == IDENTIFICATEUR){
-	/*
-		ID '.' ID '(' ListOptArg ')'  
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
 
 	}
+
+	/* selection '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == SELECTION){
-	/*
-		selection '.' ID '(' ListOptArg ')'   
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/
+
 	}
+	/* expr '.' ID '(' ListOptArg ')' */
 	else{
-	/*
-		expr '.' ID '(' ListOptArg ')'    
-		{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
-	*/	
+		
 	}
+
+	/* TODO : Faire l'eval maintenant avec ListOptArg : tree->u.children[2] ==> liste des arguments (parametres) de la methode */
+
 	return NIL(Eval); /* A ENLEVER */
 }
 
 EvalP evalSelection(TreeP tree, PVAR environnement){
 	return NIL(Eval);
 	/*
-	// IDCLASS'.'ID
+	// IDCLASS'.'ID 
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
 
-	} 
+		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->u.str);
+		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
+		return makeEvalVar(varTMP);
+	}	
 	// envoiMessage'.'ID
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
+		PCLASS classeTMP = getClasse(listeClass,tree->u.children[0]->nom);  //envoiMessage renvoi un PVAR
+		PVAR varTMP = getVAR(classeTMP,tree->u.children[1]);
+		return makeEvalVar(varTMP);
 
 	}
 	// OuRien '.' ID : OuRien = expr ou Cible (=ID ou selection)
@@ -2613,7 +2731,7 @@ bool compareParametreMethode(PVAR declaration,TreeP appelMethode, PCLASS classe,
   }
   if((appelMethode==NULL && declaration!=NULL)||(appelMethode!=NULL && declaration==NULL))
   {
-   printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+   printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");	
    char *message = calloc(SIZE_ERROR,sizeof(char));sprintf(message,"Erreur init 26");
     return FALSE;
   }
@@ -3075,3 +3193,76 @@ bool verifAttributClasse(PCLASS classe)
 }
 
 /* FIXME : equalsAffectation : verifie si Point = Point2D correcte (OUI) et inversemment */
+
+void testEval(){
+  /*
+  expr : PLUS expr %prec unaire     { $$=makeTree(PLUSUNAIRE, 1, $2); }
+       | MINUS expr %prec unaire    { $$=makeTree(MINUSUNAIRE, 1, $2); }
+       | expr CONCAT expr       { $$=makeTree(CONCATENATION, 2, $1, $3); }
+       | expr PLUS expr       { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
+       | expr MINUS expr        { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
+       | expr DIV expr          { $$=makeTree(DIVISION, 2, $1, $3); }
+       | expr MUL expr          { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
+       | expr RELOP expr        { $$=makeTree(OPCOMPARATEUR, 3 , $1, $3, makeLeafInt(OPERATEUR,$2));}
+       | constante          { $$=$1; }
+       | instanciation          { $$=$1; }
+       | envoiMessage         { $$=$1; }
+       | OuRien             { $$=$1; }
+       ;
+  */
+
+/*
+ * Creation d'arbres bidule de teste Exemple :  x:= a + b
+ */
+ int a=8,b=6;
+TreeP treeTestPLUS = makeTree(PLUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestMINUS = makeTree(MINUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestDIV = makeTree(DIVISION, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestMUL = makeTree(MULTIPLICATION, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
+TreeP treeTestNE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,NE));
+TreeP treeTestEQ = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,EQ));
+TreeP treeTestGT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GT));
+TreeP treeTestGE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GE));
+TreeP treeTestLT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LT));
+TreeP treeTestLE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LE));
+/*  a-b+44 */
+TreeP treeTestPLUSImbrique = makeTree(PLUSBINAIRE, 2,  treeTestMINUS, makeLeafInt(CSTENTIER,44));
+/*
+ * Creation d'arbres bidule de teste Exemple :  x:= "yas"&"ser";
+ */
+char* ch1="yas"; char* ch2="ser"; char* ch3=" RABI";
+TreeP treeTestCONCATENATION = makeTree(CONCATENATION, 2,  makeLeafStr(CSTSTRING,ch1), makeLeafStr(CSTSTRING,ch2)); 
+TreeP treeTestCONCATENATIONImbrique = makeTree(CONCATENATION, 2, treeTestCONCATENATION, makeLeafStr(CSTSTRING,ch3)); 
+/* Creation d'arbre avec envirenoment pour les identificateurs */
+
+
+printf("============= DEB Eval TEST =============\n");
+pprintTreeMain(treeTestCONCATENATION);
+printf("Resultat treeTestPLUS = %d\n", getVal(evalExpr(treeTestPLUS,NULL)));
+printf("Resultat treeTestMINUS = %d\n", getVal(evalExpr(treeTestMINUS,NULL)));
+printf("Resultat treeTestDIV = %d\n", getVal(evalExpr(treeTestDIV,NULL)));
+printf("Resultat treeTestMUL = %d\n", getVal(evalExpr(treeTestMUL,NULL)));
+printf("Resultat treeTestNE = %d\n", getVal(evalExpr(treeTestNE,NULL)));
+printf("Resultat treeTestEQ = %d\n", getVal(evalExpr(treeTestEQ,NULL)));
+printf("Resultat treeTestGT = %d\n", getVal(evalExpr(treeTestGT,NULL)));
+printf("Resultat treeTestGE = %d\n", getVal(evalExpr(treeTestGE,NULL)));
+printf("Resultat treeTestLT = %d\n", getVal(evalExpr(treeTestLT,NULL)));
+printf("Resultat treeTestLE = %d\n", getVal(evalExpr(treeTestLE,NULL)));
+printf("Resultat treeTestCONCATENATION = %s\n", getVal(evalExpr(treeTestCONCATENATION,NULL)));
+printf("Resultat treeTestPLUSImbrique = %d\n", getVal(evalExpr(treeTestPLUSImbrique,NULL)));
+printf("Resultat treeTestCONCATENATIONImbrique = %s\n", getVal(evalExpr(treeTestCONCATENATIONImbrique,NULL)));
+
+printf("============= FIN Eval TEST =============\n");
+
+/*EvalP res;
+    if(tree->nbChildren==1) {res = evalExpr(tree->u.children[0],NULL);}
+    else {
+    printf("===========================================> Nbchildren est = %d \n",tree->nbChildren); 
+    res = evalExpr(tree->u.children[1],NULL);
+    printf("===========================================> Nbchildren est = %d \n",tree->nbChildren); 
+      }
+    printf("Valeur EXPR = %d\n", res->u.val);
+    */
+
+
+}

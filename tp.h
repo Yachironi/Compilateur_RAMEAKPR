@@ -68,7 +68,9 @@ extern char *strdup(const char *s);
 #define EVALUE_STR 45
 #define EVALUE_INT 46
 #define EVALUE_PVAR 47
-
+#define EVALUE_PCLASS 48
+#define EVALUE_PMETH 49
+#define EVALUE_TREEP 50
 
 #define MSG_VOID "void"
 
@@ -188,6 +190,7 @@ ErreurP listeErreur;
 
 typedef struct _Eval{
 	int type;
+	char* nom;
 	union {
 		char *str;	/* type = 0 -> EVAL_STR */
 		int val;      	/* type = 1 -> EVAL_INT */
@@ -275,6 +278,8 @@ bool memeVar(PVAR var1, PVAR var2);
 PCLASS getClasseBis(PCLASS listeClass,char *nom);
 PMETH getMethode(PCLASS classe, PMETH methode);
 int getVal(EvalP eval);
+PVAR copyVar(PVAR var);
+PMETH getMethodeBis(PMETH meth, char *nom);
 
 bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 
@@ -291,7 +296,7 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
 
 /** Methode eval **/
 void evalProgramme(TreeP programme);
-EvalP evalContenuBloc(TreeP bloc);
+EvalP evalContenuBloc(TreeP bloc, PVAR environnement);
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement);
 void evalListInstruction(TreeP Linstruction, PVAR environnement);
 
@@ -303,7 +308,7 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement);
 LEvalP evalListArg(TreeP tree, PVAR environnement);
 int sizeString(char *str);
 
-
+void updateEnvironnement(PVAR environnement, PVAR env2);
 PVAR getVar(PVAR var, char* nom);
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
