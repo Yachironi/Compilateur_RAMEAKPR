@@ -1,23 +1,71 @@
 class A() is {
-  var v : Integer := 1;
-  def f() returns A { "A::f()\n".println(); v := 2; }
-  def g() returns A { "A::g()\n".println(); v := 5; }
-  def toString() returns String := v.toString()
+  var p : Integer := 1;
+  def f() returns A { "A::f()\n".println(); p := 2; }
+  def static g() returns A { "A::g()\n".println(); p := 5; }
+  def toString() returns String := p.toString()
+  
+}
+
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+is 
+{
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+}
+
+class Couleur(cinit: Integer) 
+   /* 3 couleurs : couleur = 0, noir = 1, gris (ou autre chose !) = 2  */
+  { if cinit = 1 then coul := 1; 
+    else if cinit = 0 then coul := 0; else { coul := 2; }
+  }
+is {
+  var coul: Integer;  /* initialise dans le constructeur */
+
+  def static blanc() returns Couleur := new Couleur(0)
+
+  def static noir() returns Couleur := new Couleur(1)
+
+  def static gris() returns Couleur := new Couleur(2)
+
+  /* Pas de Booleen, on utilise Integer */
+  def estGris() returns Integer := coul = 2
+
+}
+
+class PointColore(xc: Integer, yc:Integer, c: Couleur)
+      extends Point(xc, yc) { coul := c; } is
+{  
+  var coul: Couleur;
+
+  def couleur() returns Couleur := coul 
+
+  def colore() returns Integer := coul.estGris() <> 0 
+
+  def setCouleur(c: Couleur) returns Void { coul := c; }
+
+  /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
+  
+
+  def estGris() returns Integer {
+      /* une trace pour verifier qu'on appelle bien la bonne */
+      "Inside PointColore::estGris".println();
+      yield coul.estGris()
+  }
+
 }
 
 
-class A2() extends A() is {
-  var v : String := "hello"; 	/* masque le champ v de la classe A */
-  def override f() returns A { 
-      "A2::f()\n".println();
-      super.f();
-      v := "Hello";
-   }
-  def override toString() returns String := super.toString() & v
-}
+
+
 
 { var monA : A := new A();
-  var monA2 : A2 := new A2();
+  var name : String := "x";
+  var point : Point := new Point(1,1+4+0+6+7+8);
   is
-  monA2.f(); 
+  (1+2+4).toString();
+  ("a" & name & "c").println(); 
+  name.println();
 }

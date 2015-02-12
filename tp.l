@@ -126,5 +126,5 @@ void lexError(char c) {
 "&"		{ return(CONCAT);}	
 {Delim}         { ; }
 {Commentaire}	{ ; }
-.      		{ printf("Erreur lexical \n");}
+.      		{ /*printf("Erreur lexical \n");*/}
 %%
