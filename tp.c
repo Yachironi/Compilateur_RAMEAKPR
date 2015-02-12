@@ -7,7 +7,6 @@
 #include "tp_y.h"
 
 bool dansCheckBlocMain = FALSE;
-bool fusion = FALSE;
 /*
  * FIXME : ajouter une methode makeErreur(...)
  */
@@ -833,7 +832,6 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
                     printf("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc %s \n",parcourL->nom);
                     parcourL = parcourL->suivant;
                   }
-                  fusion = TRUE;
                   if(getChild(getChild(instruction,1),0)->u.var!=NULL)
                   {
                     
@@ -872,7 +870,6 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
                 parcourL = nouvellelisteDecl;
                 if(parcourL!=NULL)
                 {
-                  fusion = TRUE;
                   while(parcourL->suivant!=NULL)
                   {
                     printf("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc %s \n",parcourL->nom);
@@ -912,7 +909,6 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
               sprintf(message,"Instruction : erreur de if then else");
               pushErreur(message,courant,methode,nouvellelisteDecl);
             }
-            fusion = FALSE;
         break;
 
         case RETURN_VOID : 
@@ -1993,6 +1989,7 @@ int evalMain(TreeP tree, VarDeclP lvar) {
 
 PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
+  printf("______________________________________________________________________________\n");
   if(courant!=NULL)
   {
     courant = getClasseBis(listeDeClass,courant->nom);
@@ -2247,6 +2244,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl)
 {
+  printf("///////////////////////////////DEBUT/////////////////////////////////////////\n");
   printf("JE FAIS EST COHERENT ENVOIE  \n");
   if(classe != NULL)  
   {
@@ -2290,6 +2288,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         {
             sprintf(message,"Erreur super present dans une methode statique");
             pushErreur(message,classe,methode,NULL);
+            printf("///////////////////////////////FIN 0/////////////////////////////////////////\n");
             return NULL; 
         }
         else
@@ -2304,6 +2303,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         {
           sprintf(message,"Erreur this present dans une methode statique");
           pushErreur(message,classe,methode,NULL);
+          printf("///////////////////////////////FIN 1/////////////////////////////////////////\n");
           return NULL; 
         }
         else
@@ -2346,6 +2346,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
           printf("%s inconnu \n",tmp->elem->u.str);
           sprintf(message,"%s inconnu ",tmp->elem->u.str);
           pushErreur(message,classe,methode,NULL);
+          printf("///////////////////////////////FIN 2/////////////////////////////////////////\n");
           return NULL; 
       }
       else
@@ -2366,6 +2367,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         {
           char *message = calloc(SIZE_ERROR,sizeof(char));sprintf(message,"Inconnu %s",tmp->elem->u.str);
           pushErreur(message,classe,methode,NULL);
+          printf("///////////////////////////////FIN 3/////////////////////////////////////////\n");
           return NULL; 
         }
        printf("2.2\n");
@@ -2383,6 +2385,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         char* message = NEW(SIZE_ERROR,char);
         sprintf(message,"La classe %s n'est pas declare ",nomClass);
         pushErreur(message,classe,methode,NULL);
+        printf("///////////////////////////////FIN 4/////////////////////////////////////////\n");
         return NULL; 
       }
       else
@@ -2430,6 +2433,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
             sprintf(message," Identificateur de classe, instanciation, super ou this en plein milieu : %s",tmp->elem->u.str);
             pushErreur(message,classe,methode,NULL);
             printf("il y a un soucis\n");
+            printf("///////////////////////////////FIN 5/////////////////////////////////////////\n");
             return NULL; 
         }
         
@@ -2447,6 +2451,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
                sprintf(message,"EnvoiMessage : il y a un probleme au niveau de celui ci");
                pushErreur(message,classe,methode,NULL);
                printf(" mais c'est null\n");
+               printf("///////////////////////////////FIN 6/////////////////////////////////////////\n");
                return NULL; 
             }
             else
@@ -2474,6 +2479,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 
                 }
                 pushErreur(message,classe,methode,NULL);
+                printf("///////////////////////////////FIN 7/////////////////////////////////////////\n");
                 return NULL; 
             }               
                 tempoAffiche = init;
@@ -2500,6 +2506,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
                 }
                        
                 pushErreur(message,classe,methode,NULL);
+                printf("///////////////////////////////FIN 8/////////////////////////////////////////\n");
                 return NULL; 
                 
             }
@@ -2509,6 +2516,7 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
         etiquette = tmp->elem->op;
         printf("etiquette apres\n");
     }
+    printf("///////////////////////////////FIN 9/////////////////////////////////////////\n");
     return init;  
 }
 
@@ -2722,9 +2730,10 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
      */
      printf("Ji passe\n");
      checkDoublon(variable,i-1);
-     printf("Ji passe pas fusion : %d \n",fusion);
+     printf("Ji passe pas fusion :\n");
 
-    if(!fusion && !checkDoublon(variable,i-1))
+
+    if(!checkDoublon(variable,i-1))
     {
       printf("1.1.5.2.1\n");
       char* message = NEW(SIZE_ERROR,char);
