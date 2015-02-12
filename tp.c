@@ -302,7 +302,8 @@ PVAR getVar(PVAR var, char* nom){
 
 	while(tmp != NULL){
 		if(strcmp(tmp->nom, nom)==0){
-			return makeListVar(tmp->nom, tmp->type, tmp->categorie, tmp->init);
+			/* return makeListVar(tmp->nom, tmp->type, tmp->categorie, tmp->init); */
+			return tmp;
 		}
 		tmp = tmp->suivant;
 	}
@@ -1243,10 +1244,11 @@ int evalVar(TreeP tree, VarDeclP decls) {
   return 0;
 }
 
-/* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire ! */
+/* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire ! 
 int evalIf(TreeP tree, VarDeclP decls) {
   return 0;
 }
+*/
 
 VarDeclP evalAff (TreeP tree, VarDeclP decls) {
   return NIL(VarDecl);
@@ -1343,7 +1345,7 @@ void evalProgramme(TreeP programme){
 
 /* Evaluation d'un bloc */
 EvalP evalContenuBloc(TreeP bloc, PVAR environnement){
-
+	
 	/* on est dans la regle : ContenuBloc : ListDeclVar IS LInstruction YieldOpt */
 	if(bloc->u.children[0] != NIL(Tree)){
 		/* Evaluation de toutes les variables -> les "init" de ces variables sont mis à jour */
@@ -1380,13 +1382,18 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 
 	/** TODO : Attente de savoir ce que rend instanciation, envoiMessage et OuRien**/
 		case EVAL_PVAR:
+			/* Normalement ça devrait être instanciation -> une PVAR est créé, il faut lui donner son nom */
 			printf("evalListDeclVar->PVAR\n");
+			/*tmp->init = makeLeafVar(EVALUE_PVAR, eval->u.var);*/
+			tmp->init = eval->u.var->init;
 			break;
 		case EVAL_PCLASS:
 			printf("evalListDeclVar->PCLASS\n");
+			tmp->init = makeLeafClass(EVALUE_PCLASS, eval->u.classe);
 			break;
 		case EVAL_PMETH:
 			printf("evalListDeclVar->PMETH\n");
+			tmp->init = makeLeafMeth(EVALUE_PMETH, eval->u.methode);
 			break;
 		case EVAL_TREEP:
 			printf("evalListDeclVar->TREEP\n");
@@ -1399,20 +1406,101 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 	/* Evaluation du reste de la liste des variables */
 	evalListDeclVar(tmp->suivant, environnement);
 }
+EvalP evalInstruction(TreeP instruction, PVAR environnement){
 
+/* TODO update de l'environnement */
+
+	TreeP tmp = instruction;
+	if(tmp == NULL || tmp == NIL(Tree))	return NIL(Eval);
+	EvalP eval;
+	if(tmp->op == CONTENUBLOC){
+		return evalContenuBloc(tmp, environnement);
+	}
+	else if(tmp->op == ETIQUETTE_AFFECT){
+		PVAR cible;
+		/* tmp->u.children[0] = eval de cible = ID ou selection */
+		if(tmp->u.children[0]->op == IDENTIFICATEUR){
+			cible = getVar(environnement, tmp->u.children[0]->u.str);
+		}
+		else{
+			cible = evalSelection(tmp->u.children[0], environnement)->u.var;
+		}
+		/* affectation : tmp->u.children[1] = eval de expr */
+		EvalP eval_affect = evalExpr(tmp->u.children[1], environnement);
+		switch(eval_affect->type){
+			case EVAL_INT:
+				cible->init = makeLeafInt(EVALUE_INT, eval_affect->u.val);
+			case EVAL_STR:
+				cible->init = makeLeafStr(EVALUE_STR, eval_affect->u.str);
+			case EVAL_PVAR:
+				cible->init = makeLeafVar(EVALUE_PVAR, eval_affect->u.var);
+			case EVAL_PCLASS:
+				cible->init = makeLeafClass(EVALUE_PCLASS, eval_affect->u.classe);
+			case EVAL_PMETH:
+				cible->init = makeLeafMeth(EVALUE_PMETH, eval_affect->u.methode);
+			case EVAL_TREEP:
+				printf("Dans evalInstruction -> l'eval de l'affectation de l'expr = TreeP\n");
+			default:
+				printf("Dans evalInstruction -> etiquette introuvable (affect)\n");
+		} 
+		
+		/* Pas besoin de retourner qqch */
+		return NIL(Eval);
+	}
+	else if(tmp->op == IFTHENELSE){
+		return evalIf(tmp, environnement);
+	}
+	else if(tmp->op == EXPRESSIONRETURN){
+		return evalExpr(tmp, environnement);
+	}
+	else if(tmp->op == RETURN_VOID){
+		return NIL(Eval);	/* FIXME différencier des autres?? */
+	}
+	/* expression */
+	else{
+		eval = evalExpr(tmp, environnement);
+		/* Pas besoin de retourner qqch */
+		return NIL(Eval);
+	}
+	
+}
 /* TODO */
 void evalListInstruction(TreeP Linstruction, PVAR environnement){
+	evalInstruction(Linstruction->u.children[0], environnement);
+	/* Eval du reste de la liste */
+	if(Linstruction->nbChildren == 1){	
+		evalListInstruction(Linstruction->u.children[0], environnement);
+	}
+	else if(Linstruction->nbChildren == 2){
+		evalListInstruction(Linstruction->u.children[1], environnement);
+	}
+}
 
+EvalP evalIf(TreeP tree, PVAR environnement){
+	EvalP eval_condition = evalExpr(tree->u.children[0], environnement);
+	if(eval_condition->type != EVAL_INT){
+		printf("Probleme dans EvalIf : l'évaluation de la condition (expression) n'est pas un int\n");
+		return NIL(Eval);
+	}
+	/* la condition est OK -> on va dans THEN */
+	if(eval_condition->u.val != 0){
+		return evalInstruction(tree->u.children[1], environnement);
+	}
+
+	/* la condition est KO -> on va dans ELSE */
+	else{
+		return evalInstruction(tree->u.children[2], environnement);
+	}
 }
 
 
 /** Renvoie la longueur d'une chaine **/
 int sizeString(char *str){
-  int size=0;
-  while(str[size] != '\0'){
-    size++;
-  }
-  return size;
+	int size=0;
+	while(str[size] != '\0'){
+		size++;
+	}
+	return size;
 }
 
 int getVal(EvalP eval){
@@ -1423,8 +1511,8 @@ int getVal(EvalP eval){
 			if(eval->u.var->init->op == EVALUE_INT){
 				return eval->u.var->init->u.children[0]->u.val;
 			}
-    case EVAL_STR:
-      return eval->u.str; 
+		case EVAL_STR:
+		      	return eval->u.str; 
 		default:
 			printf("Probleme\n");
 			exit(0);			
@@ -1445,10 +1533,8 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 		case MINUSUNAIRE:
 			return makeEvalInt(0-evalExpr(tree->u.children[0], environnement)->u.val);
 		case CONCATENATION:
-			sizeConcat=(
-        sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+
-        sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
-    	chaine = calloc(sizeConcat, sizeof(char)); 
+			sizeConcat=(sizeString(evalExpr(tree->u.children[0], environnement)->u.str)+sizeString(evalExpr(tree->u.children[1], environnement)->u.str));
+		    	chaine = calloc(sizeConcat, sizeof(char)); 
 			chaine = strdup(evalExpr(tree->u.children[0], environnement)->u.str);
 			strcat(chaine, evalExpr(tree->u.children[1], environnement)->u.str);
 			return makeEvalStr(chaine);
@@ -1507,17 +1593,39 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			}
 			else{
 				/* Probleme */
+				printf("Probleme dans EvalExpr au niveau du comparateur -> etiquette inconnue\n");
 				return NIL(Eval);	/* FIXME a changer? */
 			}
 	
 		case IDENTIFICATEUR:
-    printf("YOUPPI on est dans ce cas \n");
-    printf("=======> Children STR = %s \n",tree->u.str);
-			var = getVar(environnement, tree->u.str);
-      printf("YOUPPI on est dans ce cas \n");
+		    	printf("YOUPPI on est dans ce cas \n");
+		    	printf("=======> Children STR = %s \n",tree->u.str);
+			var = copyVar(getVar(environnement, tree->u.str)); /* TODO pointeur ou copie? */
+      			printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
-			return makeEvalVar(var);
-
+			/*return makeEvalVar(var);*/
+			if(var->init->op == EVALUE_STR){
+				return makeEvalStr(var->init->u.str);
+			}
+			else if(var->init->op == EVALUE_INT){
+				return makeEvalInt(var->init->u.val);
+			}
+			else if(var->init->op == EVALUE_PVAR){
+				return makeEvalVar(var->init->u.var);
+			}
+			else if(var->init->op == EVALUE_PCLASS){
+				return makeEvalClasse(var->init->u.classe);
+			}
+			else if(var->init->op == EVALUE_PMETH){
+				return makeEvalMethode(var->init->u.methode);
+			}
+			else if(var->init->op == EVALUE_TREEP){
+				return makeEvalTree(var->init->u.children[0]);
+			}
+			else{
+				printf("Probleme dans evalExpr -> ID ==> sa valeur n'est pas evalué\n");
+				return NIL(Eval);
+			}
 		case INSTANCIATION:
 			return evalInstanciation(tree, environnement);
 
@@ -1531,7 +1639,7 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
 			exit(UNEXPECTED);
 	} 
-
+	printf("Dans EvalExpr -> aucune etiquette trouvé\n");
 	return NIL(Eval);
 }
 
@@ -1605,9 +1713,7 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 	/* TODO : Mettre a jour l'environnement ! --> peut etre fait automatiquement si param est dans environnement */
 	
 	/* TODO : Appeler le constructeur selon les champs de la classe et les "nouveaux" param du constructeur */
-	
 
-	/* Remarque : le nom de l'instance est pour l'instant à NULL et on lui affectera plus tard dans la regle + categorie = 0 par defaut*/
 	PVAR var;
 	/* Constructeur vide */
 	if(classe->corps_constructeur == NIL(Tree)){
@@ -1631,6 +1737,7 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 		}
 		var = makeListVar(NULL, classe, 0, init);
 	}
+	/* Remarque : le nom de l'instance est pour l'instant à NULL -> on lui affectera plus tard dans la regle */
 	return makeEvalVar(var);
 }
 
