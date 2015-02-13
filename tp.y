@@ -223,13 +223,16 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
        		 }
 
         	$1=makeClasseApresDef($1,$3,$6,$9->u.children[1]->u.methode,$9->u.children[0]->u.var, $5,isExtend);
-
+        	
 		/*      Pour nous simplifier la tache, on copie les attributs et methodes 
 		 *	de la classe mere dans les attributs et methodes de la classe fille 
 		 */
 		if(isExtend == 1){ 	
 			/* Si une classe n'a pas de constructeur
 			 Ajout des attributs ($5=classe mere)*/ 
+			 
+
+                  
 			if($5->liste_champs != NULL){	/* cas ou la classe mere a d'attributs */
 				/* cas ou la classe fille a des attributs -> faut ceux de la mere ajouter a la fin */
 				if(classActuel->liste_champs!=NULL){
@@ -245,31 +248,41 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 						/* Si le champ de la mere n'est pas dans la fille -> on ajoute */
 						if(varEstDansListe(classActuel->liste_champs, tmp_champs_mere->nom)==FALSE){
 							if(champs_a_ajoutee == NULL){
-								champs_a_ajoutee = copyVar(tmp_champs_mere);
+								champs_a_ajoutee = makeListVar(tmp_champs_mere->nom, tmp_champs_mere->type, tmp_champs_mere->categorie, tmp_champs_mere->init);
+
 							}
 							else{
 								SVAR copieVar = *champs_a_ajoutee;
-								champs_a_ajoutee = copyVar(tmp_champs_mere);
+								champs_a_ajoutee = makeListVar(tmp_champs_mere->nom, tmp_champs_mere->type, tmp_champs_mere->categorie, tmp_champs_mere->init);
 								champs_a_ajoutee->suivant = NEW(1, SVAR);
 								*champs_a_ajoutee->suivant = copieVar;
 							}
 						}
+						
 						tmp_champs_mere = tmp_champs_mere->suivant;
 					}
 
 					/* ajout des attributs (en fin de liste) */
 					if(champs_a_ajoutee!=NULL){
+						
 						SVAR copieVarFinale = *champs_a_ajoutee;
 						PVAR tmp_champs_a_ajoutee = NEW(1,SVAR);	
 						*tmp_champs_a_ajoutee = copieVarFinale;
+						
+
 						tmp_liste_champs->suivant = tmp_champs_a_ajoutee;
+
+						 
 					}
 				}
 				/* cas ou la classe fille n'a pas d'attributs -> on ajoute directement ceux de la mere */
 				else{
 					classActuel->liste_champs = $5->liste_champs;	
 				}
+
 			}
+
+			 
 			/* Ajout des methodes ($5 = classe mere)
 			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
 			 */
@@ -307,12 +320,12 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 							/* Ici, les methodes ajoutees ne peuvent pas etre static ni etre override */
 							/* Il faut gerer le cas ou elles sont pas dites "redefinies" alors qu'elles le sont */
 								if(liste_a_ajoutee == NULL){
-									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, tmp_liste_methodes_classMere->home);
 									/*tmp_liste_a_ajoutee = liste_a_ajoutee;*/
 								}
 								else{
 									SMETH copie = *liste_a_ajoutee;
-									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, classActuel);
+									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, tmp_liste_methodes_classMere->home);
 									liste_a_ajoutee->suivant = NEW(1,SMETH);
 									*liste_a_ajoutee->suivant = copie;
 								}
@@ -408,7 +421,6 @@ ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 
 
 	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
-	printf("le nom de la classe est : %s",$$->nom);
 	char* message = NEW(SIZE_ERROR,char);
 	if($$ == NULL){
 		/* la classe n'existe pas: erreur */
