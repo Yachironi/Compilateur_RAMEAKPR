@@ -359,22 +359,6 @@ PMETH getMethodeBis(PMETH meth, char *nom){
 	return NULL;
 }
 
-/* Renvoie l'attribut d'une classe */
-/*PVAR getVAR(PCLASS classe, char* nomVar){
-if(classe==NULL || nomVar==NULL){
-	return NULL;
-	}
-PVAR parc = classe->liste_champs;
-while((strcmp(parc->nom,nomVar)!=0)&&(parc->suivant!=NULL)){
-	parc=parc->suivant;
-	}
-if(strcmp(parc->nom,nomVar)==0){
-	return parc;
-	} else {
-return NULL;
-	}
-}*/
-
 /** Renvoie un pointeur de la methode recherchee */
 PMETH getMethode(PCLASS classe, PMETH methode){
   if(classe==NULL || methode==NULL)
@@ -1614,7 +1598,6 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 			tmp->init = makeLeafInt(EVALUE_INT, eval->u.val);
 			break;
 
-		/** TODO : Attente de savoir ce que rend instanciation, envoiMessage et OuRien**/
 		case EVAL_PVAR:
 			/* Normalement ça devrait être instanciation -> une PVAR est créé, il faut lui donner son nom */
 			printf("evalListDeclVar->PVAR\n");
