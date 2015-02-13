@@ -1,0 +1,5 @@
+{
+    var x : Integer;
+    is
+    x:=5+2*3-8;
+}
