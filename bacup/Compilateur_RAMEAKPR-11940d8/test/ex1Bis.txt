@@ -7,10 +7,10 @@ class A() is {
 }
 
 class Point(xc: Integer, yc: Integer)
-      /* Corps du constructeur */
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
 is 
 {
-  var static cpt : Integers := 1; /* initialisee au lancement du programme */
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
   var x: Integer;
   var y: Integer;
   var name: String := "x" & cpt.toString();

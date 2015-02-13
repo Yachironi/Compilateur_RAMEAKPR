@@ -1,0 +1,13 @@
+/* Exemple de programme bien formé */
+
+class A() is {
+  var x : Integer := 1;
+  def f() returns Void {}
+}
+
+{ var a1 : A := new A();
+  var a2 : A := new A();
+  is
+  a1.f();
+  a2.f();
+}
