@@ -111,7 +111,7 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
 
   def couleur() returns Couleur := coul 
 
-  def colore() returns Integers := coul.estGris() <> 0 
+  def colore() returns Integer := coul.estGris() <> 0 
 
   def setCouleur(c: Couleur) returns Void { coul := c; }
 

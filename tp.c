@@ -312,11 +312,12 @@ PVAR getVar(PVAR var, char* nom){
 
 /* Renvoi le pointeur de classe avec un nom donnée */
 PCLASS getClasse(PCLASS listeClass,char *nom){
+
   PCLASS parcour=listeClass;
   while((parcour!=NULL)&&(strcmp(parcour->nom,nom)!=0)){
     parcour=parcour->suivant; 
   }
-  if(parcour == NULL){
+if(parcour == NULL){
     char *message = calloc(SIZE_ERROR,sizeof(char));
     sprintf(message,"Classe inexistante");
     pushErreur(message,NULL,NULL,NULL);
@@ -384,16 +385,14 @@ PMETH getMethode(PCLASS classe, PMETH methode){
   }
   PMETH tmp_liste_methodes_classe = getClasseBis(listeDeClass,classe->nom)->liste_methodes;
   PMETH tmp_liste_methode = methode;
-  if(methode == NULL) return FALSE;
-
+  if(methode == NULL) return NULL;
   while(tmp_liste_methodes_classe != NULL){
     /* si 2 methodes ont le meme noms, les memes classes de retour (meme noms) et memes param ==> meme methode */
-    if(strcmp(tmp_liste_methodes_classe->nom, tmp_liste_methode->nom)==0 && strcmp(tmp_liste_methodes_classe->typeRetour->nom, tmp_liste_methode->typeRetour->nom)==0 && memeVar(tmp_liste_methodes_classe->params, tmp_liste_methode->params)==TRUE ){
+    if(strcmp(tmp_liste_methodes_classe->nom, tmp_liste_methode->nom)==0 && tmp_liste_methodes_classe->typeRetour!=NULL && tmp_liste_methode->typeRetour!=NULL && strcmp(tmp_liste_methodes_classe->typeRetour->nom, tmp_liste_methode->typeRetour->nom)==0 && memeVar(tmp_liste_methodes_classe->params, tmp_liste_methode->params)==TRUE ){
       return tmp_liste_methodes_classe;
     }
     tmp_liste_methodes_classe = tmp_liste_methodes_classe->suivant;
   }
-
   return NULL;
 }
 
@@ -498,7 +497,8 @@ PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
 void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 {
 
-
+  if(message==NULL)
+    return;
   ErreurP nouvelle = NEW(1,Erreur);
   nouvelle->message = NEW(SIZE_ERROR,char);
   strcpy(nouvelle->message,message);
@@ -526,7 +526,6 @@ void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable)
 
 bool checkProgramme(TreeP prog){
   if(prog==NULL) return FALSE;
-printf("Entree 1\n");
   /* Acces statique au bloc Main */
   TreeP bloc = getChild(prog,1);
   bool  checkLC= FALSE;
@@ -2149,7 +2148,7 @@ LEvalP evalListArg(TreeP tree, PVAR environnement){
 /* Correspond à l'appel d'une methode */
 EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	if(tree == NIL(Tree))	return NIL(Eval);
-
+  printf("Eval\n");
 	PMETH methode;	
 
 	/* TODO : Pour appel d'une méthode, l'environnement est mis à jour mais apres avoir fini, l'environnement est remis
@@ -2158,7 +2157,8 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 
 	/* IDCLASS '.' ID '(' ListOptArg ')'  -> METHODE STATIC */
 	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
-		methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
+		
+    methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
 		if(methode == NULL){
 			printf("Problème dans evalEnvoiMessage : méthode introuvable dans la classe \n");
 			return NIL(Eval);
