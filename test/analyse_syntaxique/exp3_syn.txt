@@ -1,4 +1,4 @@
 /* Instruction mal formé qui échappe à l'analyqe syntaxique */
 {
-    var x : Integer:=;
+    var x : Integer:=5;
 }
