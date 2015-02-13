@@ -295,7 +295,7 @@ bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, 
 bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 
 /** Methode eval **/
-void evalProgramme(TreeP programme);
+EvalP evalProgramme(TreeP programme);
 EvalP evalContenuBloc(TreeP bloc, PVAR environnement);
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement);
 void evalListInstruction(TreeP Linstruction, PVAR environnement);

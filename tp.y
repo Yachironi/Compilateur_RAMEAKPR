@@ -249,6 +249,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 						if(varEstDansListe(classActuel->liste_champs, tmp_champs_mere->nom)==FALSE){
 							if(champs_a_ajoutee == NULL){
 								champs_a_ajoutee = makeListVar(tmp_champs_mere->nom, tmp_champs_mere->type, tmp_champs_mere->categorie, tmp_champs_mere->init);
+
 							}
 							else{
 								SVAR copieVar = *champs_a_ajoutee;
