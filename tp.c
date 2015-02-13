@@ -2640,7 +2640,7 @@ printf("2\n");
     type2 = getType(getChild(arbre,1),arbre,courant,methode,listeDecl);
     if(equalsType(type,type2) && (strcmp(type->nom,"Integer")==0 || strcmp(type->nom,"String")==0)){
 
-      return type;
+      return getClasseBis(listeDeClass,"Integer");
     }
     else
     {
