@@ -1,0 +1,106 @@
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+is 
+{
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+  def setName(s: String) returns Void { name := s; } /* bloc procedural */
+
+  def move(dx: Integer, dy: Integer) returns Point { /* bloc fonctionnel */
+      x := x + dx; y := y + dy; yield this
+  }
+
+  def gety() returns Integer := this.y    /* avec this explicite */ 
+
+  def getx() returns Integer := x         /* avec this implicite */  
+
+  def getxBis() returns Integer { yield x }  /* autre forme */  
+
+  /* troisieme forme, incorrecte du point de vue des types puisqu'il
+   * y a un "yield void" implicite.
+   */  
+  def getxTer() returns Integer { return x; }
+
+  def nothing() returns Void { }
+
+  def nothingBis() returns Void { return void; }
+
+  def nothingTer() returns Void { yield void }
+
+  def print() returns Void {
+      /* Exemples avec l'operateur & de concatenation de chaines */
+      ( "[" & name & "]" ).print();
+      ( "= (" & x.toString() & ", " & y.toString() & ")" ).println();
+  }
+
+  def verboseMove (dx: Integer, dy: Integer) returns Void {
+      this.move(dx, dy);       /* le this est obligatoire */
+      this.print();
+  }
+
+  def clone() returns Point {
+      var res : Point := new Point(x, y);
+      is
+      res.setName(this.name & "-bis");
+      yield res
+  }
+
+  /* utilise un bloc fonctionnel */
+  def egal(p: Point) returns Integer { 
+   /* ils sont egaux s'ils ont memes coordonnees */
+       var b1 : Integer := p.x - x;
+       var b2 : Integer := p.y - y;
+    is if b1 then return 0; else return b2 = 0;
+       yield -1 /* necessaire meme si inaccessible ! */
+  }
+
+  def egal2(p: Point) returns Integer {
+       var b1 : Integer := p.x - x;
+       var b2: Integer := 5;
+       var result : Integer;
+    is if b1 then result := 0;
+       else {var b2: Integer := p.y - y; /* masquage du b2 externe ! */
+             is result := b2 = 0;
+            }
+       yield result
+  }
+}
+
+
+
+class PointColore(xc: Integer, yc:Integer, c: Couleur)
+      extends Point(xc, yc) { coul := c; } is     
+{  
+  var coul: Couleur;
+
+  def couleur() returns Couleur := coul 
+
+  def colore() returns Integer := coul.estGris() <> 0 
+
+  def setCouleur(c: Couleur) returns Void { coul := c; }
+
+  /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
+  def override clone() returns Point
+               := new PointColore(x, y, coul)
+
+  def estGris() returns Integer {
+      /* une trace pour verifier qu'on appelle bien la bonne */
+      "Inside PointColore::estGris".println();
+      yield coul.estGris()
+  }
+
+   def override print() returns Void {
+      "Inside PointColore::print".println();
+      super.print();
+      this.couleur().name().println();
+  }
+}
+/* Le programme va afficher une erreur car il ne connait pas la classe Couleur */
+
+
+{
+  
+}
