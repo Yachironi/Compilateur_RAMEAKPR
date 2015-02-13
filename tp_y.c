@@ -62,7 +62,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 47 "tp.y" /* yacc.c:339  */
+#line 44 "tp.y" /* yacc.c:339  */
 
 #include "tp.h"     /* les definition des types et les etiquettes des noeuds */
 PCLASS classActuel; /* Classe en cours d'analyse*/
@@ -447,14 +447,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    85,    85,    90,    91,    97,   107,   108,   115,   116,
-     119,   130,   131,   136,   147,   148,   149,   150,   151,   152,
-     161,   162,   168,   169,   176,   209,   362,   368,   370,   374,
-     375,   379,   380,   388,   393,   394,   398,   399,   400,   404,
-     405,   408,   409,   412,   413,   416,   419,   469,   472,   473,
-     477,   478,   482,   483,   484,   485,   486,   487,   488,   489,
-     490,   491,   492,   493,   496,   497,   505,   506,   507,   513,
-     514,   517,   525,   527,   529,   531
+       0,    82,    82,    87,    88,    94,   104,   105,   112,   113,
+     116,   127,   128,   133,   144,   145,   146,   147,   148,   149,
+     158,   159,   165,   166,   173,   205,   342,   348,   350,   354,
+     355,   359,   360,   368,   373,   374,   378,   379,   380,   384,
+     385,   388,   389,   392,   393,   396,   399,   442,   445,   446,
+     450,   451,   455,   456,   457,   458,   459,   460,   461,   462,
+     463,   464,   465,   466,   469,   470,   478,   479,   480,   486,
+     487,   490,   498,   500,   502,   504
 };
 #endif
 
@@ -1338,55 +1338,55 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 85 "tp.y" /* yacc.c:1646  */
+#line 82 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,(yyvsp[-1].CL)),(yyvsp[0].T));programme=(yyval.T);}
 #line 1344 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 90 "tp.y" /* yacc.c:1646  */
+#line 87 "tp.y" /* yacc.c:1646  */
     {(yyvsp[-1].CL)->suivant=(yyvsp[0].CL); (yyval.CL)=(yyvsp[-1].CL);}
 #line 1350 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 91 "tp.y" /* yacc.c:1646  */
+#line 88 "tp.y" /* yacc.c:1646  */
     {(yyval.CL)=NIL(SCLASS);}
 #line 1356 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 97 "tp.y" /* yacc.c:1646  */
+#line 94 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[-1].T);}
 #line 1362 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 107 "tp.y" /* yacc.c:1646  */
+#line 104 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(CONTENUBLOC,3,NIL(Tree),(yyvsp[-1].T),(yyvsp[0].T));}
 #line 1368 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 108 "tp.y" /* yacc.c:1646  */
+#line 105 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(CONTENUBLOC,3,makeLeafVar(LISTEVAR, (yyvsp[-3].V)),(yyvsp[-1].T),(yyvsp[0].T));}
 #line 1374 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 115 "tp.y" /* yacc.c:1646  */
+#line 112 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ETIQUETTE_YIELD, 1, (yyvsp[0].T));}
 #line 1380 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 116 "tp.y" /* yacc.c:1646  */
+#line 113 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=NIL(Tree);}
 #line 1386 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 120 "tp.y" /* yacc.c:1646  */
+#line 117 "tp.y" /* yacc.c:1646  */
     {
 		(yyval.V)=makeListVar((yyvsp[-5].S),getClasseBis(listeDeClass,(yyvsp[-3].S)),(yyvsp[-6].I),(yyvsp[-2].T));
             	(yyval.V)->suivant=(yyvsp[0].V);
@@ -1395,93 +1395,92 @@ yyreduce:
     break;
 
   case 11:
-#line 130 "tp.y" /* yacc.c:1646  */
+#line 127 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(LIST_INSTRUCTION, 2, (yyvsp[-1].T), (yyvsp[0].T));}
 #line 1401 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 131 "tp.y" /* yacc.c:1646  */
+#line 128 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=NIL(Tree);}
 #line 1407 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 136 "tp.y" /* yacc.c:1646  */
+#line 133 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(LIST_INSTRUCTION, 2, (yyvsp[-1].T), (yyvsp[0].T));}
 #line 1413 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 147 "tp.y" /* yacc.c:1646  */
+#line 144 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[-1].T);}
 #line 1419 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 148 "tp.y" /* yacc.c:1646  */
+#line 145 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(EXPRESSIONRETURN, 1, (yyvsp[-1].T));}
 #line 1425 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 149 "tp.y" /* yacc.c:1646  */
+#line 146 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
 #line 1431 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 150 "tp.y" /* yacc.c:1646  */
+#line 147 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ETIQUETTE_AFFECT, 2, (yyvsp[-3].T), (yyvsp[-1].T));}
 #line 1437 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 151 "tp.y" /* yacc.c:1646  */
+#line 148 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(IFTHENELSE, 3, (yyvsp[-4].T), (yyvsp[-2].T), (yyvsp[0].T));}
 #line 1443 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 152 "tp.y" /* yacc.c:1646  */
+#line 149 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeLeafStr(RETURN_VOID, MSG_VOID);}
 #line 1449 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 161 "tp.y" /* yacc.c:1646  */
+#line 158 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeLeafStr(IDENTIFICATEUR,(yyvsp[0].S));}
 #line 1455 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 162 "tp.y" /* yacc.c:1646  */
+#line 159 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
 #line 1461 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 168 "tp.y" /* yacc.c:1646  */
+#line 165 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
 #line 1467 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 169 "tp.y" /* yacc.c:1646  */
+#line 166 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=NIL(Tree);}
 #line 1473 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 177 "tp.y" /* yacc.c:1646  */
+#line 174 "tp.y" /* yacc.c:1646  */
     {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
 	if(estDansListClasse(listeDeClass, (yyvsp[0].S)) == TRUE){
-		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", (yyvsp[0].S));
+		printf("La classe %s existe deja\n", (yyvsp[0].S));
 		char* message = NEW(SIZE_ERROR,char);
-		sprintf(message,"Erreur la classe %s est deja declare",(yyvsp[0].S));
-		/* TODO A MODIF pushErreur(message,classActuel,NULL,NULL); */
-		(yyval.CL) = NULL; 	/* FIXME bon? */
+		sprintf(message,"Erreur la classe %s est deja declaree",(yyvsp[0].S));
+		(yyval.CL) = NULL; 
 	} 
 	
 	/* Pas de probleme : ajout de la classe */
@@ -1501,14 +1500,15 @@ yyreduce:
 		}
 	}
 }
-#line 1505 "tp_y.c" /* yacc.c:1646  */
+#line 1504 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 210 "tp.y" /* yacc.c:1646  */
+#line 206 "tp.y" /* yacc.c:1646  */
     {   
     	if((yyvsp[-9].CL) == NULL){
-		printf("Erreur dans DefClass\n");
+		printf("Erreur dans DefClass : veuillez resoudre le probleme avant de continuer les checks\n");
+		exit(0);
 	}
 	else {
 		int isExtend; 
@@ -1548,7 +1548,6 @@ yyreduce:
 						if(varEstDansListe(classActuel->liste_champs, tmp_champs_mere->nom)==FALSE){
 							if(champs_a_ajoutee == NULL){
 								champs_a_ajoutee = makeListVar(tmp_champs_mere->nom, tmp_champs_mere->type, tmp_champs_mere->categorie, tmp_champs_mere->init);
-
 							}
 							else{
 								SVAR copieVar = *champs_a_ajoutee;
@@ -1567,24 +1566,20 @@ yyreduce:
 						SVAR copieVarFinale = *champs_a_ajoutee;
 						PVAR tmp_champs_a_ajoutee = NEW(1,SVAR);	
 						*tmp_champs_a_ajoutee = copieVarFinale;
-						
-
 						tmp_liste_champs->suivant = tmp_champs_a_ajoutee;
-
-						 
 					}
 				}
 				/* cas ou la classe fille n'a pas d'attributs -> on ajoute directement ceux de la mere */
 				else{
 					classActuel->liste_champs = (yyvsp[-5].CL)->liste_champs;	
 				}
-
 			}
 
 			 
 			/* Ajout des methodes ($5 = classe mere)
 			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
 			 */
+			 
 			if((yyvsp[-5].CL)->liste_methodes != NULL){
 				/* cas ou la classe fille n'a pas de methode -> on ajoute directement celles de la mere */
 				if(classActuel->liste_methodes==NULL){
@@ -1620,7 +1615,6 @@ yyreduce:
 							/* Il faut gerer le cas ou elles sont pas dites "redefinies" alors qu'elles le sont */
 								if(liste_a_ajoutee == NULL){
 									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, tmp_liste_methodes_classMere->home);
-									/*tmp_liste_a_ajoutee = liste_a_ajoutee;*/
 								}
 								else{
 									SMETH copie = *liste_a_ajoutee;
@@ -1628,8 +1622,6 @@ yyreduce:
 									liste_a_ajoutee->suivant = NEW(1,SMETH);
 									*liste_a_ajoutee->suivant = copie;
 								}
-								/*liste_a_ajoutee = liste_a_ajoutee->suivant;*/
-								/*liste_a_ajoutee->suivant = NULL;*/
 							}
 						}
 						tmp_liste_methodes_classMere = tmp_liste_methodes_classMere->suivant;
@@ -1640,166 +1632,150 @@ yyreduce:
 						*tmp_liste_a_ajoutee = copieFinale;
 						tmp_liste_methodes->suivant = tmp_liste_a_ajoutee;
 					}
-					/*
-					printf("====\nListe a ajoute = \n");
-					while(tmp_liste_a_ajoutee != NULL){
-						printf("tmp_liste_a_ajoutee=%s\n", tmp_liste_a_ajoutee->nom);
-						tmp_liste_a_ajoutee=tmp_liste_a_ajoutee->suivant;
-					}
-					printf("====\n");
-					tmp_liste_methodes->suivant = tmp_liste_a_ajoutee;
-					*/
 				}
 			}	
 		}
    		(yyval.CL)=classActuel;
 	}
 }
-#line 1659 "tp_y.c" /* yacc.c:1646  */
+#line 1642 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 362 "tp.y" /* yacc.c:1646  */
+#line 342 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(CONTENUCLASS,2,makeLeafVar(LISTEVAR,(yyvsp[-1].V)),makeLeafMeth(LISTEMETHODE,(yyvsp[0].M)));}
-#line 1665 "tp_y.c" /* yacc.c:1646  */
+#line 1648 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 369 "tp.y" /* yacc.c:1646  */
+#line 349 "tp.y" /* yacc.c:1646  */
     {(yyval.V)=makeListVar((yyvsp[-5].S),getClasseBis(listeDeClass,(yyvsp[-3].S)),(yyvsp[-6].I),(yyvsp[-2].T)); (yyval.V)->suivant=(yyvsp[0].V);}
-#line 1671 "tp_y.c" /* yacc.c:1646  */
+#line 1654 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 370 "tp.y" /* yacc.c:1646  */
+#line 350 "tp.y" /* yacc.c:1646  */
     {(yyval.V)=NIL(SVAR);}
-#line 1677 "tp_y.c" /* yacc.c:1646  */
+#line 1660 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 374 "tp.y" /* yacc.c:1646  */
+#line 354 "tp.y" /* yacc.c:1646  */
     {(yyval.I)=1;}
-#line 1683 "tp_y.c" /* yacc.c:1646  */
+#line 1666 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 375 "tp.y" /* yacc.c:1646  */
+#line 355 "tp.y" /* yacc.c:1646  */
     {(yyval.I)=0;}
-#line 1689 "tp_y.c" /* yacc.c:1646  */
+#line 1672 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 379 "tp.y" /* yacc.c:1646  */
+#line 359 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ETIQUETTE_AFFECT, 1, (yyvsp[0].T));}
-#line 1695 "tp_y.c" /* yacc.c:1646  */
+#line 1678 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 380 "tp.y" /* yacc.c:1646  */
+#line 360 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=NIL(Tree);}
-#line 1701 "tp_y.c" /* yacc.c:1646  */
+#line 1684 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 389 "tp.y" /* yacc.c:1646  */
+#line 369 "tp.y" /* yacc.c:1646  */
     {(yyval.M)=makeMethode((yyvsp[-6].S),(yyvsp[-7].I),(yyvsp[0].T),getClasseBis(listeDeClass,(yyvsp[-1].S)),(yyvsp[-4].V),classActuel);}
-#line 1707 "tp_y.c" /* yacc.c:1646  */
+#line 1690 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 393 "tp.y" /* yacc.c:1646  */
+#line 373 "tp.y" /* yacc.c:1646  */
     {(yyvsp[-1].M)->suivant=(yyvsp[0].M); (yyval.M)=(yyvsp[-1].M);}
-#line 1713 "tp_y.c" /* yacc.c:1646  */
+#line 1696 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 394 "tp.y" /* yacc.c:1646  */
+#line 374 "tp.y" /* yacc.c:1646  */
     {(yyval.M)=NIL(SMETH);}
-#line 1719 "tp_y.c" /* yacc.c:1646  */
+#line 1702 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 398 "tp.y" /* yacc.c:1646  */
+#line 378 "tp.y" /* yacc.c:1646  */
     {(yyval.I)=1;}
-#line 1725 "tp_y.c" /* yacc.c:1646  */
+#line 1708 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 399 "tp.y" /* yacc.c:1646  */
+#line 379 "tp.y" /* yacc.c:1646  */
     {(yyval.I)=2;}
-#line 1731 "tp_y.c" /* yacc.c:1646  */
+#line 1714 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 400 "tp.y" /* yacc.c:1646  */
+#line 380 "tp.y" /* yacc.c:1646  */
     {(yyval.I)=0;}
-#line 1737 "tp_y.c" /* yacc.c:1646  */
+#line 1720 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 404 "tp.y" /* yacc.c:1646  */
+#line 384 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
-#line 1743 "tp_y.c" /* yacc.c:1646  */
+#line 1726 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 405 "tp.y" /* yacc.c:1646  */
+#line 385 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
-#line 1749 "tp_y.c" /* yacc.c:1646  */
+#line 1732 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 408 "tp.y" /* yacc.c:1646  */
+#line 388 "tp.y" /* yacc.c:1646  */
     {(yyval.V)=(yyvsp[0].V);}
-#line 1755 "tp_y.c" /* yacc.c:1646  */
+#line 1738 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 409 "tp.y" /* yacc.c:1646  */
+#line 389 "tp.y" /* yacc.c:1646  */
     {(yyval.V)=NIL(SVAR);}
-#line 1761 "tp_y.c" /* yacc.c:1646  */
+#line 1744 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 412 "tp.y" /* yacc.c:1646  */
+#line 392 "tp.y" /* yacc.c:1646  */
     {(yyval.V)=(yyvsp[0].V);}
-#line 1767 "tp_y.c" /* yacc.c:1646  */
+#line 1750 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 413 "tp.y" /* yacc.c:1646  */
+#line 393 "tp.y" /* yacc.c:1646  */
     {(yyvsp[-2].V)->suivant=(yyvsp[0].V); (yyval.V)=(yyvsp[-2].V);}
-#line 1773 "tp_y.c" /* yacc.c:1646  */
+#line 1756 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 416 "tp.y" /* yacc.c:1646  */
+#line 396 "tp.y" /* yacc.c:1646  */
     {(yyval.V)= makeListVar((yyvsp[-2].S),getClasseBis(listeDeClass,(yyvsp[0].S)),0,NIL(Tree));}
-#line 1779 "tp_y.c" /* yacc.c:1646  */
+#line 1762 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 420 "tp.y" /* yacc.c:1646  */
+#line 400 "tp.y" /* yacc.c:1646  */
     {
-
 
 	(yyval.CL)=getClasse(listeDeClass, (yyvsp[-3].S));	/* peut etre besoin de getClasseBis? */
 	char* message = NEW(SIZE_ERROR,char);
 	if((yyval.CL) == NULL){
 		/* la classe n'existe pas: erreur */
 		printf("Probleme au niveau de la declaration de la classe\n");
-    sprintf(message,"Erreur la classe %s n'existe pas",(yyvsp[-3].S));
+    		sprintf(message,"Erreur la classe %s n'existe pas",(yyvsp[-3].S));
 		pushErreur(message,classActuel,NULL,NULL);
 	}
 	else{
 
 		classActuel->appel_constructeur_mere = (yyvsp[-1].T);
-		
-		/* TODO */
-		/*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
-		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-
-		/* A REMETTRE appelConstructureEstCorrecte($4,$$);*/
 
 		/* on ajoute a la classe mere les param passees dans ListOptArg */
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
@@ -1829,185 +1805,185 @@ yyreduce:
 
 	}
 }
-#line 1833 "tp_y.c" /* yacc.c:1646  */
+#line 1809 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 469 "tp.y" /* yacc.c:1646  */
+#line 442 "tp.y" /* yacc.c:1646  */
     {(yyval.CL)=NIL(SCLASS);}
-#line 1839 "tp_y.c" /* yacc.c:1646  */
+#line 1815 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 472 "tp.y" /* yacc.c:1646  */
+#line 445 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=NIL(Tree);}
-#line 1845 "tp_y.c" /* yacc.c:1646  */
+#line 1821 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 473 "tp.y" /* yacc.c:1646  */
+#line 446 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
-#line 1851 "tp_y.c" /* yacc.c:1646  */
+#line 1827 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 477 "tp.y" /* yacc.c:1646  */
+#line 450 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
-#line 1857 "tp_y.c" /* yacc.c:1646  */
+#line 1833 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 478 "tp.y" /* yacc.c:1646  */
+#line 451 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(LISTEARG, 2, (yyvsp[-2].T),(yyvsp[0].T));}
-#line 1863 "tp_y.c" /* yacc.c:1646  */
+#line 1839 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 482 "tp.y" /* yacc.c:1646  */
+#line 455 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(PLUSUNAIRE, 1, (yyvsp[0].T)); }
-#line 1869 "tp_y.c" /* yacc.c:1646  */
+#line 1845 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 483 "tp.y" /* yacc.c:1646  */
+#line 456 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(MINUSUNAIRE, 1, (yyvsp[0].T)); }
-#line 1875 "tp_y.c" /* yacc.c:1646  */
+#line 1851 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 484 "tp.y" /* yacc.c:1646  */
+#line 457 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(CONCATENATION, 2, (yyvsp[-2].T), (yyvsp[0].T)); }
-#line 1881 "tp_y.c" /* yacc.c:1646  */
+#line 1857 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 485 "tp.y" /* yacc.c:1646  */
+#line 458 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(PLUSBINAIRE, 2, (yyvsp[-2].T), (yyvsp[0].T)); }
-#line 1887 "tp_y.c" /* yacc.c:1646  */
+#line 1863 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 486 "tp.y" /* yacc.c:1646  */
+#line 459 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(MINUSBINAIRE, 2, (yyvsp[-2].T), (yyvsp[0].T)); }
-#line 1893 "tp_y.c" /* yacc.c:1646  */
+#line 1869 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 487 "tp.y" /* yacc.c:1646  */
+#line 460 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(DIVISION, 2, (yyvsp[-2].T), (yyvsp[0].T)); }
-#line 1899 "tp_y.c" /* yacc.c:1646  */
+#line 1875 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 488 "tp.y" /* yacc.c:1646  */
+#line 461 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(MULTIPLICATION, 2, (yyvsp[-2].T), (yyvsp[0].T)); }
-#line 1905 "tp_y.c" /* yacc.c:1646  */
+#line 1881 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 489 "tp.y" /* yacc.c:1646  */
+#line 462 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(OPCOMPARATEUR, 3 , (yyvsp[-2].T), (yyvsp[0].T), makeLeafInt(OPERATEUR,(yyvsp[-1].I)));}
-#line 1911 "tp_y.c" /* yacc.c:1646  */
+#line 1887 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 490 "tp.y" /* yacc.c:1646  */
+#line 463 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=(yyvsp[0].T); }
-#line 1917 "tp_y.c" /* yacc.c:1646  */
+#line 1893 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 491 "tp.y" /* yacc.c:1646  */
+#line 464 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=(yyvsp[0].T); }
-#line 1923 "tp_y.c" /* yacc.c:1646  */
+#line 1899 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 492 "tp.y" /* yacc.c:1646  */
+#line 465 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=(yyvsp[0].T); }
-#line 1929 "tp_y.c" /* yacc.c:1646  */
+#line 1905 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 493 "tp.y" /* yacc.c:1646  */
+#line 466 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=(yyvsp[0].T); }
-#line 1935 "tp_y.c" /* yacc.c:1646  */
+#line 1911 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 496 "tp.y" /* yacc.c:1646  */
+#line 469 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[-1].T);}
-#line 1941 "tp_y.c" /* yacc.c:1646  */
+#line 1917 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 497 "tp.y" /* yacc.c:1646  */
+#line 470 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=(yyvsp[0].T);}
-#line 1947 "tp_y.c" /* yacc.c:1646  */
+#line 1923 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 505 "tp.y" /* yacc.c:1646  */
+#line 478 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(SELECTION, 2, makeLeafStr(IDENTIFICATEURCLASS,(yyvsp[-2].S)),makeLeafStr(IDENTIFICATEUR,(yyvsp[0].S)));}
-#line 1953 "tp_y.c" /* yacc.c:1646  */
+#line 1929 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 506 "tp.y" /* yacc.c:1646  */
+#line 479 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(SELECTION, 2, (yyvsp[-2].T),makeLeafStr(IDENTIFICATEUR,(yyvsp[0].S)));}
-#line 1959 "tp_y.c" /* yacc.c:1646  */
+#line 1935 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 507 "tp.y" /* yacc.c:1646  */
+#line 480 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(SELECTION, 2, (yyvsp[-2].T),makeLeafStr(IDENTIFICATEUR,(yyvsp[0].S)));}
-#line 1965 "tp_y.c" /* yacc.c:1646  */
+#line 1941 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 513 "tp.y" /* yacc.c:1646  */
+#line 486 "tp.y" /* yacc.c:1646  */
     {(yyval.T) = makeLeafStr(CSTSTRING,(yyvsp[0].S)); }
-#line 1971 "tp_y.c" /* yacc.c:1646  */
+#line 1947 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 514 "tp.y" /* yacc.c:1646  */
+#line 487 "tp.y" /* yacc.c:1646  */
     {(yyval.T) = makeLeafInt(CSTENTIER,(yyvsp[0].I));}
-#line 1977 "tp_y.c" /* yacc.c:1646  */
+#line 1953 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 517 "tp.y" /* yacc.c:1646  */
+#line 490 "tp.y" /* yacc.c:1646  */
     { (yyval.T)=makeTree(INSTANCIATION, 2, makeLeafStr(IDENTIFICATEURCLASS,(yyvsp[-3].S)), (yyvsp[-1].T)); }
-#line 1983 "tp_y.c" /* yacc.c:1646  */
+#line 1959 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 526 "tp.y" /* yacc.c:1646  */
+#line 499 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ENVOIMESSAGE, 3, makeLeafStr(IDENTIFICATEURCLASS,(yyvsp[-5].S)),makeLeafStr(IDENTIFICATEUR,(yyvsp[-3].S)),(yyvsp[-1].T)); }
-#line 1989 "tp_y.c" /* yacc.c:1646  */
+#line 1965 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 528 "tp.y" /* yacc.c:1646  */
+#line 501 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ENVOIMESSAGE, 3,(yyvsp[-5].T),makeLeafStr(IDENTIFICATEUR,(yyvsp[-3].S)),(yyvsp[-1].T)); }
-#line 1995 "tp_y.c" /* yacc.c:1646  */
+#line 1971 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 530 "tp.y" /* yacc.c:1646  */
+#line 503 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ENVOIMESSAGE, 3,(yyvsp[-5].T),makeLeafStr(IDENTIFICATEUR,(yyvsp[-3].S)),(yyvsp[-1].T)); }
-#line 2001 "tp_y.c" /* yacc.c:1646  */
+#line 1977 "tp_y.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 532 "tp.y" /* yacc.c:1646  */
+#line 505 "tp.y" /* yacc.c:1646  */
     {(yyval.T)=makeTree(ENVOIMESSAGE, 3,(yyvsp[-5].T),makeLeafStr(IDENTIFICATEUR,(yyvsp[-3].S)),(yyvsp[-1].T)); }
-#line 2007 "tp_y.c" /* yacc.c:1646  */
+#line 1983 "tp_y.c" /* yacc.c:1646  */
     break;
 
 
-#line 2011 "tp_y.c" /* yacc.c:1646  */
+#line 1987 "tp_y.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

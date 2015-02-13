@@ -1,0 +1,14 @@
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := yc; cpt := cpt+1;} 
+is 
+{
+  var static cpt : Integers := 1; /* Integers n'existe pas, le programme va afficher une erreur */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+}
+
+{
+	
+}

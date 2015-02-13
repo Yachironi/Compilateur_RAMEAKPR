@@ -1,0 +1,18 @@
+class A()
+is {
+  var x : Integer;
+}
+
+class B() extends A()
+is {
+  var x : String;
+  def f() returns String
+  {
+    if x = "" then {x:="String ici";} else {this.x=1;}
+  }
+
+}
+
+{
+  
+}

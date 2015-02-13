@@ -33,9 +33,6 @@
  * La "valeur" associee a un terminal utilise toujours la meme variante
  */
 
-
-
-/* %type <C> REL */
 %type <T> expr Programme Bloc BlocOpt ContenuBloc YieldOpt Cible Instruction ContenuClassOpt AffectExprOpt BlocOuExpr selection constante instanciation envoiMessage LInstruction LInstructionOpt OuRien ListOptArg LArg
 %type <V> ListDeclVar LDeclChampsOpt LParam ListParamOpt Param
 %type <M> Methode LDeclMethodeOpt
@@ -177,11 +174,10 @@ DefClass : CLASS IDCLASS
 {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
 	if(estDansListClasse(listeDeClass, $2) == TRUE){
-		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
+		printf("La classe %s existe deja\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
-		sprintf(message,"Erreur la classe %s est deja declare",$2);
-		/* TODO A MODIF pushErreur(message,classActuel,NULL,NULL); */
-		$$ = NULL; 	/* FIXME bon? */
+		sprintf(message,"Erreur la classe %s est deja declaree",$2);
+		$$ = NULL; 
 	} 
 	
 	/* Pas de probleme : ajout de la classe */
@@ -209,7 +205,8 @@ DefClass : CLASS IDCLASS
 DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
 {   
     	if($1 == NULL){
-		printf("Erreur dans DefClass\n");
+		printf("Erreur dans DefClass : veuillez resoudre le probleme avant de continuer les checks\n");
+		exit(0);
 	}
 	else {
 		int isExtend; 
@@ -249,7 +246,6 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 						if(varEstDansListe(classActuel->liste_champs, tmp_champs_mere->nom)==FALSE){
 							if(champs_a_ajoutee == NULL){
 								champs_a_ajoutee = makeListVar(tmp_champs_mere->nom, tmp_champs_mere->type, tmp_champs_mere->categorie, tmp_champs_mere->init);
-
 							}
 							else{
 								SVAR copieVar = *champs_a_ajoutee;
@@ -268,24 +264,20 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 						SVAR copieVarFinale = *champs_a_ajoutee;
 						PVAR tmp_champs_a_ajoutee = NEW(1,SVAR);	
 						*tmp_champs_a_ajoutee = copieVarFinale;
-						
-
 						tmp_liste_champs->suivant = tmp_champs_a_ajoutee;
-
-						 
 					}
 				}
 				/* cas ou la classe fille n'a pas d'attributs -> on ajoute directement ceux de la mere */
 				else{
 					classActuel->liste_champs = $5->liste_champs;	
 				}
-
 			}
 
 			 
 			/* Ajout des methodes ($5 = classe mere)
 			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
 			 */
+			 
 			if($5->liste_methodes != NULL){
 				/* cas ou la classe fille n'a pas de methode -> on ajoute directement celles de la mere */
 				if(classActuel->liste_methodes==NULL){
@@ -321,7 +313,6 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 							/* Il faut gerer le cas ou elles sont pas dites "redefinies" alors qu'elles le sont */
 								if(liste_a_ajoutee == NULL){
 									liste_a_ajoutee = makeMethode(tmp_liste_methodes_classMere->nom, 0, tmp_liste_methodes_classMere->corps, tmp_liste_methodes_classMere->typeRetour, tmp_liste_methodes_classMere->params, tmp_liste_methodes_classMere->home);
-									/*tmp_liste_a_ajoutee = liste_a_ajoutee;*/
 								}
 								else{
 									SMETH copie = *liste_a_ajoutee;
@@ -329,8 +320,6 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 									liste_a_ajoutee->suivant = NEW(1,SMETH);
 									*liste_a_ajoutee->suivant = copie;
 								}
-								/*liste_a_ajoutee = liste_a_ajoutee->suivant;*/
-								/*liste_a_ajoutee->suivant = NULL;*/
 							}
 						}
 						tmp_liste_methodes_classMere = tmp_liste_methodes_classMere->suivant;
@@ -341,15 +330,6 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 						*tmp_liste_a_ajoutee = copieFinale;
 						tmp_liste_methodes->suivant = tmp_liste_a_ajoutee;
 					}
-					/*
-					printf("====\nListe a ajoute = \n");
-					while(tmp_liste_a_ajoutee != NULL){
-						printf("tmp_liste_a_ajoutee=%s\n", tmp_liste_a_ajoutee->nom);
-						tmp_liste_a_ajoutee=tmp_liste_a_ajoutee->suivant;
-					}
-					printf("====\n");
-					tmp_liste_methodes->suivant = tmp_liste_a_ajoutee;
-					*/
 				}
 			}	
 		}
@@ -419,24 +399,17 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasseBis(listeDeClass,$3),0,NI
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 {
 
-
 	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
 	char* message = NEW(SIZE_ERROR,char);
 	if($$ == NULL){
 		/* la classe n'existe pas: erreur */
 		printf("Probleme au niveau de la declaration de la classe\n");
-    sprintf(message,"Erreur la classe %s n'existe pas",$2);
+    		sprintf(message,"Erreur la classe %s n'existe pas",$2);
 		pushErreur(message,classActuel,NULL,NULL);
 	}
 	else{
 
 		classActuel->appel_constructeur_mere = $4;
-		
-		/* TODO */
-		/*printf("Tentative de faire Extends : la classe existe-> ok : idclass=%s\n", $2);*/
-		/* appeler une fonction qui verifie si ListOptArg est coherent avec la classe ($$) */
-
-		/* A REMETTRE appelConstructureEstCorrecte($4,$$);*/
 
 		/* on ajoute a la classe mere les param passees dans ListOptArg */
 		/* Exemple : class PointColore(xc: Integer, yc:Integer, c: Couleur) extends Point(xc, yc) ==> on dit que les param xc 
@@ -531,19 +504,3 @@ envoiMessage : IDCLASS '.' ID '(' ListOptArg ')' %prec '.'
 	      | constante '.' ID '(' ListOptArg ')' %prec '.'
 	{$$=makeTree(ENVOIMESSAGE, 3,$1,makeLeafStr(IDENTIFICATEUR,$3),$5); }
              ;
-
-/* les appels ci-dessous creent un arbre de syntaxe abstraite pour l'expression
- * arithmetique. On rappelle que la methode est ascendante, donc les arbres
- * des operandes sont deja construits au moment de rajouter le noeud courant.
- * Dans la premiere regle, par exemple, $2, $4 et $6 representent donc
- * les arbres qui sont les composants d'un if-then-else.
- * la fonction makeTree est definie dans tp.c et prend un nombre variables
- * d'arguments (au moins 2). Le premier est l'etiquette du noeud a construire,
- * le second est le nombre de fils.
- */
-
-/*
- * TODO : On n'a pas envie d'écrire au niveau des expression <= > < >= etc ..
- * du coup RELOP est une notion qui nous permet de les généraliser dans une seul entité
- * Ici même on récuper grace à lex l'opérateur mis en jeu ! => go en bas du tp.l
- */

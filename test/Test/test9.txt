@@ -1,0 +1,18 @@
+class Message(recupe: String)
+      { test := recupe;} /* Corps du constructeur */
+is 
+{
+  var test : String; 
+
+}
+
+{
+	var name : String := "Bures Sur Yvette";
+	/* Test la concatenation de plusieurs String */
+	var monMessage : Message := new Message("[" & "Ceci est le check" & "qui se situe a" & name);
+	is
+	/* On peut appoliquer la methode print et println syr test(STRING) car elles appartiennent a cette classe */ 
+	monMessage.test.println();
+	monMessage.test.print(); 
+
+}

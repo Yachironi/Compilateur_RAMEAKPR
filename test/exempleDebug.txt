@@ -8,7 +8,7 @@ class A() is {
 
 class A2() extends A() is {
   var v : String := "hello";  /* masque le champ v de la classe A */
-  def override f() returns Void { 
+  def override f() returns Voids { 
       "A2::f()\n".println();
       super.f();
       v := "";

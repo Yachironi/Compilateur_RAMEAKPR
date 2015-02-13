@@ -1,0 +1,26 @@
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+is 
+{
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+  def move(dx: Integer, dy: Integer) returns Point { /* bloc fonctionnel */
+      x := x + dx; y := y + dy; yield this
+  }
+  def setName(s: String) returns Void { name := s; }
+
+  def clone() returns Point {
+      var res : Point := new Point(x, y);
+      is
+      res.setName(this.name & "-bis");
+      yield wc
+  }
+  /* Probleme au niveau du yield, en effet, le type de retour est un Point quelque chose d'inconnue */
+}
+
+{
+  
+}

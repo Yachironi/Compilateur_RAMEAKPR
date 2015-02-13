@@ -80,7 +80,7 @@ class Couleur(cinit: Integer)
     else if cinit = 0 then coul := 0; else { coul := 2; }
   }
 is {
-  var coul: Integer;  /* initialise dans le constructeur */
+  var coul: Integer; 	/* initialise dans le constructeur */
 
   def static blanc() returns Couleur := new Couleur(0)
 
@@ -116,7 +116,7 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
   def setCouleur(c: Couleur) returns Void { coul := c; }
 
   /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
-  def override clone() returns Pointz
+  def override clone() returns Point
                := new PointColore(x, y, coul)
 
   def estGris() returns Integer {
