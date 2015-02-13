@@ -16,7 +16,7 @@ is
       var res : Point := new Point(x, y);
       is
       res.setName(this.name & "-bis");
-      yield wc
+      yield wc /*yield x : meme comportement que yield wc*/
   }
   /* Probleme au niveau du yield, en effet, le type de retour est un Point quelque chose d'inconnue */
 }
