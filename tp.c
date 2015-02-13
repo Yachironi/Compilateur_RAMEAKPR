@@ -595,6 +595,7 @@ bool checkBloc(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       return TRUE;
     }
   }
+  return FALSE;
 }
 bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)
 {
@@ -1833,7 +1834,7 @@ LEvalP evalListArg(TreeP tree, PVAR environnement){
 	if(tree == NIL(Tree))	return NIL(LEval);
 
 	/* Le but : récupérer les expr dans l'ordre et faire appel au constructeur de la classe IDCLASS */
-	LEvalP listEval;
+	LEvalP listEval = NULL;
 	/* On a une liste de type LArg, expr*/
 	if(tree->op == LISTEARG){
 		LEvalP listEvalPrec = NULL;
@@ -2328,21 +2329,16 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
     return NULL;
   }
   PCLASS tmpDebug = NULL;
-  PCLASS integer = NEW(1,SCLASS);PCLASS string = NEW(1,SCLASS);
 
    /* Dans le cas d'une selection, récupérer le dernier élèment */
   PCLASS type = NULL;
   PCLASS type2 = NULL;
   LTreeP liste = NULL;
-  LTreeP tmpL = NULL;
   bool instCorrecte = FALSE;
   char* message = NEW(SIZE_ERROR,char);
   char *nomC = NULL;
   char * nomClass =NULL;
   PCLASS tmp = NULL;
-  LTreeP listeTmp =NULL;
-  PCLASS typeDe = NULL;
-
   switch(arbre->op)
   {
     case MINUSUNAIRE:
@@ -2489,7 +2485,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
           return NULL;
         }
       }
-      if(strcmp(arbre->u.str,"super")==0 && ancien!=NULL && ancien->op==ETIQUETTE_YIELD && ancien->op!=ENVOIMESSAGE && ancien!=SELECTION)
+      if(strcmp(arbre->u.str,"super")==0 && ancien!=NULL && ancien->op==ETIQUETTE_YIELD && ancien->op!=ENVOIMESSAGE && ancien->op!=SELECTION)
       {
         sprintf(message,"super n'est pas utilisable dans le yield ! ");
         pushErreur(message,type,NULL,NULL);
@@ -2634,12 +2630,10 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
 
   }
   else if(tmp->elem->op == IDENTIFICATEURCLASS)
-  {
-      printf("je suis pas la \n");
-        isStatic = TRUE;
+  {        
+    isStatic = TRUE;
 
         agerer = TRUE;
-      printf("2.1\n");
         init = getClasseBis(listeDeClass, tmp->elem->u.str);
         if(init==NULL)
         {
@@ -3523,26 +3517,10 @@ bool verifAttributClasse(PCLASS classe)
 /* FIXME : equalsAffectation : verifie si Point = Point2D correcte (OUI) et inversemment */
 
 void testEval(){
-  /*
-  expr : PLUS expr %prec unaire     { $$=makeTree(PLUSUNAIRE, 1, $2); }
-       | MINUS expr %prec unaire    { $$=makeTree(MINUSUNAIRE, 1, $2); }
-       | expr CONCAT expr       { $$=makeTree(CONCATENATION, 2, $1, $3); }
-       | expr PLUS expr       { $$=makeTree(PLUSBINAIRE, 2, $1, $3); }
-       | expr MINUS expr        { $$=makeTree(MINUSBINAIRE, 2, $1, $3); }
-       | expr DIV expr          { $$=makeTree(DIVISION, 2, $1, $3); }
-       | expr MUL expr          { $$=makeTree(MULTIPLICATION, 2, $1, $3); }
-       | expr RELOP expr        { $$=makeTree(OPCOMPARATEUR, 3 , $1, $3, makeLeafInt(OPERATEUR,$2));}
-       | constante          { $$=$1; }
-       | instanciation          { $$=$1; }
-       | envoiMessage         { $$=$1; }
-       | OuRien             { $$=$1; }
-       ;
-  */
-
 /*
  * Creation d'arbres bidule de teste Exemple :  x:= a + b
  */
- int a=8,b=6;
+ /*int a=8,b=6;
 TreeP treeTestPLUS = makeTree(PLUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
 TreeP treeTestMINUS = makeTree(MINUSBINAIRE, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
 TreeP treeTestDIV = makeTree(DIVISION, 2,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b));
@@ -3552,19 +3530,19 @@ TreeP treeTestEQ = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLea
 TreeP treeTestGT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GT));
 TreeP treeTestGE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,GE));
 TreeP treeTestLT = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LT));
-TreeP treeTestLE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LE));
+TreeP treeTestLE = makeTree(OPCOMPARATEUR, 3,  makeLeafInt(CSTENTIER,a), makeLeafInt(CSTENTIER,b),makeLeafInt(OPERATEUR,LE));*/
 /*  a-b+44 */
-TreeP treeTestPLUSImbrique = makeTree(PLUSBINAIRE, 2,  treeTestMINUS, makeLeafInt(CSTENTIER,44));
+/*TreeP treeTestPLUSImbrique = makeTree(PLUSBINAIRE, 2,  treeTestMINUS, makeLeafInt(CSTENTIER,44));*/
 /*
  * Creation d'arbres bidule de teste Exemple :  x:= "yas"&"ser";
  */
-char* ch1="yas"; char* ch2="ser"; char* ch3=" RABI";
+/*char* ch1="yas"; char* ch2="ser"; char* ch3=" RABI";
 TreeP treeTestCONCATENATION = makeTree(CONCATENATION, 2,  makeLeafStr(CSTSTRING,ch1), makeLeafStr(CSTSTRING,ch2));
-TreeP treeTestCONCATENATIONImbrique = makeTree(CONCATENATION, 2, treeTestCONCATENATION, makeLeafStr(CSTSTRING,ch3));
+TreeP treeTestCONCATENATIONImbrique = makeTree(CONCATENATION, 2, treeTestCONCATENATION, makeLeafStr(CSTSTRING,ch3));*/
 /* Creation d'arbre avec envirenoment pour les identificateurs */
 
 
-printf("============= DEB Eval TEST =============\n");
+/*printf("============= DEB Eval TEST =============\n");
 pprintTreeMain(treeTestCONCATENATION);
 printf("Resultat treeTestPLUS = %d\n", getVal(evalExpr(treeTestPLUS,NULL)));
 printf("Resultat treeTestMINUS = %d\n", getVal(evalExpr(treeTestMINUS,NULL)));
@@ -3580,7 +3558,7 @@ printf("Resultat treeTestCONCATENATION = %s\n", getVal(evalExpr(treeTestCONCATEN
 printf("Resultat treeTestPLUSImbrique = %d\n", getVal(evalExpr(treeTestPLUSImbrique,NULL)));
 printf("Resultat treeTestCONCATENATIONImbrique = %s\n", getVal(evalExpr(treeTestCONCATENATIONImbrique,NULL)));
 
-printf("============= FIN Eval TEST =============\n");
+printf("============= FIN Eval TEST =============\n");*/
 
 /*EvalP res;
     if(tree->nbChildren==1) {res = evalExpr(tree->u.children[0],NULL);}

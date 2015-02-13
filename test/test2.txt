@@ -42,6 +42,7 @@ is {
   var monInt : Integer := monC.gris(23/23).coul;
   var monInt2 : Integer := monC.gris(12*5).monPoint.monA.p;
   var monString : String := "LaCompilationCestBien";
+  var monPoint2 : Point := new Point(2,3);
   is
   
 
@@ -59,6 +60,7 @@ is {
   /* CONCATENATION DE STRING PUIS ENVOI MESSAGE*/
   "[" & monString & "]".println();
 
-  /* ENVOI MESSAGE AVEC INSTANCIATION*/
-  (new C()).noir.
+  /* INSTANCIATION avec envoi MESSAGE*/
+  (new Couleur()).monPoint;
+
 }
