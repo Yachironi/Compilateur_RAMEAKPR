@@ -1424,7 +1424,6 @@ void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 			tmp->init = makeLeafInt(EVALUE_INT, eval->u.val);
 			break;
 
-		/** TODO : Attente de savoir ce que rend instanciation, envoiMessage et OuRien**/
 		case EVAL_PVAR:
 			/* Normalement ça devrait être instanciation -> une PVAR est créé, il faut lui donner son nom */
 			printf("evalListDeclVar->PVAR\n");
