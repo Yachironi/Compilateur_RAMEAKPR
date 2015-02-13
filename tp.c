@@ -2834,7 +2834,7 @@ printf(" la valeur de bizarre est  %d, \n", tmp->elem->recupType);
   if(tmp->elem->op == IDENTIFICATEUR)
   {
     printf("1.1\n");
-
+agerer = TRUE;
       if(classe!=NULL && (strcmp(tmp->elem->u.str,"super")==0))
       {
       printf("1.super\n");
@@ -2928,6 +2928,7 @@ printf(" la valeur de bizarre est  %d, \n", tmp->elem->recupType);
   }
   else if(tmp->elem->op == INSTANCIATION)
   {
+    agerer = TRUE;
     printf("3.1\n");
       char * nomClass = getChild(tmp->elem,0)->u.str;
     printf("3.2\n");
@@ -2947,9 +2948,11 @@ printf(" la valeur de bizarre est  %d, \n", tmp->elem->recupType);
         init = tmp;
       }
 
+
   }
   else if(tmp->elem->op == CSTSTRING)
   {
+
     printf("je fais CSTSTRING\n");
       init = getClasseBis(listeDeClass,"String");
   }
@@ -3042,6 +3045,7 @@ printf(" la valeur de bizarre est  %d, \n", tmp->elem->recupType);
         else if(tmp->elem->isEnvoiMessage==FALSE)
         {
           printf("26_26_26\n");
+          printf("On passe statique pour un attribut _____________________ : %d %d  \n",isStatic,tmp->elem->op );
             init = appartient(init,tmpElem,FALSE,methode,listeDecl,tmp,etiquette, isStatic,agerer);
             if(init == NULL)
             {
@@ -3143,6 +3147,7 @@ printf("ioooooooooooooooooo\n");
      printf("Allez isVerif  : ? %s \n",listMeth->nom);
      printf("l'etiquette transmis ici : %d\n", etiquette);
        /*tmp -> elem -> suiavnt ??? */
+     printf("STATIQUE = %d\n",isStatic );
        isVerifOk = getTypeMethode(listMeth->nom,mere,etiquette,tmp->elem->suivant,methode,listeDecl,isStatic)!=NULL?TRUE:FALSE;
      printf("Fin isVerif %d \n",isVerifOk);
 
@@ -3374,6 +3379,7 @@ printf("1.1.6.1\n");
     while(listeClasse!=NULL)
     {
    printf("1.1.9\n");
+      printf("(listeClasse->categorie==CATEGORIE_STATIC && isStatic)%d||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic)%d\n",(listeClasse->categorie==CATEGORIE_STATIC && isStatic),(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic) );
       if(strcmp(nom,listeClasse->nom)==0 && (estDansListeDecl==TRUE))
       {
      printf("1.1.10\n");
@@ -3384,8 +3390,10 @@ printf("1.1.6.1\n");
      printf("1.1.11\n");
       }
       else if(strcmp(nom,listeClasse->nom)==0 && estDansListeDecl==FALSE){
+        printf("1.1.12\n");
         if(!agerer)
         {
+          printf("1.1.12.1\n");
           estDansAttributClasse = TRUE;
           SCLASS copie = *listeClasse->type;
           PCLASS pointeurCopie = NEW(1,SCLASS);
@@ -3396,6 +3404,7 @@ printf("1.1.6.1\n");
         }
         else if((listeClasse->categorie==CATEGORIE_STATIC && isStatic)||(listeClasse->categorie!=CATEGORIE_STATIC && !isStatic))
         {
+          printf("1.1.13.1\n");
           estDansAttributClasse = TRUE;
           SCLASS copie = *listeClasse->type;
           PCLASS pointeurCopie = NEW(1,SCLASS);
@@ -3483,7 +3492,7 @@ PCLASS getTypeMethode(char * nom, PCLASS classe, short precedant, TreeP appelMet
         }
       }
     }
-    else if(precedant == IDENTIFICATEUR)
+    else if(precedant == IDENTIFICATEUR || precedant==INSTANCIATION)
     {
    printf("a.3\n");
       if(strcmp(nom,tmp->nom)==0 && !tmp->isStatic && !isStatic)
