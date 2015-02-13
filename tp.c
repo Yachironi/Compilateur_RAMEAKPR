@@ -1734,6 +1734,16 @@ int sizeString(char *str){
 	return size;
 }
 
+/** Renvoie la longueur d'un int **/
+int sizeInt(int val){
+	int cpt=1;
+	while((val/10)>0){
+		val = val/10;
+		cpt++;
+	}
+	return cpt;
+}
+
 /* Prend un parametre de type EvalP et renvoie sa valeur (entier) s'il en a une */
 int getVal(EvalP eval){
 	if(eval->type == EVAL_INT){
@@ -2046,9 +2056,8 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	*/
 
 	/* IDCLASS '.' ID '(' ListOptArg ')'  -> METHODE STATIC */
-	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){
-		
-    methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
+	if(tree->u.children[0]->op == IDENTIFICATEURCLASS){	
+    		methode = getMethodeBis(getClasse(listeDeClass, tree->u.children[0]->u.str)->liste_methodes, tree->u.children[1]->u.str);
 		if(methode == NULL){
 			printf("Problème dans evalEnvoiMessage : méthode introuvable dans la classe \n");
 			return NIL(Eval);
@@ -2056,6 +2065,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	}
 	/* envoiMessage '.' ID'('ListOptArg ')' */
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
+		char *buffer; 
 		/* faire appel a evalEnvoiMessage sur tree->u.children[0] */
 		EvalP eval_precedent = evalEnvoiMessage(tree->u.children[0], environnement);
 		switch(eval_precedent->type){
@@ -2065,8 +2075,23 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
-				/* TODO : Distinguer print et println */
+				if(strcmp(methode->nom, "println")==0){
+					buffer = calloc(sizeString(eval_precedent->u.str + 1), sizeof(char));
+					strcat(buffer,eval_precedent->u.str);
+					buffer[sizeString(eval_precedent->u.str)] = '\n';
+					buffer[sizeString(eval_precedent->u.str)+1] = '\0';
+					/* affichage */
+					printf("%s", buffer);
+					return makeEvalStr(buffer);
+				}
+				else if(strcmp(methode->nom, "print")==0){
+					printf("%s", eval_precedent->u.str);
+					return makeEvalStr(eval_precedent->u.str);
+				}
+				else{
+					printf("ce n'est ni print, ni println\n");
+					return NIL(Eval);
+				}
 				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
@@ -2074,7 +2099,17 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				if(strcmp(methode->nom, "toString") == 0){
+					buffer = calloc(sizeInt(eval_precedent->u.val), sizeof(char));
+					sprintf(buffer, "%d", eval_precedent->u.val);
+					/* affichage */
+					printf("%s\n", buffer);
+					return makeEvalStr(buffer);
+				}
+				else{
+					printf("La méthode toString n'est pas appelé -> pb\n");
+					return NIL(Eval);
+				}
 				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */
@@ -2092,22 +2127,49 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	}
 	/* constante '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == CSTSTRING){
+		char *buffer;
 		methode = getMethodeBis(getClasse(listeDeClass, "String")->liste_methodes, tree->u.children[1]->u.str);
 		if(methode == NULL){
 			printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
 			return NIL(Eval);
 		}
-		/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
-		/* TODO : Distinguer print et println */
+		if(strcmp(methode->nom, "println")==0){
+			buffer = calloc(sizeString(tree->u.children[0]->u.str + 1), sizeof(char));
+			strcat(buffer,tree->u.children[0]->u.str);
+			buffer[sizeString(tree->u.children[0]->u.str)] = '\n';
+			buffer[sizeString(tree->u.children[0]->u.str)+1] = '\0';
+			/* affichage */
+			printf("%s", buffer);
+			return makeEvalStr(buffer);
+		}
+		else if(strcmp(methode->nom, "print")==0){
+			printf("%s", tree->u.children[0]->u.str);
+			return makeEvalStr(tree->u.children[0]->u.str);
+		}
+		else{
+			printf("ce n'est ni print, ni println\n");
+			return NIL(Eval);
+		}
 	}
 	/* constante '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == CSTENTIER){
+		char *buffer;
 		methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
 		if(methode == NULL){
 			printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
 			return NIL(Eval);
 		}
-		/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+		if(strcmp(methode->nom, "toString") == 0){
+			buffer = calloc(sizeInt(tree->u.children[0]->u.val), sizeof(char));
+			sprintf(buffer, "%d", tree->u.children[0]->u.val);
+			/* affichage */
+			printf("%s\n", buffer);
+			return makeEvalStr(buffer);
+		}
+		else{
+			printf("La méthode toString n'est pas appelé -> pb\n");
+			return NIL(Eval);
+		}
 	}
 	/* ID '.' ID '(' ListOptArg ')'  */
 	else if(tree->u.children[0]->op == IDENTIFICATEUR){
@@ -2127,6 +2189,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 
 	/* TODO selection '.' ID '(' ListOptArg ')' */
 	else if(tree->u.children[0]->op == SELECTION){
+		char *buffer;
 		EvalP eval_selection = evalSelection(tree->u.children[0], environnement);
 		switch(eval_selection->type){
 			case EVAL_STR:
@@ -2135,8 +2198,23 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
-				/* TODO : Distinguer print et println */
+				if(strcmp(methode->nom, "println")==0){
+					buffer = calloc(sizeString(eval_selection->u.str + 1), sizeof(char));
+					strcat(buffer,eval_selection->u.str);
+					buffer[sizeString(eval_selection->u.str)] = '\n';
+					buffer[sizeString(eval_selection->u.str)+1] = '\0';
+					/* affichage */
+					printf("%s", buffer);
+					return makeEvalStr(buffer);
+				}
+				else if(strcmp(methode->nom, "print")==0){
+					printf("%s", eval_selection->u.str);
+					return makeEvalStr(eval_selection->u.str);
+				}
+				else{
+					printf("ce n'est ni print, ni println\n");
+					return NIL(Eval);
+				}
 				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
@@ -2144,7 +2222,17 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				if(strcmp(methode->nom, "toString") == 0){
+					buffer = calloc(sizeInt(eval_selection->u.val), sizeof(char));
+					sprintf(buffer, "%d", eval_selection->u.val);
+					/* affichage */
+					printf("%s\n", buffer);
+					return makeEvalStr(buffer);
+				}
+				else{
+					printf("La méthode toString n'est pas appelé -> pb\n");
+					return NIL(Eval);
+				}
 				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */
@@ -2161,6 +2249,7 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 	}
 	/* TODO expr '.' ID '(' ListOptArg ')' */
 	else{
+		char *buffer;
 		EvalP eval_expr = evalExpr(tree->u.children[0], environnement);
 		switch(eval_expr->type){
 			case EVAL_STR:
@@ -2169,8 +2258,23 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe String n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher le string ou le renvoyer et l'afficher plus tard ? */
-				/* TODO : Distinguer print et println */
+				if(strcmp(methode->nom, "println")==0){
+					buffer = calloc(sizeString(eval_expr->u.str + 1), sizeof(char));
+					strcat(buffer,eval_expr->u.str);
+					buffer[sizeString(eval_expr->u.str)] = '\n';
+					buffer[sizeString(eval_expr->u.str)+1] = '\0';
+					/* affichage */
+					printf("%s", buffer);
+					return makeEvalStr(buffer);
+				}
+				else if(strcmp(methode->nom, "print")==0){
+					printf("%s", eval_expr->u.str);
+					return makeEvalStr(eval_expr->u.str);
+				}
+				else{
+					printf("ce n'est ni print, ni println\n");
+					return NIL(Eval);
+				}
 				break;
 			case EVAL_INT:
 				methode = getMethodeBis(getClasse(listeDeClass, "Integer")->liste_methodes, tree->u.children[1]->u.str);
@@ -2178,7 +2282,18 @@ EvalP evalEnvoiMessage(TreeP tree, PVAR environnement){
 					printf("La methode %s de la classe Integer n'existe pas\n", tree->u.children[1]->u.str);
 					return NIL(Eval);
 				}
-				/* TODO : afficher l'integer ou créer un string et l'afficher plus tard ? */
+				if(strcmp(methode->nom, "toString") == 0){
+					buffer = calloc(sizeInt(eval_expr->u.val), sizeof(char));
+					sprintf(buffer, "%d", eval_expr->u.val);
+					/* affichage */
+					printf("%s\n", buffer);
+					return makeEvalStr(buffer);
+				}
+				else{
+					printf("La méthode toString n'est pas appelé -> pb\n");
+					return NIL(Eval);
+				}
+
 				break;
 			case EVAL_PVAR:
 				/* Récupération de la méthode du PVAR ID */

@@ -258,6 +258,7 @@ PMETH getMethodeBis(PMETH meth, char *nom);
 bool varEstDansListe(PVAR listeVar, char *nom);
 PVAR getVar(PVAR var, char* nom);
 int sizeString(char *str);
+int sizeInt(int val);
 
 
 /*
