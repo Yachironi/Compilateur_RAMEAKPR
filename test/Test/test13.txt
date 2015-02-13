@@ -1,0 +1,23 @@
+class Point(xc: Integer, yc: Integer)
+      { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
+is 
+{
+  var static cpt : Integer := 1; /* initialisee au lancement du programme */
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+  def move(dx: Integer, dy: Integer) returns Point { /* bloc fonctionnel */
+      x := x + dx; y := y + dy; yield this
+  }
+  def setName(s: String) returns Void { name := s; }
+
+  def static integer() returns Integer := this.y
+
+
+  /* this present dans une methode static, va renvoyer une erreur  */
+}
+
+{
+  
+}

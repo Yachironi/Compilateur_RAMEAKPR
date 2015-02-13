@@ -1,3 +1,8 @@
+class A() is {
+  var p : Integer := 1;
+
+}
+
 class Point(xc: Integer, yc: Integer)
       { x := xc; y := yc; cpt := cpt+1;} /* Corps du constructeur */
 is 
@@ -6,20 +11,54 @@ is
   var x: Integer;
   var y: Integer;
   var name: String := "x" & cpt.toString();
+  var monA : A ;
+}
 
-  def move(dx: Integer, dy: Integer) returns Point { /* bloc fonctionnel */
-      x := x + dx; y := y + dy; yield this
+class Couleur(cinit: Integer) 
+   /* 3 couleurs : couleur = 0, noir = 1, gris (ou autre chose !) = 2  */
+  { if cinit = 1 then coul := 1; 
+    else if cinit = 0 then coul := 0; else { coul := 2; }
   }
-  def setName(s: String) returns Void { name := s; }
+is {
+  
+  var monPoint : Point;
 
-  def static integer() returns Integer {
-  return this.y;
-  }
+  var static attributStatic : Integer;
 
+  var coul: Integer;  /* initialise dans le constructeur */
 
-  /* this present dans une methode static, va renvoyer une erreur  */
+  def static blanc() returns Couleur := new Couleur(0)
+
+  def static noir() returns Couleur := new Couleur(1)
+
+  def gris(x: Integer) returns Couleur := new Couleur(2)
+
+  /* Pas de Booleen, on utilise Integer */
+  def estGris() returns Integer := coul = 2
 }
 
 {
+  var monC : Couleur := new Couleur(1);
+  var monInt : Integer := monC.gris(23/23).coul;
+  var monInt2 : Integer := monC.gris(12*5).monPoint.monA.p;
+  var monString : String := "LaCompilationCestBien";
+  is
   
+
+  /* CLASSE.FONCTION STATIQUE */
+  Couleur.blanc();
+
+  /* CLASSE.ATTRIBUT STATIQUE */
+  Couleur.attributStatic;
+
+  /* la fonction gris retourne Couleur, coul appartenant à la la classe COULEUR il n'y a pas de soucis */ 
+  monC.gris(1+2+3+4+5+6).coul;
+
+  monC.gris(monInt + monInt2 * 25).monPoint.monA.p;
+
+  /* CONCATENATION DE STRING PUIS ENVOI MESSAGE*/
+  "[" & monString & "]".println();
+
+  /* ENVOI MESSAGE AVEC INSTANCIATION*/
+  (new C()).noir.
 }
