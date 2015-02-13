@@ -134,11 +134,11 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
 
 
 class PointNoir(xc: Integer, yc:Integer)
-      extends PointColorse(xc, yc, Couleur.noir())
+      extends PointColore(xc, yc, Couleur.noir())
       /* pas de corps de constructeur pour cette classe */
 is {
   def override estGris() returns Integer := 0 /* false, donc */
-  def override couleur() returns Couleurs {
+  def override couleur() returns Couleur {
       "Inside PointNoir:couleur".println();
       yield super.couleur()
   }
