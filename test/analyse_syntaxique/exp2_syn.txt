@@ -1,0 +1,19 @@
+/*
+ * Exemple de programme sans classe
+ * Seulement le bloc principal
+ * On teste ici la bonne formation du bloc et des instructions avec
+ * et les expressions associées
+ */
+
+{
+    var x : Integer;
+    var y : Integer;
+    var z : Integer;
+    is
+    x:=0;
+    y:=x;
+    z:=x+y;
+    x:=-x;
+    y:=+y;
+    z:=x+y*x-(-z)-;/* Maintenant il détecter l'erreur d'expression */
+}

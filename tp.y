@@ -82,7 +82,9 @@ extern void yyerror();  /* definie dans tp.c */
  * Axiome : Liste de classe optionnel suivi d'un bloc obligatoire
  */ 
 
-Programme : LClassOpt Bloc		{$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);programme=$$;}
+Programme : LClassOpt Bloc		{
+
+	$$=makeTree(PROGRAM,2,makeLeafClass(LISTCLASS,$1),$2);programme=$$;}
 
 /*
  * Liste de classes optionnelle : Vide ou composee d'au moins une declaration de classe
@@ -177,9 +179,9 @@ DefClass : CLASS IDCLASS
 {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
 	if(estDansListClasse(listeDeClass, $2) == TRUE){
-		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
+		printf("La classe %s existe deja\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
-		sprintf(message,"Erreur la classe %s est deja declare",$2);
+		sprintf(message,"Erreur la classe %s est deja declaree",$2);
 		/* TODO A MODIF pushErreur(message,classActuel,NULL,NULL); */
 		$$ = NULL; 	/* FIXME bon? */
 	} 
@@ -209,7 +211,8 @@ DefClass : CLASS IDCLASS
 DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
 {   
     	if($1 == NULL){
-		printf("Erreur dans DefClass\n");
+		printf("Erreur dans DefClass : veuillez resoudre le probleme avant de continuer les checks\n");
+		exit(0);
 	}
 	else {
 		int isExtend; 
@@ -286,6 +289,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 			/* Ajout des methodes ($5 = classe mere)
 			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
 			 */
+			 
 			if($5->liste_methodes != NULL){
 				/* cas ou la classe fille n'a pas de methode -> on ajoute directement celles de la mere */
 				if(classActuel->liste_methodes==NULL){
@@ -418,7 +422,6 @@ Param : ID':' IDCLASS     {$$= makeListVar($1,getClasseBis(listeDeClass,$3),0,NI
           
 ListExtendsOpt : EXTENDS IDCLASS'('ListOptArg')'
 {
-
 
 	$$=getClasse(listeDeClass, $2);	/* peut etre besoin de getClasseBis? */
 	char* message = NEW(SIZE_ERROR,char);
