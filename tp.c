@@ -449,12 +449,14 @@ bool memeVar(PVAR var1, PVAR var2){
 
 /* Creation de la structure Methode */
 PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeRetour,PVAR params, PCLASS home){
+  
   PMETH res=NEW(1, SMETH);
   /*res->suivant = NIL(SMETH);*/  /* verifier si ça ne pose pas de pb */
   res->nom=nom;
   res->corps=corps;
   res->params=params;
   res->typeRetour=typeRetour; /*FIXME faire un vrai copie? Mais pb : typeRetour n'est pas "totalement fini" */
+  
   res->home=home;
   /* ni static, ni override */
   if(OverrideOuStaticOpt == 0){
@@ -476,6 +478,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
 
 /* Creer une var pouvant etre un parametre, un champ, .. */
 PVAR makeListVar(char *nom,PCLASS type,int cat,TreeP init){
+  
   PVAR res=NEW(1,SVAR);
   /*res->suivant=NIL(SVAR); verifier si ça ne pose pas de pb */
   res->nom=nom;

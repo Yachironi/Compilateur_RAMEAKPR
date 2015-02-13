@@ -111,12 +111,12 @@ class PointColore(xc: Integer, yc:Integer, c: Couleur)
 
   def couleur() returns Couleur := coul 
 
-  def colore() returns Integer := coul.estGris() <> 0 
+  def colore() returns Integers := coul.estGris() <> 0 
 
   def setCouleur(c: Couleur) returns Void { coul := c; }
 
   /* returns Point, pas PointColore ! Pas de covariance du resultat */ 
-  def override clone() returns Pointz
+  def override clone() returns Point
                := new PointColore(x, y, coul)
 
   def estGris() returns Integer {

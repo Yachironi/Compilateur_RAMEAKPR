@@ -286,6 +286,7 @@ DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClass
 			/* Ajout des methodes ($5 = classe mere)
 			 *	-> Remarque : si classe fille redefinie une methode -> on n'ajoute pas celle de la mere
 			 */
+			 printf("AMIN\n");
 			if($5->liste_methodes != NULL){
 				/* cas ou la classe fille n'a pas de methode -> on ajoute directement celles de la mere */
 				if(classActuel->liste_methodes==NULL){
