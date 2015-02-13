@@ -138,7 +138,7 @@ class PointNoir(xc: Integer, yc:Integer)
       /* pas de corps de constructeur pour cette classe */
 is {
   def override estGris() returns Integer := 0 /* false, donc */
-  def override couleur() returns Couleur {
+  def override couleur() returns Couleurs {
       "Inside PointNoir:couleur".println();
       yield super.couleur()
   }

@@ -132,17 +132,17 @@ int main(int argc, char **argv) {
   printf("Aucune verification a faire car syntax error\n");
     exit(0);
   }
-/*
+
   	printf("--------------------------------------------------------------\n");
   	bool checkProg = checkProgramme(programme);
   	printf("--------------------------------------------------------------\n");
   	printf("FIN de la COMPILATION\n");
   	if(!checkProg){
         afficheListeErreur(listeErreur);
-  	}*//*
-  	else{*/
+  	}
+  	else{
     		/*Faire eval ici*/
-  	/*}*/
+  	}
 
   /*exit(0);*/
 
