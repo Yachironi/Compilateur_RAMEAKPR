@@ -1,0 +1,36 @@
+/*class Point(xc: Integer, yc: Integer)
+      { x := xc; y := a; cpt := cpt+1;} /* Le corps du constructeur n'est pas correcte, le programme va afficher une erreur, l'attribut wc n'existe pas 
+is 
+{
+  var static cpt : Integer := 1; 
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+}
+
+{
+	
+}
+
+/** PART 2.0 **/ 
+/* Commenter la premiere partie, et decommenter celle ci pour tester l'erreur de type */
+
+/*class Point(xc: Integer, yc: Integer)
+      { x := xc; y := "ça ne marche pas"; cpt := cpt+1;} 
+*/
+      /* Le corps du constructeur n'est pas correcte, le programme va afficher une erreur, integer ne peut pas prendre un string */
+/*is 
+{
+  var static cpt : Integer := 1; 
+  var x: Integer;
+  var y: Integer;
+  var name: String := "x" & cpt.toString();
+
+}
+
+{
+
+	
+}
+*/
