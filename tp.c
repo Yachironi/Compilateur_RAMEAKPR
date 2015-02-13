@@ -3230,9 +3230,9 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
     int j = 0;
     for (j = 0; j <= i-1 ; j++)
     {
-      //free(variable[j]);
+      /*free(variable[j]);*/
     }
-    //free(variable);
+    /*free(variable);*/
 
 
     PVAR param = methode->params;
@@ -3293,9 +3293,9 @@ PCLASS getTypeAttribut(char* nom, PCLASS classe, PMETH methode, PVAR listeDecl, 
     int j = 0;
     for (j = 0; j <= i-1 ; j++)
     {
-      //free(variable[j]);
+      /*free(variable[j]);*/
     }
-    //free(variable);
+    /*free(variable);*/
 
   printf("1.1.5.3\n");
     PVAR listDeclaration = listeDecl; 
@@ -3366,9 +3366,9 @@ printf("1.1.6.1\n");
     int j = 0;
     for (j = 0; j <= i-1 ; j++)
     {
-      //free(variable[j]);
+      /*free(variable[j]);*/
     }
-    //free(variable);
+    /*free(variable);*/
    PVAR listeClasse = classe->liste_champs;
  printf("1.1.8\n");
     while(listeClasse!=NULL)
