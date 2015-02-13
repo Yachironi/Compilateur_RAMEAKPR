@@ -1,0 +1,10 @@
+/* Exemple de programme dans le langage source.
+ * Attention: pour l'instant seuls les aspects lexicaux et
+ * syntaxiques ont ete verifies automatiquement.
+ */
+
+{ 
+  var x: Integer:=0;
+  is
+  x:=0;
+}

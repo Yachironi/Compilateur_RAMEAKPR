@@ -143,20 +143,19 @@ int main(int argc, char **argv) {
     case ID:
       
       makeIdent(yylineno, yylval.S);
-      if (verbose) printf("Identificateur:\t\t%s\n", yylval.S);
+      if (verbose) printf("Identificateur :\t\t%s\n", yylval.S);
       break;
     case CSTS:
      if (verbose) printf("String :\t\t%s\n", yytext);
       break;
     case CSTE:
-      if (verbose) printf("Constante:\t\t%d\n", yylval.I);
+      if (verbose) printf("Constante :\t\t%d\n", yylval.I);
       break;
     case IF:
     case THEN:
     case ELSE:
     case CLASS :
     case VAR :
-  
     case IS :
     case STATIC :
     case DEF :
@@ -165,14 +164,12 @@ int main(int argc, char **argv) {
     case RETURN :
     case YIELD :
     case NEWO :
-if (verbose) printf("Keyword:\t\t%s\n", yytext);
-      break;
- case EXTENDS :
-if (verbose) printf("---------------------------EXTENDSSSSSSSSSSSSSSSSSSSSS:\t\t%s\n", yytext);
-break;
+    case EXTENDS :
+	if (verbose) printf("Keyword :\t\t%s\n", yytext);
+      	break;
     case CONCAT :
-if (verbose) printf("Concat symbol:\t\t%s\n", yytext);
-      break;
+	if (verbose) printf("Concat symbol:\t\t%s\n", yytext);
+        break;
     case '(':
     case ')':
     case ';':

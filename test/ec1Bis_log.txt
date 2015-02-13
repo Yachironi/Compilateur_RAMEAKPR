@@ -1,0 +1,992 @@
+1
+--------------------------------------------------------------
+Entree 1
+Entree 3
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+Aucune methode apres
+************************ Je suis en train de check la methode : toString 
+Je check la methode toString
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race toString 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MARHCE PAS
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+Aucune methode apres
+************************ Je suis en train de check la methode : println 
+Je check la methode println
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race println 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MARHCE PAS
+5
+************************ Je suis en train de check la methode : print 
+Je check la methode print
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race print 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MARHCE PAS
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+Entree 8
+Aucune methode avant
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+Entree 8
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+C'EST LA FIN DES HARICOTS
+Aucune methode avant
+Aucune methode apres
+************************ Je suis en train de check la methode : f 
+Je check la methode f
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race f 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------34
+a.a.a.3
+caca
+lalalala
+AVAnt 
+ETIQUETE du pere : 42 
+je suis la dans ma petite expression 20 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+Debul 20 getChild(arbre,0) 23 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+je fais CSTSTRING
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :println 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q String -> 
+les listes ne sont pas null 
+NOMMETH println
+Je compare methode : println et filles println
+Allez isVerif  : ? println 
+l'etiquette transmis ici : 23
+la classe dans le gettYPEmETHODE EST :Stringa.1
+AIGHT
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.66
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+AVAnt 
+ETIQUETE du pere : 42 
+CHIIIIIENNNNNNNNNN
+FIN DE l'HIStOIRE
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------p 
+DEBUT
+FIN
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+5
+************************ Je suis en train de check la methode : g 
+Je check la methode g
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race g 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------34
+a.a.a.3
+caca
+lalalala
+AVAnt 
+ETIQUETE du pere : 42 
+je suis la dans ma petite expression 20 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+Debul 20 getChild(arbre,0) 23 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+je fais CSTSTRING
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :println 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q String -> 
+les listes ne sont pas null 
+NOMMETH println
+Je compare methode : println et filles println
+Allez isVerif  : ? println 
+l'etiquette transmis ici : 23
+la classe dans le gettYPEmETHODE EST :Stringa.1
+AIGHT
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.66
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+AVAnt 
+ETIQUETE du pere : 42 
+CHIIIIIENNNNNNNNNN
+FIN DE l'HIStOIRE
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------p 
+DEBUT
+FIN
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+5
+************************ Je suis en train de check la methode : toString 
+Je check la methode toString
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race toString 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 20
+2
+HELLO 1
+HELLO 4
+arbre -> op 20
+Debul 20 getChild(arbre,0) 7 
+J'AI FINIS MA TRANSFORMOTION 
+JE RETOURNE MAS TRANSFORMATION 
+///////////////////////////////DEBUT/////////////////////////////////////////
+JE FAIS EST COHERENT ENVOIE  
+LE NOM DE LA CLASSE AVEC CETTE ENVOIT DE MESSAGE EST : A
+estCoherentEnvoi1
+rentrer
+ la valeur de bizarre est  0, 
+liste me casse les couilles mais c'est abuser
+1.1
+1.rien
+getTypeAttribut de p 
+DEBUT
+FIN
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : p
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+getTypeAttribut fin
+INIT = Integer
+1.2
+3.6
+je suis dans ma petite boucle while 
+J'AI UNE FONCTION CACA :toString 
+25-25-25
+PROBLEME : LISTE ARG POUR LUI EST NULcake lol 
+ioooooooooooooooooo
+1_1_1_1_1
+avant-----q-s-qs--s-q Integer -> 
+les listes ne sont pas null 
+NOMMETH toString
+Je compare methode : toString et filles toString
+Allez isVerif  : ? toString 
+l'etiquette transmis ici : 7
+la classe dans le gettYPEmETHODE EST :Integera.1
+a.3
+a.4
+BDQBBQBQBQBBQBQBBQBQBQBQBQBQBQBBQ
+a.5
+Fin isVerif 1 
+apres 25-25-25 
+etiquette avant
+etiquette apres
+je suis dans ma petite boucle while 
+///////////////////////////////FIN 9/////////////////////////////////////////
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+Entree 8
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------34
+a.a.a.3
+caca
+lalalala
+AVAnt 
+ETIQUETE du pere : 42 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 15
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------cinit 
+cacaca
+DEBUT
+A
+FIN
+1.1.3
+1.1.4 + estDansParamMeth 1
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+ JE VAIS ALLER FAIRE MON PUTAIN DE BLOC
+--------------------37
+a.a.a.3
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------coul 
+cacaca
+DEBUT
+A
+FIN
+1.1.3
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+AVAnt 
+ETIQUETE du pere : 38 
+je suis la dans ma petite expression 15 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 15
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------cinit 
+cacaca
+DEBUT
+A
+FIN
+1.1.3
+1.1.4 + estDansParamMeth 1
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+AVAnt 
+ETIQUETE du pere : 37 
+je suis la dans ma petite expression 7 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------coul 
+cacaca
+DEBUT
+A
+FIN
+1.1.3
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+AVAnt 
+ETIQUETE du pere : 24 
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+Aucune methode avant
+Aucune methode apres
+************************ Je suis en train de check la methode : blanc 
+Je check la methode blanc
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race blanc 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 19
+2
+a.6
+ETIQUETE   ----------- op : 24
+LISTE EST NULL 
+je suis ici 2 -- 2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+Classe courante Couleur 
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Integer
+AppelMethode contient : 1
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 1 element
+BYE BYE
+5
+************************ Je suis en train de check la methode : noir 
+Je check la methode noir
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race noir 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 19
+2
+a.6
+ETIQUETE   ----------- op : 24
+LISTE EST NULL 
+je suis ici 2 -- 2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+Classe courante Couleur 
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Integer
+AppelMethode contient : 1
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 1 element
+BYE BYE
+5
+************************ Je suis en train de check la methode : gris 
+Je check la methode gris
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race gris 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 19
+2
+a.6
+ETIQUETE   ----------- op : 24
+LISTE EST NULL 
+je suis ici 2 -- 2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+Classe courante Couleur 
+CLASSSSE APP Integer
+a.7
+..1.. 
+..2.. 
+..3.. 
+AppelMethode : Integer
+AppelMethode contient : 1
+..4.. 
+..5.. 
+..6.. 
+ParamOfficiel : Integer
+DeclarationOfficiel contient : 1 element
+BYE BYE
+5
+************************ Je suis en train de check la methode : estGris 
+Je check la methode estGris
+1
+2
+3
+4 
+METHODE NULL : 0
+
+
+
+
+
+
+
+
+
+
+
+
+Ton race estGris 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 15
+2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 7
+2
+je vais faire getTypeAttribut --------------------------------coul 
+DEBUT
+FIN
+1.1.4 + estDansParamMeth 0
+1.1.6.1
+1.1.7
+
+
+
+ DEBUT LISTE DECL 
+
+
+ : : : : coul
+
+
+
+FIN LISTE DECL 
+
+
+DEBUT
+A
+FIN
+1.1.8
+1.1.9
+lolololo
+1.1.6.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 24
+2
+5
+Entree 9
+Sortie 4
+Entree 4
+Entree 5
+Entree 6
+Entree 7.1
+Entree 7.2
+______________________________________________________________________________
+1 - 3
+arbre NIL : ? 0
+Etiquette 10
+2
+_

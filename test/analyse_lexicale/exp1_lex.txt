@@ -1,0 +1,31 @@
+50
+identificateur
+identificateur2
+NomDeClasse
++
+-
+*
+/
+=
+<>
+<
+<=
+>
+>=
+;,(){}:.
+/* Commentaire bidule */
+" Chainne de caractère "
+if
+else
+then
+class
+var
+extends
+is
+static
+override
+returns
+return
+yield
+new
+def
