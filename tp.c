@@ -1591,6 +1591,19 @@ EvalP evalContenuBloc(TreeP bloc, PVAR environnement){
 /* Evalue toutes les variables déclarées -> ne pas mettre a jour l'environnement, ca se fait automatiquement (changement dans les PVAR) */
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
 	if(listDeclVar == NIL(SVAR))	return;
+
+	/* TODO : évaluer les parametres passé dans l'extends */
+	/*
+	if(listDeclVar->type->isExtend == 1){
+		if(listDeclVar->type->appel_constructeur_mere != NULL){
+			LEvalP eval_extend = evalListArg(listDeclVar->type->appel_constructeur_mere, environnement);
+			while(eval_extend != NULL){
+				
+			}
+		}
+	}
+	*/
+
 	PVAR tmp = listDeclVar;
 	EvalP eval = evalExpr(tmp->init->u.children[0], environnement);
 	switch(eval->type){

@@ -5,7 +5,7 @@ Grammar
     1 Programme: LClassOpt Bloc
 
     2 LClassOpt: DeclClass LClassOpt
-    3          | /* empty */
+    3          | %empty
 
     4 Bloc: '{' ContenuBloc '}'
 
@@ -13,12 +13,12 @@ Grammar
     6            | ListDeclVar IS LInstruction YieldOpt
 
     7 YieldOpt: YIELD expr
-    8         | /* empty */
+    8         | %empty
 
     9 ListDeclVar: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
    10 LInstructionOpt: Instruction LInstructionOpt
-   11                | /* empty */
+   11                | %empty
 
    12 LInstruction: Instruction LInstructionOpt
 
@@ -33,7 +33,7 @@ Grammar
    20      | selection
 
    21 BlocOpt: Bloc
-   22        | /* empty */
+   22        | %empty
 
    23 DefClass: CLASS IDCLASS
 
@@ -42,28 +42,28 @@ Grammar
    25 ContenuClassOpt: LDeclChampsOpt LDeclMethodeOpt
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
-   27               | /* empty */
+   27               | %empty
 
    28 StaticOpt: STATIC
-   29          | /* empty */
+   29          | %empty
 
    30 AffectExprOpt: AFFECT expr
-   31              | /* empty */
+   31              | %empty
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
 
    33 LDeclMethodeOpt: Methode LDeclMethodeOpt
-   34                | /* empty */
+   34                | %empty
 
    35 OverrideOuStaticOpt: OVERRIDE
    36                    | STATIC
-   37                    | /* empty */
+   37                    | %empty
 
    38 BlocOuExpr: AffectExprOpt
    39           | Bloc
 
    40 ListParamOpt: LParam
-   41             | /* empty */
+   41             | %empty
 
    42 LParam: Param
    43       | Param ',' LParam
@@ -71,9 +71,9 @@ Grammar
    44 Param: ID ':' IDCLASS
 
    45 ListExtendsOpt: EXTENDS IDCLASS '(' ListOptArg ')'
-   46               | /* empty */
+   46               | %empty
 
-   47 ListOptArg: /* empty */
+   47 ListOptArg: %empty
    48           | LArg
 
    49 LArg: expr
@@ -223,7 +223,7 @@ envoiMessage (70)
     on left: 71 72 73 74, on right: 61 66 72
 
 
-state 0
+State 0
 
     0 $accept: . Programme $end
 
@@ -237,21 +237,21 @@ state 0
     DeclClass  go to state 5
 
 
-state 1
+State 1
 
    23 DefClass: CLASS . IDCLASS
 
     IDCLASS  shift, and go to state 6
 
 
-state 2
+State 2
 
     0 $accept: Programme . $end
 
     $end  shift, and go to state 7
 
 
-state 3
+State 3
 
     1 Programme: LClassOpt . Bloc
 
@@ -260,14 +260,14 @@ state 3
     Bloc  go to state 9
 
 
-state 4
+State 4
 
    24 DeclClass: DefClass . '(' ListParamOpt ')' ListExtendsOpt BlocOpt IS '{' ContenuClassOpt '}'
 
     '('  shift, and go to state 10
 
 
-state 5
+State 5
 
     2 LClassOpt: DeclClass . LClassOpt
 
@@ -280,21 +280,21 @@ state 5
     DeclClass  go to state 5
 
 
-state 6
+State 6
 
    23 DefClass: CLASS IDCLASS .
 
     $default  reduce using rule 23 (DefClass)
 
 
-state 7
+State 7
 
     0 $accept: Programme $end .
 
     $default  accept
 
 
-state 8
+State 8
 
     4 Bloc: '{' . ContenuBloc '}'
 
@@ -327,14 +327,14 @@ state 8
     envoiMessage     go to state 34
 
 
-state 9
+State 9
 
     1 Programme: LClassOpt Bloc .
 
     $default  reduce using rule 1 (Programme)
 
 
-state 10
+State 10
 
    24 DeclClass: DefClass '(' . ListParamOpt ')' ListExtendsOpt BlocOpt IS '{' ContenuClassOpt '}'
 
@@ -347,14 +347,14 @@ state 10
     Param         go to state 38
 
 
-state 11
+State 11
 
     2 LClassOpt: DeclClass LClassOpt .
 
     $default  reduce using rule 2 (LClassOpt)
 
 
-state 12
+State 12
 
     9 ListDeclVar: VAR . StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
@@ -365,7 +365,7 @@ state 12
     StaticOpt  go to state 40
 
 
-state 13
+State 13
 
    17 Instruction: IF . expr THEN Instruction ELSE Instruction
 
@@ -387,14 +387,14 @@ state 13
     envoiMessage   go to state 34
 
 
-state 14
+State 14
 
    70 instanciation: NEWO . IDCLASS '(' ListOptArg ')'
 
     IDCLASS  shift, and go to state 43
 
 
-state 15
+State 15
 
    51 expr: PLUS . expr
 
@@ -416,7 +416,7 @@ state 15
     envoiMessage   go to state 34
 
 
-state 16
+State 16
 
    52 expr: MINUS . expr
 
@@ -438,21 +438,21 @@ state 16
     envoiMessage   go to state 34
 
 
-state 17
+State 17
 
    19 Cible: ID .
 
     $default  reduce using rule 19 (Cible)
 
 
-state 18
+State 18
 
    68 constante: CSTS .
 
     $default  reduce using rule 68 (constante)
 
 
-state 19
+State 19
 
    65 selection: IDCLASS . '.' ID
    71 envoiMessage: IDCLASS . '.' ID '(' ListOptArg ')'
@@ -460,7 +460,7 @@ state 19
     '.'  shift, and go to state 46
 
 
-state 20
+State 20
 
    14 Instruction: RETURN . expr ';'
    18            | RETURN . ';'
@@ -484,14 +484,14 @@ state 20
     envoiMessage   go to state 34
 
 
-state 21
+State 21
 
    69 constante: CSTE .
 
     $default  reduce using rule 69 (constante)
 
 
-state 22
+State 22
 
    63 OuRien: '(' . expr ')'
 
@@ -513,28 +513,28 @@ state 22
     envoiMessage   go to state 34
 
 
-state 23
+State 23
 
    15 Instruction: Bloc .
 
     $default  reduce using rule 15 (Instruction)
 
 
-state 24
+State 24
 
     4 Bloc: '{' ContenuBloc . '}'
 
     '}'  shift, and go to state 50
 
 
-state 25
+State 25
 
     6 ContenuBloc: ListDeclVar . IS LInstruction YieldOpt
 
     IS  shift, and go to state 51
 
 
-state 26
+State 26
 
     5 ContenuBloc: LInstructionOpt . YieldOpt
 
@@ -545,7 +545,7 @@ state 26
     YieldOpt  go to state 53
 
 
-state 27
+State 27
 
    10 LInstructionOpt: Instruction . LInstructionOpt
 
@@ -575,7 +575,7 @@ state 27
     envoiMessage     go to state 34
 
 
-state 28
+State 28
 
    16 Instruction: Cible . AFFECT expr ';'
    64 OuRien: Cible .
@@ -585,7 +585,7 @@ state 28
     $default  reduce using rule 64 (OuRien)
 
 
-state 29
+State 29
 
    13 Instruction: expr . ';'
    53 expr: expr . CONCAT expr
@@ -604,7 +604,7 @@ state 29
     ';'     shift, and go to state 62
 
 
-state 30
+State 30
 
    62 expr: OuRien .
    67 selection: OuRien . '.' ID
@@ -615,14 +615,14 @@ state 30
     $default  reduce using rule 62 (expr)
 
 
-state 31
+State 31
 
    20 Cible: selection .
 
     $default  reduce using rule 20 (Cible)
 
 
-state 32
+State 32
 
    59 expr: constante .
    74 envoiMessage: constante . '.' ID '(' ListOptArg ')'
@@ -632,14 +632,14 @@ state 32
     $default  reduce using rule 59 (expr)
 
 
-state 33
+State 33
 
    60 expr: instanciation .
 
     $default  reduce using rule 60 (expr)
 
 
-state 34
+State 34
 
    61 expr: envoiMessage .
    66 selection: envoiMessage . '.' ID
@@ -650,28 +650,28 @@ state 34
     $default  reduce using rule 61 (expr)
 
 
-state 35
+State 35
 
    44 Param: ID . ':' IDCLASS
 
     ':'  shift, and go to state 66
 
 
-state 36
+State 36
 
    24 DeclClass: DefClass '(' ListParamOpt . ')' ListExtendsOpt BlocOpt IS '{' ContenuClassOpt '}'
 
     ')'  shift, and go to state 67
 
 
-state 37
+State 37
 
    40 ListParamOpt: LParam .
 
     $default  reduce using rule 40 (ListParamOpt)
 
 
-state 38
+State 38
 
    42 LParam: Param .
    43       | Param . ',' LParam
@@ -681,28 +681,28 @@ state 38
     $default  reduce using rule 42 (LParam)
 
 
-state 39
+State 39
 
    28 StaticOpt: STATIC .
 
     $default  reduce using rule 28 (StaticOpt)
 
 
-state 40
+State 40
 
     9 ListDeclVar: VAR StaticOpt . ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     ID  shift, and go to state 69
 
 
-state 41
+State 41
 
    64 OuRien: Cible .
 
     $default  reduce using rule 64 (OuRien)
 
 
-state 42
+State 42
 
    17 Instruction: IF expr . THEN Instruction ELSE Instruction
    53 expr: expr . CONCAT expr
@@ -721,14 +721,14 @@ state 42
     RELOP   shift, and go to state 61
 
 
-state 43
+State 43
 
    70 instanciation: NEWO IDCLASS . '(' ListOptArg ')'
 
     '('  shift, and go to state 71
 
 
-state 44
+State 44
 
    51 expr: PLUS expr .
    53     | expr . CONCAT expr
@@ -741,7 +741,7 @@ state 44
     $default  reduce using rule 51 (expr)
 
 
-state 45
+State 45
 
    52 expr: MINUS expr .
    53     | expr . CONCAT expr
@@ -754,7 +754,7 @@ state 45
     $default  reduce using rule 52 (expr)
 
 
-state 46
+State 46
 
    65 selection: IDCLASS '.' . ID
    71 envoiMessage: IDCLASS '.' . ID '(' ListOptArg ')'
@@ -762,14 +762,14 @@ state 46
     ID  shift, and go to state 72
 
 
-state 47
+State 47
 
    18 Instruction: RETURN ';' .
 
     $default  reduce using rule 18 (Instruction)
 
 
-state 48
+State 48
 
    14 Instruction: RETURN expr . ';'
    53 expr: expr . CONCAT expr
@@ -788,7 +788,7 @@ state 48
     ';'     shift, and go to state 73
 
 
-state 49
+State 49
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -807,14 +807,14 @@ state 49
     ')'     shift, and go to state 74
 
 
-state 50
+State 50
 
     4 Bloc: '{' ContenuBloc '}' .
 
     $default  reduce using rule 4 (Bloc)
 
 
-state 51
+State 51
 
     6 ContenuBloc: ListDeclVar IS . LInstruction YieldOpt
 
@@ -842,7 +842,7 @@ state 51
     envoiMessage   go to state 34
 
 
-state 52
+State 52
 
     7 YieldOpt: YIELD . expr
 
@@ -864,21 +864,21 @@ state 52
     envoiMessage   go to state 34
 
 
-state 53
+State 53
 
     5 ContenuBloc: LInstructionOpt YieldOpt .
 
     $default  reduce using rule 5 (ContenuBloc)
 
 
-state 54
+State 54
 
    10 LInstructionOpt: Instruction LInstructionOpt .
 
     $default  reduce using rule 10 (LInstructionOpt)
 
 
-state 55
+State 55
 
    16 Instruction: Cible AFFECT . expr ';'
 
@@ -900,7 +900,7 @@ state 55
     envoiMessage   go to state 34
 
 
-state 56
+State 56
 
    54 expr: expr PLUS . expr
 
@@ -922,7 +922,7 @@ state 56
     envoiMessage   go to state 34
 
 
-state 57
+State 57
 
    55 expr: expr MINUS . expr
 
@@ -944,7 +944,7 @@ state 57
     envoiMessage   go to state 34
 
 
-state 58
+State 58
 
    57 expr: expr MUL . expr
 
@@ -966,7 +966,7 @@ state 58
     envoiMessage   go to state 34
 
 
-state 59
+State 59
 
    56 expr: expr DIV . expr
 
@@ -988,7 +988,7 @@ state 59
     envoiMessage   go to state 34
 
 
-state 60
+State 60
 
    53 expr: expr CONCAT . expr
 
@@ -1010,7 +1010,7 @@ state 60
     envoiMessage   go to state 34
 
 
-state 61
+State 61
 
    58 expr: expr RELOP . expr
 
@@ -1032,14 +1032,14 @@ state 61
     envoiMessage   go to state 34
 
 
-state 62
+State 62
 
    13 Instruction: expr ';' .
 
     $default  reduce using rule 13 (Instruction)
 
 
-state 63
+State 63
 
    67 selection: OuRien '.' . ID
    73 envoiMessage: OuRien '.' . ID '(' ListOptArg ')'
@@ -1047,14 +1047,14 @@ state 63
     ID  shift, and go to state 85
 
 
-state 64
+State 64
 
    74 envoiMessage: constante '.' . ID '(' ListOptArg ')'
 
     ID  shift, and go to state 86
 
 
-state 65
+State 65
 
    66 selection: envoiMessage '.' . ID
    72 envoiMessage: envoiMessage '.' . ID '(' ListOptArg ')'
@@ -1062,14 +1062,14 @@ state 65
     ID  shift, and go to state 87
 
 
-state 66
+State 66
 
    44 Param: ID ':' . IDCLASS
 
     IDCLASS  shift, and go to state 88
 
 
-state 67
+State 67
 
    24 DeclClass: DefClass '(' ListParamOpt ')' . ListExtendsOpt BlocOpt IS '{' ContenuClassOpt '}'
 
@@ -1080,7 +1080,7 @@ state 67
     ListExtendsOpt  go to state 90
 
 
-state 68
+State 68
 
    43 LParam: Param ',' . LParam
 
@@ -1090,14 +1090,14 @@ state 68
     Param   go to state 38
 
 
-state 69
+State 69
 
     9 ListDeclVar: VAR StaticOpt ID . ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     ':'  shift, and go to state 92
 
 
-state 70
+State 70
 
    17 Instruction: IF expr THEN . Instruction ELSE Instruction
 
@@ -1124,7 +1124,7 @@ state 70
     envoiMessage   go to state 34
 
 
-state 71
+State 71
 
    70 instanciation: NEWO IDCLASS '(' . ListOptArg ')'
 
@@ -1150,7 +1150,7 @@ state 71
     envoiMessage   go to state 34
 
 
-state 72
+State 72
 
    65 selection: IDCLASS '.' ID .
    71 envoiMessage: IDCLASS '.' ID . '(' ListOptArg ')'
@@ -1160,21 +1160,21 @@ state 72
     $default  reduce using rule 65 (selection)
 
 
-state 73
+State 73
 
    14 Instruction: RETURN expr ';' .
 
     $default  reduce using rule 14 (Instruction)
 
 
-state 74
+State 74
 
    63 OuRien: '(' expr ')' .
 
     $default  reduce using rule 63 (OuRien)
 
 
-state 75
+State 75
 
     6 ContenuBloc: ListDeclVar IS LInstruction . YieldOpt
 
@@ -1185,7 +1185,7 @@ state 75
     YieldOpt  go to state 98
 
 
-state 76
+State 76
 
    12 LInstruction: Instruction . LInstructionOpt
 
@@ -1215,7 +1215,7 @@ state 76
     envoiMessage     go to state 34
 
 
-state 77
+State 77
 
     7 YieldOpt: YIELD expr .
    53 expr: expr . CONCAT expr
@@ -1235,7 +1235,7 @@ state 77
     $default  reduce using rule 7 (YieldOpt)
 
 
-state 78
+State 78
 
    16 Instruction: Cible AFFECT expr . ';'
    53 expr: expr . CONCAT expr
@@ -1254,7 +1254,7 @@ state 78
     ';'     shift, and go to state 100
 
 
-state 79
+State 79
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -1270,7 +1270,7 @@ state 79
     $default  reduce using rule 54 (expr)
 
 
-state 80
+State 80
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -1286,7 +1286,7 @@ state 80
     $default  reduce using rule 55 (expr)
 
 
-state 81
+State 81
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -1299,7 +1299,7 @@ state 81
     $default  reduce using rule 57 (expr)
 
 
-state 82
+State 82
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -1312,7 +1312,7 @@ state 82
     $default  reduce using rule 56 (expr)
 
 
-state 83
+State 83
 
    53 expr: expr . CONCAT expr
    53     | expr CONCAT expr .
@@ -1331,7 +1331,7 @@ state 83
     $default  reduce using rule 53 (expr)
 
 
-state 84
+State 84
 
    53 expr: expr . CONCAT expr
    54     | expr . PLUS expr
@@ -1351,7 +1351,7 @@ state 84
     $default  reduce using rule 58 (expr)
 
 
-state 85
+State 85
 
    67 selection: OuRien '.' ID .
    73 envoiMessage: OuRien '.' ID . '(' ListOptArg ')'
@@ -1361,14 +1361,14 @@ state 85
     $default  reduce using rule 67 (selection)
 
 
-state 86
+State 86
 
    74 envoiMessage: constante '.' ID . '(' ListOptArg ')'
 
     '('  shift, and go to state 102
 
 
-state 87
+State 87
 
    66 selection: envoiMessage '.' ID .
    72 envoiMessage: envoiMessage '.' ID . '(' ListOptArg ')'
@@ -1378,21 +1378,21 @@ state 87
     $default  reduce using rule 66 (selection)
 
 
-state 88
+State 88
 
    44 Param: ID ':' IDCLASS .
 
     $default  reduce using rule 44 (Param)
 
 
-state 89
+State 89
 
    45 ListExtendsOpt: EXTENDS . IDCLASS '(' ListOptArg ')'
 
     IDCLASS  shift, and go to state 104
 
 
-state 90
+State 90
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt . BlocOpt IS '{' ContenuClassOpt '}'
 
@@ -1404,35 +1404,35 @@ state 90
     BlocOpt  go to state 106
 
 
-state 91
+State 91
 
    43 LParam: Param ',' LParam .
 
     $default  reduce using rule 43 (LParam)
 
 
-state 92
+State 92
 
     9 ListDeclVar: VAR StaticOpt ID ':' . IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     IDCLASS  shift, and go to state 107
 
 
-state 93
+State 93
 
    17 Instruction: IF expr THEN Instruction . ELSE Instruction
 
     ELSE  shift, and go to state 108
 
 
-state 94
+State 94
 
    70 instanciation: NEWO IDCLASS '(' ListOptArg . ')'
 
     ')'  shift, and go to state 109
 
 
-state 95
+State 95
 
    48 ListOptArg: LArg .
    50 LArg: LArg . ',' expr
@@ -1442,7 +1442,7 @@ state 95
     $default  reduce using rule 48 (ListOptArg)
 
 
-state 96
+State 96
 
    49 LArg: expr .
    53 expr: expr . CONCAT expr
@@ -1462,7 +1462,7 @@ state 96
     $default  reduce using rule 49 (LArg)
 
 
-state 97
+State 97
 
    71 envoiMessage: IDCLASS '.' ID '(' . ListOptArg ')'
 
@@ -1488,28 +1488,28 @@ state 97
     envoiMessage   go to state 34
 
 
-state 98
+State 98
 
     6 ContenuBloc: ListDeclVar IS LInstruction YieldOpt .
 
     $default  reduce using rule 6 (ContenuBloc)
 
 
-state 99
+State 99
 
    12 LInstruction: Instruction LInstructionOpt .
 
     $default  reduce using rule 12 (LInstruction)
 
 
-state 100
+State 100
 
    16 Instruction: Cible AFFECT expr ';' .
 
     $default  reduce using rule 16 (Instruction)
 
 
-state 101
+State 101
 
    73 envoiMessage: OuRien '.' ID '(' . ListOptArg ')'
 
@@ -1535,7 +1535,7 @@ state 101
     envoiMessage   go to state 34
 
 
-state 102
+State 102
 
    74 envoiMessage: constante '.' ID '(' . ListOptArg ')'
 
@@ -1561,7 +1561,7 @@ state 102
     envoiMessage   go to state 34
 
 
-state 103
+State 103
 
    72 envoiMessage: envoiMessage '.' ID '(' . ListOptArg ')'
 
@@ -1587,28 +1587,28 @@ state 103
     envoiMessage   go to state 34
 
 
-state 104
+State 104
 
    45 ListExtendsOpt: EXTENDS IDCLASS . '(' ListOptArg ')'
 
     '('  shift, and go to state 115
 
 
-state 105
+State 105
 
    21 BlocOpt: Bloc .
 
     $default  reduce using rule 21 (BlocOpt)
 
 
-state 106
+State 106
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt BlocOpt . IS '{' ContenuClassOpt '}'
 
     IS  shift, and go to state 116
 
 
-state 107
+State 107
 
     9 ListDeclVar: VAR StaticOpt ID ':' IDCLASS . AffectExprOpt ';' LDeclChampsOpt
 
@@ -1619,7 +1619,7 @@ state 107
     AffectExprOpt  go to state 118
 
 
-state 108
+State 108
 
    17 Instruction: IF expr THEN Instruction ELSE . Instruction
 
@@ -1646,14 +1646,14 @@ state 108
     envoiMessage   go to state 34
 
 
-state 109
+State 109
 
    70 instanciation: NEWO IDCLASS '(' ListOptArg ')' .
 
     $default  reduce using rule 70 (instanciation)
 
 
-state 110
+State 110
 
    50 LArg: LArg ',' . expr
 
@@ -1675,35 +1675,35 @@ state 110
     envoiMessage   go to state 34
 
 
-state 111
+State 111
 
    71 envoiMessage: IDCLASS '.' ID '(' ListOptArg . ')'
 
     ')'  shift, and go to state 121
 
 
-state 112
+State 112
 
    73 envoiMessage: OuRien '.' ID '(' ListOptArg . ')'
 
     ')'  shift, and go to state 122
 
 
-state 113
+State 113
 
    74 envoiMessage: constante '.' ID '(' ListOptArg . ')'
 
     ')'  shift, and go to state 123
 
 
-state 114
+State 114
 
    72 envoiMessage: envoiMessage '.' ID '(' ListOptArg . ')'
 
     ')'  shift, and go to state 124
 
 
-state 115
+State 115
 
    45 ListExtendsOpt: EXTENDS IDCLASS '(' . ListOptArg ')'
 
@@ -1729,14 +1729,14 @@ state 115
     envoiMessage   go to state 34
 
 
-state 116
+State 116
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt BlocOpt IS . '{' ContenuClassOpt '}'
 
     '{'  shift, and go to state 126
 
 
-state 117
+State 117
 
    30 AffectExprOpt: AFFECT . expr
 
@@ -1758,21 +1758,21 @@ state 117
     envoiMessage   go to state 34
 
 
-state 118
+State 118
 
     9 ListDeclVar: VAR StaticOpt ID ':' IDCLASS AffectExprOpt . ';' LDeclChampsOpt
 
     ';'  shift, and go to state 128
 
 
-state 119
+State 119
 
    17 Instruction: IF expr THEN Instruction ELSE Instruction .
 
     $default  reduce using rule 17 (Instruction)
 
 
-state 120
+State 120
 
    50 LArg: LArg ',' expr .
    53 expr: expr . CONCAT expr
@@ -1792,42 +1792,42 @@ state 120
     $default  reduce using rule 50 (LArg)
 
 
-state 121
+State 121
 
    71 envoiMessage: IDCLASS '.' ID '(' ListOptArg ')' .
 
     $default  reduce using rule 71 (envoiMessage)
 
 
-state 122
+State 122
 
    73 envoiMessage: OuRien '.' ID '(' ListOptArg ')' .
 
     $default  reduce using rule 73 (envoiMessage)
 
 
-state 123
+State 123
 
    74 envoiMessage: constante '.' ID '(' ListOptArg ')' .
 
     $default  reduce using rule 74 (envoiMessage)
 
 
-state 124
+State 124
 
    72 envoiMessage: envoiMessage '.' ID '(' ListOptArg ')' .
 
     $default  reduce using rule 72 (envoiMessage)
 
 
-state 125
+State 125
 
    45 ListExtendsOpt: EXTENDS IDCLASS '(' ListOptArg . ')'
 
     ')'  shift, and go to state 129
 
 
-state 126
+State 126
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt BlocOpt IS '{' . ContenuClassOpt '}'
 
@@ -1839,7 +1839,7 @@ state 126
     LDeclChampsOpt   go to state 132
 
 
-state 127
+State 127
 
    30 AffectExprOpt: AFFECT expr .
    53 expr: expr . CONCAT expr
@@ -1859,7 +1859,7 @@ state 127
     $default  reduce using rule 30 (AffectExprOpt)
 
 
-state 128
+State 128
 
     9 ListDeclVar: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' . LDeclChampsOpt
 
@@ -1870,14 +1870,14 @@ state 128
     LDeclChampsOpt  go to state 133
 
 
-state 129
+State 129
 
    45 ListExtendsOpt: EXTENDS IDCLASS '(' ListOptArg ')' .
 
     $default  reduce using rule 45 (ListExtendsOpt)
 
 
-state 130
+State 130
 
    26 LDeclChampsOpt: VAR . StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
@@ -1888,14 +1888,14 @@ state 130
     StaticOpt  go to state 134
 
 
-state 131
+State 131
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt BlocOpt IS '{' ContenuClassOpt . '}'
 
     '}'  shift, and go to state 135
 
 
-state 132
+State 132
 
    25 ContenuClassOpt: LDeclChampsOpt . LDeclMethodeOpt
 
@@ -1907,28 +1907,28 @@ state 132
     LDeclMethodeOpt  go to state 138
 
 
-state 133
+State 133
 
     9 ListDeclVar: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt .
 
     $default  reduce using rule 9 (ListDeclVar)
 
 
-state 134
+State 134
 
    26 LDeclChampsOpt: VAR StaticOpt . ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     ID  shift, and go to state 139
 
 
-state 135
+State 135
 
    24 DeclClass: DefClass '(' ListParamOpt ')' ListExtendsOpt BlocOpt IS '{' ContenuClassOpt '}' .
 
     $default  reduce using rule 24 (DeclClass)
 
 
-state 136
+State 136
 
    32 Methode: DEF . OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
 
@@ -1940,7 +1940,7 @@ state 136
     OverrideOuStaticOpt  go to state 142
 
 
-state 137
+State 137
 
    33 LDeclMethodeOpt: Methode . LDeclMethodeOpt
 
@@ -1952,63 +1952,63 @@ state 137
     LDeclMethodeOpt  go to state 143
 
 
-state 138
+State 138
 
    25 ContenuClassOpt: LDeclChampsOpt LDeclMethodeOpt .
 
     $default  reduce using rule 25 (ContenuClassOpt)
 
 
-state 139
+State 139
 
    26 LDeclChampsOpt: VAR StaticOpt ID . ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     ':'  shift, and go to state 144
 
 
-state 140
+State 140
 
    35 OverrideOuStaticOpt: OVERRIDE .
 
     $default  reduce using rule 35 (OverrideOuStaticOpt)
 
 
-state 141
+State 141
 
    36 OverrideOuStaticOpt: STATIC .
 
     $default  reduce using rule 36 (OverrideOuStaticOpt)
 
 
-state 142
+State 142
 
    32 Methode: DEF OverrideOuStaticOpt . ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
 
     ID  shift, and go to state 145
 
 
-state 143
+State 143
 
    33 LDeclMethodeOpt: Methode LDeclMethodeOpt .
 
     $default  reduce using rule 33 (LDeclMethodeOpt)
 
 
-state 144
+State 144
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' . IDCLASS AffectExprOpt ';' LDeclChampsOpt
 
     IDCLASS  shift, and go to state 146
 
 
-state 145
+State 145
 
    32 Methode: DEF OverrideOuStaticOpt ID . '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
 
     '('  shift, and go to state 147
 
 
-state 146
+State 146
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' IDCLASS . AffectExprOpt ';' LDeclChampsOpt
 
@@ -2019,7 +2019,7 @@ state 146
     AffectExprOpt  go to state 148
 
 
-state 147
+State 147
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' . ListParamOpt ')' RETURNS IDCLASS BlocOuExpr
 
@@ -2032,21 +2032,21 @@ state 147
     Param         go to state 38
 
 
-state 148
+State 148
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' IDCLASS AffectExprOpt . ';' LDeclChampsOpt
 
     ';'  shift, and go to state 150
 
 
-state 149
+State 149
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt . ')' RETURNS IDCLASS BlocOuExpr
 
     ')'  shift, and go to state 151
 
 
-state 150
+State 150
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' . LDeclChampsOpt
 
@@ -2057,28 +2057,28 @@ state 150
     LDeclChampsOpt  go to state 152
 
 
-state 151
+State 151
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' . RETURNS IDCLASS BlocOuExpr
 
     RETURNS  shift, and go to state 153
 
 
-state 152
+State 152
 
    26 LDeclChampsOpt: VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt .
 
     $default  reduce using rule 26 (LDeclChampsOpt)
 
 
-state 153
+State 153
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS . IDCLASS BlocOuExpr
 
     IDCLASS  shift, and go to state 154
 
 
-state 154
+State 154
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS . BlocOuExpr
 
@@ -2092,21 +2092,21 @@ state 154
     BlocOuExpr     go to state 157
 
 
-state 155
+State 155
 
    39 BlocOuExpr: Bloc .
 
     $default  reduce using rule 39 (BlocOuExpr)
 
 
-state 156
+State 156
 
    38 BlocOuExpr: AffectExprOpt .
 
     $default  reduce using rule 38 (BlocOuExpr)
 
 
-state 157
+State 157
 
    32 Methode: DEF OverrideOuStaticOpt ID '(' ListParamOpt ')' RETURNS IDCLASS BlocOuExpr .
 
