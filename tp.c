@@ -138,7 +138,9 @@ int main(int argc, char **argv) {
     /* Fonction de teste des evalExpr*/
     /*testEval();*/
     /*printf("tp.c -> Affichage de l'arbre : \n");*/
-    pprintTreeMain(programme);
+
+	/* Remarque : si vous voulez afficher l'arbre du programme, décommentez l'appel de pprintTreeMain */
+    	/*pprintTreeMain(programme);*/
   }
   if (fd != NIL(FILE)) fclose(fd);
     if (res == 0 && errorCode == NO_ERROR) return 0;
