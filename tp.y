@@ -179,9 +179,9 @@ DefClass : CLASS IDCLASS
 {		
 	/* probleme : la classe qu'on souhaite declaree existe deja */		
 	if(estDansListClasse(listeDeClass, $2) == TRUE){
-		printf("Erreur dans DeclClass avec idClass=%s, elle existe deja\n", $2);
+		printf("La classe %s existe deja\n", $2);
 		char* message = NEW(SIZE_ERROR,char);
-		sprintf(message,"Erreur la classe %s est deja declare",$2);
+		sprintf(message,"Erreur la classe %s est deja declaree",$2);
 		/* TODO A MODIF pushErreur(message,classActuel,NULL,NULL); */
 		$$ = NULL; 	/* FIXME bon? */
 	} 
@@ -211,7 +211,7 @@ DefClass : CLASS IDCLASS
 DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
 {   
     	if($1 == NULL){
-		printf("Erreur dans DefClass : veuillez resoudre le probleme\n");
+		printf("Erreur dans DefClass : veuillez resoudre le probleme avant de continuer les checks\n");
 		exit(0);
 	}
 	else {
