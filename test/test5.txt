@@ -6,7 +6,7 @@ is
   var x: Integer;
   var y: Integer;
   var name: String := "x" & cpt.toString();
-
+  def setName(s: String) returns Void { name := s; }
   def clone() returns Point {
       var res : Point := new Point(x, y);
       is

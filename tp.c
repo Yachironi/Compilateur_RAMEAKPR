@@ -7,13 +7,6 @@
 #include "tp_y.h"
 
 bool dansCheckBlocMain = FALSE;
-/*
- * FIXME : ajouter une methode makeErreur(...)
- */
-
-/*
- * Toute cette premiere partie n'a (normalement) pas besoin d'etre modifiee
- */
 
 extern int yyparse();
 extern int yylineno;
@@ -425,7 +418,7 @@ PMETH makeMethode(char *nom, int OverrideOuStaticOpt,TreeP corps,PCLASS typeReto
   res->nom=nom;
   res->corps=corps;
   res->params=params;
-  res->typeRetour=typeRetour; /*FIXME faire un vrai copie? Mais pb : typeRetour n'est pas "totalement fini" */
+  res->typeRetour=typeRetour;
   
   res->home=home;
   /* ni static, ni override */
@@ -763,7 +756,6 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
 
             if(getChild(instruction,2)->op==CONTENUBLOC || getChild(instruction,2)->op==ETIQUETTE_AFFECT)
             {
-              /* FIXME2.0 fusionner listDecl et celui du bloc si c'est un bloc */
               if(getChild(instruction,2)->op==CONTENUBLOC && getChild(getChild(instruction,2),0)!=NULL)
               {
                 parcourL = nouvellelisteDecl;
@@ -1506,7 +1498,7 @@ EvalP evalInstruction(TreeP instruction, PVAR environnement){
 		return evalExpr(tmp, environnement);
 	}
 	else if(tmp->op == RETURN_VOID){
-		return NIL(Eval);	/* FIXME différencier des autres?? */
+		return NIL(Eval);
 	}
 	/* expression */
 	else{
@@ -1662,14 +1654,11 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			else{
 				/* Probleme */
 				printf("Probleme dans EvalExpr au niveau du comparateur -> etiquette inconnue\n");
-				return NIL(Eval);	/* FIXME a changer? */
+				return NIL(Eval);
 			}
 
 		case IDENTIFICATEUR:
-			/*
-		    	printf("YOUPPI on est dans ce cas \n");
-		    	printf("=======> Children STR = %s \n",tree->u.str);
-			*/
+			
 			var = copyVar(getVar(environnement, tree->u.str)); /* TODO pointeur ou copie? */
       			printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
@@ -2510,7 +2499,6 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
       break;
 
     case INSTANCIATION :
-        /*printf("op : %s", getChild(arbre,0)->u.str);*/
         nomClass = getChild(arbre,0)->u.str;
         tmp = getClasseBis(listeDeClass,nomClass);
         if(tmp == NULL)
@@ -2546,11 +2534,7 @@ PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR li
 PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDecl)
 {
   LTreeP tmp = liste;
-  /*while(tmp!=NULL)
-  {
-  printf("VALUE : %d \n", tmp->elem->op);
-    tmp = tmp->suivant;
-  }*/
+  
   PCLASS init = NULL;
 
   bool isStatic = FALSE;
@@ -2621,7 +2605,6 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
       }
       if(init == NULL)
       {
-         /*FIXME dans le gettypeAttribut rajouter les cas pour "string" et 1*/
           char* message = NEW(SIZE_ERROR,char);
           sprintf(message,"%s inconnu ",tmp->elem->u.str);
           pushErreur(message,classe,methode,NULL);
@@ -2649,7 +2632,6 @@ PCLASS estCoherentEnvoi(LTreeP liste, PCLASS classe, PMETH methode, PVAR listeDe
       PCLASS tmp = getClasseBis(listeDeClass,nomClass);
       if(tmp == NULL)
       {
-      printf("3.4\n");
         char* message = NEW(SIZE_ERROR,char);
         sprintf(message,"La classe %s n'est pas declare ",nomClass);
         pushErreur(message,classe,methode,NULL);
@@ -3487,7 +3469,6 @@ void afficheListeErreur(ErreurP listeE)
  */
 bool verifAttributClasse(PCLASS classe)
 {
-  /* FIXME Verifier qu'il n'y a pas 2 attribut qui on le même nom !!!!!!!!!!!!*/
   if(classe->liste_champs==NULL)
   {
     return TRUE;
@@ -3514,7 +3495,6 @@ bool verifAttributClasse(PCLASS classe)
   return TRUE;
 }
 
-/* FIXME : equalsAffectation : verifie si Point = Point2D correcte (OUI) et inversemment */
 
 void testEval(){
 /*

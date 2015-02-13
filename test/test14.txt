@@ -13,7 +13,7 @@ is
   def setName(s: String) returns Void { name := s; }
 
   def static integer() returns Integer {
-  return this.y;
+  return y;
   }
 
 
