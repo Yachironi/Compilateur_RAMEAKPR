@@ -20,8 +20,6 @@ extern int yylineno;
 extern TreeP programme;
 extern PCLASS classActuel;
 
-int eval(TreeP tree, VarDeclP decls);
-
 
 /* Niveau de 'verbosite'.
  * Par defaut, n'imprime que le resultat et les messages d'erreur
@@ -1493,108 +1491,12 @@ bool checkListOptArg(PVAR var, PMETH methode)
     return TRUE;
 }
 
-/* Verifie si besoin que nouv n'apparait pas deja dans list. l'ajoute en
- * tete et renvoie la nouvelle liste
- */
-VarDeclP addToScope(VarDeclP list, VarDeclP nouv) {
-
-  if(nouv==NULL)
-    return list;
-
-  if(list==NULL && nouv!=NULL)
-    return nouv;
-
-  VarDeclP nouvTmp = nouv;
-  bool continuer = TRUE;
-  while(nouvTmp!=NULL){
-    /* liste mise a jour si besoin */
-    VarDeclP listTmp = list;
-    continuer = TRUE;
-    while(listTmp!= NULL && continuer)
-    {
-      if(strcmp(nouvTmp->name, listTmp->name)==0){
-        continuer = FALSE;
-      }
-      listTmp = listTmp->next;
-    }
-    if(!continuer)
-    {
-      VarDeclP listCopie = list;
-      list = nouvTmp;
-      list->next = listCopie;
-    }
-    nouvTmp = nouvTmp->next;
-  }
-  return list;
-}
-
-/* Construit le squelette d'un couple (variable, valeur), sans la valeur. */
-VarDeclP makeVar(char *name) {
-  VarDeclP res = NEW(1, VarDecl);
-  res->name = name; res->next = NIL(VarDecl);
-  return(res);
-}
-
-
-
-/* Associe une variable a l'expression qui definit sa valeur, et procede a
- * l'evaluation de cette expression, sauf si on est en mode noEval
- */
-VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope) {
-
-  if(tree->nbChildren==0)
-  {
-    if(strcmp(tree->u.str,name)==0)
-    {
-      strcpy(currentScope->name,name);
-      currentScope->val = tree->u.val;
-      return currentScope;
-    }
-    else
-    {
-      return NULL;
-    }
-  }
-
-  int i = 0;
-  for(i=0;i<tree->nbChildren;i++)
-  {
-    VarDeclP retour = declVar(name,getChild(tree,i),currentScope);
-    if(retour!=NULL)
-      return retour;
-    i++;
-  }
-
-  return NULL;
-}
-
-/* Evaluation d'une variable */
-int evalVar(TreeP tree, VarDeclP decls) {
-  return 0;
-}
-
-/* Evaluation d'un if then else. Attention a n'evaluer que la partie necessaire !
-int evalIf(TreeP tree, VarDeclP decls) {
-  return 0;
-}
-*/
-
-VarDeclP evalAff (TreeP tree, VarDeclP decls) {
-  return NIL(VarDecl);
-}
-
-/* Ici decls correspond au sous-arbre qui est la partie declarative */
-VarDeclP evalDecls (TreeP tree) {
-  return NIL(VarDecl);
-}
-
 
 /* Methode permettant de créer un type EvalP de type char* */
 EvalP makeEvalStr(char *str){
   EvalP eval = NEW(1, Eval);
   eval->type = EVAL_STR;
   eval->u.str = str;
-  /*eval->u.str = strdup(str);*/
   return eval;
 }
 
@@ -1610,8 +1512,6 @@ EvalP makeEvalInt(int val){
 EvalP makeEvalVar(PVAR var){
   EvalP eval = NEW(1, Eval);
   eval->type = EVAL_PVAR;
-  /* FIXME : Pointeur ou nouvelle instance ? */
-  /*eval->u.var = makeListVar(var->nom, var->type, var->categorie, var->init);*/
   eval->u.var = var;
   return eval;
 }
@@ -1620,8 +1520,6 @@ EvalP makeEvalVar(PVAR var){
 EvalP makeEvalClasse(PCLASS classe){
   EvalP eval = NEW(1, Eval);
   eval->type = EVAL_PCLASS;
-  /* FIXME : Pointeur ou nouvelle instance ? */
-  /*eval->u.classe = makeClasse(classe->nom, classe->param_constructeur, classe->corps_constructeur, classe->liste_methodes, classe->liste_champs, classe->classe_mere, classe->isExtend);*/
   eval->u.classe = classe;
   return eval;
 }
@@ -1630,11 +1528,6 @@ EvalP makeEvalClasse(PCLASS classe){
 EvalP makeEvalMethode(PMETH methode){
   EvalP eval = NEW(1, Eval);
   eval->type = EVAL_PMETH;
-  /* FIXME : Pointeur ou nouvelle instance ?
-  eval->u.methode = makeMethode(methode->nom, 0, methode->corps, methode->typeRetour, methode->params, methode->home);
-  eval->u.methode->isStatic = methode->isStatic;
-  eval->u.methode->isRedef = methode->isRedef;
-  */
   eval->u.methode = methode;
   return eval;
 }
@@ -1643,7 +1536,7 @@ EvalP makeEvalMethode(PMETH methode){
 EvalP makeEvalTree(TreeP tree){
   EvalP eval = NEW(1, Eval);
   eval->type = EVAL_TREEP;
-  eval->u.tree = tree;  /* FIXME : Pointeur ou nouvelle instance ? */
+  eval->u.tree = tree; 
   return eval;
 }
 
@@ -2483,63 +2376,6 @@ EvalP evalSelection(TreeP tree, PVAR environnement){
 	}
 	return makeEvalVar(var);
 }
-
-/** A NE PAS CONSIDERER : C'EST LE EVAL DU TP **/
-/*
-int eval(TreeP tree, VarDeclP decls) {
-  if (tree == NIL(Tree)) { exit(UNEXPECTED); }
-  switch (tree->op) {
-    case ID:
-      return evalVar(tree, decls);
-    case CSTE:
-      return tree->u.val;
-    case CSTS:
-      return tree->u.str;
-
-    case EQ:
-      return (eval(getChild(tree, 0), decls) == eval(getChild(tree, 1), decls));
-    case NE:
-      return (eval(getChild(tree, 0), decls) != eval(getChild(tree, 1), decls));
-
-    case PLUS:
-      return (eval(getChild(tree, 0), decls) + eval(getChild(tree, 1), decls));
-    case MINUS:
-      return (eval(getChild(tree, 0), decls) - eval(getChild(tree, 1), decls));
-
-    case MUL:
-      return (eval(getChild(tree, 0), decls) * eval(getChild(tree, 1), decls));
-    case DIV:
-      if(eval(getChild(tree, 1), decls)!=0){
-        return (eval(getChild(tree, 0), decls) / eval(getChild(tree, 1), decls));
-      }
-      else{
-        return EVAL_ERROR;
-      }
-    case IF:
-      return evalIf(tree, decls);
-    default:
-      fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
-      exit(UNEXPECTED);
-  }
-}
-
-int evalMain(TreeP tree, VarDeclP lvar) {
-  int res;
-    if (noEval) {
-    fprintf(stderr, "\nSkipping evaluation step.\n");
-  }
-  else {
-    res = eval(tree, lvar);
-  printf("\n/-Result: %d-/\n", res);
-  }
-  return errorCode;
-}
-*/
-
-/** FIN DE CE QUI N'EST PAS A CONSIDERER **/
-
-
-
 
 
 PCLASS getType(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl)

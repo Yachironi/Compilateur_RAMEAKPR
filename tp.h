@@ -120,15 +120,6 @@ typedef struct _Tree {
   int recupType;
 } Tree, *TreeP;
 
-/** PAS UTILISE */
-/* la structure ci-dessous permet de memoriser des listes variable/valeur */
-typedef struct _Decl
-{ char *name;
-  int val;
-  struct _Decl *next;
-} VarDecl, *VarDeclP;
-
-
 /* Structure d'une classe */
 struct _Class{
   char *nom;            	/* nom de la classe */
@@ -168,14 +159,6 @@ struct _Method{
   PVAR suivant;
 };
 
-/*
-Je crois qu'il faut faire une structure pour catégorie (dans VAR) avec :
-  champ static -> 1
-  champ non static -> 2
-  param méthode -> 3
-  variable locale à un bloc -> 4
-*/
-
 typedef struct _Erreur
 {
   char* message;
@@ -192,12 +175,12 @@ typedef struct _Eval{
 	int type;
 	char* nom;
 	union {
-		char *str;	/* type = 0 -> EVAL_STR */
-		int val;      	/* type = 1 -> EVAL_INT */
-		PVAR var;	/* type = 2 -> EVAL_VAR */
-	 	PCLASS classe;	/* type = 3 -> EVAL_PCLASS */
-		PMETH methode;  /* type = 4 -> EVAL_PMETH */
-		TreeP tree;	/* type = 5 -> EVAL_TREEP */
+		char *str;	/* type = EVAL_STR */
+		int val;      	/* type = EVAL_INT */
+		PVAR var;	/* type = EVAL_VAR */
+	 	PCLASS classe;	/* type = EVAL_PCLASS */
+		PMETH methode;  /* type = EVAL_PMETH */
+		TreeP tree;	/* type = EVAL_TREEP */
   	} u;
 } Eval, *EvalP;
 
@@ -239,9 +222,6 @@ typedef struct _listeTree {
 
 #define YYSTYPE YYSTYPE
 
-/* construction des declarations */
-VarDeclP makeVar(char *name);
-VarDeclP declVar(char *name, TreeP tree, VarDeclP currentScope);
 
 /* construction pour les arbres */
 TreeP makeLeafStr(short op, char *str);
@@ -252,15 +232,9 @@ TreeP makeLeafMeth(short op, PMETH methode);
 TreeP makeTree(short op, int nbChildren, ...);
 
 /* evaluateur d'expressions */
-int evalMain(TreeP tree, VarDeclP lvar);
-VarDeclP evalDecls (TreeP tree);
 TreeP getChild(TreeP tree, int rank);
 
 /* ecriture formatee */
-void pprintVar(VarDeclP decl, TreeP tree);
-void pprintValueVar(VarDeclP decl);
-void pprint(TreeP tree);
-void pprintMain(TreeP tree);
 void pprintTreeMain(TreeP tree);
 void printVar(PVAR var);
 void printClasse(PCLASS classe);
@@ -282,11 +256,14 @@ int getVal(EvalP eval);
 PVAR copyVar(PVAR var);
 PMETH getMethodeBis(PMETH meth, char *nom);
 bool varEstDansListe(PVAR listeVar, char *nom);
-bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
+PVAR getVar(PVAR var, char* nom);
+int sizeString(char *str);
+
 
 /*
  * Methode check
  */
+bool checkAppelMethode(TreeP listOptArg,PVAR paramMeth, int isAppelConstructeurMere);
 bool checkClass(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkHeritage(PCLASS classe);
 bool classExtendsDeclareeAvant(PCLASS actuelle,PCLASS heritee);
@@ -294,6 +271,8 @@ bool checkListAttribut(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode,
 bool verifAttributClasse(PCLASS classe);
 bool checkListMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
 bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR listeDecl);
+bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
+bool classeContient(PCLASS classe,TreeP droite);
 
 /** Methode eval **/
 EvalP evalProgramme(TreeP programme);
@@ -301,23 +280,16 @@ EvalP evalContenuBloc(TreeP bloc, PVAR environnement);
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement);
 void evalListInstruction(TreeP Linstruction, PVAR environnement);
 EvalP evalInstruction(TreeP instruction, PVAR environnement);
-
-/** Peut etre modifier et introduire un environnement => PVAR */
 EvalP evalExpr(TreeP tree, PVAR environnement);
 EvalP evalSelection(TreeP tree, PVAR environnement);
 EvalP evalEnvoiMessage(TreeP tree, PVAR environnement);
 EvalP evalInstanciation(TreeP tree, PVAR environnement);
 LEvalP evalListArg(TreeP tree, PVAR environnement);
-int sizeString(char *str);
-
 EvalP evalIf(TreeP tree, PVAR environnement);
-
 void updateEnvironnement(PVAR environnement, PVAR env2);
-PVAR getVar(PVAR var, char* nom);
-void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
-bool checkExprEnvoiSelecInst(TreeP p, TreeP droit);
-bool classeContient(PCLASS classe,TreeP droite);
+/* Ajout d'une erreur */
+void pushErreur(char* message,PCLASS classe,PMETH methode,PVAR variable);
 
 /*
  * Nouvelle fonction
@@ -347,7 +319,7 @@ bool isHeritage(PCLASS gauche, PCLASS droite);
   */
 bool contientClasseInst(PVAR classe, TreeP droite);
 bool checkListOptArg(PVAR var, PMETH methode);
-bool existeMethodeOverride(PCLASS home,PMETH methode); /* JULIEN ? */
+
 
 
 #endif
