@@ -10,7 +10,7 @@ Guill "\""
 NotGuillAntislash [^"\\\n]
 NotAntislash [^\\]
 AntislashAll \\.
-String  ({Guill}(({AntislashAll})|{NotGuillAntislash})*{Guill}) 
+String  ({Guill}(({AntislashAll})|{NotGuillAntislash})*{Guill})
 Star \*
 NotStar [^*]
 NotStarSlash [^*/]
@@ -23,7 +23,7 @@ Commentaire ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
 
 /*
  * ("/"{Star}({NotStar}|({Star}+{NotStarSlash}))*{Star}+"/")
- * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")  
+ * expr : ("/"{Star}{{NotStar}|({Star}+{NotStarSlash})}*{Star}+"/")
  *
 */
 
@@ -42,7 +42,7 @@ extern int errorCode;
  * mot-clef mais plutot de les reconnaitre dans un premier temps comme des
  * identificateurs et de faire la distinction par un bout de code
  */
-int keywordOrId() { 
+int keywordOrId() {
   /* si ce n'est pas un mot-clef, sauvegarder le texte de l'identificateur
    * et renvoyer le token associe aux identificateurs
    */
@@ -56,9 +56,9 @@ int keywordOrId() {
   if(strcmp(yylval.S,"class")==0)
     return CLASS;
   if(strcmp(yylval.S,"var")==0)
-    return VAR; 
+    return VAR;
   if(strcmp(yylval.S,"extends")==0)
-    return EXTENDS;   
+    return EXTENDS;
   if(strcmp(yylval.S,"is")==0)
     return IS;
   if(strcmp(yylval.S,"static")==0)
@@ -74,10 +74,10 @@ int keywordOrId() {
   if(strcmp(yylval.S,"new")==0)
     return NEWO;
   if(strcmp(yylval.S,"def")==0)
-    return DEF  ;   
+    return DEF  ;
   if(yylval.S[0]>='A' && yylval.S[0]<='Z')
-    return IDCLASS;           
-  
+    return IDCLASS;
+
   return(ID);
 }
 
@@ -93,7 +93,7 @@ void lexError(char c) {
  * definis dans tp_y.h et serviront aussi d'etiquettes pour les sommets de
  * l'arbre de syntaxe abstraite qui sera construit par la suite du processus
  * de compilation.
- * 
+ *
  * Les "return" qui apparaissent dans les actions associees aux expressions
  * reguleres peuvent renvoyer:
  * - soit le code symbolique d'une U.L.
@@ -123,8 +123,8 @@ void lexError(char c) {
 ">="            { yylval.I = GE; return(RELOP); }
 {Symbol}        { yylval.C = yytext[0]; return(yytext[0]); }
 ":="            { return AFFECT; }
-"&"		{ return(CONCAT);}	
+"&"		{ return(CONCAT);}
 {Delim}         { ; }
 {Commentaire}	{ ; }
-.      		{ /*printf("Erreur lexical \n");*/}
+.      		{ printf("Erreur lexical sur : %s\n",yytext);}
 %%

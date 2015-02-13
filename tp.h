@@ -216,7 +216,8 @@ EvalP makeEvalTree(TreeP tree);
 /* Type pour la valeur de retour de Flex et les actions de Bison
  * le premier champ est necessaire pour flex
  * les autres correspondent aux variantes utilisees dans les actions
- * associees aux productions de la grammaire. 
+ * associees aux productions de la gra
+mmaire. 
 */
 typedef union
 { char C;
