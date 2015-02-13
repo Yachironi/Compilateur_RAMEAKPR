@@ -1536,9 +1536,9 @@ void updateEnvironnement(PVAR environnement, PVAR env2){
 }
 
 /* Evaluation globale du programme */
-void evalProgramme(TreeP programme){
+EvalP evalProgramme(TreeP programme){
 	/* on a l'attribut listeDeClass qui contient toutes les classes (s'il y en a) --> pas besoin de regarder ListClassOpt */
-	/*EvalP eval = */ evalContenuBloc(programme->u.children[1], NIL(SVAR));
+	return evalContenuBloc(programme->u.children[1], NIL(SVAR));
 }
 
 /* Evaluation d'un bloc */
@@ -1555,18 +1555,17 @@ EvalP evalContenuBloc(TreeP bloc, PVAR environnement){
 		
 	/* eval de LInstruction */
 	if(bloc->u.children[1] != NIL(Tree)){
-		evalListInstruction(bloc->u.children[1], environnement);
+		evalListInstruction(bloc->u.children[1], environnement);	/* L'environnement doit se mettre a jour */
 	}
 	/* eval de YieldOpt */
 	if(bloc->u.children[2] != NIL(Tree)){
-		return evalExpr(bloc->u.children[2]->u.children[0], environnement);	/*FIXME : verifier que environnement 													sauvegarde les modifs */
+		return evalExpr(bloc->u.children[2]->u.children[0], environnement);
 	}
 	return NIL(Eval);
 }
 
-/* Evalue toutes les variables déclarées */
+/* Evalue toutes les variables déclarées -> ne pas mettre a jour l'environnement, ca se fait automatiquement (changement dans les PVAR) */
 void evalListDeclVar(PVAR listDeclVar, PVAR environnement){
-  	/** ListDeclVar : VAR StaticOpt ID ':' IDCLASS AffectExprOpt ';' LDeclChampsOpt ==> renvoi PVAR */
 	if(listDeclVar == NIL(SVAR))	return;
 	PVAR tmp = listDeclVar;
 	EvalP eval = evalExpr(tmp->init->u.children[0], environnement);
@@ -1671,7 +1670,7 @@ EvalP evalInstruction(TreeP instruction, PVAR environnement){
 	}
 	
 }
-/* TODO */
+/* Evalue une liste d'instruction */
 void evalListInstruction(TreeP Linstruction, PVAR environnement){
 	evalInstruction(Linstruction->u.children[0], environnement);
 	/* Eval du reste de la liste */
@@ -1683,6 +1682,7 @@ void evalListInstruction(TreeP Linstruction, PVAR environnement){
 	}
 }
 
+/* Evalue un if/then/else */
 EvalP evalIf(TreeP tree, PVAR environnement){
 	EvalP eval_condition = evalExpr(tree->u.children[0], environnement);
 	if(eval_condition->type != EVAL_INT){
@@ -1710,6 +1710,7 @@ int sizeString(char *str){
 	return size;
 }
 
+/* Prend un parametre de type EvalP et renvoie sa valeur (entier) s'il en a une */
 int getVal(EvalP eval){
 	if(eval->type == EVAL_INT){
 		return eval->u.val;
@@ -1809,15 +1810,17 @@ EvalP evalExpr(TreeP tree, PVAR environnement){
 			}
 	
 		case IDENTIFICATEUR:
+			/*
 		    	printf("YOUPPI on est dans ce cas \n");
 		    	printf("=======> Children STR = %s \n",tree->u.str);
+			*/
 			var = copyVar(getVar(environnement, tree->u.str)); /* TODO pointeur ou copie? */
       			printf("YOUPPI on est dans ce cas \n");
 			if(var == NULL)		return NIL(Eval);
 			/*return makeEvalVar(var);*/
 			/* si l'id n'a pas d'affectation pour le moment */
 			if(var->init == NULL){
-				return NIL(Eval);
+				return NIL(Eval);	/* TODO : ou PVAR? */
 			}
 			/* si l'id a deja ete evalue */
 			else if(var->init->op == EVALUE_STR){
@@ -1970,7 +1973,7 @@ EvalP evalInstanciation(TreeP tree, PVAR environnement){
 	return makeEvalVar(var);
 }
 
-/** FIXME Renvoie une liste d'évaluation -> la liste est dans l'ordre **/
+/** Renvoie une liste d'évaluation -> la liste est dans l'ordre **/
 LEvalP evalListArg(TreeP tree, PVAR environnement){
 	if(tree == NIL(Tree))	return NIL(LEval);
 
@@ -1978,12 +1981,6 @@ LEvalP evalListArg(TreeP tree, PVAR environnement){
 	LEvalP listEval;
 	/* On a une liste de type LArg, expr*/
 	if(tree->op == LISTEARG){
-		/* TODO Regarder les evalExpr + demander a Amin & Gishan comment avoir la PVAR d'un ID
-			 (exemple : xc -> comment avoir son type et sa valeur)
-		--> Reponse : faire un getVar et chercher dans 1) param methode, 2) listDecl, 3) attribut de la classe 
-		--> Commentaire de Julien : introduire un PVAR environnement pour régler ce pb?
-		  FIXME : verifier si c'est ok
-		*/
 		LEvalP listEvalPrec = NULL;
 		listEval->eval = evalExpr(tree->u.children[1], environnement);
 		listEval->suivant = NULL;
@@ -2241,7 +2238,7 @@ EvalP evalSelection(TreeP tree, PVAR environnement){
 			return NIL(Eval);
 		}
 	}	
-	/* TODO envoiMessage'.'ID */
+	/* envoiMessage'.'ID */
 	else if(tree->u.children[0]->op == ENVOIMESSAGE){
 		EvalP eval_envoiMsg = evalEnvoiMessage(tree->u.children[0], environnement);
 		if(eval_envoiMsg == NIL(Eval)){
