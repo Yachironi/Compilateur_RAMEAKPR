@@ -760,13 +760,8 @@ bool checkListInstruction(TreeP arbre, TreeP ancien, PCLASS courant, PMETH metho
               {
                 if(type2!=NULL)
                 {
-                  printf("......./ %s : \n",getChild(instruction,0)->u.str );
-                  printf(".......M val = %d : \n",getChild(instruction,1)->u.val );
-
-
-                  printf("FIN\n");
-
-                  sprintf(message,"Instruction : affectation incorrecte entre deux types differents %s & %s courant = %s",type->nom,type2->nom,methode->nom);
+          
+                  sprintf(message,"Instruction : affectation incorrecte entre deux types differents %s & %s courant = %s",type->nom,type2->nom,methode!=NULL?methode->nom:"");
                 }
                 else
                   sprintf(message,"Instruction : affectation incorrecte entre deux types differents : %s",type->nom);
@@ -1394,7 +1389,7 @@ bool checkMethode(TreeP arbre, TreeP ancien, PCLASS courant, PMETH methode, PVAR
         if(!redef)
         {
           char* message = NEW(SIZE_ERROR,char);
-          sprintf(message,"Erreur dans la methode override %s de la classe %s",methode->nom,methode->home->classe_mere->nom);
+          sprintf(message,"Erreur dans la methode override %s de la classe %s",methode!=NULL?methode->nom:"... null",(methode->home!=NULL && methode->home->classe_mere!=NULL)?methode->home->classe_mere->nom:" ... null");
           pushErreur(message,classActuel,methode,NULL);
           return FALSE;
         }
