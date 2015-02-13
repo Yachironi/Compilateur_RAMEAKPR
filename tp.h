@@ -188,7 +188,8 @@ typedef struct _Erreur
 
 ErreurP listeErreur;
 
-typedef struct _Eval{
+typedef struct _Eval
+{
 	int type;
 	char* nom;
 	union {
