@@ -211,7 +211,8 @@ DefClass : CLASS IDCLASS
 DeclClass : DefClass'('ListParamOpt')' ListExtendsOpt BlocOpt IS '{'ContenuClassOpt'}' 
 {   
     	if($1 == NULL){
-		printf("Erreur dans DefClass\n");
+		printf("Erreur dans DefClass : veuillez resoudre le probleme\n");
+		exit(0);
 	}
 	else {
 		int isExtend; 
