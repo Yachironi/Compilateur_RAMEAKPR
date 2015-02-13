@@ -1,0 +1,102 @@
+Methode toString -> home = Integer et classe actuel = Integer 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode println -> home = String et classe actuel = String 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode print -> home = String et classe actuel = String 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode setName -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode move -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode gety -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getx -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getxBis -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getxTer -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothing -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothingBis -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothingTer -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode print -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode verboseMove -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode clone -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode egal -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode egal2 -> home = Point et classe actuel = Point 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode blanc -> home = Couleur et classe actuel = Couleur 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode noir -> home = Couleur et classe actuel = Couleur 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode gris -> home = Couleur et classe actuel = Couleur 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode name -> home = Couleur et classe actuel = Couleur 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode estGris -> home = Couleur et classe actuel = Couleur 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode couleur -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode colore -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode setCouleur -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode clone -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode estGris -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode print -> home = PointColore et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode egal2 -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode egal -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode verboseMove -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothingTer -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothingBis -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode nothing -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getxTer -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getxBis -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode getx -> home = Point et classe actuel = PointColore 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
+Methode estGris -> home = PointNoir et classe actuel = PointNoir 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode couleur -> home = PointNoir et classe actuel = PointNoir 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode setName -> home = Point et classe actuel = PointNoir 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode move -> home = Point et classe actuel = PointNoir 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode gety -> home = Point et classe actuel = PointNoir 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
+Methode estGris -> home = DefaultPoint et classe actuel = DefaultPoint 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode couleur -> home = DefaultPoint et classe actuel = DefaultPoint 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode setName -> home = Point et classe actuel = DefaultPoint 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode move -> home = Point et classe actuel = DefaultPoint 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode gety -> home = Point et classe actuel = DefaultPoint 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 0
+Methode test -> home = Test et classe actuel = Test 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Methode test2 -> home = Test et classe actuel = Test 
+typeRetour 1 statique 1 redef 1 pvar 1 bloc ? : 1
+Erreur 1 : Erreur la methode gety est mal construite
+[30mErreur 2 : Erreur la methode gety est mal construite
+[30mErreur 3 : Erreur la methode getx est mal construite
+[30m
